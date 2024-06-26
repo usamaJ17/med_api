@@ -15,16 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('temp')->nullable();
-            $table->string('contact')->nullable();
             $table->string('forgot_password')->nullable();
-            $table->text('business')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('otp_verified_at')->nullable();
             $table->string('password');
             $table->string('otp')->nullable();
-            $table->text('jwt_token')->nullable();
-            $table->text('jwt_password')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();

@@ -25,7 +25,7 @@ use App\Http\Controllers\ProductController;
 
 Route::middleware(['cros'])->group(function () {
   Route::post('register',[AuthController::class,'register']);
-  Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
+  // Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
 });

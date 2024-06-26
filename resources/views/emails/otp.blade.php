@@ -92,7 +92,7 @@
               "
             >
               Thank you for choosing us. Use the following OTP
-              to complete your @if ($register) registration @else login @endif
+              to complete registration
             </p>
             <p
               style="

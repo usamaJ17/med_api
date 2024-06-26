@@ -62,41 +62,26 @@ class AuthController extends Controller
     {
     	$user = User::where('email',$request->email)->first();
 
-        // if($user->is_verified == false){
-        //     return response()->json([
-        //         'status'  => 401,
-        //         'message'=> 'Your account is not approved yet, Please wait for admin approval...',
-        //      ], 401);
-        // }
-        // else 
-        if(!$user || !Hash::check($request->password,$user->password)){
+        if($user->email_verified_at == false){
+            return response()->json([
+                'status'  => 401,
+                'message'=> 'Please verify your email first...',
+             ], 401);
+        }
+        else  if(!$user || !Hash::check($request->password,$user->password)){
         	return response()->json([
 	    	   'status' => 401,
 	    	   'message'=> 'Invalid Email OR Password...',
 	    	], 401);
         }else{
-            // check if user verify OTP in 1 day
-            if($user->otp_verified_at == null || $user->otp_verified_at->diffInDays(now()) > 1){
-                $otp = random_int(111111, 999999);
-                $user->otp = $otp;
-                $user->save();
-                Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new OtpMail($otp,$user->name));
-                return response()->json([
-                    'otp_sent'  => true,
-                    'status'  => 202,
-                    'message' => 'OTP Sent Successfully...',
-                    'email'    => $request->email,
-                ], 200);   
-            }else{
-                Auth::login($user);
-                return response()->json([
-                    'otp_sent'  => false,
-                    'status'  => 202,
-                    'message' => 'Login Successfully...',
-                    'user'    => Auth::user(),
-                    'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
-                ], 200);
-            }
+            Auth::login($user);
+            return response()->json([
+                'otp_sent'  => false,
+                'status'  => 202,
+                'message' => 'Login Successfully...',
+                'user'    => Auth::user(),
+                'token'   => Auth::user()->createToken('Med')->plainTextToken,
+            ], 200);
         }
     }
     public function SendForgotPassword(Request $request): JsonResponse
@@ -109,10 +94,10 @@ class AuthController extends Controller
 	    	], 401);
         }else{
             // generate randon string of length 10 and save it in forgot_password field
-            $forgot_password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 ).$user->id;
-            $user->forgot_password = $forgot_password;
+            $otp = random_int(111111, 999999);
+            $user->forgot_password = $otp;
             $user->save();
-            Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new ForgotPassword($forgot_password));
+            Mail::to([$user->email])->send(new ForgotPassword($otp));
             return response()->json([
                 'status'  => 202,
                 'message' => 'Reset password email sent...',
@@ -121,7 +106,7 @@ class AuthController extends Controller
     }
     public function UpdateForgotPassword(Request $request): JsonResponse
     {
-    	$user = User::where('forgot_password',$request->key)->first();
+    	$user = User::where('forgot_password',$request->otp)->first();
         if(!$user){
         	return response()->json([
         	   'status' => 401,
@@ -156,49 +141,16 @@ class AuthController extends Controller
 	    	   'message'=> 'Invalid OTP',
 	    	], 401);
         }else{
-            if($user->email_verified_at == null){
-                $requestParameters = [
-                    'first_name' => $user->name,
-                    'last_name' => $user->name,
-                    'email' => $user->email,
-                    'contact' => $user->contact,
-                    'business' => $user->business,
-                    'password' => $user->temp,
-                    'password_confirmation' => $user->temp,
-                ];
-        
-                // Send the POST request with the request parameters
-                Http::post(env('ADMIN_PORTAL_URL').'/register', $requestParameters);
-                $user->temp = null;
-                $user->email_verified_at = now();
-                $user->save();
-                return response()->json([
-                    'status'  => 202,
-                    'message' => 'Regestrered successfully, wait for admin approval email...',
-                ], 200);
-            }else{
-                Auth::login($user);
-                $user->otp = null;
-                $user->otp_verified_at = now();
-                $user->save();
-                return response()->json([
-                    'status'  => 202,
-                    'message' => 'Login Successfully...',
-                    'user'    => Auth::user(),
-                    'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
-                ], 200);
-            }
+            $user->email_verified_at = now();
+            $user->save();
+            Auth::login($user);
+            return response()->json([
+                'status'  => 202,
+                'message' => 'Regestrered successfully,',
+                'user'    => Auth::user(),
+                'token'   => Auth::user()->createToken('Med')->plainTextToken,
+            ], 200);
         }
-    }
-    public function changeResellerStatus(Request $request){
-        $user = User::where('email',$request->email);
-        $user->is_verified = $request->status;
-        $user->tokens()->delete();
-        $user->save();
-        return response()->json([
-            'status'  => 202,
-            'message' => 'Status Changed Successfully...',
-        ], 200);
     }
     public function logout(Request $request): JsonResponse
     {

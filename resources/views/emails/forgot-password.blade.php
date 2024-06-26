@@ -91,20 +91,20 @@
                 letter-spacing: 0.56px;
               "
             >
-              Please follow this link to reset your password
+              Use this Code to reset your password
             </p>
             <p
-              style="
-                margin: 0;
-                margin-top: 60px;
-                font-weight: 600;
-              "
-            >
-              {{-- paste APP_URL fron .env   --}}
-              <a href="{{ env('APP_URL') }}/reset-password?key={{ $name }}" style="color: #ba3d4f;">Click Here</a>, Or enter this link manually :
-              <br>
-              {{ env('APP_URL') }}/reset-password?key={{ $name }}
-            </p>
+            style="
+              margin: 0;
+              margin-top: 60px;
+              font-size: 40px;
+              font-weight: 600;
+              letter-spacing: 25px;
+              color: #ba3d4f;
+            "
+          >
+            {{ $name }}
+          </p>
           </div>
         </div>
       </main>
