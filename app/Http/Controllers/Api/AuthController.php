@@ -36,15 +36,12 @@ class AuthController extends Controller
     		$user = New User();
     	    $user->name = $request->name;
     	    $user->email = $request->email;
-            $user->contact = $request->contact;
-            $user->business = $request->business;
-            $user->temp = $request->password;
-            $user->jwt_password = Crypt::encrypt($request->password);
     	    $user->password = Hash::make($request->password);
     	    $otp = random_int(111111, 999999);
             $user->otp = $otp;
             $user->save();
-            Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new OtpMail($otp,$user->name, true));
+            $user->assignRole($request->role);
+            Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
             return response()->json([
                 'status'  => 202,
                 'message' => 'OTP Sent Successfully...',
