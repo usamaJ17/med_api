@@ -33,7 +33,7 @@ Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword'])
 Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword'])->middleware('cros');
 
 
-Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
+Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
