@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'patient']);
+    Role::create(['name' => 'medical']);
     return view('welcome');
 });
