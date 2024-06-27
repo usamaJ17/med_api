@@ -34,7 +34,9 @@ class AuthController extends Controller
 	    $check = User::where('email', $request->email)->count();
 	    if ($check < 1) {
     		$user = New User();
-    	    $user->name = $request->name;
+    	    $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->contact = $request->contact;
     	    $user->email = $request->email;
     	    $user->password = Hash::make($request->password);
     	    $otp = random_int(111111, 999999);
