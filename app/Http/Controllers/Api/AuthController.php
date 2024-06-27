@@ -76,7 +76,7 @@ class AuthController extends Controller
             Auth::login($user);
             $user = Auth::user();
             // add role in user
-            $user->role = $user->getRoleNames()->first();
+
             return response()->json([
                 'otp_sent'  => false,
                 'status'  => 202,
