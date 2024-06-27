@@ -7,6 +7,8 @@ use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
 use App\Models\MedicalDetail;
 use App\Models\ProfessionalDetails;
+use App\Models\Professions;
+use App\Models\Ranks;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -204,6 +206,12 @@ class AuthController extends Controller
         ], 200);
     }
     public function getMedicalDetails(){
+        Professions::create([
+            'name' => 'Doctor',
+        ]);
+        Ranks::create([
+            'name' => 'Operator Doctor',
+        ]);
         $med = MedicalDetail::where('user_id',Auth::id())->first();
         $media = $med->getMedia();
         return response()->json([
