@@ -21,7 +21,7 @@ class AuthController extends Controller
 	{
         // make a validatior and validate request and send json response in case of validation error
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'first_name' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
