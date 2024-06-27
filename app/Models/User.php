@@ -52,6 +52,6 @@ class User extends Authenticatable
     ];
     public function getRoleAttribute()
     {
-        return $this->getRoleNames()->first();
+        return $this->roles->pluck('name')[0] ?? ''  ;
     }
 }

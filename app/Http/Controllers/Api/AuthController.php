@@ -76,7 +76,6 @@ class AuthController extends Controller
             Auth::login($user);
             $user = Auth::user();
             // add role in user
-
             return response()->json([
                 'otp_sent'  => false,
                 'status'  => 202,
@@ -147,7 +146,6 @@ class AuthController extends Controller
             $user->save();
             Auth::login($user);
             // add role in user
-            $user->role = $user->getRoleNames()->first();
             return response()->json([
                 'status'  => 202,
                 'message' => 'Regestrered successfully,',
