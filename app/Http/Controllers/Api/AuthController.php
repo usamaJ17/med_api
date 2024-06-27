@@ -207,7 +207,7 @@ class AuthController extends Controller
     }
     public function getMedicalDetails(){
         $med = MedicalDetail::where('user_id',Auth::id())->first();
-        //$media = $med->getMedia();
+        $media = $med->getMedia();
         return response()->json([
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
