@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\OrderController;
@@ -35,5 +36,12 @@ Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPasswor
 
 Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
+  Route::get('professional_info',[AuthController::class,'getProfessionalDetails']);
+  Route::post('professional_info',[AuthController::class,'saveProfessionalDetails']);
+  Route::get('medical_info',[AuthController::class,'getMedicalDetails']);
+  Route::post('medical_info',[AuthController::class,'saveMedicalDetails']);
+  Route::post('personal_info',[AuthController::class,'savePersonalDetails']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
+Route::get('professions',[HelperController::class,'getProfessions']);
+Route::get('ranks',[HelperController::class,'getRanks']);

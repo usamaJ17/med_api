@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles , InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +28,14 @@ class User extends Authenticatable
         'password',
         'otp',
         'is_verified',
+        'dob',
+        'gender',
+        'country',
+        'state',
+        'city',
+        'height',
+        'weight',
+        'language',
         'forgot_password',
     ];
 
@@ -53,5 +63,13 @@ class User extends Authenticatable
     public function getRoleAttribute()
     {
         return $this->roles->pluck('name')[0] ?? ''  ;
+    }
+    public function professionalDetails()
+    {
+        return $this->hasOne(ProfessionalDetails::class);
+    }
+    public function medicalDetails()
+    {
+        return $this->hasOne(MedicalDetail::class);
     }
 }
