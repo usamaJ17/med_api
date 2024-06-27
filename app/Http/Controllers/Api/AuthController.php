@@ -206,14 +206,8 @@ class AuthController extends Controller
         ], 200);
     }
     public function getMedicalDetails(){
-        Professions::create([
-            'name' => 'Doctor',
-        ]);
-        Ranks::create([
-            'name' => 'Operator Doctor',
-        ]);
         $med = MedicalDetail::where('user_id',Auth::id())->first();
-        $media = $med->getMedia();
+        //$media = $med->getMedia();
         return response()->json([
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
