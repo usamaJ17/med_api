@@ -74,11 +74,14 @@ class AuthController extends Controller
 	    	], 401);
         }else{
             Auth::login($user);
+            $user = Auth::user();
+            // add role in user
+            $user->role = $user->getRoleNames()->first();
             return response()->json([
                 'otp_sent'  => false,
                 'status'  => 202,
                 'message' => 'Login Successfully...',
-                'user'    => Auth::user(),
+                'user'    => $user,
                 'token'   => Auth::user()->createToken('Med')->plainTextToken,
             ], 200);
         }
@@ -143,10 +146,12 @@ class AuthController extends Controller
             $user->email_verified_at = now();
             $user->save();
             Auth::login($user);
+            // add role in user
+            $user->role = $user->getRoleNames()->first();
             return response()->json([
                 'status'  => 202,
                 'message' => 'Regestrered successfully,',
-                'user'    => Auth::user(),
+                'user'    => $user,
                 'token'   => Auth::user()->createToken('Med')->plainTextToken,
             ], 200);
         }
