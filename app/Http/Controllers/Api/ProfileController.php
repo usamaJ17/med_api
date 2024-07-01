@@ -51,6 +51,10 @@ class ProfileController extends Controller
     }
     public function getMedicalDetails(){
         $med = MedicalDetail::where('user_id',Auth::id())->first();
+        if(!$med) return response()->json([
+            'status' => 404,
+            'message'=> 'Details Not Found...',
+        ], 404);
         $media = $med->getMedia();
         return response()->json([
             'status' => 200,
@@ -60,6 +64,10 @@ class ProfileController extends Controller
     }
     public function getProfessionalDetails(){
         $pro = ProfessionalDetails::where('user_id',Auth::id())->first();
+        if(!$pro) return response()->json([
+            'status' => 404,
+            'message'=> 'Details Not Found...',
+        ], 404);
         // add media url in response
         $pro->id_card = $pro->getFirstMediaUrl('id_card');
         $pro->signature = $pro->getFirstMediaUrl('signature');
