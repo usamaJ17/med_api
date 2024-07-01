@@ -64,10 +64,34 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->roles->pluck('name')[0] ?? ''  ;
     }
+    /**
+     * Get the prepared user data.
+     *
+     * @return array
+     */
+    public function prepareUserData()
+    {
+        $data = $this->attributesToArray();
+        unset($data['media']);
+        $data['profile_image'] = $this->getFirstMediaUrl();
+        return $data;
+    }
+
+    /**
+     * Define the relationship to professional details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function professionalDetails()
     {
         return $this->hasOne(ProfessionalDetails::class);
     }
+
+    /**
+     * Define the relationship to medical details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function medicalDetails()
     {
         return $this->hasOne(MedicalDetail::class);
