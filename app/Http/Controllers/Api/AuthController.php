@@ -42,10 +42,13 @@ class AuthController extends Controller
             $user->save();
             $user->assignRole($request->role);
             Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+            $data = [
+                'email'   => $request->email,
+            ];
             return response()->json([
                 'status'  => 202,
                 'message' => 'OTP Sent Successfully...',
-                'email'    => $request->email,
+                'data'    => $data,
             ], 200);
 	    }else{
 	    	return response()->json([
@@ -71,13 +74,16 @@ class AuthController extends Controller
         }else{
             Auth::login($user);
             $user = User::find(Auth::user()->id);
-            // add role in user
-            return response()->json([
+            $data = [
                 'otp_sent'  => false,
-                'status'  => 202,
-                'message' => 'Login Successfully...',
                 'user'    => $user->prepareUserData(),
                 'token'   => $user->createToken('Med')->plainTextToken,
+            ];
+            // add role in user
+            return response()->json([
+                'status'  => 202,
+                'message' => 'Login Successfully...',
+                'data'    => $data,
             ], 200);
         }
     }
