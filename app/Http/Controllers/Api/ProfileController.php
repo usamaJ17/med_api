@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MedicalDetail;
 use App\Models\ProfessionalDetails;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -76,6 +77,21 @@ class ProfileController extends Controller
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
             'data'   => $pro,
+        ], 200);
+    }
+    public function getMedicalProfessionals(){
+        // get all user with medical role using spite role and permissions
+        $pro = User::role('medical')->get();
+        $pro->map(function($user){
+            return $user->prepareUserData();
+        });
+        $data = [
+            'medical_professionals' => $pro,
+        ];        
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Details Fetched Successfully...',
+            'data'   => $data,
         ], 200);
     }
 }

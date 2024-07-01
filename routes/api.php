@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\AppointmentHoursController;
 use App\Http\Controllers\Api\ArticleController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CommentController;
@@ -9,10 +10,6 @@ use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CommissionController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +57,17 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('articles/{article}/likes', [LikeController::class, 'store']);
   Route::delete('articles/{article}/likes', [LikeController::class, 'destroy']);
+
+  // appointments
+  Route::post('/appointments', [AppointmentHoursController::class, 'store']);
+  Route::get('/appointments', [AppointmentHoursController::class, 'show']);
+
+  //
+  Route::post('patient/appointments',[AppointmentController::class,'store']);
+  Route::post('patient/appointments/{id}/status',[AppointmentController::class,'changeStatus']);
+  Route::get('patient/appointments',[AppointmentController::class,'get']);
+
+  Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
 Route::get('professions',[HelperController::class,'getProfessions']);
