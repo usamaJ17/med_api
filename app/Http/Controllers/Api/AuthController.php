@@ -58,18 +58,16 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
     	$user = User::where('email',$request->email)->first();
-
-        if($user->email_verified_at == false){
-            return response()->json([
-                'status'  => 401,
-                'message'=> 'Please verify your email first...',
-             ], 401);
-        }
-        else  if(!$user || !Hash::check($request->password,$user->password)){
+        if(!$user || !Hash::check($request->password,$user->password)){
         	return response()->json([
 	    	   'status' => 401,
 	    	   'message'=> 'Invalid Email OR Password...',
 	    	], 401);
+        }else if($user->email_verified_at == false){
+            return response()->json([
+                'status'  => 401,
+                'message'=> 'Please verify your email first...',
+             ], 401);
         }else{
             Auth::login($user);
             $user = User::find(Auth::user()->id);
