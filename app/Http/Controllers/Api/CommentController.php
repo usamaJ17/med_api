@@ -14,7 +14,7 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|string',
         ]);
-        if(!$articleId) return response()->json(['message' => 'Article not found'], 404);
+        if(!$articleId) return response()->json(['status'=>404 , 'message' => 'Article not found'], 404);
 
         $comment = Comment::create([
             'user_id' => Auth::id(),
@@ -22,8 +22,9 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
         $data = [
+            'status' => 201, // add this line
             'message' => 'Comment added successfully',
-            'comment' => $comment,
+            'data' => ['comment'=>$comment],
         ];
 
         return response()->json($data, 201);
@@ -35,6 +36,7 @@ class CommentController extends Controller
         $comment->delete();
         $data = [
             'message' => 'Comment deleted successfully',
+            'status' => 200, // add this line
         ];
 
         return response()->json($data, 200);

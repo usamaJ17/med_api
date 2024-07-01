@@ -31,7 +31,10 @@ class NotificationController extends Controller
             $notifications->where('type', $request->type);
         }
         $notifications = $notifications->get();
-        return response()->json(['status' => 200,'notifications' => $notifications], 200);
+        $data =[
+            'notifications' => $notifications
+        ];
+        return response()->json(['status' => 200,'data' => $data , 'message' => 'Notification fetched successfully'], 200);
     }
     public function changeStatus(Request $request){
         $notification = Notifications::find($request->id);

@@ -147,12 +147,15 @@ class AuthController extends Controller
             $user->email_verified_at = now();
             $user->save();
             Auth::login($user);
+            $data = [
+                'user'    => $user->prepareUserData(),
+                'token'   => $user->createToken('Med')->plainTextToken,
+            ];
             // add role in user
             return response()->json([
                 'status'  => 200,
                 'message' => 'Regestrered successfully,',
-                'user'    => $user->prepareUserData(),
-                'token'   => $user->createToken('Med')->plainTextToken,
+                'data'    => $data,
             ], 200);
         }
     }
@@ -170,19 +173,25 @@ class AuthController extends Controller
             $user->addMedia($request->file('profile_image'))->toMediaCollection();
         }
         $user->update($request->all());
+        $data = [
+            'user' => $user->prepareUserData(),
+        ];
         return response()->json([
             'status' => 200,
             'message'=> 'Details Saved Successfully...',
-            'user'   => $user->prepareUserData(),
+            'data'   => $data,
         ], 200);
     }
     public function saveLanguage(Request $request){
         $user = User::find(Auth::user()->id);
         $user->update($request->all());
+        $data = [
+            'user' => $user->prepareUserData(),
+        ];
         return response()->json([
             'status' => 200,
             'message'=> 'Language Updated Successfully...',
-            'user'   => $user->prepareUserData(),
+            'data'   => $data,
         ], 200);
 
     }

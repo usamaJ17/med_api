@@ -15,9 +15,9 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'All Article fetched successfully',
-            'article' => $article,
+            'data' => ['article' => $article],
         ];
-        return response()->json(['article'=>$data],200);
+        return response()->json($data,200);
     }
 
     public function show($id)
@@ -29,9 +29,9 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'Article fetched successfully',
-            'article' => $article,
+            'data' => ['article'=>$article],
         ];
-        return response()->json(['article'=>$data],200);
+        return response()->json($data,200);
     }
 
     public function store(Request $request)
@@ -54,7 +54,7 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'Article created successfully',
-            'article' => $article,
+            'data' => ['article'=>$article],
         ];
 
         return response()->json($data, 200);
@@ -79,7 +79,7 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'Article updated successfully',
-            'article' => $article,
+            'data' => ['article'=>$article],
         ];
 
         return response()->json($data, 200);
