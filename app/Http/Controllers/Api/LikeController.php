@@ -36,6 +36,6 @@ class LikeController extends Controller
             'message' => 'Like deleted successfully',
         ];
 
-        return response()->json($data, 204);
+        return response()->json($data, 200);
     }
 }
