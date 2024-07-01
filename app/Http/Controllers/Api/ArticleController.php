@@ -39,7 +39,6 @@ class ArticleController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
-            'thumbnail' => 'required|image',
         ]);
 
         $article = Article::create([
