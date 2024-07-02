@@ -66,6 +66,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->roles->pluck('name')[0] ?? ''  ;
     }
+    public function getProfessionalTypeNameAttribute()
+    {
+        return $this->professionalType->name ?? '';
+    }
     /**
      * Get the prepared user data.
      *
@@ -75,7 +79,6 @@ class User extends Authenticatable implements HasMedia
     {
         $data = $this->attributesToArray();
         $data['profile_image'] = $this->getFirstMediaUrl();
-        $data['professional_type_name'] = $this->professionalType->name ?? '';
         unset($data['media']);
         unset($data['roles']);
         unset($data['professional_type']);
