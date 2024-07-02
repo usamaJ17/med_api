@@ -82,7 +82,7 @@ class ProfileController extends Controller
     }
     public function getMedicalProfessionals(){
         // get all user with medical role using spite role and permissions
-        $pro = User::query()->role('medical');
+        $pro = User::query()->hasRole('medical');
         if(request()->has('professional_type_id')){
             $pro->where('professional_type_id',request('professional_type_id'));
         }
