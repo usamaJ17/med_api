@@ -50,7 +50,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'remember_token',
     ];
-     protected $appends = ['role','professional_meta_data'];
+     protected $appends = ['role','professional_meta_data','professional_type_name'];
 
     /**
      * The attributes that should be cast.
@@ -74,9 +74,11 @@ class User extends Authenticatable implements HasMedia
     public function prepareUserData()
     {
         $data = $this->attributesToArray();
-        unset($data['media']);
         $data['profile_image'] = $this->getFirstMediaUrl();
         $data['professional_type_name'] = $this->professionalType->name ?? '';
+        unset($data['media']);
+        unset($data['roles']);
+        unset($data['professional_type']);
         return $data;
     }
 
