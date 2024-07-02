@@ -39,6 +39,9 @@ class AuthController extends Controller
     	    $user->password = Hash::make($request->password);
     	    $otp = random_int(111111, 999999);
             $user->otp = $otp;
+            if($request->role == 'medical'){
+                $user->professional_type_id = $request->professional_type_id;
+            }
             $user->save();
             $user->assignRole($request->role);
             Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));

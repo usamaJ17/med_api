@@ -19,6 +19,7 @@ class Appointment extends Model
         'age',
         'problem',
         'is_paid',
+        'diagnosis',
         'status',
     ];
     public function user()
@@ -28,6 +29,12 @@ class Appointment extends Model
     public function med()
     {
         return $this->belongsTo(User::class);
+    }
+    protected $appends = ['patient_name'];
+    public function getPatientNameAttribute()
+    {
+        $user = User::find($this->user_id);
+        return $user->first_name . ' ' . $user->last_name;
     }
 
 }

@@ -75,5 +75,36 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function getMyPatientsAppointments(Request $request){
+        $appointments = Appointment::query()->where('med_id', auth()->id());
+        if($request->has('appointment_date')){
+            $appointments->where('appointment_date', $request->appointment_date);
+        }
+        if($request->has('appointment_type')){
+            $appointments->where('appointment_type', $request->appointment_type);
+        }
+        if($request->has('user_id')){
+            $appointments->where('user_id', $request->user_id);
+        }
+        if($request->has('appointment_date_from') && $request->has('appointment_date_to')){
+            $appointments->whereBetween('appointment_date', [$request->appointment_date_from, $request->appointment_date_to]);
+        }
+        if($request->has('appointment_date_from') && !$request->has('appointment_date_to')){
+            $appointments->where('appointment_date', '>=', $request->appointment_date_from);
+        }
+        if($request->has('appointment_date_to') && !$request->has('appointment_date_from')){
+            $appointments->where('appointment_date', '<=', $request->appointment_date_to);
+        }
+        if($request->has('status')){
+            $appointments->where('status', $request->status);
+        }
+        $appointments = $appointments->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointments fetched successfully',
+            'appointments' => $appointments,
+        ];
+        return response()->json($data, 200);
+    }
 
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MedicalDetail;
 use App\Models\ProfessionalDetails;
+use App\Models\ProfessionalType;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -81,7 +82,14 @@ class ProfileController extends Controller
     }
     public function getMedicalProfessionals(){
         // get all user with medical role using spite role and permissions
-        $pro = User::role('medical')->get();
+        $pro = User::query()->role('medical');
+        if(request()->has('professional_type_id')){
+            $pro->where('professional_type_id',request('professional_type_id'));
+        }
+        if(request()->has('search')){
+            $pro->where('first_name','like','%'.request('search').'%')->orWhere('last_name','like','%'.request('search').'%');
+        }
+        $pro = $pro->get();
         $pro->map(function($user){
             return $user->prepareUserData();
         });
@@ -92,6 +100,63 @@ class ProfileController extends Controller
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
             'data'   => $data,
+        ], 200);
+    }
+    public function storeProfessionalType(Request $request){
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+        // upload icon and save path in db
+        if(null !== $request->file('icon')){
+            $icon = $request->file('icon')->store('icons');
+            $request->merge(['icon' => $icon]);
+        }
+        $pro = ProfessionalType::create($request->all());
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Professional Type Created Successfully...',
+            'data'   => $pro,
+        ], 200);
+    }
+    public function getProfessionalType(){
+        $pro = ProfessionalType::all();
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Professional Type Fetched Successfully...',
+            'data'   => ['professional_types' => $pro,'total' => $pro->count() ?? 0],
+        ], 200);
+    }
+    public function updateProfessionalType(Request $request , $id){
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+        $pro = ProfessionalType::find($id);
+        if(!$pro) return response()->json([
+            'status' => 404,
+            'message'=> 'Professional Type Not Found...',
+        ], 404);
+        // upload icon and save path in db
+        if(null !== $request->file('icon')){
+            $icon = $request->file('icon')->store('icons');
+            $request->merge(['icon' => $icon]);
+        }
+        $pro->update($request->all());
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Professional Type Updated Successfully...',
+            'data'   => $pro,
+        ], 200);
+    }
+    public function deleteProfessionalType($id){
+        $pro = ProfessionalType::find($id);
+        if(!$pro) return response()->json([
+            'status' => 404,
+            'message'=> 'Professional Type Not Found...',
+        ], 404);
+        $pro->delete();
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Professional Type Deleted Successfully...',
         ], 200);
     }
 }

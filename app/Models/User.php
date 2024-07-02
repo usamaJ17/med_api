@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
@@ -31,6 +32,7 @@ class User extends Authenticatable implements HasMedia
         'dob',
         'gender',
         'country',
+        'professional_type_id',
         'state',
         'city',
         'height',
@@ -48,7 +50,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'remember_token',
     ];
-     protected $appends = ['role'];
+     protected $appends = ['role','professional_meta_data'];
 
     /**
      * The attributes that should be cast.
@@ -74,6 +76,33 @@ class User extends Authenticatable implements HasMedia
         $data = $this->attributesToArray();
         unset($data['media']);
         $data['profile_image'] = $this->getFirstMediaUrl();
+        return $data;
+    }
+
+    public function getProfessionalMetaDataAttribute()
+    {
+        if (!$this->hasRole('medical')) {
+            return [];
+        }
+        // get number of unique patients
+        $all_patient_count = Appointment::where('med_id', $this->id)->count();
+        $new_patient_count = Appointment::where('med_id', $this->id)->distinct('user_id')->count();
+        $number_appointment = Appointment::where('med_id', $this->id)->count();
+        $done_appointment = Appointment::where('med_id', $this->id)->where('status', 'completed')->count();
+        $upcoming_appointment = Appointment::where('med_id', $this->id)->where('status', 'upcoming')->count();
+        $cancel_appointment = Appointment::where('med_id', $this->id)->where('status', 'cancelled')->count();
+        $total_article = Article::where('user_id', $this->id)->count();
+        $completed_consultation = Appointment::where('med_id', $this->id)->where('status', 'completed')->count();
+        $data = [
+            'all_patient_count' => $all_patient_count,
+            'new_patient_count' => $new_patient_count,
+            'number_appointment' => $number_appointment,
+            'done_appointment' => $done_appointment,
+            'upcoming_appointment' => $upcoming_appointment,
+            'cancel_appointment' => $cancel_appointment,
+            'total_article' => $total_article,
+            'completed_consultation' => $completed_consultation,
+        ];
         return $data;
     }
 

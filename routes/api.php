@@ -31,9 +31,11 @@ Route::middleware(['cros'])->group(function () {
   // Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
+  Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword']);
+  Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword']);
+  Route::get('professions',[HelperController::class,'getProfessions']);
+  Route::get('ranks',[HelperController::class,'getRanks']);
 });
-Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword'])->middleware('cros');
-Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword'])->middleware('cros');
 
 
 Route::middleware(['auth:sanctum','cros'])->group(function () {
@@ -67,8 +69,12 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('patient/appointments/{id}/status',[AppointmentController::class,'changeStatus']);
   Route::get('patient/appointments',[AppointmentController::class,'get']);
 
+  Route::get('professional/appointment/patients',[AppointmentController::class,'getMyPatientsAppointments']);
+
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
+
+  Route::post('/professional_types', [ProfileController::class, 'storeProfessionalType']);
+  Route::post('/professional_types/{id}/update', [ProfileController::class, 'updateProfessionalType']);
+  Route::get('/professional_types', [ProfileController::class, 'getProfessionalType']);
+  Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
 });
-Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
-Route::get('professions',[HelperController::class,'getProfessions']);
-Route::get('ranks',[HelperController::class,'getRanks']);
