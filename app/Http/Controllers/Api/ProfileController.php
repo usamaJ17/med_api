@@ -80,26 +80,37 @@ class ProfileController extends Controller
             'data'   => $pro,
         ], 200);
     }
-    public function getMedicalProfessionals(){
-        // get all user with medical role using spite role and permissions
-        $pro = User::query()->hasRole('medical');
-        if(request()->has('professional_type_id')){
-            $pro->where('professional_type_id',request('professional_type_id'));
+    public function getMedicalProfessionals(Request $request){
+        $query = User::role('medical');
+
+        // Apply filters if provided
+        if ($request->has('professional_type_id') && $request->professional_type_id != "") {
+            $query->where('professional_type_id', $request->professional_type_id);
         }
-        if(request()->has('search')){
-            $pro->where('first_name','like','%'.request('search').'%')->orWhere('last_name','like','%'.request('search').'%');
+        if ($request->has('search') && $request->search != "") {
+            $query->where(function($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('last_name', 'like', '%' . $request->search . '%');
+            });
         }
-        $pro = $pro->get();
-        $pro->map(function($user){
+
+        // Get the filtered results
+        $professionals = $query->get();
+
+        // Map the results to prepare user data
+        $professionals->map(function($user) {
             return $user->prepareUserData();
         });
+
+        // Prepare the response data
         $data = [
-            'medical_professionals' => $pro,
-        ];        
+            'medical_professionals' => $professionals,
+        ];
+
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Fetched Successfully...',
-            'data'   => $data,
+            'message' => 'Details Fetched Successfully...',
+            'data' => $data,
         ], 200);
     }
     public function storeProfessionalType(Request $request){
