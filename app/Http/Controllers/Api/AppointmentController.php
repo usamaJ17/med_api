@@ -106,5 +106,66 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function getMyPatientsList(Request $request){
+        $appointments = Appointment::where('med_id', auth()->user()->id)
+        // ->with('user')
+        ->orderBy('appointment_date', 'desc')
+        ->get()
+        ->groupBy('user_id');
+
+    $results = [];
+
+    foreach ($appointments as $userId => $userAppointments) {
+        // Get the latest appointment where the appointment is completed
+        $latestCompletedAppointment = $userAppointments->where('status', 'completed')->first();
+        if(!$latestCompletedAppointment) {
+            $latestCompletedAppointment = $userAppointments->first();
+        }
+        $latestAppointment = $userAppointments->first();
+        $isOldPatient = $userAppointments->count() > 1;
+
+        // Prepare the result array
+        $results[] = [
+            'patient_id' => $userId,
+            'patient_name' => $latestAppointment->patient_name,
+            'last_appointment_date' => $latestAppointment->appointment_date,
+            'gender' => $latestAppointment->gender,
+            'age' => $latestAppointment->age,
+            'diagnosis' => $latestCompletedAppointment->diagnosis,
+            'status' => $isOldPatient ? 'old patient' : 'new patient'
+        ];
+    }
+
+    return response()->json($results);
+        // $appointments = Appointment::query()->where('med_id', auth()->id());
+        // if($request->has('appointment_date')){
+        //     $appointments->where('appointment_date', $request->appointment_date);
+        // }
+        // if($request->has('appointment_type')){
+        //     $appointments->where('appointment_type', $request->appointment_type);
+        // }
+        // if($request->has('user_id')){
+        //     $appointments->where('user_id', $request->user_id);
+        // }
+        // if($request->has('appointment_date_from') && $request->has('appointment_date_to')){
+        //     $appointments->whereBetween('appointment_date', [$request->appointment_date_from, $request->appointment_date_to]);
+        // }
+        // if($request->has('appointment_date_from') && !$request->has('appointment_date_to')){
+        //     $appointments->where('appointment_date', '>=', $request->appointment_date_from);
+        // }
+        // if($request->has('appointment_date_to') && !$request->has('appointment_date_from')){
+        //     $appointments->where('appointment_date', '<=', $request->appointment_date_to);
+        // }
+        // if($request->has('status')){
+        //     $appointments->where('status', $request->status);
+        // }
+        $appointments = $appointments->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointments fetched successfully',
+            'appointments' => $appointments,
+        ];
+        return response()->json($data, 200);
+    }
 
 }

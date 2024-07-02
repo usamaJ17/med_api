@@ -70,7 +70,8 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('patient/appointments',[AppointmentController::class,'get']);
 
   Route::get('professional/appointment/patients',[AppointmentController::class,'getMyPatientsAppointments']);
-
+  Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
+  
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
 
   Route::post('/professional_types', [ProfileController::class, 'storeProfessionalType']);
