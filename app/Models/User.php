@@ -76,6 +76,7 @@ class User extends Authenticatable implements HasMedia
         $data = $this->attributesToArray();
         unset($data['media']);
         $data['profile_image'] = $this->getFirstMediaUrl();
+        $data['professional_type_name'] = $this->professionalType->name ?? '';
         return $data;
     }
 
@@ -124,5 +125,9 @@ class User extends Authenticatable implements HasMedia
     public function medicalDetails()
     {
         return $this->hasOne(MedicalDetail::class);
+    }
+    public function professionalType()
+    {
+        return $this->belongsTo(ProfessionalType::class);
     }
 }
