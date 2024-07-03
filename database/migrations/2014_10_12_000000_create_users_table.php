@@ -21,8 +21,15 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('otp_verified_at')->nullable();
             $table->string('password');
+            $table->string('dob')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('language')->nullable();
             $table->string('otp')->nullable();
             $table->boolean('is_verified')->default(false);
+            $table->string('temp_role')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

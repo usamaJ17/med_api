@@ -25,6 +25,8 @@ return new class extends Migration
             $table->text('family_history')->nullable();
             $table->text('social_history')->nullable();
             $table->string('occupation')->nullable();
+            $table->float('height');
+            $table->float('weight');
             $table->string('previous_occupation')->nullable();
             $table->timestamps();
         });

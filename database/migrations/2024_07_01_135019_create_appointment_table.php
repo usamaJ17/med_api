@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('appointment_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('age')->nullable();
+            $table->text('diagnosis')->nullable();
             $table->text('problem')->nullable();
             $table->boolean('is_paid')->default(1);
             $table->string('status')->default('upcoming');
