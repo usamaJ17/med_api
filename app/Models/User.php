@@ -35,8 +35,6 @@ class User extends Authenticatable implements HasMedia
         'professional_type_id',
         'state',
         'city',
-        'height',
-        'weight',
         'language',
         'forgot_password',
     ];
@@ -49,6 +47,7 @@ class User extends Authenticatable implements HasMedia
     protected $hidden = [
         'password',
         'remember_token',
+        'temp_role',
     ];
      protected $appends = ['role','professional_meta_data','professional_type_name'];
 
@@ -135,4 +134,5 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsTo(ProfessionalType::class);
     }
+    // hide temp_role attribute
 }

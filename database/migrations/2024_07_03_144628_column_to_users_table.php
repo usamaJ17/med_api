@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('dob')->nullable();
-            $table->string('gender')->nullable();
-            $table->string('country')->nullable();
-            $table->string('state')->nullable();
-            $table->string('city')->nullable();
-            $table->string('language')->nullable();
+            // remove height and weight columns
+            $table->dropColumn('height');
+            $table->dropColumn('weight');
+        });
+        Schema::table('medical_details', function (Blueprint $table) {
+            // remove height and weight columns
+            $table->float('height');
+            $table->float('weight');
         });
     }
 

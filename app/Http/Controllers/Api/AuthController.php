@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
+use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,11 +40,11 @@ class AuthController extends Controller
     	    $user->password = Hash::make($request->password);
     	    $otp = random_int(111111, 999999);
             $user->otp = $otp;
+            $user->temp_role = $request->role;
             if($request->role == 'medical'){
                 $user->professional_type_id = $request->professional_type_id;
             }
             $user->save();
-            $user->assignRole($request->role);
             Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
             $data = [
                 'email'   => $request->email,
@@ -54,6 +55,17 @@ class AuthController extends Controller
                 'data'    => $data,
             ], 200);
 	    }else{
+            $user = User::where('email', $request->email)->first();
+            if($user->email_verified_at == false){
+                $otp = random_int(111111, 999999);
+                $user->otp = $otp;
+                $user->save();
+                Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+                return response()->json([
+                    'status'  => 401,
+                    'message'=> 'Please verify to register, OTP email has been sent...',
+                ], 401);
+            }
 	    	return response()->json([
 	    	   'status' => 401,
 	    	   'message'=> 'Email already taken, Please use another email...'
@@ -149,6 +161,7 @@ class AuthController extends Controller
         }else{
             $user->email_verified_at = now();
             $user->save();
+            $user->assignRole($user->temp_role);
             Auth::login($user);
             $data = [
                 'user'    => $user->prepareUserData(),

@@ -23,6 +23,8 @@ class MedicalDetail extends Model implements HasMedia
         'drugs_history',
         'gynaecological_history',
         'obstetric_history',
+        'height',
+        'weight',
         'recent_hospital_stays',
         'family_history',
         'social_history',
