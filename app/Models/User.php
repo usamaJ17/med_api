@@ -48,8 +48,10 @@ class User extends Authenticatable implements HasMedia
         'password',
         'remember_token',
         'temp_role',
+        'professional_type',
+        'roles'
     ];
-     protected $appends = ['role','professional_meta_data','professional_type_name'];
+     protected $appends = ['role','professional_type_name'];
 
     /**
      * The attributes that should be cast.
@@ -84,7 +86,7 @@ class User extends Authenticatable implements HasMedia
         return $data;
     }
 
-    public function getProfessionalMetaDataAttribute()
+    public function professionalMetaData()
     {
         if (!$this->hasRole('medical')) {
             return [];

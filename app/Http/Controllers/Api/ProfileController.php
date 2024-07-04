@@ -113,6 +113,19 @@ class ProfileController extends Controller
             'data' => $data,
         ], 200);
     }
+    public function getMedicalProfessionalsMetaData($id){
+        $user = User::find($id);
+        if(!$user) return response()->json([
+            'status' => 404,
+            'message'=> 'Professional Not Found...',
+        ], 404);
+        $data = $user->professionalMetaData();
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Details Fetched Successfully...',
+            'data'   => $data,
+        ], 200);
+    }
     public function storeProfessionalType(Request $request){
         $request->validate([
             'name' => 'required|string',
