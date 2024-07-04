@@ -113,8 +113,8 @@ class ProfileController extends Controller
             'data' => $data,
         ], 200);
     }
-    public function getMedicalProfessionalsMetaData($id){
-        $user = User::find($id);
+    public function getMedicalProfessionalsMetaData(Request $request){
+        $user = User::find($request->id);
         if(!$user) return response()->json([
             'status' => 404,
             'message'=> 'Professional Not Found...',

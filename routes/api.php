@@ -73,7 +73,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
   
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
-  Route::get('medical_professionals/meta_data/{id}',[ProfileController::class,'getMedicalProfessionalsMetaData']);
+  Route::get('medical_professionals/meta_data',[ProfileController::class,'getMedicalProfessionalsMetaData']);
 
   Route::post('/professional_types', [ProfileController::class, 'storeProfessionalType']);
   Route::post('/professional_types/{id}/update', [ProfileController::class, 'updateProfessionalType']);
