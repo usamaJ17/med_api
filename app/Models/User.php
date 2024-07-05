@@ -80,7 +80,7 @@ class User extends Authenticatable implements HasMedia
     {
         $data = $this->attributesToArray();
         $data['profile_image'] = $this->getFirstMediaUrl();
-        dd($data['profile_image']);
+        dd($data);
         return $data;
     }
 
