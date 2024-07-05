@@ -36,6 +36,7 @@ Route::middleware(['cros'])->group(function () {
   Route::get('professions',[HelperController::class,'getProfessions']);
   Route::get('ranks',[HelperController::class,'getRanks']);
   Route::get('medical_professionals/meta_data',[ProfileController::class,'getMedicalProfessionalsMetaData']);
+  Route::delete('delete_account',[HelperController::class,'deleteAccount']);
 });
 
 
