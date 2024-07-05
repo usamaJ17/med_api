@@ -36,12 +36,13 @@ Route::middleware(['cros'])->group(function () {
   Route::get('professions',[HelperController::class,'getProfessions']);
   Route::get('ranks',[HelperController::class,'getRanks']);
   Route::get('medical_professionals/meta_data',[ProfileController::class,'getMedicalProfessionalsMetaData']);
-  Route::delete('delete_account',[HelperController::class,'deleteAccount']);
 });
 
 
 Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
+  Route::delete('delete_account',[HelperController::class,'deleteAccount']);
+  
   Route::get('professional_info',[ProfileController::class,'getProfessionalDetails']);
   Route::post('professional_info',[ProfileController::class,'saveProfessionalDetails']);
   Route::get('medical_info',[ProfileController::class,'getMedicalDetails']);
