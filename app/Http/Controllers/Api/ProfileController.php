@@ -98,10 +98,10 @@ class ProfileController extends Controller
         $professionals = $query->get();
 
         // Map the results to prepare user data
-        $professionals->map(function($user) {
-            return $user->prepareUserData();
-        });
-        dd($professionals);
+        // $professionals->map(function($user) {
+        //     return $user->prepareUserData();
+        // });
+        // dd($professionals);
 
         // Prepare the response data
         $data = [
