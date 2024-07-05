@@ -41,8 +41,8 @@ Route::middleware(['cros'])->group(function () {
 
 Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
-  Route::delete('delete_account',[HelperController::class,'deleteAccount']);
-  
+  Route::delete('delete_account/{id}',[HelperController::class,'deleteAccount']);
+
   Route::get('professional_info',[ProfileController::class,'getProfessionalDetails']);
   Route::post('professional_info',[ProfileController::class,'saveProfessionalDetails']);
   Route::get('medical_info',[ProfileController::class,'getMedicalDetails']);

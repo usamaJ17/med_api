@@ -29,13 +29,12 @@ class HelperController extends Controller
         ];
         return response()->json($data,200);
     }
-    public function deleteAccount(Request $request){
+    public function deleteAccount($id){
         $user = null;
-        dd($request->id);
-        if(!isset($request->id) || $request->id == null || $request->id == ''){
+        if(!isset($id) || $id == null || $id == ''){
             $user = User::find(Auth::id());
         }else{
-            $user = User::find($request->id);
+            $user = User::find($id);
         }
         $user->delete();
         $data = [
