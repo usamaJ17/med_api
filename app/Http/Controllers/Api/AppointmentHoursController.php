@@ -13,7 +13,6 @@ class AppointmentHoursController extends Controller
         $validatedData = $request->validate([
             'appointment_type' => 'required|string',
             'consultation_fees' => 'required|string',
-            'duration' => 'required|string',
         ]);
         // add user_id to validated data
         $validatedData['user_id'] = auth()->id();
@@ -21,7 +20,6 @@ class AppointmentHoursController extends Controller
         // if a user has already created an appointment with the same appointment type and duration then update the appointment hours
         $appointment = AppointmentHours::query()->where('user_id', auth()->id())
             ->where('appointment_type', $request->appointment_type)
-            ->where('duration', $request->duration)
             ->first();
         if ($appointment) {
             $appointment->update($validatedData);
