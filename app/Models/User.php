@@ -51,7 +51,7 @@ class User extends Authenticatable implements HasMedia
         'professional_type',
         'roles',
     ];
-     protected $appends = ['role','professional_type_name'];
+     protected $appends = ['role','professional_type_name','profile_image'];
 
     /**
      * The attributes that should be cast.
