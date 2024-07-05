@@ -71,6 +71,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->professionalType->name ?? '';
     }
+    public function getProfileImageAttribute()
+    {
+        return $this->getFirstMediaUrl();
+    }
     /**
      * Get the prepared user data.
      *
@@ -79,7 +83,6 @@ class User extends Authenticatable implements HasMedia
     public function prepareUserData()
     {
         $data = $this->attributesToArray();
-        $data['profile_image'] = $this->getFirstMediaUrl();
         return $data;
     }
 
