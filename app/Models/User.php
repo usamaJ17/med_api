@@ -50,6 +50,7 @@ class User extends Authenticatable implements HasMedia
         'temp_role',
         'professional_type',
         'roles',
+        'media'
     ];
      protected $appends = ['role','professional_type_name','profile_image'];
 

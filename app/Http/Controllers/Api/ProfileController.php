@@ -97,12 +97,6 @@ class ProfileController extends Controller
         // Get the filtered results
         $professionals = $query->get();
 
-        // Map the results to prepare user data
-        // $professionals->map(function($user) {
-        //     return $user->prepareUserData();
-        // });
-        // dd($professionals);
-
         // Prepare the response data
         $data = [
             'medical_professionals' => $professionals,
