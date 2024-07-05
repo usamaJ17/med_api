@@ -99,9 +99,9 @@ class ProfileController extends Controller
 
         // Map the results to prepare user data
         $professionals->map(function($user) {
-            dd($user->prepareUserData());
             return $user->prepareUserData();
         });
+        dd($professionals);
 
         // Prepare the response data
         $data = [
