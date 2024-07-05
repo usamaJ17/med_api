@@ -31,6 +31,7 @@ class HelperController extends Controller
     }
     public function deleteAccount(Request $request){
         $user = null;
+        dd($request->id);
         if(!isset($request->id) || $request->id == null || $request->id == ''){
             $user = User::find(Auth::id());
         }else{
