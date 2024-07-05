@@ -7,6 +7,7 @@ use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HelperController extends Controller
 {
@@ -29,7 +30,12 @@ class HelperController extends Controller
         return response()->json($data,200);
     }
     public function deleteAccount(Request $request){
-        $user = User::find($request->user()->id);
+        $user = null;
+        if(!isset($request->id) || $request->id == null || $request->id == ''){
+            $user = User::find(Auth::id());
+        }else{
+            $user = User::find($request->id);
+        }
         $user->delete();
         $data = [
             'status' => 200,
