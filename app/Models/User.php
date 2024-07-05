@@ -49,7 +49,8 @@ class User extends Authenticatable implements HasMedia
         'remember_token',
         'temp_role',
         'professional_type',
-        'roles'
+        'roles',
+        'media'
     ];
      protected $appends = ['role','professional_type_name'];
 
@@ -80,9 +81,6 @@ class User extends Authenticatable implements HasMedia
     {
         $data = $this->attributesToArray();
         $data['profile_image'] = $this->getFirstMediaUrl();
-        unset($data['media']);
-        unset($data['roles']);
-        unset($data['professional_type']);
         return $data;
     }
 

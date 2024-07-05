@@ -71,7 +71,7 @@ class AppointmentController extends Controller
         $data = [
             'status' => 200,
             'message' => 'Appointment status changed successfully',
-            'appointment' => $appointment,
+            'data' => $appointment,
         ];
         return response()->json($data, 200);
     }
