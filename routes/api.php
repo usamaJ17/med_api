@@ -36,6 +36,10 @@ Route::middleware(['cros'])->group(function () {
   Route::get('professions',[HelperController::class,'getProfessions']);
   Route::get('ranks',[HelperController::class,'getRanks']);
   Route::get('medical_professionals/meta_data',[ProfileController::class,'getMedicalProfessionalsMetaData']);
+  Route::post('/professional_types', [ProfileController::class, 'storeProfessionalType']);
+  Route::post('/professional_types/{id}/update', [ProfileController::class, 'updateProfessionalType']);
+  Route::get('/professional_types', [ProfileController::class, 'getProfessionalType']);
+  Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
 });
 
 
@@ -76,8 +80,4 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
   
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
-  Route::post('/professional_types', [ProfileController::class, 'storeProfessionalType']);
-  Route::post('/professional_types/{id}/update', [ProfileController::class, 'updateProfessionalType']);
-  Route::get('/professional_types', [ProfileController::class, 'getProfessionalType']);
-  Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
 });
