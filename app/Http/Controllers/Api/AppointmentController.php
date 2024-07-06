@@ -124,6 +124,7 @@ class AppointmentController extends Controller
             }
             $latestAppointment = $userAppointments->first();
             $isOldPatient = $userAppointments->count() > 1;
+            dd($latestAppointment , $userAppointments );
 
             // Prepare the result array
             $results[] = [
