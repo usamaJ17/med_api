@@ -142,7 +142,7 @@ class ProfileController extends Controller
         return response()->json([
             'status' => 200,
             'message'=> 'Professional Type Fetched Successfully...',
-            'data'   => ['professional_types' => $pro,'total' => $pro->count() ?? 0],
+            'data'   => [$pro,'total' => $pro->count() ?? 0],
         ], 200);
     }
     public function updateProfessionalType(Request $request , $id){
