@@ -67,7 +67,11 @@ class AppointmentController extends Controller
                 'message' => 'Appointment not found',
             ], 404);
         }
-        $appointment->status = $request->status;
+        // change status of all appointments where user_id is the same as the user_id of the appointment
+        Appointment::query()->where('user_id', $appointment->user_id)->where('med_id', $appointment->med_id)->update([
+            'status' => 'Completed',
+            'patient_status' => $request->status,
+        ]);
         $appointment->save();
         $data = [
             'status' => 200,
