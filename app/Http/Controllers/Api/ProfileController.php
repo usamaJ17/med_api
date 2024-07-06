@@ -97,15 +97,11 @@ class ProfileController extends Controller
         // Get the filtered results
         $professionals = $query->get();
 
-        // Prepare the response data
-        $data = [
-            'medical_professionals' => $professionals,
-        ];
 
         return response()->json([
             'status' => 200,
             'message' => 'Details Fetched Successfully...',
-            'data' => $data,
+            'data' => $professionals,
         ], 200);
     }
     public function getMedicalProfessionalsMetaData(Request $request){
