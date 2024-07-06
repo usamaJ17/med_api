@@ -15,6 +15,7 @@ class AppointmentHoursController extends Controller
             'consultation_fees' => 'required|string',
         ]);
         // add user_id to validated data
+        $validatedData['duration'] = $request->duration;
         $validatedData['user_id'] = auth()->id();
         $validatedData['working_hours'] = json_decode($request->working_hours, true);
         // if a user has already created an appointment with the same appointment type and duration then update the appointment hours
