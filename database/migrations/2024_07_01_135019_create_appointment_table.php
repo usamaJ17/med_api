@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('problem')->nullable();
             $table->boolean('is_paid')->default(1);
             $table->string('status')->default('upcoming');
+            $table->string('patient_status')->default('new patient');
             $table->timestamps();
         });
     }

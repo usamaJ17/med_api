@@ -18,6 +18,7 @@ class Appointment extends Model
         'gender',
         'age',
         'problem',
+        'patient_status',
         'is_paid',
         'diagnosis',
         'status',

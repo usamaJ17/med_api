@@ -20,6 +20,7 @@ class AppointmentController extends Controller
             'user_id' => auth()->id(),
         ]);
         $appointment = Appointment::create($request->all());
+        dd($appointment);
         $data = [
             'status' => 201,
             'message' => 'Appointment created successfully',
@@ -132,7 +133,7 @@ class AppointmentController extends Controller
                 'gender' => $latestAppointment->gender,
                 'age' => $latestAppointment->age,
                 'diagnosis' => $latestCompletedAppointment->diagnosis,
-                'status' => $isOldPatient ? 'old patient' : 'new patient'
+                'status' => $userAppointments->patient_status
             ];
         }
         $data = [
