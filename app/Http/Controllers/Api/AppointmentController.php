@@ -133,7 +133,7 @@ class AppointmentController extends Controller
                 'gender' => $latestAppointment->gender,
                 'age' => $latestAppointment->age,
                 'diagnosis' => $latestCompletedAppointment->diagnosis,
-                'status' => $userAppointments->patient_status
+                'status' => $latestAppointment->patient_status
             ];
         }
         $data = [
