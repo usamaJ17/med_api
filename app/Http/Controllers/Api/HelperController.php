@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Auth;
 class HelperController extends Controller
 {
     public function getRanks(){
-        $ranks = Ranks::pluck('name','id')->toArray();
+        $ranks = Ranks::all();
         $data =[
             'status' => 200,
             'message' => 'All Ranks fetched successfully',
-            'data' => ['ranks' => $ranks],
+            'data' => $ranks,
         ];
         return response()->json($data,200);
     }
