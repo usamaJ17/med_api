@@ -40,12 +40,12 @@ Route::middleware(['cros'])->group(function () {
   Route::post('/professional_types/{id}/update', [ProfileController::class, 'updateProfessionalType']);
   Route::get('/professional_types', [ProfileController::class, 'getProfessionalType']);
   Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
+  Route::delete('delete_account/{id}',[HelperController::class,'deleteAccount']);
 });
 
 
 Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
-  Route::delete('delete_account/{id}',[HelperController::class,'deleteAccount']);
 
   Route::get('professional_info',[ProfileController::class,'getProfessionalDetails']);
   Route::post('professional_info',[ProfileController::class,'saveProfessionalDetails']);
