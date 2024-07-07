@@ -52,7 +52,7 @@ class AppointmentHoursController extends Controller
         $appointment = $appointment->get();
         $data = [
             'status' => 200,
-            'message' => 'Appointment fetched successfully',
+            'message' => 'Schedule fetched successfully',
             'data' => $appointment,
         ];
         return response()->json($data, 200);
@@ -68,7 +68,7 @@ class AppointmentHoursController extends Controller
         $appointment = $appointment->get();
         $data = [
             'status' => 200,
-            'message' => 'Appointment fetched successfully',
+            'message' => 'Schedule fetched successfully',
             'data' => $appointment,
         ];
         return response()->json($data, 200);   
