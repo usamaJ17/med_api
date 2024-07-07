@@ -13,6 +13,7 @@ class MedicalDetail extends Model implements HasMedia
 
     // Specify the table name if it's not the plural of the model name
     protected $table = 'medical_details';
+    protected $appends = ['media']; 
 
     // Define the fillable attributes
     protected $fillable = [
@@ -36,5 +37,9 @@ class MedicalDetail extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function getMediaAttribute()
+    {
+        return $this->getMedia();
     }
 }

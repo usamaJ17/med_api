@@ -26,9 +26,6 @@ class ProfileController extends Controller
             $pro->clearMediaCollection('degree_file');
             $pro->addMedia($request->file('degree_file'))->toMediaCollection('degree_file');
         }
-        $pro->id_card = $pro->getFirstMediaUrl('id_card');
-        $pro->signature = $pro->getFirstMediaUrl('signature');
-        $pro->degree_file = $pro->getFirstMediaUrl('degree_file');
         return response()->json([
             'status' => 200,
             'message'=> 'Details Saved Successfully...',
@@ -57,7 +54,6 @@ class ProfileController extends Controller
             'status' => 404,
             'message'=> 'Details Not Found...',
         ], 404);
-        $media = $med->getMedia();
         return response()->json([
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
