@@ -25,6 +25,8 @@ class ProfessionalDetails extends Model implements HasMedia
         'degree',
         'institution',
     ];
+    protected $appends = ['profession_type', 'rank_name'];
+    protected $hidden = ['media'];
     
     // Define relationships, if any
     public function user()
@@ -38,5 +40,13 @@ class ProfessionalDetails extends Model implements HasMedia
     public function rank()
     {
         return $this->belongsTo(Ranks::class, 'rank');
+    }
+    public function getProfessionTypeAttribute()
+    {
+        $name = ProfessionalType::find($this->profession)->name ?? '';
+    }
+    public function getRankNameAttribute()
+    {
+        $name = Ranks::find($this->rank)->name ?? '';
     }
 }
