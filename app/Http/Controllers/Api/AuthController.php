@@ -92,11 +92,10 @@ class AuthController extends Controller
             $user_details = [
                 'personal_details' => $user->prepareUserData(),
             ];
-            dd($user->role);
             if($user->role == 'patient'){
-                $user['medical_details'] = $user->medicalDetails();
+                $user_details['medical_details'] = $user->medicalDetails();
             }else if($user->role == 'medical'){
-                $user['professional_details'] = $user->professionalDetails();
+                $useuser_detailsr['professional_details'] = $user->professionalDetails();
             }
             $data = [
                 'otp_sent'  => false,
