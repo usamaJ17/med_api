@@ -92,9 +92,10 @@ class AuthController extends Controller
             $user_details = [
                 'personal_details' => $user->prepareUserData(),
             ];
-            if($user->role == 'medical'){
+            dd($user->role);
+            if($user->role == 'patient'){
                 $user['medical_details'] = $user->medicalDetails();
-            }else if($user->role == 'professional'){
+            }else if($user->role == 'medical'){
                 $user['professional_details'] = $user->professionalDetails();
             }
             $data = [
