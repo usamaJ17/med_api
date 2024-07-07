@@ -89,9 +89,17 @@ class AuthController extends Controller
         }else{
             Auth::login($user);
             $user = User::find(Auth::user()->id);
+            $user_details = [
+                'personal_details' => $user->prepareUserData(),
+            ];
+            if($user->role == 'medical'){
+                $user['medical_details'] = $user->medicalDetails();
+            }else if($user->role == 'professional'){
+                $user['professional_details'] = $user->professionalDetails();
+            }
             $data = [
                 'otp_sent'  => false,
-                'user'    => $user->prepareUserData(),
+                'user'    => $user_details,
                 'token'   => $user->createToken('Med')->plainTextToken,
             ];
             // add role in user
