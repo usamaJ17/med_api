@@ -89,7 +89,7 @@ class AuthController extends Controller
         }else{
             Auth::login($user);
             $user = User::with('professionalDetails','medicalDetails')->find(Auth::user()->id);
-            dd($user);
+            dd($user->professionalDetails);
             $user_details = [];
             if($user->role == 'patient'){
                 $user_details = [
