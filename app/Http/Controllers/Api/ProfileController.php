@@ -73,7 +73,7 @@ class ProfileController extends Controller
         ], 200);
     }
     public function getMedicalProfessionals(Request $request){
-        $query = User::with('professionalDetails')->role('medical');
+        $query = User::role('medical');
 
         // Apply filters if provided
         if ($request->has('professional_type_id') && $request->professional_type_id != "") {
@@ -88,12 +88,16 @@ class ProfileController extends Controller
 
         // Get the filtered results
         $professionals = $query->get();
+        $data = [
+            'personal_details' => $professionals->prepareUserData(),
+            'professional_details' => $professionals->professionalDetails()
+        ];
 
 
         return response()->json([
             'status' => 200,
             'message' => 'Details Fetched Successfully...',
-            'data' => $professionals,
+            'data' => $data,
         ], 200);
     }
     public function getMedicalProfessionalsMetaData(Request $request){
