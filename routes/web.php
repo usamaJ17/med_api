@@ -20,4 +20,5 @@ Route::get('/', function () {
 
 Route::get('/sym', function () {
     Artisan::call('storage:link');
+    Artisan::call('optimize');
 });
