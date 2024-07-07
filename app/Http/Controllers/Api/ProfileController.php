@@ -89,7 +89,7 @@ class ProfileController extends Controller
         // Get the filtered results
         $professionals = $query->get();
         $data = [
-            'personal_details' => $professionals->prepareUserData(),
+            'personal_details' => $professionals,
             'professional_details' => $professionals->professionalDetails()
         ];
 
