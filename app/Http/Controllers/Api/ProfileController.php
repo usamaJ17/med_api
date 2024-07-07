@@ -73,7 +73,7 @@ class ProfileController extends Controller
         ], 200);
     }
     public function getMedicalProfessionals(Request $request){
-        $query = User::role('medical');
+        $query = User::with('professionalDetails')->role('medical');
 
         // Apply filters if provided
         if ($request->has('professional_type_id') && $request->professional_type_id != "") {
