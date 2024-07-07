@@ -19,6 +19,14 @@ Route::get('/', function () {
 });
 
 Route::get('/sym', function () {
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
     Artisan::call('storage:link');
-    Artisan::call('optimize');
+    Artisan::call('config:cache');
+    Artisan::call('route:cache');
+    Artisan::call('view:cache');
+    return 'success';
 });
