@@ -43,10 +43,10 @@ class ProfessionalDetails extends Model implements HasMedia
     }
     public function getProfessionTypeAttribute()
     {
-        $name = ProfessionalType::find($this->profession)->name ?? '';
+        return ProfessionalType::find($this->profession)->name ?? '';
     }
     public function getRankNameAttribute()
     {
-        $name = Ranks::find($this->rank)->name ?? '';
+        return Ranks::find($this->rank)->name ?? '';
     }
 }

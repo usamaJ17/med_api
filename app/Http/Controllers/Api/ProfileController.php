@@ -74,9 +74,6 @@ class ProfileController extends Controller
         $pro->id_card = $pro->getFirstMediaUrl('id_card');
         $pro->signature = $pro->getFirstMediaUrl('signature');
         $pro->degree_file = $pro->getFirstMediaUrl('degree_file');
-        // edit professional and rank in this
-        $pro->profession = $pro->profession()->name ?? '';
-        $pro->rank = $pro->rank()->name ?? '';
         return response()->json([
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',
