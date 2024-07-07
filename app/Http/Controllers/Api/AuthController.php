@@ -89,13 +89,17 @@ class AuthController extends Controller
         }else{
             Auth::login($user);
             $user = User::find(Auth::user()->id);
-            $user_details = [
-                'personal_details' => $user->prepareUserData(),
-            ];
+            $user_details = [];
             if($user->role == 'patient'){
-                $user_details['medical_details'] = $user->medicalDetails();
+                $user_details = [
+                    'personal_details' => $user->prepareUserData(),
+                    'medical_details'  => $user->medicalDetails(),
+                ];
             }else if($user->role == 'medical'){
-                $useuser_detailsr['professional_details'] = $user->professionalDetails();
+                $user_details = [
+                    'personal_details' => $user->prepareUserData(),
+                    'professional_details'  => $user->professionalDetails(),
+                ];
             }
             $data = [
                 'otp_sent'  => false,
