@@ -70,10 +70,6 @@ class ProfileController extends Controller
             'status' => 404,
             'message'=> 'Details Not Found...',
         ], 404);
-        // add media url in response
-        $pro->id_card = $pro->getFirstMediaUrl('id_card');
-        $pro->signature = $pro->getFirstMediaUrl('signature');
-        $pro->degree_file = $pro->getFirstMediaUrl('degree_file');
         return response()->json([
             'status' => 200,
             'message'=> 'Details Fetched Successfully...',

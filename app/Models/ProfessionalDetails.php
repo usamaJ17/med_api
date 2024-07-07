@@ -25,7 +25,7 @@ class ProfessionalDetails extends Model implements HasMedia
         'degree',
         'institution',
     ];
-    protected $appends = ['profession_type', 'rank_name'];
+    protected $appends = ['profession_type', 'rank_name','id_card','signature','degree_file'];
     protected $hidden = ['media'];
     
     // Define relationships, if any
@@ -49,4 +49,17 @@ class ProfessionalDetails extends Model implements HasMedia
     {
         return Ranks::find($this->rank)->name ?? '';
     }
+    public function getIdCardAttribute()
+    {
+        return $this->getFirstMediaUrl('id_card');
+    }
+    public function getSignatureAttribute()
+    {
+        return $this->getFirstMediaUrl('signature');
+    }
+    public function getDegreeFileAttribute()
+    {
+        return $this->getFirstMediaUrl('degree_file');
+    }
+    
 }
