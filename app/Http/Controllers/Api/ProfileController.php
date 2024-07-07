@@ -88,13 +88,6 @@ class ProfileController extends Controller
 
         // Get the filtered results
         $professionals = $query->get();
-        // remove professionalDetails from user object
-        $data = $professionals->map(function($item){
-            return $item->prepareUserData();
-        });
-        dd($data);
-        $professionals->makeHidden('professionalDetails');
-
 
 
         return response()->json([
