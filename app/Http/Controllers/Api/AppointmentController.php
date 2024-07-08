@@ -20,7 +20,6 @@ class AppointmentController extends Controller
             'user_id' => auth()->id(),
         ]);
         $appointment = Appointment::create($request->all());
-        dd($appointment);
         $data = [
             'status' => 201,
             'message' => 'Appointment created successfully',
