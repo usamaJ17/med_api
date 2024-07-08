@@ -59,6 +59,25 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function changePatientStatus(Request $request ,$id){
+        $appointment = Appointment::query()->where('id', $id)->first();
+        if(!$appointment){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Appointment not found',
+            ], 404);
+        }
+        // change status of all appointments where user_id is the same as the user_id of the appointment
+        $appointment->status = 'Completed';
+        $appointment->patient_status = $request->status;
+        $appointment->save();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointment status changed successfully',
+            'data' => $appointment,
+        ];
+        return response()->json($data, 200);
+    }
     public function changeStatus(Request $request ,$id){
         $appointment = Appointment::query()->where('id', $id)->first();
         if(!$appointment){
@@ -68,10 +87,7 @@ class AppointmentController extends Controller
             ], 404);
         }
         // change status of all appointments where user_id is the same as the user_id of the appointment
-        Appointment::query()->where('user_id', $appointment->user_id)->where('med_id', $appointment->med_id)->update([
-            'status' => 'Completed',
-            'patient_status' => $request->status,
-        ]);
+        $appointment->status = $request->status;
         $appointment->save();
         $data = [
             'status' => 200,
@@ -117,6 +133,7 @@ class AppointmentController extends Controller
         ->orderBy('appointment_date', 'desc')
         ->get()
         ->groupBy('user_id');
+        dd($appointments);
 
         $results = [];
 
