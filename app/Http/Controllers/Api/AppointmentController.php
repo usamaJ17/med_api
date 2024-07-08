@@ -141,7 +141,7 @@ class AppointmentController extends Controller
             $total_count = $userAppointments->count();
             $completed_count = $userAppointments->where('status', 'completed')->count();
             if($completed_count == $total_count){
-                if($userAppointments->where('patient_status', 'in_progress')->count() == 0){
+                if($userAppointments->where('patient_status', 'in_progress')->orWhere('patient_status', 'new_patient')->count() == 0){
                     $status = 'completed';
                 }
             }else if($completed_count == 0){
