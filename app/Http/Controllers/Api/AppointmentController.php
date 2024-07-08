@@ -136,8 +136,17 @@ class AppointmentController extends Controller
         $results = [];
 
         foreach ($appointments as $userId => $userAppointments) {
-            // Get the latest appointment where the appointment is completed
-            dd($userAppointments, $userId);
+            // check if atleast 1 user appointment is completed
+            $status = 'In Progress';
+            $total_count = $userAppointments->count();
+            $completed_count = $userAppointments->where('status', 'completed')->count();
+            if($completed_count == $total_count){
+                if($userAppointments->where('patient_status', 'in_progress')->count() == 0){
+                    $status = 'completed';
+                }
+            }else if($completed_count == 0){
+                $status = 'New Patient';
+            }
             $latestCompletedAppointment = $userAppointments->where('status', 'completed')->first();
             if(!$latestCompletedAppointment) {
                 $latestCompletedAppointment = $userAppointments->first();
@@ -153,7 +162,7 @@ class AppointmentController extends Controller
                 'gender' => $latestAppointment->gender,
                 'age' => $latestAppointment->age,
                 'diagnosis' => $latestCompletedAppointment->diagnosis,
-                'status' => $latestAppointment->patient_status
+                'status' => $status
             ];
         }
         $data = [
