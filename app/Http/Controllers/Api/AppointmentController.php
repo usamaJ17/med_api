@@ -59,7 +59,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function changePatientStatus(Request $request){
-        $appointment = Appointment::query()->where('id', $id)->first();
+        $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
         if(!$appointment){
             return response()->json([
                 'status' => 404,
@@ -78,7 +78,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function changeStatus(Request $request){
-        $appointment = Appointment::query()->where('id', $id)->first();
+        $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
         if(!$appointment){
             return response()->json([
                 'status' => 404,
