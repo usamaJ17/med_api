@@ -142,7 +142,7 @@ class AppointmentController extends Controller
             $completed_count = $userAppointments->where('status', 'completed')->count();
             if($completed_count == $total_count){
                 if($userAppointments->where('patient_status', 'in_progress')->orWhere('patient_status', 'new_patient')->count() == 0){
-                    $status = 'completed';
+                    $status = 'Recovered';
                 }
             }else if($completed_count == 0){
                 $status = 'New Patient';
@@ -152,7 +152,6 @@ class AppointmentController extends Controller
                 $latestCompletedAppointment = $userAppointments->first();
             }
             $latestAppointment = $userAppointments->first();
-            $isOldPatient = $userAppointments->count() > 1;
 
             // Prepare the result array
             $results[] = [
