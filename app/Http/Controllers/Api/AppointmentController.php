@@ -58,7 +58,7 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function changePatientStatus(Request $request ,$id){
+    public function changePatientStatus(Request $request){
         $appointment = Appointment::query()->where('id', $id)->first();
         if(!$appointment){
             return response()->json([
@@ -77,7 +77,7 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function changeStatus(Request $request ,$id){
+    public function changeStatus(Request $request){
         $appointment = Appointment::query()->where('id', $id)->first();
         if(!$appointment){
             return response()->json([
