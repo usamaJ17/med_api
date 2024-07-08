@@ -31,11 +31,37 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected $appends = ['patient_name'];
+    protected $appends = ['patient_name','patient_profile_url','med_name','med_profile_url','med_lang','patient_lang'];
     public function getPatientNameAttribute()
     {
         $user = User::find($this->user_id);
         return $user->first_name . ' ' . $user->last_name;
     }
+    public function getPatientProfileUrlAttribute()
+    {
+        $user = User::find($this->user_id);
+        return $user->getFirstMediaUrl();
+    }
+    public function getMedNameAttribute()
+    {
+        $user = User::find($this->med_id);
+        return $user->first_name . ' ' . $user->last_name;
+    }
+    public function getMedProfileUrlAttribute()
+    {
+        $user = User::find($this->med_id);
+        return $user->getFirstMediaUrl();
+    }
+    public function getMedLangAttribute()
+    {
+        $user = User::find($this->med_id);
+        return $user->language;
+    }
+    public function getPatientLangAttribute()
+    {
+        $user = User::find($this->user_id);
+        return $user->language;
+    }
+
 
 }
