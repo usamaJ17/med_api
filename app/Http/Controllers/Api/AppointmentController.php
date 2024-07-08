@@ -132,12 +132,12 @@ class AppointmentController extends Controller
         ->orderBy('appointment_date', 'desc')
         ->get()
         ->groupBy('user_id');
-        dd($appointments);
 
         $results = [];
 
         foreach ($appointments as $userId => $userAppointments) {
             // Get the latest appointment where the appointment is completed
+            dd($userAppointments, $userId);
             $latestCompletedAppointment = $userAppointments->where('status', 'completed')->first();
             if(!$latestCompletedAppointment) {
                 $latestCompletedAppointment = $userAppointments->first();
