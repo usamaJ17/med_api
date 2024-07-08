@@ -103,6 +103,9 @@ class User extends Authenticatable implements HasMedia
         $completed_consultation = Appointment::where('med_id', $this->id)->where('status', 'completed')->count();
         // I want count of all appointment with unique users , but only those users whose all appointments have completed status
         $recovered = Appointment::where('med_id', $this->id)->get()->groupBy('user_id');
+        $recovered = $recovered->filter(function ($appointments) {
+            return $appointments->where('status', 'completed')->count() == $appointments->count();
+        });
         dd($recovered);
         $in_progress = Appointment::where('med_id', $this->id)->where('patient_status', 'in_progress')->get()->groupBy('user_id')->count();    
         $data = [
