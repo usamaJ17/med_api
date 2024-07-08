@@ -67,7 +67,7 @@ class AppointmentController extends Controller
             ], 404);
         }
         // change status of all appointments where user_id is the same as the user_id of the appointment
-        $appointment->status = 'Completed';
+        $appointment->status = 'completed';
         $appointment->patient_status = $request->status;
         $appointment->save();
         $data = [
