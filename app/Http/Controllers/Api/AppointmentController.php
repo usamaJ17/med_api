@@ -35,6 +35,9 @@ class AppointmentController extends Controller
                 'message' => 'Appointment not found',
             ], 404);
         }
+        $request->merge([
+            'status' => "upcoming",
+        ]);
         // only update those fields which are present in the request
         $appointment->fill($request->all());
         $appointment->save();
