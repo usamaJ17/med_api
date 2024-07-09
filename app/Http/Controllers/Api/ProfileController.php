@@ -76,6 +76,9 @@ class ProfileController extends Controller
         $query = User::with('professionalDetails')->role('medical');
 
         // Apply filters if provided
+        if ($request->has('professional_id') && $request->professional_id != "") {
+            $query->where('id', $request->professional_id);
+        }
         if ($request->has('professional_type_id') && $request->professional_type_id != "") {
             $query->where('professional_type_id', $request->professional_type_id);
         }
