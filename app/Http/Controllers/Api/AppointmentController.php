@@ -43,6 +43,7 @@ class AppointmentController extends Controller
             'message' => 'Appointment updated successfully',
             'data' => $appointment,
         ];
+        return response()->json($data, 200);
     }
     public function get(Request $request){
         $appointments = Appointment::query()->where('user_id', auth()->id());
