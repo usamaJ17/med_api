@@ -27,6 +27,23 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 201);    
     }
+    public function update(Request $request){
+        $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
+        if(!$appointment){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Appointment not found',
+            ], 404);
+        }
+        // only update those fields which are present in the request
+        $appointment->fill($request->all());
+        $appointment->save();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointment updated successfully',
+            'data' => $appointment,
+        ];
+    }
     public function get(Request $request){
         $appointments = Appointment::query()->where('user_id', auth()->id());
         if($request->has('appointment_date')){
