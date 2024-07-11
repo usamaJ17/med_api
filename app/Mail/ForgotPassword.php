@@ -14,12 +14,14 @@ class ForgotPassword extends Mailable
     use Queueable, SerializesModels;
 
     public $name;
+    public $otp;
     /**
      * Create a new message instance.
      */
-    public function __construct($name)
+    public function __construct($name,$otp)
     {
         $this->name = $name;
+        $this->otp = $otp;
     }
 
     /**

@@ -103,7 +103,7 @@
               color: #ba3d4f;
             "
           >
-            {{ $name }}
+            {{ $otp }}
           </p>
           </div>
         </div>

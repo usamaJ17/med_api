@@ -45,7 +45,8 @@ class AuthController extends Controller
                 $user->professional_type_id = $request->professional_type_id;
             }
             $user->save();
-            Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+            $name = $user->first_name . ' ' . $user->last_name;
+            Mail::to([$user->email])->send(new OtpMail($otp,$name, true));
             $data = [
                 'email'   => $request->email,
             ];
@@ -127,7 +128,8 @@ class AuthController extends Controller
             $otp = random_int(111111, 999999);
             $user->forgot_password = $otp;
             $user->save();
-            Mail::to([$user->email])->send(new ForgotPassword($otp));
+            $name = $user->first_name . ' ' . $user->last_name;
+            Mail::to([$user->email])->send(new ForgotPassword($name, $otp));
             return response()->json([
                 'status'  => 200,
                 'message' => 'Reset password email sent...',
