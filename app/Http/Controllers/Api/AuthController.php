@@ -134,6 +134,29 @@ class AuthController extends Controller
             ], 200);   
         }
     }
+    public function CheckOtpForgotPassword(Request $request){
+            $user = User::where('email',$request->email)->first();
+            if(!$user){
+            	return response()->json([
+            	   'status' => 401,
+            	   'message'=> 'Invalid Request...',
+            	], 401);
+            }else{
+                if($request->otp == $user->forgot_password){
+                    return response()->json([
+                        'status' => 200,
+                        'message'=> 'OTP correct...',
+                        'data' => true
+                     ], 200);
+                }else{
+                    return response()->json([
+                        'status' => 401,
+                        'message'=> 'OTP wrong...',
+                        'data' => false
+                     ], 401);
+                }
+            }
+    }
     public function UpdateForgotPassword(Request $request): JsonResponse
     {
     	$user = User::where('forgot_password',$request->otp)->first();

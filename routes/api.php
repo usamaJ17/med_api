@@ -32,6 +32,7 @@ Route::middleware(['cros'])->group(function () {
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
   Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword']);
+  Route::post('check_forgot_password_otp',[AuthController::class,'CheckOtpForgotPassword']);
   Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword']);
   Route::get('professions',[ProfileController::class, 'getProfessionalType']);
   Route::get('ranks',[HelperController::class,'getRanks']);
