@@ -232,6 +232,9 @@ class AppointmentController extends Controller
         if(isset($request->appointment_id)){
             $reviews->where('appointment_id', $request->appointment_id);
         }
+        if(isset($request->order_by)){
+            $reviews->orderBy('rating', $request->order_by);
+        }
         $reviews = $reviews->get();
         $data = [
             'status' => 200,
