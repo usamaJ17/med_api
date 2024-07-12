@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('language')->nullable();
             $table->string('otp')->nullable();
             $table->boolean('is_verified')->default(false);
+            $table->boolean('is_live')->default(false);
             $table->string('temp_role')->nullable();
             $table->rememberToken();
             $table->timestamps();
