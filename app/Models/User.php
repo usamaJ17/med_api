@@ -97,6 +97,7 @@ class User extends Authenticatable implements HasMedia
         // get number of unique patients
         $all_patient_count = Appointment::where('med_id', $this->id)->count();
         $new_patient_count = Appointment::where('med_id', $this->id)->distinct('user_id')->count();
+        $avg_rating = Review::where('med_id', $this->id)->avg('rating');
         $number_appointment = Appointment::where('med_id', $this->id)->count();
         $done_appointment = Appointment::where('med_id', $this->id)->where('status', 'completed')->count();
         $upcoming_appointment = Appointment::where('med_id', $this->id)->where('status', 'upcoming')->count();
@@ -119,6 +120,7 @@ class User extends Authenticatable implements HasMedia
             'completed_consultation' => $completed_consultation,
             'recovered_patient' => $recovered,
             'intreatment_patient' => $in_progress,
+            'averageg_rating' => $avg_rating,
         ];
         return $data;
     }
