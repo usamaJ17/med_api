@@ -98,6 +98,8 @@ class User extends Authenticatable implements HasMedia
         $all_patient_count = Appointment::where('med_id', $this->id)->count();
         $new_patient_count = Appointment::where('med_id', $this->id)->distinct('user_id')->count();
         $avg_rating = Review::where('med_id', $this->id)->avg('rating');
+        // fix avg rating to 2 decimal places
+        $avg_rating = number_format((float)$avg_rating, 2, '.', '');
         $number_appointment = Appointment::where('med_id', $this->id)->count();
         $done_appointment = Appointment::where('med_id', $this->id)->where('status', 'completed')->count();
         $upcoming_appointment = Appointment::where('med_id', $this->id)->where('status', 'upcoming')->count();
