@@ -28,7 +28,7 @@ class Article extends Model implements HasMedia
     {
         return $this->hasMany(Like::class);
     }
-    protected $appends = ['author','thumbnail_url'];
+    protected $appends = ['author','thumbnail_url','video_url'];
 
     public function getAuthorAttribute()
     {
@@ -37,5 +37,9 @@ class Article extends Model implements HasMedia
     public function getThumbnailUrlAttribute()
     {
         return $this->getFirstMediaUrl('thumbnails');
+    }
+    public function getVideoUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('video');
     }
 }

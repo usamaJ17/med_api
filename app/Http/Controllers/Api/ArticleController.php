@@ -50,6 +50,9 @@ class ArticleController extends Controller
         if ($request->hasFile('thumbnail')) {
             $article->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnails');
         }
+        if ($request->hasFile('video')) {
+            $article->addMedia($request->file('video'))->toMediaCollection('video');
+        }
         $data = [
             'status' => 200, // add this line
             'message' => 'Article created successfully',
@@ -74,6 +77,10 @@ class ArticleController extends Controller
         if ($request->hasFile('thumbnail')) {
             $article->clearMediaCollection('thumbnails');
             $article->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnails');
+        }
+        if ($request->hasFile('video')) {
+            $article->clearMediaCollection('video');
+            $article->addMedia($request->file('video'))->toMediaCollection('video');
         }
         $data = [
             'status' => 200, // add this line
