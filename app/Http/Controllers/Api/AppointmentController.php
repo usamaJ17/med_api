@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -189,6 +190,53 @@ class AppointmentController extends Controller
             'status' => 200,
             'message' => 'Patients fetched successfully',
             'data' => $results,
+        ];
+        return response()->json($data, 200);
+    }
+    public function addReview(Request $request){
+        $review = Review::create($request->all());
+        $data = [
+            'status' => 200,
+            'message' => 'Review added successfully',
+            'data' => $review,
+        ];
+        return response()->json($data, 200);
+    }
+    public function updateReview(Request $request){
+        $review = Review::where('id', $request->review_id)->first();
+        if(!$review){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Review not found',
+            ], 404);
+        }else{
+            $review->fill($request->all());
+            $review->save();
+            $data = [
+                'status' => 200,
+                'message' => 'Review updated successfully',
+                'data' => $review,
+            ];
+            return response()->json($data, 200);
+        
+        }
+    }
+    public function getReview(Request $request){
+        $reviews = Review::query();
+        if(isset($request->med_id)){
+            $reviews->where('med_id', $request->med_id);
+        }
+        if(isset($request->user_id)){
+            $reviews->where('user_id', $request->user_id);
+        }
+        if(isset($request->appointment_id)){
+            $reviews->where('appointment_id', $request->appointment_id);
+        }
+        $reviews = $reviews->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Reviews fetched successfully',
+            'data' => $reviews,
         ];
         return response()->json($data, 200);
     }

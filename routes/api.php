@@ -82,6 +82,11 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('appointments/status',[AppointmentController::class,'changeStatus']);
   Route::get('patient/appointments',[AppointmentController::class,'get']);
 
+  // review after appointment
+  Route::post('appointments/review',[AppointmentController::class,'addReview']);
+  Route::post('appointments/review/update',[AppointmentController::class,'updateReview']);
+  Route::get('appointments/review',[AppointmentController::class,'getReview']);
+
   Route::get('professional/appointment/patients',[AppointmentController::class,'getMyPatientsAppointments']);
   Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
   

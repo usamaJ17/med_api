@@ -147,4 +147,12 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(ProfessionalType::class);
     }
     // hide temp_role attribute
+    public function MedReviews()
+    {
+        return Review::where('med_id', $this->id)->get();
+    }
+    public function userReviews()
+    {
+        return Review::where('user_id', $this->id)->get();
+    }
 }

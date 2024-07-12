@@ -62,6 +62,8 @@ class Appointment extends Model
         $user = User::find($this->user_id);
         return $user->language;
     }
-
-
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
 }
