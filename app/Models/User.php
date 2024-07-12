@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasMedia
         'state',
         'city',
         'language',
+        'is_live',
         'forgot_password',
     ];
 

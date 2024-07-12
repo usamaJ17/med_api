@@ -43,4 +43,19 @@ class HelperController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function changeActivation(Request $request){
+        $user = User::find($request->med_id);
+        if($request->is_live == true || $request->is_live == 'true'){
+            $user->is_live = true;
+        }
+        elseif($request->is_live == false || $request->is_live == 'false'){
+            $user->is_live = false;
+        }
+        $user->save();
+        $data = [
+            'status' => 200,
+            'message' => 'Account status changed successfully',
+        ];
+        return response()->json($data, 200);
+    }
 }
