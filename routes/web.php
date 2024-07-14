@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,9 @@ Route::get('/sym', function () {
     Artisan::call('view:cache');
     return 'success';
 });
+Route::get('/pay', function () {
+    return view('pay');
+});
+// Laravel 8 & 9
+Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
+Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback'])->name('callback');
