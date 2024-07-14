@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,4 +92,13 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
   
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
+
+});
+Route::group(['prefix' => 'payment'], function () {
+  Route::group(['prefix' => 'crypto'], function () {
+      Route::get('currencies', [PaymentController::class, 'getCryptoCurrencies']);
+      Route::get('get_amount', [PaymentController::class, 'getAmount']);
+      Route::post('create_payment', [PaymentController::class, 'createPayment']);
+      Route::get('check_payment', [PaymentController::class, 'CheckStatus']);
+  });
 });

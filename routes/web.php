@@ -32,7 +32,33 @@ Route::get('/sym', function () {
     return 'success';
 });
 Route::get('/pay', function () {
-    return view('pay');
+    $curl = curl_init();
+  
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://api.paystack.co/transaction/verify/5port7teby",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_HTTPHEADER => array(
+        "Authorization: Bearer ".env('PAYSTACK_SECRET_KEY'),
+        "Cache-Control: no-cache",
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+  
+    curl_close($curl);
+    
+    if ($err) {
+      echo "cURL Error #:" . $err;
+    } else {
+        dd($response);
+    }
+   
 });
 // Laravel 8 & 9
 Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
