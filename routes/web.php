@@ -37,3 +37,5 @@ Route::get('/pay', function () {
 // Laravel 8 & 9
 Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
 Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback'])->name('callback');
+
+Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
