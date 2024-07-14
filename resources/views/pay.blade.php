@@ -1,7 +1,7 @@
 @php
     $split = [
    "type" => "percentage",
-   "currency" => "KES",
+   "currency" => "GHS",
    "subaccounts" => [
     [ "subaccount" => "ACCT_li4p6kte2dolodo", "share" => 10 ],
     [ "subaccount" => "ACCT_li4p6kte2dolodo", "share" => 30 ],
