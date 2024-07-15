@@ -89,6 +89,18 @@ class HelperController extends Controller
                 'message' => 'Professional Titles Added successfully',
             ];
             return response()->json($data, 200);
+        }else{
+            $tit_array = [];
+            $tit_array[] = $request->title;
+            $titles = new DynamicFiled();
+            $titles->name = 'professional_title';
+            $titles->data = json_encode($tit_array);
+            $titles->save();
+            $data = [
+                'status' => 200,
+                'message' => 'Professional Titles Added successfully',
+            ];
+            return response()->json($data, 200);
         }
     }
 }
