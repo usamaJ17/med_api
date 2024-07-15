@@ -69,6 +69,12 @@ class HelperController extends Controller
                 'data' => $title_array,
             ];
             return response()->json($data, 200);
+        }else{
+            $data = [
+                'status' => 200,
+                'message' => 'No Professional Titles found',
+            ];
+            return response()->json($data, 200);
         }
     }
     public function saveProfessionalTitles(Request $request){

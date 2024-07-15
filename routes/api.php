@@ -46,6 +46,7 @@ Route::middleware(['cros'])->group(function () {
   Route::post('change_activation',[HelperController::class,'changeActivation']);
 
   Route::get('/professional_titles', [HelperController::class, 'getProfessionalTitles']);
+  Route::post('/professional_titles', [HelperController::class, 'saveProfessionalTitles']);
 });
 
 
