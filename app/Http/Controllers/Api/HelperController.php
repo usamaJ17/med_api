@@ -81,7 +81,7 @@ class HelperController extends Controller
         $titles = DynamicFiled::where('name','professional_title')->first();
         if($titles){
             $tit_array = json_decode($titles->data);
-            $tit_array[] = request()->all();
+            $tit_array[] = $request->title;
             $titles->data = json_encode($tit_array);
             $titles->save();
             $data = [
