@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\User;
@@ -57,5 +58,31 @@ class HelperController extends Controller
             'message' => 'Account status changed successfully',
         ];
         return response()->json($data, 200);
+    }
+    public function getProfessionalTitles(){
+        $titles = DynamicFiled::where('name','professional_title')->first();
+        if($titles){
+            $title_array = json_decode($titles->data);
+            $data = [
+                'status' => 200,
+                'message' => 'Professional Titles fetched successfully',
+                'data' => $title_array,
+            ];
+            return response()->json($data, 200);
+        }
+    }
+    public function saveProfessionalTitles(Request $request){
+        $titles = DynamicFiled::where('name','professional_title')->first();
+        if($titles){
+            $tit_array = json_decode($titles->data);
+            $tit_array[] = request()->all();
+            $titles->data = json_encode($tit_array);
+            $titles->save();
+            $data = [
+                'status' => 200,
+                'message' => 'Professional Titles Added successfully',
+            ];
+            return response()->json($data, 200);
+        }
     }
 }

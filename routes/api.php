@@ -44,6 +44,8 @@ Route::middleware(['cros'])->group(function () {
   Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
   Route::delete('delete_account/{id}',[HelperController::class,'deleteAccount']);
   Route::post('change_activation',[HelperController::class,'changeActivation']);
+
+  Route::get('/professional_titles', [HelperController::class, 'getProfessionalTitles']);
 });
 
 
