@@ -17,8 +17,16 @@ class AppointmentController extends Controller
             'appointment_time' => 'required',
             'appointment_date' => 'required',
         ]);
+        // get 3 character code
+        $code = rand(1111111, 9999999);
+        $app = Appointment::where('appointment_code', $code)->first();
+        while($app){
+            $code = rand(1111111, 9999999);
+            $app = Appointment::where('appointment_code', $code)->first();
+        }
         $request->merge([
             'user_id' => auth()->id(),
+            'appointment_code' => $code
         ]);
         $appointment = Appointment::create($request->all());
         $data = [
@@ -50,7 +58,38 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function get(Request $request){
-        $appointments = Appointment::query()->where('user_id', auth()->id());
+        $appointments = Appointment::query()->where('user_id', auth()->id())->where('is_paid',1);
+        if($request->has('appointment_date')){
+            $appointments->where('appointment_date', $request->appointment_date);
+        }
+        if($request->has('appointment_type')){
+            $appointments->where('appointment_type', $request->appointment_type);
+        }
+        if($request->has('med_id')){
+            $appointments->where('med_id', $request->med_id);
+        }
+        if($request->has('appointment_date_from') && $request->has('appointment_date_to')){
+            $appointments->whereBetween('appointment_date', [$request->appointment_date_from, $request->appointment_date_to]);
+        }
+        if($request->has('appointment_date_from') && !$request->has('appointment_date_to')){
+            $appointments->where('appointment_date', '>=', $request->appointment_date_from);
+        }
+        if($request->has('appointment_date_to') && !$request->has('appointment_date_from')){
+            $appointments->where('appointment_date', '<=', $request->appointment_date_to);
+        }
+        if($request->has('status')){
+            $appointments->where('status', $request->status);
+        }
+        $appointments = $appointments->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointments fetched successfully',
+            'data' => $appointments,
+        ];
+        return response()->json($data, 200);
+    }
+    public function getSubAccount(Request $request){
+        $appointments = Appointment::query()->where('sub_account_id', auth()->id())->where('is_paid',1);
         if($request->has('appointment_date')){
             $appointments->where('appointment_date', $request->appointment_date);
         }
@@ -118,7 +157,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function getMyPatientsAppointments(Request $request){
-        $appointments = Appointment::query()->where('med_id', auth()->id());
+        $appointments = Appointment::query()->where('med_id', auth()->id())->where('is_paid',1);
         if($request->has('appointment_date')){
             $appointments->where('appointment_date', $request->appointment_date);
         }
@@ -149,7 +188,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function getMyPatientsList(Request $request){
-        $appointments = Appointment::where('med_id', auth()->user()->id)
+        $appointments = Appointment::where('med_id', auth()->user()->id)->where('is_paid',1)
         // ->with('user')
         ->orderBy('appointment_date', 'desc')
         ->get()
@@ -242,6 +281,34 @@ class AppointmentController extends Controller
             'data' => $reviews,
         ];
         return response()->json($data, 200);
+    }
+    public function markAsPaid(Request $request){
+        $app = Appointment::find($request->id);
+        $app->is_paid = 1;
+        $app->save();
+        $data = [
+            'status' => 200,
+            'message' => 'Appointment Marked as paid',
+            'data' => $app,
+        ];
+        return response()->json($data, 200);
+    }
+    public function payForSome(Request $request){
+        $app = Appointment::where('appointment_code' , $request->appointment_code)->first();
+        if($app){
+            $data = [
+                'status' => 200,
+                'message' => 'Appointment Found',
+                'data' => $app,
+            ];
+            return response()->json($data, 200);
+        }else{
+            $data = [
+                'status' => 404,
+                'message' => 'Appointment not Found',
+            ];
+            return response()->json($data, 200);
+        }
     }
 
 }

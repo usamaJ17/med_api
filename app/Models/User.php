@@ -30,6 +30,7 @@ class User extends Authenticatable implements HasMedia
         'otp',
         'is_verified',
         'dob',
+        'parent_id',
         'gender',
         'country',
         'professional_type_id',
@@ -158,5 +159,11 @@ class User extends Authenticatable implements HasMedia
     public function userReviews()
     {
         return Review::where('user_id', $this->id)->get();
+    }
+    public function parent(){
+        return $this->belongsTo(User::class,'parent_id');
+    }
+    public function children(){
+        return $this->hasMany(User::class,'parent_id');
     }
 }

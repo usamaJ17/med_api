@@ -20,6 +20,7 @@ class Appointment extends Model
         'problem',
         'patient_status',
         'is_paid',
+        'appointment_code',
         'diagnosis',
         'status',
     ];

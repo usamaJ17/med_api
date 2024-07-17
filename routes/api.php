@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,9 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('patient/appointments/status',[AppointmentController::class,'changePatientStatus']);
   Route::post('appointments/status',[AppointmentController::class,'changeStatus']);
   Route::get('patient/appointments',[AppointmentController::class,'get']);
+  Route::get('subaccount/appointments',[AppointmentController::class,'getSubAccount']);
+  Route::post('appointments/paid',[AppointmentController::class,'markAsPaid']);
+  Route::get('appointments/pay_for_some',[AppointmentController::class,'payForSome']);
 
   // review after appointment
   Route::post('appointments/review',[AppointmentController::class,'addReview']);
@@ -96,6 +100,10 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
 
+  // sub accounts
+  Route::get('get_sub_accounts',[AuthController::class,'getSubAccounts']);
+  Route::get('login_as_sub',[AuthController::class,'loginToSubAccount']);
+
 });
 Route::group(['prefix' => 'payment'], function () {
   Route::group(['prefix' => 'crypto'], function () {
@@ -105,3 +113,5 @@ Route::group(['prefix' => 'payment'], function () {
       Route::get('check_payment', [PaymentController::class, 'CheckStatus']);
   });
 });
+
+Route::post('send_sms',[HelperController::class,'sendSms']);

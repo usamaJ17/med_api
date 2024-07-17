@@ -103,4 +103,31 @@ class HelperController extends Controller
             return response()->json($data, 200);
         }
     }
+    public function sendSms(Request $request){
+        $curl = curl_init();
+        $text = "Dear Samuel,
+This is a friendly reminder of your upcoming appointment with Dr. Bilawal on Deluxe Hospital. Details of your scheduled consultation:";
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://sms.arkesel.com/api/v2/sms/send',
+            CURLOPT_HTTPHEADER => ['api-key: '.env('SMS_API_KEY')],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => http_build_query([
+                'sender' => 'Deluxe Hosp',
+                'message' => $text,
+                'recipients' => ['233249097605']
+            ]),
+        ]);
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        dd($response);
+        echo $response;
+    }
 }

@@ -38,13 +38,26 @@ class AuthController extends Controller
             $user->contact = $request->contact;
     	    $user->email = $request->email;
     	    $user->password = Hash::make($request->password);
-    	    $otp = random_int(111111, 999999);
-            $user->otp = $otp;
+    	    if(isset($request->parent_id) && $request->parent_id != null){
+                $user->parent_id = $request->parent_id;
+                $user->email_verified_at = now();
+            }else{
+                $otp = random_int(111111, 999999);
+                $user->otp = $otp;
+            }
             $user->temp_role = $request->role;
             if($request->role == 'medical'){
                 $user->professional_type_id = $request->professional_type_id;
             }
             $user->save();
+            if(isset($request->parent_id) && $request->parent_id != null){
+                $user->assignRole($user->temp_role);
+                return response()->json([
+                    'status'  => 202,
+                    'message' => 'Sub Account Added Successfully...',
+                    'data'    => $user,
+                ], 200);
+            }
             $name = $user->first_name . ' ' . $user->last_name;
             Mail::to([$user->email])->send(new OtpMail($otp,$name, true));
             $data = [
@@ -252,5 +265,49 @@ class AuthController extends Controller
             'data'   => $data,
         ], 200);
 
+    }
+    public function getSubAccounts(){
+        // get only last_name, first_name and id of users
+        $users = User::where('parent_id', Auth::user()->id)->get(['id','first_name','last_name','email']);
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Sub Accounts fetched successfully...',
+            'data'   => $users,
+        ], 200);
+    }
+    public function loginToSubAccount(Request $request){
+        $user = User::where('id', $request->sub_account_id)->first();
+        if($user){
+            if($user->parent_id == Auth::user()->id){
+                $user = User::with('professionalDetails','medicalDetails')->find(Auth::user()->id);
+                $user_details = [];
+                if($user->role == 'patient'){
+                    $user_details = [
+                        'personal_details' => $user->prepareUserData(),
+                        'medical_details'  => $user->medicalDetails,
+                    ];
+                }
+                $data = [
+                    'sub_user'    => $user_details,
+                    'token'   => $user->createToken('Med')->plainTextToken,
+                ];
+                // add role in user
+                return response()->json([
+                    'status'  => 202,
+                    'message' => 'Login To Sub Account Successfully...',
+                    'data'    => $data,
+                ], 200);
+            }else{
+                return response()->json([
+                    'status'  => 401,
+                    'message' => 'You can not login to this sub account...',
+                ], 401);
+            }
+        }else{
+            return response()->json([
+                'status'  => 401,
+                'message' => 'Error...',
+            ], 401);
+        }
     }
 }
