@@ -22,6 +22,7 @@
     let localStream;
     let peerConnection;
     let peerId = Math.random().toString(36).substring(2);
+    console.log(peerId);
 
     async function start() {
       localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -65,6 +66,8 @@
 
     async function sendToServer(message) {
       const response = await fetch(signalingServerUrl, {
+        // add csrf protection here
+        tokken: '{{ csrf_token() }}',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ peer_id: peerId, ...message })
