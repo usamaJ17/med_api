@@ -66,11 +66,3 @@ Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay'
 Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback'])->name('callback');
 
 Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
-
-Route::middleware(['cros'])->group(function () {
-  Route::get('start_call/{id}', function($id){
-    $sessionId = $id;
-    return view('start_call')->with('sessionId', $sessionId);
-  });
-  Route::match(['get', 'post'], 'signaling/{sessionId}', [SignalingController::class, 'handleSignaling']);
-});
