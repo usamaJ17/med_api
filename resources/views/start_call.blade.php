@@ -3,6 +3,7 @@
 <head>
   <title>WebRTC Test</title>
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     video {
       width: 45%;
@@ -16,9 +17,8 @@
   <video id="localVideo" autoplay playsinline></video>
   <video id="remoteVideo" autoplay playsinline></video>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
     const sessionId = "{{ $sessionId }}";
-    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const signalingServerUrl = `https://deluxehospital.com/signaling/${sessionId}`;
     const localVideo = document.getElementById('localVideo');
     const remoteVideo = document.getElementById('remoteVideo');
@@ -75,7 +75,10 @@
       try {
         const response = await fetch(signalingServerUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+          },
           body: JSON.stringify({ peer_id: peerId, ...message })
         });
         const result = await response.json();
