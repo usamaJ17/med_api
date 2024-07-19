@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SignalingController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -65,3 +66,9 @@ Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay'
 Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback'])->name('callback');
 
 Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
+
+Route::get('start_call', function(){
+    return view('start_call');
+});
+
+Route::match(['get', 'post'], '/signaling', [SignalingController::class, 'handleSignaling']);
