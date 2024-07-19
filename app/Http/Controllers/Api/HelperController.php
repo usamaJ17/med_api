@@ -105,8 +105,7 @@ class HelperController extends Controller
     }
     public function sendSms(Request $request){
         $curl = curl_init();
-        $text = "Dear Samuel,
-This is a friendly reminder of your upcoming appointment with Dr. Bilawal on Deluxe Hospital. Details of your scheduled consultation:";
+        $text = "Reminder: Your appointment with Dr. Bilawal rasheed is almost due. In 15 minutes, please open the Deluxe Hospital app and navigate to Chat section. See you soon";
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://sms.arkesel.com/api/v2/sms/send',
             CURLOPT_HTTPHEADER => ['api-key: '.env('SMS_API_KEY')],
@@ -120,7 +119,8 @@ This is a friendly reminder of your upcoming appointment with Dr. Bilawal on Del
             CURLOPT_POSTFIELDS => http_build_query([
                 'sender' => 'Deluxe Hosp',
                 'message' => $text,
-                'recipients' => ['233249097605']
+                'recipients' => ['233249097605'],
+                'sandbox' => true
             ]),
         ]);
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -115,3 +116,21 @@ Route::group(['prefix' => 'payment'], function () {
 });
 
 Route::post('send_sms',[HelperController::class,'sendSms']);
+
+Route::post('/signaling', function (Request $request) {
+  $client = new \GuzzleHttp\Client();
+  $response = $client->post('https://deluxehospital.com/signaling.php', [
+      'json' => $request->all(),
+  ]);
+
+  return $response->getBody();
+});
+
+Route::get('/signaling', function (Request $request) {
+  $client = new \GuzzleHttp\Client();
+  $response = $client->get('https://deluxehospital.com/signaling.php', [
+      'query' => $request->all(),
+  ]);
+
+  return $response->getBody();
+});
