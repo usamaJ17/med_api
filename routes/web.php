@@ -68,8 +68,8 @@ Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbac
 Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
 
 Route::get('start_call', function(){
-    $sessionId = Str::random(10);  
-    return view('start_call')->with(compact('sessionId'));
+  $sessionId = Str::random(10);
+  return view('start_call')->with('sessionId', $sessionId);
 });
 
 Route::match(['get', 'post'], '/signaling/{sessionId}', [SignalingController::class, 'handleSignaling']);
