@@ -18,6 +18,7 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = "{{ $sessionId }}";
+    
     const signalingServerUrl = `https://deluxehospital.com/signaling/${sessionId}`;
     const localVideo = document.getElementById('localVideo');
     const remoteVideo = document.getElementById('remoteVideo');
