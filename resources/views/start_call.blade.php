@@ -21,7 +21,9 @@
     const remoteVideo = document.getElementById('remoteVideo');
     let localStream;
     let peerConnection;
-    let peerId = Math.random().toString(36).substring(2);
+    
+    // let peerId = Math.random().toString(36).substring(2);
+    let peerId = 565656578789;
     console.log(peerId);
 
     async function start() {
