@@ -16,79 +16,89 @@
   <video id="localVideo" autoplay playsinline></video>
   <video id="remoteVideo" autoplay playsinline></video>
   <script>
-    const signalingServerUrl = 'https://deluxehospital.com/signaling';
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = "{{ $sessionId }}";
+    const signalingServerUrl = `https://deluxehospital.com/signaling/${sessionId}`;
     const localVideo = document.getElementById('localVideo');
     const remoteVideo = document.getElementById('remoteVideo');
     let localStream;
     let peerConnection;
     let peerId = Math.random().toString(36).substring(2);
-    console.log(peerId);
 
     async function start() {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      localVideo.srcObject = localStream;
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localVideo.srcObject = localStream;
 
-      peerConnection = new RTCPeerConnection({
-        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-      });
+        peerConnection = new RTCPeerConnection({
+          iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        });
 
-      localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
-      peerConnection.ontrack = event => {
-        if (event.streams && event.streams[0]) {
-          remoteVideo.srcObject = event.streams[0];
-        }
-      };
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+        peerConnection.ontrack = event => {
+          if (event.streams && event.streams[0]) {
+            remoteVideo.srcObject = event.streams[0];
+          }
+        };
 
-      peerConnection.onicecandidate = event => {
-        if (event.candidate) {
-          sendToServer({ type: 'candidate', candidate: event.candidate });
-        }
-      };
+        peerConnection.onicecandidate = event => {
+          if (event.candidate) {
+            sendToServer({ type: 'candidate', candidate: event.candidate });
+          }
+        };
 
-      const offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
-      sendToServer({ type: 'offer', sdp: offer });
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        sendToServer({ type: 'offer', sdp: offer });
+
+        pollServer();
+      } catch (error) {
+        console.error('Error accessing media devices.', error);
+      }
     }
 
     async function handleIncomingMessage(message) {
-      const data = JSON.parse(message.data);
-      if (data.type === 'offer') {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp));
+      if (message.type === 'offer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.sdp));
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
         sendToServer({ type: 'answer', sdp: answer });
-      } else if (data.type === 'answer') {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp));
-      } else if (data.type === 'candidate') {
-        await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+      } else if (message.type === 'answer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.sdp));
+      } else if (message.type === 'candidate') {
+        await peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
       }
     }
 
     async function sendToServer(message) {
-      const response = await fetch(signalingServerUrl, {
-        // add csrf protection here
-        tokken: '{{ csrf_token() }}',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ peer_id: peerId, ...message })
-      });
-
-      const result = await response.json();
-      console.log(result);
+      try {
+        const response = await fetch(signalingServerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ peer_id: peerId, ...message })
+        });
+        const result = await response.json();
+        console.log(result);
+      } catch (error) {
+        console.error('Error sending message to server.', error);
+      }
     }
 
     async function pollServer() {
       setInterval(async () => {
-        const response = await fetch(`${signalingServerUrl}?peer_id=${peerId}`);
-        const data = await response.json();
-        if (data.status === 'ok' && data.peer_id !== peerId) {
-          await handleIncomingMessage({ data: JSON.stringify(data) });
+        try {
+          const response = await fetch(`${signalingServerUrl}?peer_id=${peerId}`);
+          const data = await response.json();
+          if (data.status === 'ok' && data.peer_id !== peerId) {
+            await handleIncomingMessage(data);
+          }
+        } catch (error) {
+          console.error('Error polling server.', error);
         }
       }, 3000);
     }
 
     start();
-    pollServer();
   </script>
 </body>
 </html>
