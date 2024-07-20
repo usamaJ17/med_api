@@ -117,20 +117,4 @@ Route::group(['prefix' => 'payment'], function () {
 
 Route::post('send_sms',[HelperController::class,'sendSms']);
 
-Route::post('/signaling', function (Request $request) {
-  $client = new \GuzzleHttp\Client();
-  $response = $client->post('https://deluxehospital.com/signaling.php', [
-      'json' => $request->all(),
-  ]);
-
-  return $response->getBody();
-});
-
-Route::get('/signaling', function (Request $request) {
-  $client = new \GuzzleHttp\Client();
-  $response = $client->get('https://deluxehospital.com/signaling.php', [
-      'query' => $request->all(),
-  ]);
-
-  return $response->getBody();
-});
+Route::get('get_sdk_key',[HelperController::class,'getSdkKey']);
