@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/sym', function () {
     Artisan::call('route:clear');
     Artisan::call('config:clear');
