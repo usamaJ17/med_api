@@ -70,7 +70,7 @@ Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbac
 Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
 
 Route::get('/',function(){
-  return redirect()->route('dashboard');
+  dd("Welcome to the home page");
 })->name('home');
 Route::get('/login',[dashboardController::class,'login'])->name('login.form');
 Route::post('/login',[AuthController::class,'adminLogin'])->name('login');
