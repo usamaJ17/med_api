@@ -248,6 +248,11 @@ class AuthController extends Controller
            'message'=> 'Logout Successfully...',
         ], 200);
     }
+    public function AdminLogout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('login.form');
+    }
     public function savePersonalDetails(Request $request){
         $user = User::find(Auth::user()->id);
         if(null !== $request->file('profile_image')){

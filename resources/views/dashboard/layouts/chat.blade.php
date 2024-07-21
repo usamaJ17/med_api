@@ -55,7 +55,7 @@
                 <div class="chat-msg user">
                     <div class="d-flex align-items-center">
                         <span class="msg-avatar">
-                            <img src="../images/avatar/2.jpg" class="avatar avatar-lg">
+                            <img src="{{ asset('dashboard/images/avatar/2.jpg') }}" class="avatar avatar-lg">
                         </span>
                         <div class="mx-10">
                             <a href="#" class="text-dark hover-primary fw-bold">Mayra Sibley</a>
@@ -73,7 +73,7 @@
                             <p class="text-muted fs-12 mb-0">3 minutes</p>
                         </div>
                         <span class="msg-avatar">
-                            <img src="../images/avatar/3.jpg" class="avatar avatar-lg">
+                            <img src="{{ asset('dashboard/images/avatar/3.jpg') }}" class="avatar avatar-lg">
                         </span>
                     </div>
                     <div class="cm-msg-text">
@@ -83,7 +83,7 @@
                 <div class="chat-msg user">
                     <div class="d-flex align-items-center">
                         <span class="msg-avatar">
-                            <img src="../images/avatar/2.jpg" class="avatar avatar-lg">
+                            <img src="{{ asset('dashboard/images/avatar/2.jpg') }}" class="avatar avatar-lg">
                         </span>
                         <div class="mx-10">
                             <a href="#" class="text-dark hover-primary fw-bold">Mayra Sibley</a>

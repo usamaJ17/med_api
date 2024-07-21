@@ -115,7 +115,7 @@
                                 <div>
                                     <div class="d-flex align-items-center mb-10">
                                         <div class="me-15">
-                                            <img src="../images/avatar/1.jpg" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                        <img src="{{ asset('dashboard/images/avatar/1.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1 fw-500">
                                             <p class="hover-primary text-fade mb-1 fs-14">Shawn Hampton</p>
@@ -146,7 +146,7 @@
                                 <div>
                                     <div class="d-flex align-items-center mb-10">
                                         <div class="me-15">
-                                            <img src="../images/avatar/2.jpg" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                            <img src="{{ asset('dashboard/images/avatar/2.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1 fw-500">
                                             <p class="hover-primary text-fade mb-1 fs-14">Polly Paul</p>
@@ -177,7 +177,7 @@
                                 <div>
                                     <div class="d-flex align-items-center mb-10">
                                         <div class="me-15">
-                                            <img src="../images/avatar/3.jpg" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                            <img src="{{ asset('dashboard/images/avatar/3.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1 fw-500">
                                             <p class="hover-primary text-fade mb-1 fs-14">Johen Doe</p>
@@ -342,7 +342,7 @@
                     <div class="inner-user-div3">
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15">
-                                <img src="../images/avatar/avatar-1.png" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                <img src="{{ asset('dashboard/images/avatar/avatar-1.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500">
                                 <a href="#" class="text-dark hover-primary mb-1 fs-16">Dr. Jaylon Stanton</a>
@@ -367,7 +367,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15">
-                                <img src="../images/avatar/avatar-10.png" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                <img src="{{ asset('dashboard/images/avatar/avatar-10.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500">
                                 <a href="#" class="text-dark hover-danger mb-1 fs-16">Dr. Carla Schleifer</a>
@@ -392,7 +392,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15">
-                                <img src="../images/avatar/avatar-11.png" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                <img src="{{ asset('dashboard/images/avatar/avatar-11.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500">
                                 <a href="#" class="text-dark hover-success mb-1 fs-16">Dr. Hanna Geidt</a>
@@ -417,7 +417,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15">
-                                <img src="../images/avatar/avatar-12.png" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                <img src="{{ asset('dashboard/images/avatar/avatar-12.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500">
                                 <a href="#" class="text-dark hover-info mb-1 fs-16">Dr. Roger George</a>
@@ -442,7 +442,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <div class="me-15">
-                                <img src="../images/avatar/avatar-15.png" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
+                                <img src="{{ asset('dashboard/images/avatar/avatar-15.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500">
                                 <a href="#" class="text-dark hover-warning mb-1 fs-16">Dr. Natalie doe</a>
@@ -474,7 +474,7 @@
                 </div>
                 <div class="box-body text-center">
                     <div class="mb-0">
-                        <img src="../images/avatar/avatar-12.png" width="100" class="rounded-circle bg-info-light" alt="user">
+                        <img src="{{ asset('dashboard/images/avatar/avatar-12.png') }}" width="100" class="rounded-circle bg-info-light" alt="user">
                         <h3 class="mt-20 mb-0">Dr. Johen Doe</h3>
                         <p class="mb-0">Cardiologists</p>
                     </div>
@@ -483,7 +483,7 @@
                     <div class="row">
                         <div class="col-6 be-1">
                             <div class="d-flex align-items-center">
-                                <img src="../images/health-1.png" class="img-fluid me-10 w-50" alt="" />
+                                <img src="{{ asset('dashboard/images/health-1.png') }}" class="img-fluid me-10 w-50" alt="" />
                                 <div>
                                     <h2 class="mb-0 text-white">10</h2>
                                     <p class="mb-0 text-white-50">Operations</p>
@@ -492,7 +492,7 @@
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center">
-                                <img src="../images/health-2.png" class="img-fluid me-10 w-50" alt="" />
+                                <img src="{{ asset('dashboard/images/health-2.png') }}" class="img-fluid me-10 w-50" alt="" />
                                 <div>
                                     <h2 class="mb-0 text-white">47</h2>
                                     <p class="mb-0 text-white-50">Patients</p>

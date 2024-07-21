@@ -15,9 +15,11 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->role != 'admin') {
-            return redirect()->route('login.form')->with(['message' => 'You are not authorized to access this page'], 403);
+        if(auth()->check()){
+            if (auth()->user()->hasRole('admin')) {
+                return $next($request);
+            }
         }
-        return $next($request);
+        return redirect()->route('login.form')->with(['message' => 'You are not authorized to access this page'], 403);
     }
 }

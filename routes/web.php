@@ -29,6 +29,7 @@ Route::get('/', function () {
 
 Route::get('/login', [DashboardController::class, 'login'])->name('login.form');
 Route::post('/login', [AuthController::class, 'adminLogin'])->name('login');
+Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
 
 Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
