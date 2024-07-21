@@ -8,6 +8,10 @@ class dashboardController extends Controller
 {
     //
     public function login(){
-        return view('login');
+        return view('dashboard.auth.login');
+    }
+    public function index(){
+        dd(auth()->user());
+        return view('dashboard.index');
     }
 }

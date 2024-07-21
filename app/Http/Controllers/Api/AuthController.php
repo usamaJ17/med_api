@@ -128,6 +128,21 @@ class AuthController extends Controller
             ], 200);
         }
     }
+    public function adminLogin(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+        $user = User::where('email',$request->email)->first();
+        if(!$user || !Hash::check($request->password,$user->password)){
+            return redirect()->back()->with('error','Invalid Email OR Password...');
+        }else if($user->role != 'admin'){
+            return redirect()->back()->with('error','Invalid Email OR Password...');
+        }else{
+            Auth::login($user);
+            return redirect()->route('admin.dashboard');
+        }
+    }
     public function SendForgotPassword(Request $request): JsonResponse
     {
     	$user = User::where('email',$request->email)->first();

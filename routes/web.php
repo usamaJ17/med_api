@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SignalingController;
 use Illuminate\Support\Facades\Artisan;
@@ -66,3 +68,14 @@ Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay'
 Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback'])->name('callback');
 
 Route::any('crypto_call', [PaymentController::class, 'crypto_call'])->name('crypto_call');
+
+Route::get('/',function(){
+  return redirect()->route('dashboard');
+})->name('home');
+Route::get('/login',[dashboardController::class,'login'])->name('login.form');
+Route::post('/login',[AuthController::class,'adminLogin'])->name('login');
+
+// Route::group(['prefix' => 'dashboard'], function () {
+//   Route::get('/',[dashboardController::class,'index'])->name('dashboard'); 
+// });
+Route::get('dashboard',[dashboardController::class,'index'])->name('dashboard'); 
