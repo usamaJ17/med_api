@@ -27,6 +27,16 @@
 	<script src="{{ asset('dashboard/js/vendors.min.js') }}"></script>
 	<script src="{{ asset('dashboard/js/pages/chat-popup.js') }}"></script>
     <script src="{{ asset('dashboard/assets/icons/feather-icons/feather.min.js') }}"></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+        appId: "{{ env('SIGNAL_APP_ID') }}",
+        });
+        console.log(OneSignal);
+    });
+    </script>
     @yield('script')
 
 </body>
