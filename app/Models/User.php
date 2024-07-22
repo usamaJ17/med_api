@@ -39,7 +39,8 @@ class User extends Authenticatable implements HasMedia
         'language',
         'is_live',
         'forgot_password',
-        'speak'
+        'speak',
+        'device_token',
     ];
 
     /**
