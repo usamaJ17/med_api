@@ -44,7 +44,6 @@ class PaymentController extends Controller
         $headers = [
         'x-api-key' => env('NOW_PAYMENT_API_KEY'),
         ];
-        dd(env('NOW_PAYMENT_URL').'/currencies');
         $request = new Psr7Request('GET', 'https://api-sandbox.nowpayments.io/v1/currencies', $headers);
         $res = $client->sendAsync($request)->wait();
         $data = [
