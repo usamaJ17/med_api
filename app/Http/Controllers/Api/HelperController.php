@@ -131,6 +131,9 @@ class HelperController extends Controller
         echo $response;
     }
     public function getSdkKey(){
-        return response()->json(['status' => 200, 'message' => 'SDK Key fetched successfully', 'data' => env('SDK_KEY')], 200);
+        return response()->json([
+            'status' => 200, 'message' => 'SDK Key fetched successfully',
+            'data' => env('SDK_KEY')
+        ], 200);
     }
 }
