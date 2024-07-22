@@ -140,7 +140,7 @@ class AuthController extends Controller
             return redirect()->back()->with('error','Invalid Email OR Password...');
         }else{
             Auth::login($user);
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('dashboard');
         }
     }
     public function SendForgotPassword(Request $request): JsonResponse
