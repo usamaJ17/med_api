@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AppointmentHoursController;
 use App\Http\Controllers\Api\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\Api\LikeController;
@@ -104,6 +105,13 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   // sub accounts
   Route::get('get_sub_accounts',[AuthController::class,'getSubAccounts']);
   Route::get('login_as_sub',[AuthController::class,'loginToSubAccount']);
+
+  // chat APIs
+  Route::get('chats',[ChatController::class,'getAllChats']);
+  Route::post('send_message',[ChatController::class,'sendMessage']);
+  Route::get('get_messages',[ChatController::class,'getMessage']);
+  Route::delete('delete_messages',[ChatController::class,'deleteMessage']);
+  // Route::get('new_chats',[ChatController::class,'createChatBox']);
 
 });
 Route::group(['prefix' => 'payment'], function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\ChatBox;
 use App\Models\Review;
 use Illuminate\Http\Request;
 
@@ -286,6 +287,15 @@ class AppointmentController extends Controller
         $app = Appointment::find($request->id);
         $app->is_paid = 1;
         $app->save();
+        // create a chatbox between patient and professional
+        $box = ChatController::createChatBox($app->user_id, $app->med_id);
+        if($box != true){
+            $data = [
+                'status' => 404,
+                'message' => 'Chat Box not created',
+            ];
+            return response()->json($data, 200);
+        }
         $data = [
             'status' => 200,
             'message' => 'Appointment Marked as paid',
