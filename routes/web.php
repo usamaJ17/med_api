@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MedicalController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SignalingController;
 use Illuminate\Support\Facades\Artisan;
@@ -33,4 +35,6 @@ Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
 
 Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('patient', PatientController::class);
+    Route::resource('medical', MedicalController::class);
 });

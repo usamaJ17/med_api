@@ -31,10 +31,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	  <div class="container-full">
-		<!-- Main content -->
-		<section class="content">
 			@yield('content')
-		</section>
 		<!-- /.content -->
 	  </div>
   </div>
@@ -56,6 +53,7 @@
 	
 	<script src="{{ asset('dashboard/assets/vendor_components/apexcharts-bundle/dist/apexcharts.js')}}"></script>
 	<script src="{{ asset('dashboard/assets/vendor_components/OwlCarousel2/dist/owl.carousel.js')}}"></script>
+	<script src="{{ asset('dashboard/assets/vendor_components/datatable/datatables.min.js')}}"></script>
 	
 	
 	<!-- Rhythm Admin App -->

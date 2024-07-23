@@ -4,6 +4,7 @@
     Dashboard
 @endsection
 @section('content')
+<div class="section">
     <div class="row">
         <div class="col-xl-8 col-12">
             <div class="box">
@@ -527,4 +528,5 @@
             
         </div>
     </div>	
+</div>
 @endsection		

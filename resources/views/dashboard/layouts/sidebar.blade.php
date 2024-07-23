@@ -13,28 +13,19 @@
 		  <div class="multinav-scroll" style="height: 100%;">	
 			  <!-- sidebar menu-->
 			  <ul class="sidebar-menu" data-widget="tree">			
-				<li class="treeview">
-				  <a href="#">
-					<i data-feather="monitor"></i>
-					<span>Dashboard</span>
-					<span class="pull-right-container">
-					  <i class="fa fa-angle-right pull-right"></i>
-					</span>
-				  </a>
-				  <ul class="treeview-menu">
-					<li><a href="index.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard 1</a></li>
-					<li><a href="index2.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard 2</a></li>
-					<li><a href="index3.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard 3</a></li>
-					<li><a href="index4.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard 4</a></li>
-				  </ul>
-				</li>
-				<li>
+				<li class="@yield('dashboard')">
+					<a href="{{ route('dashboard') }}">
+					  <i data-feather="monitor"></i>
+					  <span>Dashboard</span>
+					</a>
+				  </li>		
+				{{-- <li>
 				  <a href="appointments.html">
 					<i data-feather="calendar"></i>
-					<span>Appointments</span>
+					<span>Users</span>
 				  </a>
-				</li>			
-				<li class="treeview">
+				</li>			 --}}
+				<li class="treeview @yield('patient')">
 				  <a href="#">
 					<i data-feather="users"></i>
 					<span>Patients</span>
@@ -43,21 +34,21 @@
 					</span>
 				  </a>
 				  <ul class="treeview-menu">
-					<li><a href="patients.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Patients</a></li>
-					<li><a href="patient_details.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Patient Details</a></li>
+					<li class="@yield('patient.all')"><a href="{{ route('patient.index') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>List All</a></li>
+					{{-- <li><a href="patient_details.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Patient Details</a></li> --}}
 				  </ul>
 				</li>				
-				<li class="treeview">
+				<li class="treeview @yield('medical')">
 				  <a href="#">
 					<i data-feather="activity"></i>
-					<span>Doctors</span>
+					<span>Medical Professionals</span>
 					<span class="pull-right-container">
 					  <i class="fa fa-angle-right pull-right"></i>
 					</span>
 				  </a>
 				  <ul class="treeview-menu">
-					<li><a href="doctor_list.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Doctors</a></li>
-					<li><a href="doctors.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Doctor Details</a></li>
+					<li class="@yield('medical.all')"><a href="{{ route('medical.index') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>List All</a></li>
+					<li class="@yield('medical.verify')"><a href="doctors.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Verification Requests</a></li>
 				  </ul>
 				</li>
 				<li class="treeview">
