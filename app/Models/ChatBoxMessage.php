@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class ChatBoxMessage extends Model
+class ChatBoxMessage extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
+
     protected $table = 'chat_box_messages';
-    protected $fillable = ['chat_box_id', 'from_user_id', 'to_user_id', 'message', 'is_read'];
+    protected $fillable = ['chat_box_id', 'from_user_id','message_type', 'to_user_id', 'message', 'is_read'];
     protected $appends = ['type'];
+    protected $hidden = ['media'];
 
     public function fromUser()
     {
@@ -37,5 +41,13 @@ class ChatBoxMessage extends Model
     public function getTypeAttribute()
     {
         return $this->from_user_id == auth()->id() ? 'sent' : 'received';
+    }
+    public function getMessageAttribute()
+    {
+        $media = $this->getFirstMedia();
+        if ($media) {
+            return $media->getFullUrl();
+        }
+        return $this->attributes['message'];
     }
 }

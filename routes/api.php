@@ -110,6 +110,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('chats',[ChatController::class,'getAllChats']);
   Route::post('send_message',[ChatController::class,'sendMessage']);
   Route::get('get_messages',[ChatController::class,'getMessage']);
+  Route::get('get_new_messages',[ChatController::class,'getNewMessage']);
   Route::delete('delete_messages',[ChatController::class,'deleteMessage']);
   // Route::get('new_chats',[ChatController::class,'createChatBox']);
 

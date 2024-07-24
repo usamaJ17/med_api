@@ -49,15 +49,22 @@ class ChatController extends Controller
                 $message = $chatbox->messages()->create([
                     'from_user_id' => auth()->id(),
                     'to_user_id' => $request->to_user_id,
-                    'message' => $request->message,
-                    'is_read' => 0
+                    'message_type' => $request->message_type
                 ]);
+                if($request->hasFile('message')){
+                    $message->addMediaFromRequest('message')
+                        ->toMediaCollection();
+                }else{
+                    $message->message = $request->message;
+                    $message->save();
+                }
+                $msg = ChatBoxMessage::find($message->id);
                 $chatbox->notification_to = $request->to_user_id;
                 $chatbox->save();
                 $data = [
                     'status' => 201,
                     'message' => 'Message Sent Successfully',
-                    'data' => $message
+                    'data' => $msg
                 ];
                 return response()->json($data);
             }else{
@@ -79,11 +86,40 @@ class ChatController extends Controller
         $chatbox = ChatBox::find($request->chat_box_id);
         if($chatbox){
             $messages = $chatbox->messages;
-                $data = [
-                    'status' => 200,
-                    'message' => 'Messages Fetched Successfully',
-                    'data' => $messages
-                ];
+            $latest_message_id = $messages->last()->id;
+            $msg = [
+                'chats' => $messages,
+                'last_message_id' => $latest_message_id
+            ];
+            $data = [
+                'status' => 200,
+                'message' => 'Messages Fetched Successfully',
+                'data' => $msg
+            ];
+            return response()->json($data);
+        }else{
+            $data = [
+                'status' => 404,
+                'message' => 'Chat Box Not Found',
+            ];
+            return response()->json($data);
+        }
+    }
+    public function getNewMessage(Request $request){
+        $chatbox = ChatBox::find($request->chat_box_id);
+        if($chatbox){
+            $messages = ChatBoxMessage::where('chat_box_id', $request->chat_box_id)
+                ->where('id', '>', $request->last_message_id)
+                ->get();
+            $msg = [
+                'chats' => $messages,
+                'last_message_id' => $messages->last()->id
+            ];
+            $data = [
+                'status' => 200,
+                'message' => 'Messages Fetched Successfully',
+                'data' => $msg
+            ];
             return response()->json($data);
         }else{
             $data = [
