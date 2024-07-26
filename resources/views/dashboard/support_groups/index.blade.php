@@ -96,11 +96,11 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Generate Excel</button>
                 </div>
             </form>
-            </div>
         </div>
+    </div>
         <!-- /.content -->
     @endsection
     @section('script')

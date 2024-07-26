@@ -39,6 +39,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('patient', PatientController::class);
     Route::resource('medical', MedicalController::class);
+    Route::get('export/medical', [MedicalController::class,'export'])->name('medical.export');
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
     Route::resource('support_groups', SupportGroupController::class);
     // dynamic
@@ -53,4 +54,5 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('dynamic/category', [DynamicCatagoryController::class,'category'])->name('dynamic.category');
     Route::delete('dynamic/category/delete/{id}', [DynamicCatagoryController::class,'deleteCategory'])->name('dynamic.category.delete');
     Route::post('dynamic/category/store', [DynamicCatagoryController::class,'storeCategory'])->name('dynamic.category.store');
+
 });

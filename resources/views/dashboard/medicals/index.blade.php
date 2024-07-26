@@ -79,6 +79,30 @@
             </div>
         </div>			
     </section>
+    <div class="modal fade" id="add_new"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Export Option</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('medical.export') }}" method="GET">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name">Fields</label>
+                            <select class="form-control select2" multiple="" name="fields[]" data-placeholder="Select Columns" style="width: 100%;" aria-hidden="true">
+                                @foreach ($fields as $key => $field)
+                                    <option value="{{ $key }}">{{ $field }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <!-- /.content -->
 @endsection
 @section('script')
@@ -91,8 +115,23 @@
                 'searching': true,
                 'ordering': true,
                 'info': true,
-                'autoWidth': false 
+                'autoWidth': false,
+                'dom': 'Bfrtip',
+                'buttons': [
+                    {
+                        text: 'Export Data',
+                        className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
+                        action: function(e, dt, node, config) {
+                            $('#add_new').modal('show'); // Show the modal
+                        }
+                    }
+                ]
             })
+        });
+        $(document).ready(function() {
+            $('.select2').select2({
+                dropdownParent: $("#add_new")
+            });
         });
         function DeleteRecord(id){
             console.log(id);

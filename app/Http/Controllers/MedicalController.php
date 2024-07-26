@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProfessionalsExport;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MedicalController extends Controller
 {
@@ -13,7 +15,11 @@ class MedicalController extends Controller
     public function index()
     {
         $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks')->get();
-        return view('dashboard.medicals.index', compact('medicals'));
+        $fields = [];
+        if($medicals->count() > 0){
+            $fields = $medicals[0]->getAllProfessionalFields();
+        }
+        return view('dashboard.medicals.index', compact('medicals','fields'));
     }
     /**
      * Display a listing of the resource.
@@ -75,5 +81,13 @@ class MedicalController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Export in excel
+     */
+    public function export(Request $request)
+    {
+        return Excel::download(new ProfessionalsExport($request->all()), 'Professional.xlsx');
     }
 }

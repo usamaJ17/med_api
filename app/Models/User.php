@@ -43,6 +43,8 @@ class User extends Authenticatable implements HasMedia
         'speak',
         'device_token',
     ];
+    
+    protected $excludeFields = ['id','password', 'professional_type_id','user_id','language','parent_id','remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password','email_verified_at','otp_verified_at','device_token'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -167,5 +169,33 @@ class User extends Authenticatable implements HasMedia
     }
     public function children(){
         return $this->hasMany(User::class,'parent_id');
+    }
+    /**
+     * Get all fields except the excluded ones.
+     *
+     * @return array
+     */
+    public function getAllProfessionalFields()
+    {
+        // Get all the attributes of the current model
+        $allFields = array_keys($this->getAttributes());
+        $filteredFields = array_diff($allFields, $this->excludeFields);
+
+        // Get the related ProfessionalDetails model instance
+        $professionalDetails = $this->professionalDetails()->first();
+
+        if ($professionalDetails) {
+            // Get the attributes of the related model
+            $proAllFields = array_keys($professionalDetails->getAttributes());
+            $proFilteredFields = array_diff($proAllFields, $this->excludeFields);
+
+            // Merge the fields of the current model with the related model fields
+            $filteredFields = array_merge($filteredFields, $proFilteredFields);
+        }
+        $data = [];
+        foreach ($filteredFields as $field) {
+            $data[$field] = ucwords(str_replace('_', ' ', $field));
+        }
+        return $data;
     }
 }
