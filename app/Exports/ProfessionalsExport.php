@@ -41,6 +41,10 @@ class ProfessionalsExport implements FromCollection , WithHeadings
                     $temp[$field] = $medical->professionalDetails->professions->name;
                     continue;
                 }
+                if($medical->field == null && $medical->professionalDetails != null){
+                    $temp[$field] = $medical->professionalDetails->$field;
+                    continue;
+                }
                 $temp[$field] = $medical->$field;
             }
             $data[] = $temp;
