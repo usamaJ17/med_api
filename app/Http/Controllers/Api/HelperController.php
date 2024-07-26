@@ -136,4 +136,12 @@ class HelperController extends Controller
             'data' => env('SDK_KEY')
         ], 200);
     }
+    public function RequestVerification(Request $request){
+        $user = User::find(Auth::id());
+        $user->verification_requested_at = now();
+        $user->save();
+        return response()->json([
+            'status' => 200, 'message' => 'Verification Request sent successfully',
+        ], 200);
+    }
 }

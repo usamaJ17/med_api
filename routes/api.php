@@ -99,6 +99,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::get('professional/appointment/patients',[AppointmentController::class,'getMyPatientsAppointments']);
   Route::get('professional/patients',[AppointmentController::class,'getMyPatientsList']);
+  Route::post('professional/request_verification',[HelperController::class,'RequestVerification']);
   
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
 

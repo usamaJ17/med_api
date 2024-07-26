@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.app')
 
 @section('title')
-    Medicals
+    Medicals Verification
 @endsection
 @section('medical')
     active
 @endsection
-@section('medical.all')
+@section('medical.verify')
     active
 @endsection
 @section('content')
@@ -14,12 +14,13 @@
       <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Medical Professionals</h4>
+                <h4 class="page-title">Medical Professionals Verification</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Medical Professionals</li>
+                            <li class="breadcrumb-item" aria-current="page">Medical Professionals</li>
+                            <li class="breadcrumb-item active" aria-current="page">Verification</li>
                         </ol>
                     </nav>
                 </div>
@@ -44,8 +45,7 @@
                                         <th>Phone Number</th>
                                         <th>Type</th>
                                         <th>Rank</th>
-                                        <th>Last Appointment Date</th>
-                                        <th>Status</th>
+                                        <th>Verification Requested At</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -58,14 +58,12 @@
                                             <td>{{ $medical->contact }}</td>
                                             <td>{{ $medical->professionalDetails->professions->name }}</td>
                                             <td>{{ $medical->professionalDetails->ranks->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($medical->created_at)->format('d/m/Y')}}</td>
-                                            <td><span class="badge badge-danger-light">Verified</span></td>
+                                            <td>{{ \Carbon\Carbon::parse($medical->verification_requested_at)->format('d/m/Y H:m')}}</td>
                                             <td>												
                                                 <div class="btn-group">
                                                 <a class="hover-primary dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('medical.show',$medical->id ) }}">View Details</a>
-                                                    <a class="dropdown-item" onclick="DeleteRecord({{ $medical->id }})">Delete</a>
                                                 </div>
                                                 </div>
                                             </td>

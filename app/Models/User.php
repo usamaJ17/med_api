@@ -29,6 +29,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'otp',
         'is_verified',
+        'verification_requested_at',
         'dob',
         'parent_id',
         'gender',

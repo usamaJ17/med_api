@@ -33,11 +33,11 @@ class ProfessionalDetails extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
-    public function profession()
+    public function professions()
     {
-        return $this->belongsTo(ProfessionalType::class, 'profession');
+        return $this->belongsTo(Professions::class, 'profession');
     }
-    public function rank()
+    public function ranks()
     {
         return $this->belongsTo(Ranks::class, 'rank');
     }

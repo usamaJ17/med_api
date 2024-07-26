@@ -18,13 +18,13 @@
 					  <i data-feather="monitor"></i>
 					  <span>Dashboard</span>
 					</a>
-				  </li>		
-				{{-- <li>
-				  <a href="appointments.html">
-					<i data-feather="calendar"></i>
-					<span>Users</span>
-				  </a>
-				</li>			 --}}
+				</li>		
+				<li class="@yield('support_groups')">
+					<a href="{{ route('support_groups.index') }}">
+					  <i data-feather="help-circle"></i>
+					  <span>Support Groups</span>
+					</a>
+				</li>		
 				<li class="treeview @yield('patient')">
 				  <a href="#">
 					<i data-feather="users"></i>
@@ -48,9 +48,23 @@
 				  </a>
 				  <ul class="treeview-menu">
 					<li class="@yield('medical.all')"><a href="{{ route('medical.index') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>List All</a></li>
-					<li class="@yield('medical.verify')"><a href="doctors.html"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Verification Requests</a></li>
+					<li class="@yield('medical.verify')"><a href="{{ route('medical.verify') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Verification Requests</a></li>
 				  </ul>
 				</li>
+				<li class="treeview @yield('dynamic')">
+					<a href="#">
+					  <i data-feather="align-justify"></i>
+					  <span>Dynamic Fields</span>
+					  <span class="pull-right-container">
+						<i class="fa fa-angle-right pull-right"></i>
+					  </span>
+					</a>
+					<ul class="treeview-menu">
+					  <li class="@yield('dynamic.title')"><a href="{{ route('dynamic.title') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Professionals Titles</a></li>
+					  <li class="@yield('dynamic.category')"><a href="{{ route('dynamic.category') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Professionals Category</a></li>
+					  <li class="@yield('dynamic.rank')"><a href="{{ route('dynamic.rank') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Professionals Ranks</a></li>
+					</ul>
+				  </li>
 				<li class="treeview">
 				  <a href="#">
 					<i data-feather="package"></i>

@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DynamicCatagoryController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SignalingController;
+use App\Http\Controllers\SupportGroupController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +39,18 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('patient', PatientController::class);
     Route::resource('medical', MedicalController::class);
+    Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
+    Route::resource('support_groups', SupportGroupController::class);
+    // dynamic
+    Route::get('dynamic/title', [DynamicCatagoryController::class,'title'])->name('dynamic.title');
+    Route::delete('dynamic/title/delete/{name}', [DynamicCatagoryController::class,'deleteTitle'])->name('dynamic.title.delete');
+    Route::post('dynamic/title/store', [DynamicCatagoryController::class,'storeTitle'])->name('dynamic.title.store');
+
+    Route::get('dynamic/rank', [DynamicCatagoryController::class,'rank'])->name('dynamic.rank');
+    Route::delete('dynamic/rank/delete/{name}', [DynamicCatagoryController::class,'deleterank'])->name('dynamic.rank.delete');
+    Route::post('dynamic/rank/store', [DynamicCatagoryController::class,'storerank'])->name('dynamic.rank.store');
+
+    Route::get('dynamic/category', [DynamicCatagoryController::class,'category'])->name('dynamic.category');
+    Route::delete('dynamic/category/delete/{id}', [DynamicCatagoryController::class,'deleteCategory'])->name('dynamic.category.delete');
+    Route::post('dynamic/category/store', [DynamicCatagoryController::class,'storeCategory'])->name('dynamic.category.store');
 });
