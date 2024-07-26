@@ -30,25 +30,23 @@ class ProfessionalsExport implements FromCollection , WithHeadings
     {
         $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks')->get();
         $data = [];
-        foreach($medicals as $medical){
+        foreach ($medicals as $medical) {
             $temp = [];
-            foreach($this->fields as $field){
-                if($field == 'rank'){
-                    $temp[$field] = $medical->professionalDetails->ranks->name;
+            foreach ($this->fields as $field) {
+                if ($field == 'rank' && $medical->professionalDetails) {
+                    $temp[$field] = $medical->professionalDetails->ranks->name ?? null;
                     continue;
                 }
-                if($field == 'profession'){
-                    $temp[$field] = $medical->professionalDetails->professions->name;
+                if ($field == 'profession' && $medical->professionalDetails) {
+                    $temp[$field] = $medical->professionalDetails->professions->name ?? null;
                     continue;
                 }
-                if($medical->field == null ){
-                    if($medical->professionalDetails != null){
-                        $temp[$field] = $medical->professionalDetails->$field;
-                    }else{
-                        $temp[$field] = null;
-                    }
-                }else{
+                if (isset($medical->$field)) {
                     $temp[$field] = $medical->$field;
+                } elseif ($medical->professionalDetails && isset($medical->professionalDetails->$field)) {
+                    $temp[$field] = $medical->professionalDetails->$field;
+                } else {
+                    $temp[$field] = null;
                 }
             }
             $data[] = $temp;
