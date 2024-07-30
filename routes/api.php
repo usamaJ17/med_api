@@ -115,6 +115,14 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::delete('delete_messages',[ChatController::class,'deleteMessage']);
   // Route::get('new_chats',[ChatController::class,'createChatBox']);
 
+  // followers and following
+  Route::post('follow',[HelperController::class,'follow']);
+  Route::get('followers',[HelperController::class,'getFollowers']);
+  Route::get('following',[HelperController::class,'getFollowing']);
+  Route::post('unfollow',[HelperController::class,'unfollow']);
+  
+
+
 });
 Route::group(['prefix' => 'payment'], function () {
   Route::group(['prefix' => 'crypto'], function () {

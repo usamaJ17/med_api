@@ -59,7 +59,7 @@ class User extends Authenticatable implements HasMedia
         'roles',
         'media'
     ];
-     protected $appends = ['role','professional_type_name','profile_image'];
+     protected $appends = ['role','professional_type_name','profile_image','followers_count','following_count'];
 
     /**
      * The attributes that should be cast.
@@ -197,5 +197,21 @@ class User extends Authenticatable implements HasMedia
             $data[$field] = ucwords(str_replace('_', ' ', $field));
         }
         return $data;
+    }
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
+    }
+    public function getFollowersCountAttribute()
+    {
+        return $this->followers()->count();
+    }
+    public function getFollowingCountAttribute()
+    {
+        return $this->following()->count();
     }
 }

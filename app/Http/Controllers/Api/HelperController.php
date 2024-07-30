@@ -144,4 +144,36 @@ class HelperController extends Controller
             'status' => 200, 'message' => 'Verification Request sent successfully',
         ], 200);
     }
+    public function follow(Request $request){
+        $user = User::find(Auth::id());
+        $follow = User::find($request->follow_id);
+        $user->following()->attach($follow->id);
+        return response()->json([
+            'status' => 200, 'message' => 'Followed successfully',
+        ], 200);
+    }
+    public function unfollow(Request $request){
+        $user = User::find(Auth::id());
+        $follow = User::find($request->follow_id);
+        $user->following()->detach($follow->id);
+        return response()->json([
+            'status' => 200, 'message' => 'Unfollowed successfully',
+        ], 200);
+    }
+    public function getFollowers(){
+        $user = User::find(Auth::id());
+        $followers = $user->followers;
+        return response()->json([
+            'status' => 200, 'message' => 'Followers fetched successfully',
+            'data' => $followers,
+        ], 200);
+    }
+    public function getFollowing(){
+        $user = User::find(Auth::id());
+        $following = $user->following;
+        return response()->json([
+            'status' => 200, 'message' => 'Following fetched successfully',
+            'data' => $following,
+        ], 200);
+    }
 }
