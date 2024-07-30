@@ -101,4 +101,14 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function addShare($article_id){
+        $article = Article::find($article_id);
+        $article->shares = $article->shares + 1;
+        $article->save();
+        $data = [
+            'status' => 200,
+            'message' => 'Article share count updated successfully',
+        ];
+        return response()->json($data, 200);
+    }
 }

@@ -176,4 +176,13 @@ class HelperController extends Controller
             'data' => $following,
         ], 200);
     }
+    public function checkFollow(Request $request){
+        $user = User::find(Auth::id());
+        $follow = User::find($request->follow_id);
+        $is_following = $user->following->contains($follow->id);
+        return response()->json([
+            'status' => 200, 'message' => 'Follow status checked successfully',
+            'data' => ['is_following' => $is_following],
+        ], 200);
+    }
 }

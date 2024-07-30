@@ -72,9 +72,13 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('articles/{article}/comments', [CommentController::class, 'store']);
   Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+  Route::get('get_comments/{article_id}', [CommentController::class, 'getComments']);
 
   Route::post('articles/{article}/likes', [LikeController::class, 'store']);
   Route::delete('articles/{article}/likes', [LikeController::class, 'destroy']);
+  Route::get('check_like/{article}', [LikeController::class, 'checkLike']);
+
+  Route::post('articles/share/{article_id}', [ArticleController::class, 'addShare']);
 
   // appointments
   Route::post('/appointments', [AppointmentHoursController::class, 'store']);
@@ -120,6 +124,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('followers',[HelperController::class,'getFollowers']);
   Route::get('following',[HelperController::class,'getFollowing']);
   Route::post('unfollow',[HelperController::class,'unfollow']);
+  Route::get('check_follow',[HelperController::class,'checkFollow']);
   
 
 

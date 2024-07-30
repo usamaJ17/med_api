@@ -11,7 +11,7 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['user_id', 'title', 'body', 'thumbnail'];
+    protected $fillable = ['user_id', 'title', 'body', 'thumbnail','share_count'];
     protected $hidden = ['user'];
 
     public function user()
@@ -28,7 +28,7 @@ class Article extends Model implements HasMedia
     {
         return $this->hasMany(Like::class);
     }
-    protected $appends = ['author','thumbnail_url','video_url'];
+    protected $appends = ['author','thumbnail_url','video_url','like_count','comment_count'];
 
     public function getAuthorAttribute()
     {
@@ -41,5 +41,13 @@ class Article extends Model implements HasMedia
     public function getVideoUrlAttribute()
     {
         return $this->getFirstMediaUrl('video');
+    }
+    public function getLikeCountAttribute()
+    {
+        return $this->likes->count();
+    }
+    public function getCommentCountAttribute()
+    {
+        return $this->comments->count();
     }
 }

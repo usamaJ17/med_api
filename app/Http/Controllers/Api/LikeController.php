@@ -38,4 +38,21 @@ class LikeController extends Controller
 
         return response()->json($data, 200);
     }
+    public function checkLike($article){
+        $like = Like::where('article_id',$article)->where('user_id',Auth::id())->first();
+        if($like){
+            $data = [
+                'status' => 200,
+                'message' => 'Like found',
+                'data' => ['like' => 1],
+            ];
+        }else{
+            $data = [
+                'status' => 404,
+                'message' => 'Like not found',
+                'data' => ['like' => 0],
+            ];
+        }
+        return response()->json($data, 200);
+    }
 }
