@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles , InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -43,8 +43,8 @@ class User extends Authenticatable implements HasMedia
         'speak',
         'device_token',
     ];
-    
-    protected $excludeFields = ['id','password', 'professional_type_id','user_id','language','parent_id','remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password','email_verified_at','otp_verified_at','device_token'];
+
+    protected $excludeFields = ['id', 'password', 'professional_type_id', 'user_id', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,7 +59,7 @@ class User extends Authenticatable implements HasMedia
         'roles',
         'media'
     ];
-     protected $appends = ['role','professional_type_name','profile_image','followers_count','following_count'];
+    protected $appends = ['role', 'professional_type_name', 'profile_image', 'followers_count', 'following_count'];
 
     /**
      * The attributes that should be cast.
@@ -73,7 +73,7 @@ class User extends Authenticatable implements HasMedia
     ];
     public function getRoleAttribute()
     {
-        return $this->roles->pluck('name')[0] ?? ''  ;
+        return $this->roles->pluck('name')[0] ?? '';
     }
     public function getProfessionalTypeNameAttribute()
     {
@@ -164,11 +164,13 @@ class User extends Authenticatable implements HasMedia
     {
         return Review::where('user_id', $this->id)->get();
     }
-    public function parent(){
-        return $this->belongsTo(User::class,'parent_id');
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
     }
-    public function children(){
-        return $this->hasMany(User::class,'parent_id');
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
     }
     /**
      * Get all fields except the excluded ones.
@@ -214,4 +216,29 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->following()->count();
     }
+    public function GetAllMedia()
+    {
+        $array = [];
+        $med_details = $this->medicalDetails;
+        $pro_details = $this->professionalDetails;
+    
+        if ($med_details) {
+            foreach ($med_details->media as $media) {
+                $key = ucfirst(str_replace("file_type_", "", $media->collection_name));
+                $array[$key] = $media->getUrl();
+            }
+        }
+    
+        if ($pro_details) {
+            $pro_media_urls = [
+                'ID Card' => $pro_details->id_card,
+                'Signature' => $pro_details->signature,
+                'Degree File' => $pro_details->degree_file,
+            ];
+            $array = array_merge($array, $pro_media_urls);
+        }
+    
+        return $array;
+    }
+    
 }

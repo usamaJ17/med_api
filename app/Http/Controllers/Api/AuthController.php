@@ -330,4 +330,13 @@ class AuthController extends Controller
             ], 401);
         }
     }
+    public function saveDeviceToken(Request $request){
+        $user = User::find(Auth::user()->id);
+        $user->device_token = $request->device_token;
+        $user->save();
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Device Token Saved Successfully...',
+        ], 200);
+    }
 }

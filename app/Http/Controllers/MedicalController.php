@@ -53,7 +53,8 @@ class MedicalController extends Controller
     {
         $medical = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks')->find($id);
         if($medical){
-            return view('dashboard.medicals.show', compact('medical'));
+            $docs = $medical->GetAllMedia() ?? [];
+            return view('dashboard.medicals.show', compact('medical','docs'));
         }else{
             return redirect()->back()->with('error', 'Medical not found');
         }

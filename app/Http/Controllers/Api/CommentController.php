@@ -42,7 +42,7 @@ class CommentController extends Controller
         return response()->json($data, 200);
     }
     public function getComments($article_id){
-        $comments = Comment::where('article_id',$article_id)->get();
+        $comments = Comment::with('user')->where('article_id',$article_id)->get();
         $data = [
             'status' => 200,
             'message' => 'All comments fetched successfully',
