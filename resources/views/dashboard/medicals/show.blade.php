@@ -33,9 +33,19 @@
     <section class="content">
         <div class="row">
             <div class="col-xl-8 col-12">
-                <div class="box bt-3 border-primary">
-                    <div class="box-body text-end min-h-150"
+                <div class="box bt-3 border-success">
+                    <div class="box-body ribbon-box text-end min-h-150"
                         style="background-image:url({{ asset('dashboard/images/auth-bg/bg-8.jpg') }}); background-repeat: no-repeat; background-position: center;background-size: cover;">
+                        <div
+                            class="ribbon-two @if ($medical->is_verified) ribbon-two-primary  @else ribbon-two-danger @endif ">
+                            <span>
+                                @if ($medical->is_verified)
+                                    Verified
+                                @else
+                                    Un Verified
+                                @endif
+                            </span>
+                        </div>
                         <div class="bg-success rounded10 p-15 fs-18 d-inline"><i class="fa fa-stethoscope"></i>
                             {{ $medical->professionalDetails->professions->name }}</div>
                     </div>
@@ -52,11 +62,82 @@
                         </div>
                     </div>
                     <div class="box-body">
+                        <div class="mb-0 pull-right">
+                            <input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-success" @if ($medical->can_emergency) checked @endif >
+                            <label for="md_checkbox_23">Receive Emergency Calls</label>
+                        </div>
                         <h4>Biography</h4>
                         <p>{{ $medical->professionalDetails->bio }}</p>
                     </div>
                 </div>
-                <div class="box bt-3 border-primary">
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">User Information</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">First Name</th>
+                                        <td scope="col">{{ $medical->first_name }}</td>
+                                        <th scope="col">Last Name</th>
+                                        <td scope="col">{{ $medical->last_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Contact</th>
+                                        <td scope="col">{{ $medical->contact }}</td>
+                                        <th scope="col">Email</th>
+                                        <td scope="col">{{ $medical->email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Date of Birth</th>
+                                        <td scope="col">{{ $medical->dob }}</td>
+                                        <th scope="col">Gender</th>
+                                        <td scope="col">{{ $medical->gender }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Country</th>
+                                        <td scope="col">{{ $medical->country }}</td>
+                                        <th scope="col">State</th>
+                                        <td scope="col">{{ $medical->state }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">City</th>
+                                        <td scope="col">{{ $medical->city }}</td>
+                                        <th scope="col">Language</th>
+                                        <td scope="col">{{ $medical->language }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Profession</th>
+                                        <td scope="col">{{ $medical->professionalDetails->professions->name }}</td>
+                                        <th scope="col">Rank</th>
+                                        <td scope="col">{{ $medical->professionalDetails->ranks->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">License Authority</th>
+                                        <td scope="col">{{ $medical->professionalDetails->license_authority }}</td>
+                                        <th scope="col">Regestraion Number</th>
+                                        <td scope="col">{{ $medical->professionalDetails->regestraion_number }}</td>
+                                    </tr>   
+                                    <tr>
+                                        <th scope="col">Work At</th>
+                                        <td scope="col">{{ $medical->professionalDetails->work_at }}</td>
+                                        <th scope="col">Experence</th>
+                                        <td scope="col">{{ $medical->professionalDetails->experence }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Degree</th>
+                                        <td scope="col">{{ $medical->professionalDetails->degree }}</td>
+                                        <th scope="col">Institution</th>
+                                        <td scope="col">{{ $medical->professionalDetails->institution }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box bt-3 border-success">
                     <div class="box-header with-border">
                         <h4 class="box-title">Resent Review</h4>
                     </div>
@@ -118,13 +199,13 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <a href="#" class="waves-effect waves-light d-block w-p100 btn btn-primary">Load More
+                        <a href="#" class="waves-effect waves-light d-block w-p100 btn btn-success">Load More
                             Reviews</a>
                     </div>
                 </div>
             </div>
             <div class="col-xl-4 col-12">
-                <div class="box bt-3 border-primary">
+                <div class="box bt-3 border-success">
                     <div class="box-header">
                         <h4 class="box-title">Latest Appointments</h4>
                     </div>
@@ -212,9 +293,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="box bt-3 border-primary">
+                <div class="box bt-3 border-success">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Documents <small class="subtitle">Fetched  {{ count($docs) }} Documents</small></h4>
+                        <h4 class="box-title">Documents <small class="subtitle">Fetched {{ count($docs) }}
+                                Documents</small></h4>
                     </div>
                     <div class="box-body">
                         @foreach ($docs as $key => $item)
@@ -223,10 +305,18 @@
                                     <span><img src="{{ $item }}" alt=""></span>
                                 </div>
                                 <div class="d-flex flex-column fw-500">
-                                    <a href="{{ $item }}" target="_blank" class="text-dark hover-primary mb-1 fs-16"> {{$key}}</a>
+                                    <a href="{{ $item }}" target="_blank"
+                                        class="text-dark hover-primary mb-1 fs-16"> {{ $key }}</a>
                                 </div>
                             </div>
                         @endforeach
+                        @if (!$medical->is_verified)
+                            <button type="button" id="verify_btn"
+                                class="waves-effect waves-light btn btn-success mb-5">Verify Professional</button>
+                        @else
+                            <button type="button" id="un_verify_btn"
+                                class="waves-effect waves-light btn btn-danger mb-5">Un Verify Professional</button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -263,5 +353,56 @@
                 }
             });
         }
+        $('#verify_btn').on('click', function() {
+            $.ajax({
+                url: "{{ route('complete_verification') }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: "{{ $medical->id }}",
+                    status: 1
+                },
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        });
+        $('#un_verify_btn').on('click', function() {
+            $.ajax({
+                url: "{{ route('complete_verification') }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: "{{ $medical->id }}",
+                    status: 0
+                },
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        });
+        $('#md_checkbox_23').change(function() {
+                var isChecked = $(this).is(':checked');
+                var val = 0;
+                if(isChecked){
+                    val = 1;
+                }
+                
+                $.ajax({
+                    url: '{{ route("emergency_status") }}', // Replace with your endpoint URL
+                    type: 'POST',
+                    data: {
+                        can_emergency: val,
+                        id: "{{ $medical->id }}",
+                        _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
+                    },
+                    success: function(response) {
+                        console.log('Checkbox state updated successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error updating checkbox state:', error);
+                    }
+                });
+            });
     </script>
 @endsection

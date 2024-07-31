@@ -59,7 +59,7 @@
                                             <td>{{ $medical->professionalDetails->professions->name }}</td>
                                             <td>{{ $medical->professionalDetails->ranks->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($medical->created_at)->format('d/m/Y')}}</td>
-                                            <td><span class="badge badge-danger-light">Verified</span></td>
+                                            <td><span class="badge @if($medical->is_verified) badge-success-light @else badge-danger-light @endif">@if($medical->is_verified) Verified @else Un-Verified @endif</span></td>
                                             <td>												
                                                 <div class="btn-group">
                                                 <a class="hover-primary dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>

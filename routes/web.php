@@ -41,6 +41,8 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::resource('medical', MedicalController::class);
     Route::get('export/medical', [MedicalController::class,'export'])->name('medical.export');
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
+    Route::post('complete_verification', [MedicalController::class,'completeVerification'])->name('complete_verification');
+    Route::post('emergency_status', [MedicalController::class,'emergencyStatus'])->name('emergency_status');
     Route::resource('support_groups', SupportGroupController::class);
     // dynamic
     Route::get('dynamic/title', [DynamicCatagoryController::class,'title'])->name('dynamic.title');
@@ -54,6 +56,10 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('dynamic/category', [DynamicCatagoryController::class,'category'])->name('dynamic.category');
     Route::delete('dynamic/category/delete/{id}', [DynamicCatagoryController::class,'deleteCategory'])->name('dynamic.category.delete');
     Route::post('dynamic/category/store', [DynamicCatagoryController::class,'storeCategory'])->name('dynamic.category.store');
+
+    Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
+    Route::get('payments/payouts', [PaymentController::class,'payouts'])->name('payments.payouts');
+
 
 });
 

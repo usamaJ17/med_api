@@ -6,6 +6,7 @@ use App\Models\DynamicFiled;
 use App\Models\ProfessionalType;
 use App\Models\Ranks;
 use App\Models\SupportGroup;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DynamicCatagoryController extends Controller

@@ -91,4 +91,16 @@ class MedicalController extends Controller
     {
         return Excel::download(new ProfessionalsExport($request->all()), 'Professional.xlsx');
     }
+    public function completeVerification(Request $request){
+        $medical = User::find($request->id);
+        $medical->is_verified = $request->status;
+        $medical->save();
+        return response()->json(true);
+    }
+    public function emergencyStatus(Request $request){
+        $medical = User::find($request->id);
+        $medical->can_emergency = $request->can_emergency;
+        $medical->save();
+        return response()->json(true);
+    }
 }

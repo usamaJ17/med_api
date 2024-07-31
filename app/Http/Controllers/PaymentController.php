@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transactions;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
@@ -111,6 +112,21 @@ class PaymentController extends Controller
         $data = [
             'status' => $request->getStatusCode(),
             'data' => $status
+        ];
+        return response()->json($data,200);
+    }
+    public function transactions(){
+
+    }
+    public function payouts(){
+        
+    }
+    public function recordPayment(Request $request){
+        $request->merge(['user_id' => auth()->user()->id]);
+        Transactions::create($request->all());
+        $data = [
+            'status' => 200,
+            'message' => 'Payment Recorded Successfully'
         ];
         return response()->json($data,200);
     }
