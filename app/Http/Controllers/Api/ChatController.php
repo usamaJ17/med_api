@@ -49,8 +49,9 @@ class ChatController extends Controller
                 $message = $chatbox->messages()->create([
                     'from_user_id' => auth()->id(),
                     'to_user_id' => $request->to_user_id,
-                    'message_type' => $request->message_type
+                    'message_type' => $request->message_type,
                 ]);
+                dd($message);
                 if($request->hasFile('message')){
                     $message->addMediaFromRequest('message')
                         ->toMediaCollection();
