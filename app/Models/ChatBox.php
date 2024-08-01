@@ -11,7 +11,7 @@ class ChatBox extends Model
     protected $table = 'chat_box';
     protected $fillable = ['sender_id', 'receiver_id', 'status','notification_to'];
     protected $appends = ['notification','name'];
-    protected $hidden = ['notification_to','receiver','sender'];
+    protected $hidden = ['notification_to'];
 
 
     public function sender()

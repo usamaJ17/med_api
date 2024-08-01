@@ -108,7 +108,7 @@ class ChatController extends Controller
     public function getNewMessage(Request $request){
         $chatbox = ChatBox::find($request->chat_box_id);
         if($chatbox){
-            $messages = ChatBoxMessage::where('chat_box_id', $request->chat_box_id)
+            $messages = ChatBoxMessage::with('sender','receiver')->where('chat_box_id', $request->chat_box_id)
                 ->where('id', '>', $request->last_message_id)
                 ->get();
             $msg = [
