@@ -548,9 +548,10 @@
           opacity: 1
         },
         tooltip: {
+        theme: 'dark',
           y: {
             formatter: function (val) {
-              return "$ " + val + " thousands"
+              return val
             }
           },
 			marker: {
