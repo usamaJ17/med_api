@@ -86,7 +86,7 @@ class ChatController extends Controller
         $chatbox = ChatBox::find($request->chat_box_id);
         if($chatbox){
             $messages = $chatbox->messages;
-            $latest_message_id = $messages->last()->id;
+            $latest_message_id = $messages->last() ? $messages->last()->id : null;
             $msg = [
                 'chats' => $messages,
                 'last_message_id' => $latest_message_id
@@ -113,7 +113,7 @@ class ChatController extends Controller
                 ->get();
             $msg = [
                 'chats' => $messages,
-                'last_message_id' => $messages->last()->id
+                'last_message_id' => $messages->last() ? $messages->last()->id : null
             ];
             $data = [
                 'status' => 200,
