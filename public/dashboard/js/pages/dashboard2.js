@@ -44,72 +44,7 @@ $(function () {
         var chart = new ApexCharts(document.querySelector("#patient_overview"), options);
         chart.render();
 	
-	
-	
-	
-		
-	var options = {
-          series: [{
-          name: 'Income',
-          data: [76, 85, 101, 98, 87, 105, 91]
-        }, {
-          name: 'Expense',
-          data: [44, 55, 57, 56, 61, 58, 63]
-        }],
-          chart: {
-          type: 'bar',
-		  foreColor:"#bac0c7",
-          height: 270,
-			  toolbar: {
-        		show: false,
-			  }
-        },
-        plotOptions: {
-          bar: {
-			endingShape: 'rounded',
-            horizontal: false,
-            columnWidth: '50%',
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-		grid: {
-			show: false,			
-		},
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-		colors: ['#ee3158', '#3246D3'],
-        xaxis: {
-          categories: ['10 May', '11 May', '12 May', '13 May', '14 May', '15 May', '16 May'],
-			
-        },
-        yaxis: {
-          
-        },
-		 legend: {
-      		show: true,
-		 },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "$ " + val + " thousands"
-            }
-          },
-			marker: {
-			  show: false,
-		  },
-        }
-        };
 
-        var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
-        chart.render();
 	
 		
 	// Slim scrolling
@@ -204,68 +139,6 @@ $(function () {
       chart.render();
 	
 	
-	
-	
-	var options = {
-          series: [
-          {
-            name: "New Patient",
-			data: [28, 15, 30, 18, 35 , 13, 43]
-          },
-          {
-            name: "Return Patient",            
-            data: [10, 39, 20, 36, 15, 32, 17]
-          }
-        ],
-          chart: {
-          height: 200,
-          type: 'line',
-          toolbar: {
-            show: false
-          }
-        },
-        colors: ['#ee3158', '#1dbfc1'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-		grid: {
-			show: false,  
-		},
-        xaxis: {
-          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Set', 'Sun'],
-        },
-        legend: {
-          show: true,
-        },
-		xaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-          }        
-        },
-        yaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-          }        
-        },
-        };
-
-        var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
-        chart.render();
 	
 	
 	

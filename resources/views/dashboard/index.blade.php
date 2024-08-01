@@ -17,7 +17,7 @@
                                 </div>
                                 <div>
                                     <p class="text-fade fs-16 mb-0">Patients</p>
-                                    <h3 class="fw-500 my-0">1,421</h3>
+                                    <h3 class="fw-500 my-0">{{ count($patients) }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -27,30 +27,30 @@
                                     <i class="fs-24 fa fa-user-md"></i>
                                 </div>
                                 <div>
-                                    <p class="text-fade fs-16 mb-0">Staffs</p>
-                                    <h3 class="fw-500 my-0">1,521</h3>
+                                    <p class="text-fade fs-16 mb-0">Medical Professionals</p>
+                                    <h3 class="fw-500 my-0">{{ count($medicals) }}</h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="d-flex align-items-center mb-15 mb-md-0">
                                 <div class="me-15 bg-success w-60 h-60 rounded-circle text-center l-h-70">
-                                    <i class="fs-24 fa fa-hospital-o"></i>
+                                    <i class="fs-24 fa fa-calendar-o"></i>
                                 </div>
                                 <div>
-                                    <p class="text-fade fs-16 mb-0">Rooms</p>
-                                    <h3 class="fw-500 my-0">2,415</h3>
+                                    <p class="text-fade fs-16 mb-0">Appointments</p>
+                                    <h3 class="fw-500 my-0">{{ count($appointments) }}</h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6 col-12">
                             <div class="d-flex align-items-center mb-15 mb-md-0">
                                 <div class="me-15 bg-info w-60 h-60 rounded-circle text-center l-h-70">
-                                    <i class="fs-24 fa fa-ambulance"></i>
+                                    <i class="fs-24 fa fa-money"></i>
                                 </div>
                                 <div>
-                                    <p class="text-fade fs-16 mb-0">Ambulance</p>
-                                    <h3 class="fw-500 my-0">15</h3>
+                                    <p class="text-fade fs-16 mb-0">Earning</p>
+                                    <h3 class="fw-500 my-0">4566 GHS</h3>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-6 col-12">						
+                {{-- <div class="col-xl-6 col-12">						
                     <div class="box">
                         <div class="box-header">
                             <h4 class="box-title">Patients</h4>
@@ -94,14 +94,13 @@
                             </div>							
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-6 col-12">						
+                </div> --}}
+                <div class="col-xl-12 col-12">						
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Daily Revenue Report</h4>
+                            <h4 class="box-title">User Signups</h4>
                         </div>
                         <div class="box-body">							
-                            <h3 class="text-primary mt-0">$32,485 <small class="text-muted">$12,458</small></h3>
                             <div id="recent_trend"></div>							
                         </div>
                     </div>
@@ -213,107 +212,6 @@
                 <div class="col-xl-6 col-12">						
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Laboratory tests</h4>
-                        </div>
-                        <div class="box-body">	
-                            <div class="news-slider owl-carousel owl-sl">	
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14"><i class="fa fa-link"></i> Shawn Hampton</p>
-                                            <span class="text-dark fs-16">Beta 2 Microglobulin</span>
-                                            <p class="mb-0 fs-14">Marker Test <span class="badge badge-dot badge-primary"></span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end py-10">
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Details</a>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Contact Patient</a>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light"><i class="fa fa-check"></i> Archive</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14"><i class="fa fa-link"></i> Johen Doe</p>
-                                            <span class="text-dark fs-16">Keeping pregnant</span>
-                                            <p class="mb-0 fs-14">Prga Test <span class="badge badge-dot badge-primary"></span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end py-10">
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Details</a>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Contact Patient</a>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light"><i class="fa fa-check"></i> Archive</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14"><i class="fa fa-link"></i> Polly Paul</p>
-                                            <span class="text-dark fs-16">USG + Consultation</span>
-                                            <p class="mb-0 fs-14">Marker Test <span class="badge badge-dot badge-primary"></span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end py-10">
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Details</a>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light">Contact Patient</a>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-light btn btn-sm btn-primary-light"><i class="fa fa-check"></i> Archive</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-12">						
-                    <div class="box">
-                        <div class="box-header">
                             <h4 class="box-title">Overal appointment</h4>
                         </div>
                         <div class="box-body">										
@@ -321,10 +219,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-12">						
+                <div class="col-xl-12 col-12">						
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Patients Pace</h4>
+                            <h4 class="box-title">Users Signups</h4>
                         </div>
                         <div class="box-body">										
                             <div id="patients_pace"></div>							
@@ -529,4 +427,140 @@
         </div>
     </div>	
 </div>
-@endsection		
+@endsection	
+@section('script')
+    <script>
+        var options = {
+          series: [
+          {
+            name: "New Patient",
+			data: [28, 15, 30, 18, 35 , 13, 43]
+          },
+          {
+            name: "Return Patient",            
+            data: [10, 39, 20, 36, 15, 32, 17]
+          }
+        ],
+          chart: {
+          height: 200,
+          type: 'line',
+          toolbar: {
+            show: false
+          }
+        },
+        colors: ['#ee3158', '#1dbfc1'],
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+		grid: {
+			show: false,  
+		},
+        xaxis: {
+          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Set', 'Sun'],
+        },
+        legend: {
+          show: true,
+        },
+		xaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+          }        
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+          }        
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
+        chart.render();
+
+        var patientSignups = @json($patientSignups);
+        var medicalSignups = @json($medicalSignups);
+        var formattedDates = @json($formattedDates);
+
+        var options = {
+          series: [{
+          name: 'Patients',
+          data: patientSignups
+        }, {
+          name: 'Medical Professionals',
+          data: medicalSignups
+        }],
+          chart: {
+          type: 'bar',
+		  foreColor:"#bac0c7",
+          height: 330,
+			  toolbar: {
+        		show: false,
+			  }
+        },
+        plotOptions: {
+          bar: {
+			// endingShape: 'rounded',
+            horizontal: false,
+            columnWidth: '50%',
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+		grid: {
+			show: false,			
+		},
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+		colors: ['#ee3158', '#FFA800'],
+        xaxis: {
+          categories: formattedDates,
+			
+        },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return value.toFixed(0); // Format to show integers
+                }
+            }
+        },
+		 legend: {
+      		show: true,
+		 },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return "$ " + val + " thousands"
+            }
+          },
+			marker: {
+			  show: false,
+		  },
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
+        chart.render();
+
+    </script>
+@endsection	
