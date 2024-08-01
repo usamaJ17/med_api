@@ -105,114 +105,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-12">						
+                <div class="col-xl-12 col-12">						
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Next Patient</h4>
-                        </div>
-                        <div class="box-body">	
-                            <div class="news-slider owl-carousel owl-sl">	
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="me-15">
-                                        <img src="{{ asset('dashboard/images/avatar/1.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                        </div>
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14">Shawn Hampton</p>
-                                            <span class="text-dark fs-16">Emergency appointment</span>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-circle btn btn-circle btn-primary-light btn-sm mx-15"><i class="fa fa-phone"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end mt-40 py-10 bt-dashed border-top">
-                                        <div>
-                                            <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 10:00 <span class="mx-20">$ 30</span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="me-15">
-                                            <img src="{{ asset('dashboard/images/avatar/2.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                        </div>
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14">Polly Paul</p>
-                                            <span class="text-dark fs-16">USG + Consultation</span>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-circle btn btn-circle btn-primary-light btn-sm mx-15"><i class="fa fa-phone"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end mt-40 py-10 bt-dashed border-top">
-                                        <div>
-                                            <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 10:30 <span class="mx-20">$ 50</span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-10">
-                                        <div class="me-15">
-                                            <img src="{{ asset('dashboard/images/avatar/3.jpg') }}" class="w-auto avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                        </div>
-                                        <div class="d-flex flex-column flex-grow-1 fw-500">
-                                            <p class="hover-primary text-fade mb-1 fs-14">Johen Doe</p>
-                                            <span class="text-dark fs-16">Laboratory screening</span>
-                                        </div>
-                                        <div>
-                                            <a href="#" class="waves-effect waves-circle btn btn-circle btn-primary-light btn-sm mx-15"><i class="fa fa-phone"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-end mt-40 py-10 bt-dashed border-top">
-                                        <div>
-                                            <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 11:00 <span class="mx-20">$ 70</span></p>
-                                        </div>
-                                        <div>
-                                            <div class="dropdown">
-                                                <a data-bs-toggle="dropdown" href="#" class="base-font mx-30"><i class="ti-more-alt text-muted"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#"><i class="ti-import"></i> Import</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-export"></i> Export</a>
-                                                <a class="dropdown-item" href="#"><i class="ti-printer"></i> Print</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-12">						
-                    <div class="box">
-                        <div class="box-header">
-                            <h4 class="box-title">Overal appointment</h4>
+                            <h4 class="box-title">Appointment</h4>
                         </div>
                         <div class="box-body">										
                             <div id="appointment_overview"></div>							
@@ -232,141 +128,26 @@
             </div>					
         </div>
         <div class="col-xl-4 col-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h4 class="box-title">Available Doctors</h4>
-                    <p class="mb-0 pull-right">Today</p>
+            <div class="box">		
+                <div class="box-header no-border">
+                    <h4 class="box-title">Admission by Division</h4>
                 </div>
-                <div class="box-body">
-                    <div class="inner-user-div3">
-                        <div class="d-flex align-items-center mb-30">
-                            <div class="me-15">
-                                <img src="{{ asset('dashboard/images/avatar/avatar-1.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 fw-500">
-                                <a href="#" class="text-dark hover-primary mb-1 fs-16">Dr. Jaylon Stanton</a>
-                                <span class="text-fade">Dentist</span>
-                            </div>
-                            <div class="dropdown">
-                                <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Inbox</span>
-                                    <span class="badge badge-pill badge-info">5</span>
-                                </a>
-                                <a class="dropdown-item" href="#">Sent</a>
-                                <a class="dropdown-item" href="#">Spam</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Draft</span>
-                                    <span class="badge badge-pill badge-default">1</span>
-                                </a>
-                                </div>
-                            </div>
+                <div class="box-body pt-0">	
+                    <div id="chart124"></div>
+                    <div class="row mt-25">
+                        <div class="col-6">
+                            <p class="mb-5"><span class="badge badge-dot badge-success"></span> Cardiology</p>
+                            <p class="mb-5"><span class="badge badge-dot badge-info"></span> Endocrinology</p>
+                            <p class="mb-0"><span class="badge badge-dot badge-danger"></span> Physicians</p>
                         </div>
-                        <div class="d-flex align-items-center mb-30">
-                            <div class="me-15">
-                                <img src="{{ asset('dashboard/images/avatar/avatar-10.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 fw-500">
-                                <a href="#" class="text-dark hover-danger mb-1 fs-16">Dr. Carla Schleifer</a>
-                                <span class="text-fade">Oculist</span>
-                            </div>
-                            <div class="dropdown">
-                                <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Inbox</span>
-                                    <span class="badge badge-pill badge-info">5</span>
-                                </a>
-                                <a class="dropdown-item" href="#">Sent</a>
-                                <a class="dropdown-item" href="#">Spam</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Draft</span>
-                                    <span class="badge badge-pill badge-default">1</span>
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-30">
-                            <div class="me-15">
-                                <img src="{{ asset('dashboard/images/avatar/avatar-11.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 fw-500">
-                                <a href="#" class="text-dark hover-success mb-1 fs-16">Dr. Hanna Geidt</a>
-                                <span class="text-fade">Surgeon</span>
-                            </div>
-                            <div class="dropdown">
-                                <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Inbox</span>
-                                    <span class="badge badge-pill badge-info">5</span>
-                                </a>
-                                <a class="dropdown-item" href="#">Sent</a>
-                                <a class="dropdown-item" href="#">Spam</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Draft</span>
-                                    <span class="badge badge-pill badge-default">1</span>
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-30">
-                            <div class="me-15">
-                                <img src="{{ asset('dashboard/images/avatar/avatar-12.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 fw-500">
-                                <a href="#" class="text-dark hover-info mb-1 fs-16">Dr. Roger George</a>
-                                <span class="text-fade">General Practitioners</span>
-                            </div>
-                            <div class="dropdown">
-                                <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Inbox</span>
-                                    <span class="badge badge-pill badge-info">5</span>
-                                </a>
-                                <a class="dropdown-item" href="#">Sent</a>
-                                <a class="dropdown-item" href="#">Spam</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Draft</span>
-                                    <span class="badge badge-pill badge-default">1</span>
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="me-15">
-                                <img src="{{ asset('dashboard/images/avatar/avatar-15.png') }}" class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                            </div>
-                            <div class="d-flex flex-column flex-grow-1 fw-500">
-                                <a href="#" class="text-dark hover-warning mb-1 fs-16">Dr. Natalie doe</a>
-                                <span class="text-fade">Physician</span>
-                            </div>
-                            <div class="dropdown">
-                                <a class="px-10 pt-5" href="#" data-bs-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Inbox</span>
-                                    <span class="badge badge-pill badge-info">5</span>
-                                </a>
-                                <a class="dropdown-item" href="#">Sent</a>
-                                <a class="dropdown-item" href="#">Spam</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item flexbox" href="#">
-                                    <span>Draft</span>
-                                    <span class="badge badge-pill badge-default">1</span>
-                                </a>
-                                </div>
-                            </div>
+                        <div class="col-6">
+                            <p class="mb-5"><span class="badge badge-dot badge-warning"></span> Dermatology</p>
+                            <p class="mb-5"><span class="badge badge-dot badge-primary"></span> Orthopedics</p>
+                            <p class="mb-0"><span class="badge badge-dot badge-secondary"></span> Immunology</p>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>																		
+            </div>					
             <div class="box bg-success box-inverse">
                 <div class="box-header">
                     <h4 class="box-title">Doctor of the Month</h4>
@@ -401,28 +182,6 @@
                     </div>
                 </div>
             </div>
-            
-            
-            <div class="box">		
-                <div class="box-header no-border">
-                    <h4 class="box-title">Admission by Division</h4>
-                </div>
-                <div class="box-body pt-0">	
-                    <div id="chart124"></div>
-                    <div class="row mt-25">
-                        <div class="col-6">
-                            <p class="mb-5"><span class="badge badge-dot badge-success"></span> Cardiology</p>
-                            <p class="mb-5"><span class="badge badge-dot badge-info"></span> Endocrinology</p>
-                            <p class="mb-0"><span class="badge badge-dot badge-danger"></span> Physicians</p>
-                        </div>
-                        <div class="col-6">
-                            <p class="mb-5"><span class="badge badge-dot badge-warning"></span> Dermatology</p>
-                            <p class="mb-5"><span class="badge badge-dot badge-primary"></span> Orthopedics</p>
-                            <p class="mb-0"><span class="badge badge-dot badge-secondary"></span> Immunology</p>
-                        </div>
-                    </div>
-                </div>																		
-            </div>					
             
         </div>
     </div>	

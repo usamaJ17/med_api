@@ -10,7 +10,7 @@ class ChatBox extends Model
     use HasFactory;
     protected $table = 'chat_box';
     protected $fillable = ['sender_id', 'receiver_id', 'status','notification_to'];
-    protected $appends = ['notification','name'];
+    protected $appends = ['notification','name','last_message'];
     protected $hidden = ['notification_to'];
 
 
@@ -33,5 +33,9 @@ class ChatBox extends Model
     public function getNameAttribute()
     {
         return $this->sender_id == auth()->id() ? $this->receiver->first_name : $this->sender->first_name;
+    }
+    public function getLastMessageAttribute()
+    {
+        return $this->messages->last();
     }
 }
