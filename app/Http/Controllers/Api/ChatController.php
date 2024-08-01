@@ -11,7 +11,7 @@ class ChatController extends Controller
 {
     public function getAllChats()
     {
-        $chatboxes = ChatBox::where('sender_id', auth()->id())
+        $chatboxes = ChatBox::with('sender','receiver')->where('sender_id', auth()->id())
             ->orWhere('receiver_id', auth()->id())
             ->get();
         $data = [
@@ -108,7 +108,7 @@ class ChatController extends Controller
     public function getNewMessage(Request $request){
         $chatbox = ChatBox::find($request->chat_box_id);
         if($chatbox){
-            $messages = ChatBoxMessage::with('sender','receiver')->where('chat_box_id', $request->chat_box_id)
+            $messages = ChatBoxMessage::where('chat_box_id', $request->chat_box_id)
                 ->where('id', '>', $request->last_message_id)
                 ->get();
             $msg = [
