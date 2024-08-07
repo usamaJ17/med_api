@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\ChatBox;
 use App\Models\ChatBoxMessage;
@@ -66,6 +67,8 @@ class ChatController extends Controller
                     'message' => 'Message Sent Successfully',
                     'data' => $msg
                 ];
+                sleep(rand(2,4));
+                broadcast(new MessageSent($message))->toOthers();
                 return response()->json($data);
             }else{
                 $data = [

@@ -118,7 +118,7 @@
                 <div class="col-xl-12 col-12">						
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Users Signups</h4>
+                            <h4 class="box-title">Daily Consultations per professional category</h4>
                         </div>
                         <div class="box-body">										
                             <div id="patients_pace"></div>							
@@ -189,71 +189,27 @@
 @endsection	
 @section('script')
     <script>
-        var options = {
-          series: [
-          {
-            name: "New Patient",
-			data: [28, 15, 30, 18, 35 , 13, 43]
-          },
-          {
-            name: "Return Patient",            
-            data: [10, 39, 20, 36, 15, 32, 17]
-          }
-        ],
-          chart: {
-          height: 200,
-          type: 'line',
-          toolbar: {
-            show: false
-          }
-        },
-        colors: ['#ee3158', '#1dbfc1'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-		grid: {
-			show: false,  
-		},
-        xaxis: {
-          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Set', 'Sun'],
-        },
-        legend: {
-          show: true,
-        },
-		xaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-          }        
-        },
-        yaxis: {
-          axisBorder: {
-            show: false
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: false,
-          }        
-        },
-        };
-
-        var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
-        chart.render();
-
         var patientSignups = @json($patientSignups);
         var medicalSignups = @json($medicalSignups);
         var formattedDates = @json($formattedDates);
+        var appointmentData = @json($appointmentData);
+        var cancelAppointmentData = @json($cancelAppointmentData);
+        var pro_cat_appointment = @json($pro_cat_appointment);
+        var appointment_cat_series = Object.keys(pro_cat_appointment).map(function(key) {
+            return {
+                name: key,
+                data: pro_cat_appointment[key]
+            };
+        });
+        var baseColors = ['#ee3158', '#1dbfc1', '#ff9900', '#ff5733', '#33ff57', '#3357ff'];
+        var colors = [];
 
+        // Generate colors based on the number of categories
+        for (var i = 0; i < Object.keys(pro_cat_appointment).length; i++) {
+            colors.push(baseColors[i % baseColors.length]);
+        }
+
+        
         var options = {
           series: [{
           name: 'Patients',
@@ -274,7 +230,7 @@
           bar: {
 			// endingShape: 'rounded',
             horizontal: false,
-            columnWidth: '50%',
+            columnWidth: '40%',
           },
         },
         dataLabels: {
@@ -320,6 +276,127 @@
         };
 
         var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
+        chart.render();
+        
+
+        var options = {
+        series: [{
+          name: 'Total',
+          data: appointmentData
+        }, {
+          name: 'Cancelled',
+          data: cancelAppointmentData
+        }],
+        chart: {
+          type: 'bar',
+          height: 270,
+          toolbar: {
+            show: false
+          }
+        },
+		colors:['#2444e8','#ee3158'],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '30%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+		grid: {
+			show: false,  
+		},
+        stroke: {
+          show: false,
+          width: 0,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: formattedDates,
+			
+        },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                    return value.toFixed(0); // Format to show integers
+                }
+            },
+            axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+            
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+        theme: 'dark',
+          y: {
+            formatter: function (val) {
+              return val + " Appointment"
+            }
+          }
+        }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#appointment_overview"), options);
+      chart.render();
+
+      var options = {
+        series : appointment_cat_series,
+          chart: {
+          height: 200,
+          type: 'line',
+          toolbar: {
+            show: false
+          }
+        },
+        colors: colors,
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+		grid: {
+			show: false,  
+		},
+        xaxis: {
+          categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Set', 'Sun'],
+        },
+        legend: {
+          show: true,
+        },
+		xaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+          }        
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+          }        
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
         chart.render();
 
     </script>
