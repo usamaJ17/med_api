@@ -145,5 +145,4 @@ Route::group(['prefix' => 'payment'], function () {
 
 Route::post('send_sms',[HelperController::class,'sendSms']);
 
-Route::get('get_sdk_key',[HelperController::class,'getSd
-kKey']);
+Route::get('get_sdk_key',[HelperController::class,'getSdkKey']);
