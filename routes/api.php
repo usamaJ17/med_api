@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SupportGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -84,6 +85,9 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('articles/share/{article_id}', [ArticleController::class, 'addShare']);
 
+  // Support Groups
+  Route::get('support_groups', [SupportGroupController::class, 'index']);
+
   // appointments
   Route::post('/appointments', [AppointmentHoursController::class, 'store']);
   Route::get('/appointments', [AppointmentHoursController::class, 'show']);
@@ -130,6 +134,13 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('following',[HelperController::class,'getFollowing']);
   Route::post('unfollow',[HelperController::class,'unfollow']);
   Route::get('check_follow',[HelperController::class,'checkFollow']);
+
+  // transactions
+
+  Route::post('save_transactions',[PaymentController::class,'saveTransactions']);
+  Route::get('professional_payments',[PaymentController::class,'getProfessionalPayments']);
+  Route::post('request_payout',[PaymentController::class,'requestPayout']);
+  Route::get('professional_payout',[PaymentController::class,'getPayout']);
   
 
 

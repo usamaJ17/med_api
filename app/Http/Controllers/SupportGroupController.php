@@ -10,9 +10,17 @@ class SupportGroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $groups = SupportGroup::all();
+        if($request->ajax()){
+            $data = [
+                'status' => 200,
+                'message' => 'All Support Groups fetched successfully',
+                'data' => $groups,
+            ];
+            return response()->json($data, 200);   
+        }
         return view('dashboard.support_groups.index', compact('groups'));
     }
 

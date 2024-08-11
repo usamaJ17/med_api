@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('payouts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('transaction_id');
-            $table->string('transaction_type');
-            $table->string('transaction_status');
-            $table->string('transaction_amount');
-            $table->string('transaction_reason');
+            $table->float('amount')->default(0.0)->nullable();
+            // $table->string('status')->default('')->nullable();
+            $table->enum('status', ['requested', 'completed', 'rejected'])->default('requested');
+            $table->string('rejected_reason')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('payouts');
     }
 };
