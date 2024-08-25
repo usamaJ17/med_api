@@ -7,34 +7,39 @@ use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\User;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HelperController extends Controller
 {
-    public function getRanks(){
+    public function getRanks()
+    {
         $ranks = Ranks::all();
-        $data =[
+        $data = [
             'status' => 200,
             'message' => 'All Ranks fetched successfully',
             'data' => $ranks,
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
-    public function getProfessions(){
-        $ranks = Professions::pluck('name','id')->toArray();
-        $data =[
+    public function getProfessions()
+    {
+        $ranks = Professions::pluck('name', 'id')->toArray();
+        $data = [
             'status' => 200,
             'message' => 'All Professions fetched successfully',
             'data' => ['professions' => $ranks],
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
-    public function deleteAccount($id){
+    public function deleteAccount($id)
+    {
         $user = null;
-        if(!isset($id) || $id == null || $id == ''){
+        if (!isset($id) || $id == null || $id == '') {
             $user = User::find(Auth::id());
-        }else{
+        } else {
             $user = User::find($id);
         }
         $user->delete();
@@ -44,12 +49,12 @@ class HelperController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function changeActivation(Request $request){
+    public function changeActivation(Request $request)
+    {
         $user = User::find($request->med_id);
-        if($request->is_live == true || $request->is_live == 'true'){
+        if ($request->is_live == true || $request->is_live == 'true') {
             $user->is_live = true;
-        }
-        elseif($request->is_live == false || $request->is_live == 'false'){
+        } elseif ($request->is_live == false || $request->is_live == 'false') {
             $user->is_live = false;
         }
         $user->save();
@@ -59,9 +64,18 @@ class HelperController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function getProfessionalTitles(){
-        $titles = DynamicFiled::where('name','professional_title')->first();
-        if($titles){
+    public function getDeviceToken(Request $request){
+        $user = User::find($request->user_id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Device Token fetched successfully',
+            'data' => $user->device_token,
+        ], 200);
+    }
+    public function getProfessionalTitles()
+    {
+        $titles = DynamicFiled::where('name', 'professional_title')->first();
+        if ($titles) {
             $title_array = json_decode($titles->data);
             $data = [
                 'status' => 200,
@@ -69,7 +83,7 @@ class HelperController extends Controller
                 'data' => $title_array,
             ];
             return response()->json($data, 200);
-        }else{
+        } else {
             $data = [
                 'status' => 200,
                 'message' => 'No Professional Titles found',
@@ -77,9 +91,10 @@ class HelperController extends Controller
             return response()->json($data, 200);
         }
     }
-    public function saveProfessionalTitles(Request $request){
-        $titles = DynamicFiled::where('name','professional_title')->first();
-        if($titles){
+    public function saveProfessionalTitles(Request $request)
+    {
+        $titles = DynamicFiled::where('name', 'professional_title')->first();
+        if ($titles) {
             $tit_array = json_decode($titles->data);
             $tit_array[] = $request->title;
             $titles->data = json_encode($tit_array);
@@ -89,7 +104,7 @@ class HelperController extends Controller
                 'message' => 'Professional Titles Added successfully',
             ];
             return response()->json($data, 200);
-        }else{
+        } else {
             $tit_array = [];
             $tit_array[] = $request->title;
             $titles = new DynamicFiled();
@@ -103,12 +118,13 @@ class HelperController extends Controller
             return response()->json($data, 200);
         }
     }
-    public function sendSms(Request $request){
+    public function sendSms(Request $request)
+    {
         $curl = curl_init();
         $text = "Reminder: Your appointment with Dr. Bilawal rasheed is almost due. In 15 minutes, please open the Deluxe Hospital app and navigate to Chat section. See you soon";
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://sms.arkesel.com/api/v2/sms/send',
-            CURLOPT_HTTPHEADER => ['api-key: '.env('SMS_API_KEY')],
+            CURLOPT_HTTPHEADER => ['api-key: ' . env('SMS_API_KEY')],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -130,59 +146,92 @@ class HelperController extends Controller
         dd($response);
         echo $response;
     }
-    public function getSdkKey(){
+    public function getSdkKey()
+    {
         return response()->json([
-            'status' => 200, 'message' => 'SDK Key fetched successfully',
+            'status' => 200,
+            'message' => 'SDK Key fetched successfully',
             'data' => env('SDK_KEY')
         ], 200);
     }
-    public function RequestVerification(Request $request){
+    public function RequestVerification(Request $request)
+    {
         $user = User::find(Auth::id());
         $user->verification_requested_at = now();
         $user->save();
         return response()->json([
-            'status' => 200, 'message' => 'Verification Request sent successfully',
+            'status' => 200,
+            'message' => 'Verification Request sent successfully',
         ], 200);
     }
-    public function follow(Request $request){
+    public function follow(Request $request)
+    {
         $user = User::find(Auth::id());
         $follow = User::find($request->follow_id);
         $user->following()->attach($follow->id);
         return response()->json([
-            'status' => 200, 'message' => 'Followed successfully',
+            'status' => 200,
+            'message' => 'Followed successfully',
         ], 200);
     }
-    public function unfollow(Request $request){
+    public function unfollow(Request $request)
+    {
         $user = User::find(Auth::id());
         $follow = User::find($request->follow_id);
         $user->following()->detach($follow->id);
         return response()->json([
-            'status' => 200, 'message' => 'Unfollowed successfully',
+            'status' => 200,
+            'message' => 'Unfollowed successfully',
         ], 200);
     }
-    public function getFollowers(){
+    public function getFollowers()
+    {
         $user = User::find(Auth::id());
         $followers = $user->followers;
         return response()->json([
-            'status' => 200, 'message' => 'Followers fetched successfully',
+            'status' => 200,
+            'message' => 'Followers fetched successfully',
             'data' => $followers,
         ], 200);
     }
-    public function getFollowing(){
+    public function getFollowing()
+    {
         $user = User::find(Auth::id());
         $following = $user->following;
         return response()->json([
-            'status' => 200, 'message' => 'Following fetched successfully',
+            'status' => 200,
+            'message' => 'Following fetched successfully',
             'data' => $following,
         ], 200);
     }
-    public function checkFollow(Request $request){
+    public function checkFollow(Request $request)
+    {
         $user = User::find(Auth::id());
         $follow = User::find($request->follow_id);
         $is_following = $user->following->contains($follow->id);
         return response()->json([
-            'status' => 200, 'message' => 'Follow status checked successfully',
+            'status' => 200,
+            'message' => 'Follow status checked successfully',
             'data' => ['is_following' => $is_following],
+        ], 200);
+    }
+    public function getTimeZone()
+    {
+        $timezones = DateTimeZone::listIdentifiers();
+        $timezoneOffsets = [];
+
+        foreach ($timezones as $timezone) {
+            $datetime = new DateTime('now', new DateTimeZone($timezone));
+            $offset = $datetime->getOffset();
+            $hours = intdiv($offset, 3600);
+            $minutes = abs($offset % 3600 / 60);
+            $gmtOffset = 'GMT' . ($hours >= 0 ? '+' : '-') . sprintf('%02d:%02d', abs($hours), $minutes);
+            $timezoneOffsets[$timezone] = "($gmtOffset) $timezone";
+        }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Timezones fetched successfully',
+            'data' => $timezoneOffsets,
         ], 200);
     }
 }

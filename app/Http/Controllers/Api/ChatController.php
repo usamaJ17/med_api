@@ -67,7 +67,6 @@ class ChatController extends Controller
                     'message' => 'Message Sent Successfully',
                     'data' => $msg
                 ];
-                sleep(rand(2,4));
                 broadcast(new MessageSent($message))->toOthers();
                 return response()->json($data);
             }else{

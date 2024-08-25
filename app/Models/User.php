@@ -39,8 +39,11 @@ class User extends Authenticatable implements HasMedia
         'city',
         'language',
         'is_live',
+        'can_emergency',
+        'can_night_emergency',
         'forgot_password',
         'speak',
+        'time_zone',
         'device_token',
     ];
 

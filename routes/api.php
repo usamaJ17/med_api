@@ -11,8 +11,10 @@ use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SupportGroupController;
+use App\Http\Controllers\VitalSignsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -51,7 +53,8 @@ Route::middleware(['cros'])->group(function () {
   Route::delete('/professional_types/{id}', [ProfileController::class, 'deleteProfessionalType']);
   Route::delete('delete_account/{id}',[HelperController::class,'deleteAccount']);
   Route::post('change_activation',[HelperController::class,'changeActivation']);
-
+  Route::get('get_time_zone',[HelperController::class,'getTimeZone']);
+  Route::get('get_device_token',[HelperController::class,'getDeviceToken']);
   Route::get('/professional_titles', [HelperController::class, 'getProfessionalTitles']);
   Route::post('/professional_titles', [HelperController::class, 'saveProfessionalTitles']);
 });
@@ -115,6 +118,16 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('payment/record',[PaymentController::class,'recordPayment']);
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
+
+  Route::get('get_emergency_professionals',[EmergencyController::class,'getEmergencyProfessionals']);
+  Route::resource('emergency_help', EmergencyController::class);
+  Route::apiResource('vitals', VitalSignsController::class);
+  Route::get('get_clinical_notes',[VitalSignsController::class,'getNotes']);
+  Route::get('clinical_notes_fields', [VitalSignsController::class, 'getFields']);
+  Route::post('save_clinical_notes',[VitalSignsController::class,'saveNotes']);
+  Route::post('clinical_notes_comment',[VitalSignsController::class,'saveComment']);
+
+  Route::post('clinical_notes_fields', [VitalSignsController::class, 'addCustomField']);
 
   // sub accounts
   Route::get('get_sub_accounts',[AuthController::class,'getSubAccounts']);
