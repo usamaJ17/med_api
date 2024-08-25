@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('chat.{id}', function ($id) {
+Broadcast::channel('chat.{id}', function ($user, $id) {
 
     $participant = ChatBox::where([
         [
