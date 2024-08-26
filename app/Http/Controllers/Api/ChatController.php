@@ -67,7 +67,7 @@ class ChatController extends Controller
                     'message' => 'Message Sent Successfully',
                     'data' => $msg
                 ];
-                broadcast(new MessageSent($message))->toOthers();
+                broadcast(new MessageSent($message, $chatbox->id))->toOthers();
                 return response()->json($data);
             }else{
                 $data = [
