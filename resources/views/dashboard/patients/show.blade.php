@@ -3,10 +3,10 @@
 @section('title')
     Patient Details
 @endsection
-@section('medical')
+@section('patient')
     active
 @endsection
-@section('medical.all')
+@section('patient.all')
     active
 @endsection
 @section('content')
@@ -47,19 +47,6 @@
                                     {{ \Carbon\Carbon::parse($patient->created_at)->format('d/m/Y H:m') }}</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="mb-0 pull-right">
-                            <input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-success"
-                                @if ($patient->can_emergency) checked @endif>
-                            <label for="md_checkbox_23">Receive Emergency Calls</label>
-                        </div>
-                        <div class="mb-0 pull-right" style="margin-right: 10px !important;">
-                            <input type="checkbox" id="md_checkbox_24" class="filled-in chk-col-success"
-                                @if ($patient->can_night_emergency) checked @endif>
-                            <label for="md_checkbox_24">Receive Midnight Emergency Calls</label>
-                        </div>
-                        <h4>Biography</h4>
                     </div>
                 </div>
                 <div class="box bt-3 border-primary">
