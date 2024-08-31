@@ -186,35 +186,34 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="box bg-success box-inverse">
-                <div class="box-header">
-                    <h4 class="box-title">Doctor of the Month</h4>
-                </div>
-                <div class="box-body text-center">
-                    <div class="mb-0">
-                        <img src="{{ $maxDoc->getFirstMediaUrl() }}" width="100"
-                            class="rounded-circle bg-info-light" alt="user">
-                        <h3 class="mt-20 mb-0">{{ $maxDoc->fullName() }}</h3>
-                        <p class="mb-0">{{ $maxDoc->professional_type_name }}</p>
+                <div class="box bg-success box-inverse">
+                    <div class="box-header">
+                        <h4 class="box-title">Doctor of the Month</h4>
                     </div>
-                </div>
-                <div class="p-20">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('dashboard/images/health-2.png') }}" class="img-fluid me-10 w-50"
-                                    alt="" />
-                                <div>
-                                    <h2 class="mb-0 text-white">{{ $maxAppointmentCount }}</h2>
-                                    <p class="mb-0 text-white-50">Appointments In Last 30 Days</p>
+                    <div class="box-body text-center">
+                        <div class="mb-0">
+                            <img src="{{ $maxDoc->getFirstMediaUrl() }}" width="100"
+                                class="rounded-circle bg-info-light" alt="user">
+                            <h3 class="mt-20 mb-0">{{ $maxDoc->fullName() }}</h3>
+                            <p class="mb-0">{{ $maxDoc->professional_type_name }}</p>
+                        </div>
+                    </div>
+                    <div class="p-20">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('dashboard/images/health-2.png') }}" class="img-fluid me-10 w-50"
+                                        alt="" />
+                                    <div>
+                                        <h2 class="mb-0 text-white">{{ $maxAppointmentCount }}</h2>
+                                        <p class="mb-0 text-white-50">Appointments In Last 30 Days</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
