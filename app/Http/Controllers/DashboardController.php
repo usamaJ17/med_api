@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $pro_cat_appointment = $graphFactory->getGraphData('pro_cat_appointments');
         $total_monthly_revenue = $graphFactory->getGraphData('revenue');
         $age = $graphFactory->getGraphData('age');
-
+        $dailyPatientCountCat = [];
         $professionalCounts = User::whereHas("roles", function ($q) {
             $q->where("name", "medical");
         })
