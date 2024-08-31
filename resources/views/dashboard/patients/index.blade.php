@@ -40,6 +40,7 @@
                                     <tr>
                                         <th>Patient ID</th>
                                         <th>Patient Name</th>
+                                        <th>Patient Email</th>
                                         <th>Patient Contact</th>
                                         <th>Last Appointment Date</th>
                                         <th>Last Appointment Doctor</th>
@@ -52,6 +53,7 @@
                                         <tr class="hover-primary">
                                             <td>#p-DH-{{ $patient->id }}</td>
                                             <td>{{ $patient->first_name . $patient->last_name }}</td>
+                                            <td>{{ $patient->email }}</td>
                                             <td>{{ $patient->contact }}</td>
                                             <td>{{ \Carbon\Carbon::parse($patient->created_at)->format('d/m/Y')}}</td>
                                             <td>{{ $patient->first_name . $patient->last_name }}</td>

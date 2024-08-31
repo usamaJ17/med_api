@@ -78,6 +78,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->roles->pluck('name')[0] ?? '';
     }
+    public function fullName(){
+        return $this->first_name . ' ' . $this->last_name;
+    }
     public function getProfessionalTypeNameAttribute()
     {
         return $this->professionalType->name ?? '';

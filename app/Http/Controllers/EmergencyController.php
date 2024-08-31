@@ -26,6 +26,14 @@ class EmergencyController extends Controller
             'data'   => $emer,
         ], 200);
     }
+    public function simple(){
+        $emer = EmergencyHelp::where('is_mid_night', 0)->get();
+        return view('dashboard.emergencyhelp.simple')->with(compact('emer'));
+    }
+    public function midNight(){
+        $emer = EmergencyHelp::where('is_mid_night', 1)->get();
+        return view('dashboard.emergencyhelp.midnight')->with(compact('emer'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,6 +46,9 @@ class EmergencyController extends Controller
             'requested_at' => now(),
             'is_mid_night' => $request->is_mid_night,
             'description' => $request->description,
+            'description' => $request->duration,
+            'description' => $request->method,
+            'description' => $request->amount,
         ]);
         $professionals = User::query();
         $professionals->whereHas("roles", function($q){ $q->where("name", "medical"); });

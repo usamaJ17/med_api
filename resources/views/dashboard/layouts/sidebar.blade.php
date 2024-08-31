@@ -57,6 +57,12 @@
                                             class="path2"></span></i>Verification Requests</a></li>
                         </ul>
                     </li>
+                    <li class="@yield('appointments')">
+                        <a href="{{ route('appointments.index') }}">
+                            <i data-feather="calendar"></i>
+                            <span>Appointments</span>
+                        </a>
+                    </li>
                     <li class="treeview @yield('dynamic')">
                         <a href="#">
                             <i data-feather="align-justify"></i>
@@ -92,6 +98,23 @@
                             <li class="@yield('payments.payouts')"><a href="{{ route('payments.payouts') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Payouts</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview @yield('emergencyhelp')">
+                        <a href="#">
+                            <i data-feather="phone-call"></i>
+                            <span>Emergency Help</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('emergencyhelp.simple')"><a href="{{ route('emergencyhelp.simple') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Emergency Help</a></li>
+                            <li class="@yield('emergencyhelp.midnight')"><a href="{{ route('emergencyhelp.midnight') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Mid Night Emergency Help</a></li>
                         </ul>
                     </li>
                 </ul>

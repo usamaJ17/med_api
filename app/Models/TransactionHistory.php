@@ -21,4 +21,7 @@ class TransactionHistory extends Model
         'user_id',
     ];
     protected $table = 'transaction_history';
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

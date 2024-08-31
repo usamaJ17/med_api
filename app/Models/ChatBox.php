@@ -9,7 +9,7 @@ class ChatBox extends Model
 {
     use HasFactory;
     protected $table = 'chat_box';
-    protected $fillable = ['sender_id', 'receiver_id', 'status','notification_to'];
+    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to'];
     protected $appends = ['notification','name','last_message'];
     protected $hidden = ['notification_to'];
 

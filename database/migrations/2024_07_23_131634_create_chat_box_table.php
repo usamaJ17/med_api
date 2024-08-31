@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('chat_box');
         Schema::create('chat_box', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sender_id');

@@ -44,6 +44,22 @@ class PaymentController extends Controller
         $data = $request->all();
         Log::info($data);
     }
+    public function payoutsAction(Request $request){
+        $payout = Payouts::find($request->id); 
+        if($payout){
+            $payout->status = $request->status;
+            if(isset($request->rejected_reason) && !empty($request->rejected_reason)){
+                $payout->rejected_reason = $request->rejected_reason;
+            }
+            if($request->status == 'completed'){
+                $payout->completed_at = now();
+            }
+            $payout->save();
+            return redirect()->back()->with('success', 'Payout Updated Successfully');
+        }else{
+            return redirect()->back()->with('error', 'Payout Not Found');
+        }
+    }
     public function getCryptoCurrencies()
     {
         $client = new Client();
@@ -124,8 +140,14 @@ class PaymentController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function transactions() {}
-    public function payouts() {}
+    public function transactions() {
+        $transactions = TransactionHistory::all();
+        return view('dashboard.payments.transactions.index', compact('transactions'));
+    }
+    public function payouts() {
+        $payouts = Payouts::all();
+        return view('dashboard.payments.payouts.index', compact('payouts'));
+    }
     public function saveTransactions(Request $request)
     {
         $request->merge(['user_id' => auth()->user()->id]);

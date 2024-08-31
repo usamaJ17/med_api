@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DynamicCatagoryController;
+use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
@@ -30,6 +33,7 @@ Route::get('/sym', function () {
 Route::get('/', function () {
     return redirect()->route('dashboard');
 })->name('home');
+Route::get('/graph', [HelperController::class, 'graphs'])->name('graph.form');
 
 Route::get('/login', [DashboardController::class, 'login'])->name('login.form');
 Route::post('/login', [AuthController::class, 'adminLogin'])->name('login');
@@ -43,6 +47,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
     Route::post('complete_verification', [MedicalController::class,'completeVerification'])->name('complete_verification');
     Route::post('emergency_status', [MedicalController::class,'emergencyStatus'])->name('emergency_status');
+    Route::post('night_emergency_status', [MedicalController::class,'nightEmergencyStatus'])->name('night_emergency_status');
     Route::resource('support_groups', SupportGroupController::class);
     // dynamic
     Route::get('dynamic/title', [DynamicCatagoryController::class,'title'])->name('dynamic.title');
@@ -60,6 +65,11 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
     Route::get('payments/payouts', [PaymentController::class,'payouts'])->name('payments.payouts');
 
+    Route::get('emergencyhelp/index', [EmergencyController::class,'simple'])->name('emergencyhelp.simple');
+    Route::get('emergencyhelp/midnight', [EmergencyController::class,'midnight'])->name('emergencyhelp.midnight');
+    Route::post('payments/payouts/action', [PaymentController::class,'payoutsAction'])->name('payments.payouts.action');
+
+    Route::get('appointments', [AppointmentController::class,'listAll'])->name('appointments.index');
 
 });
 

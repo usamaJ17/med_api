@@ -14,8 +14,11 @@ class EmergencyHelp extends Model
         'emergency_type',
         'status',
         'requested_at',
+        'amount',
+        'method',
         'is_mid_night',
         'description',
+        'duration'
     ];
     protected $table = 'emergency_help';
     public function user()

@@ -63,8 +63,14 @@
                     </div>
                     <div class="box-body">
                         <div class="mb-0 pull-right">
-                            <input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-success" @if ($medical->can_emergency) checked @endif >
+                            <input type="checkbox" id="md_checkbox_23" class="filled-in chk-col-success"
+                                @if ($medical->can_emergency) checked @endif>
                             <label for="md_checkbox_23">Receive Emergency Calls</label>
+                        </div>
+                        <div class="mb-0 pull-right" style="margin-right: 10px !important;">
+                            <input type="checkbox" id="md_checkbox_24" class="filled-in chk-col-success"
+                                @if ($medical->can_night_emergency) checked @endif>
+                            <label for="md_checkbox_24">Receive Midnight Emergency Calls</label>
                         </div>
                         <h4>Biography</h4>
                         <p>{{ $medical->professionalDetails->bio }}</p>
@@ -97,18 +103,6 @@
                                         <td scope="col">{{ $medical->gender }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="col">Country</th>
-                                        <td scope="col">{{ $medical->country }}</td>
-                                        <th scope="col">State</th>
-                                        <td scope="col">{{ $medical->state }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">City</th>
-                                        <td scope="col">{{ $medical->city }}</td>
-                                        <th scope="col">Language</th>
-                                        <td scope="col">{{ $medical->language }}</td>
-                                    </tr>
-                                    <tr>
                                         <th scope="col">Profession</th>
                                         <td scope="col">{{ $medical->professionalDetails->professions->name }}</td>
                                         <th scope="col">Rank</th>
@@ -119,7 +113,7 @@
                                         <td scope="col">{{ $medical->professionalDetails->license_authority }}</td>
                                         <th scope="col">Regestraion Number</th>
                                         <td scope="col">{{ $medical->professionalDetails->regestraion_number }}</td>
-                                    </tr>   
+                                    </tr>
                                     <tr>
                                         <th scope="col">Work At</th>
                                         <td scope="col">{{ $medical->professionalDetails->work_at }}</td>
@@ -139,157 +133,106 @@
                 </div>
                 <div class="box bt-3 border-success">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Resent Review</h4>
+                        <h4 class="box-title">User Statistics</h4>
                     </div>
-                    <div class="box-body p-0">
-                        <div class="inner-user-div">
-                            <div class="media-list bb-1 bb-dashed border-light">
-                                <div class="media align-items-center">
-                                    <a class="avatar avatar-lg status-success" href="#">
-                                        <img src="../images/avatar/1.jpg" class="bg-success-light" alt="...">
-                                    </a>
-                                    <div class="media-body">
-                                        <p class="fs-16">
-                                            <a class="hover-primary" href="#">Theron Trump</a>
-                                        </p>
-                                        <span class="text-muted">2 day ago</span>
-                                    </div>
-                                    <div class="media-right">
-                                        <div class="d-flex">
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="media pt-0">
-                                    <p class="text-fade">Vestibulum tincidunt sit amet sapien et eleifend. Fusce pretium
-                                        libero enim, nec lacinia est ultrices id. Duis nibh sapien, ultrices in hendrerit
-                                        ac, pulvinar ut mauris. Quisque eu condimentum justo. </p>
-                                </div>
-                            </div>
-                            <div class="media-list bb-1 bb-dashed border-light">
-                                <div class="media align-items-center">
-                                    <a class="avatar avatar-lg status-success" href="#">
-                                        <img src="../images/avatar/3.jpg" class="bg-success-light" alt="...">
-                                    </a>
-                                    <div class="media-body">
-                                        <p class="fs-16">
-                                            <a class="hover-primary" href="#">Johen Doe</a>
-                                        </p>
-                                        <span class="text-muted">5 day ago</span>
-                                    </div>
-                                    <div class="media-right">
-                                        <div class="d-flex">
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star"></i>
-                                            <i class="text-warning fa fa-star-half-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="media pt-0">
-                                    <p class="text-fade">Praesent venenatis viverra turpis quis varius. Nullam ullamcorper
-                                        congue urna, in sodales eros placerat non.</p>
-                                </div>
-                            </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">Total Revenue Earned</th>
+                                        <td scope="col">{{ $total_revenue }} GHS</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Number Of Articles</th>
+                                        <td scope="col">{{ $atricals_count }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Number Of Followers</th>
+                                        <td scope="col">{{ $medical->followers_count }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Total Unique Patients</th>
+                                        <td scope="col">{{ $uniq_cus }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Total Appointments</th>
+                                        <td scope="col">{{ $tot_app }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="box-footer">
-                        <a href="#" class="waves-effect waves-light d-block w-p100 btn btn-success">Load More
-                            Reviews</a>
-                    </div>
                 </div>
-            </div>
-            <div class="col-xl-4 col-12">
                 <div class="box bt-3 border-success">
                     <div class="box-header">
                         <h4 class="box-title">Latest Appointments</h4>
                     </div>
                     <div class="box-body">
-                        <div id="paginator1"></div>
+                        <div class="inner-user-div4">
+                            <table class="table mb-0" id="example2app">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($appointment as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center mb-10">
+                                                    <div class="me-15">
+                                                        <img src="{{ $item->user->profile_image }}"
+                                                            class="avatar avatar-lg rounded10 bg-primary-light"
+                                                            alt="" />
+                                                    </div>
+                                                    <div class="d-flex flex-column flex-grow-1 fw-500">
+                                                        <p class="hover-primary text-fade mb-1 fs-14">
+                                                            {{ $item->user->fullName() }}</p>
+                                                        <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i>
+                                                            {{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
+                                                            @
+                                                            {{ \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') }}
+                                                            <span class="mx-20">{{ $item->consultation_fees }}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            class="waves-effect btn btn-primary btn-sm">{{ ucfirst($item->status) }}</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-12">
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">User Location</h4>
                     </div>
                     <div class="box-body">
-                        <div class="inner-user-div4">
-                            <div>
-                                <div class="d-flex align-items-center mb-10">
-                                    <div class="me-15">
-                                        <img src="../images/avatar/avatar-5.png"
-                                            class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 fw-500">
-                                        <p class="hover-primary text-fade mb-1 fs-14">Mark Wood</p>
-                                        <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 13:00 <span
-                                                class="mx-20">$ 90</span></p>
-                                    </div>
-                                    <div>
-                                        <button class="waves-effect btn btn-primary btn-sm">Upcomming</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex justify-content-between align-items-end mb-15 py-10 bb-dashed border-bottom">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex align-items-center mb-10">
-                                    <div class="me-15">
-                                        <img src="../images/avatar/avatar-5.png"
-                                            class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 fw-500">
-                                        <p class="hover-primary text-fade mb-1 fs-14">Mark Wood</p>
-                                        <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 13:00 <span
-                                                class="mx-20">$ 90</span></p>
-                                    </div>
-                                    <div>
-                                        <button class="waves-effect btn btn-primary btn-sm">Upcomming</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex justify-content-between align-items-end mb-15 py-10 bb-dashed border-bottom">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex align-items-center mb-10">
-                                    <div class="me-15">
-                                        <img src="../images/avatar/avatar-5.png"
-                                            class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 fw-500">
-                                        <p class="hover-primary text-fade mb-1 fs-14">Mark Wood</p>
-                                        <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 13:00 <span
-                                                class="mx-20">$ 90</span></p>
-                                    </div>
-                                    <div>
-                                        <button class="waves-effect btn btn-primary btn-sm">Upcomming</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex justify-content-between align-items-end mb-15 py-10 bb-dashed border-bottom">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="d-flex align-items-center mb-10">
-                                    <div class="me-15">
-                                        <img src="../images/avatar/avatar-5.png"
-                                            class="avatar avatar-lg rounded10 bg-primary-light" alt="" />
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 fw-500">
-                                        <p class="hover-primary text-fade mb-1 fs-14">Mark Wood</p>
-                                        <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i> 13:00 <span
-                                                class="mx-20">$ 90</span></p>
-                                    </div>
-                                    <div>
-                                        <button class="waves-effect btn btn-success btn-sm">Completed</button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex justify-content-between align-items-end mb-15 py-10 bb-dashed border-bottom">
-                                </div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">Country</th>
+                                        <td scope="col">{{ $medical->country }}</td>
+                                        <th scope="col">State</th>
+                                        <td scope="col">{{ $medical->state }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">City</th>
+                                        <td scope="col">{{ $medical->city }}</td>
+                                        <th scope="col">Language</th>
+                                        <td scope="col">{{ $medical->language }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -319,6 +262,121 @@
                         @endif
                     </div>
                 </div>
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Recent Review</h4>
+                    </div>
+                    <div class="box-body p-0">
+                        <div class="inner-user-div">
+                            <table class="table mb-0" id="examplereview">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($reviews as $item)
+                                        <tr>
+                                            <td class="media-list bb-1 bb-dashed border-light">
+                                                <div class="media align-items-center">
+                                                    <a class="avatar avatar-lg status-success" href="#">
+                                                        <img src="../images/avatar/1.jpg" class="bg-success-light"
+                                                            alt="...">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <p class="fs-16">
+                                                            <a class="hover-primary"
+                                                                href="#">{{ $item->user->fullName() }}</a>
+                                                        </p>
+                                                        <span
+                                                            class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
+                                                    </div>
+                                                    <div class="media-right">
+                                                        <div class="d-flex" title="{{ $item->rating }} out of 5">
+                                                            @php
+                                                                $fullStars = floor($item->rating); // Number of full stars
+                                                                $halfStar = $item->rating - $fullStars >= 0.5 ? 1 : 0; // Half star if remainder >= 0.5
+                                                            @endphp
+
+                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                <i class="text-warning fa fa-star"></i> <!-- Full Star -->
+                                                            @endfor
+
+                                                            @if ($halfStar)
+                                                                <i class="text-warning fa fa-star-half-o"></i>
+                                                                <!-- Half Star -->
+                                                            @endif
+
+                                                            @if (!$halfStar && $fullStars < 5)
+                                                                <i class="text-warning fa fa-star-o"></i>
+                                                                <!-- Outline Star -->
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="media pt-0">
+                                                    <p class="text-fade">{{ $item->body }} </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">payouts</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive rounded card-table">
+                            <table class="table border-no" id="example1">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Reject Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($payouts as $item)
+                                        <tr class="hover-primary">
+                                            <td> <a href="{{ route('medical.show', $item->user->id) }}">{{ $item->user->first_name }}
+                                                    {{ $item->user->last_name }} </a></td>
+                                            <td>{{ $item->amount }}</td>
+                                            <td>{{ $item->status }} @if ($item->status == 'completed')
+                                                    (Completed At :
+                                                    {{ \Carbon\Carbon::parse($item->completed_at)->format('h:i A, d F Y') }})
+                                                @endif
+                                            </td>
+                                            <td>{{ $item->rejected_reason }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-12">
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Appointment</h4>
+                    </div>
+                    <div class="box-body">
+                        <div id="appointment_overview"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -336,6 +394,24 @@
                 'ordering': true,
                 'info': true,
                 'autoWidth': false
+            });
+            $('#example2app').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': false,
+                'info': false,
+                'pageLength': 5,
+                'autoWidth': false
+            })
+            $('#examplereview').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': false,
+                'info': false,
+                'autoWidth': false,
+                'pageLength': 5,
             })
         });
 
@@ -382,27 +458,120 @@
             });
         });
         $('#md_checkbox_23').change(function() {
-                var isChecked = $(this).is(':checked');
-                var val = 0;
-                if(isChecked){
-                    val = 1;
+            var isChecked = $(this).is(':checked');
+            var val = 0;
+            if (isChecked) {
+                val = 1;
+            }
+
+            $.ajax({
+                url: '{{ route('emergency_status') }}', // Replace with your endpoint URL
+                type: 'POST',
+                data: {
+                    can_emergency: val,
+                    id: "{{ $medical->id }}",
+                    _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
+                },
+                success: function(response) {
+                    console.log('Checkbox state updated successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating checkbox state:', error);
                 }
-                
-                $.ajax({
-                    url: '{{ route("emergency_status") }}', // Replace with your endpoint URL
-                    type: 'POST',
-                    data: {
-                        can_emergency: val,
-                        id: "{{ $medical->id }}",
-                        _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
-                    },
-                    success: function(response) {
-                        console.log('Checkbox state updated successfully');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error updating checkbox state:', error);
-                    }
-                });
             });
+        });
+        $('#md_checkbox_24').change(function() {
+            var isChecked = $(this).is(':checked');
+            var val = 0;
+            if (isChecked) {
+                val = 1;
+            }
+
+            $.ajax({
+                url: '{{ route('night_emergency_status') }}', // Replace with your endpoint URL
+                type: 'POST',
+                data: {
+                    can_night_emergency: val,
+                    id: "{{ $medical->id }}",
+                    _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
+                },
+                success: function(response) {
+                    console.log('Checkbox state updated successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating checkbox state:', error);
+                }
+            });
+        });
+        var appointmentData = @json($appointmentData);
+        var cancelAppointmentData = @json($cancelAppointmentData);
+
+        var options = {
+            series: [{
+                name: 'Appointment',
+                data: appointmentData.data
+            }, {
+                name: 'Cancelled',
+                data: cancelAppointmentData.data
+            }],
+            chart: {
+                type: 'area',
+                height: 270,
+                toolbar: {
+                    show: false
+                }
+            },
+            colors: ['#2444e8', '#ee3158'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '30%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            grid: {
+                show: false,
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['#2444e8', '#ee3158'],
+            },
+            xaxis: {
+                categories: appointmentData.date,
+
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0); // Format to show integers
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                theme: 'dark',
+                y: {
+                    formatter: function(val) {
+                        return val + " Appointment"
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#appointment_overview"), options);
+        chart.render();
     </script>
 @endsection

@@ -2,62 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use App\Custom\GraphFactory;
 use App\Models\Appointment;
 use App\Models\ProfessionalType;
+use App\Models\TransactionHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     //
-    public function login(){
+    public function login()
+    {
         return view('dashboard.auth.login');
     }
-    public function index(){
+    public function index()
+    {
 
-        $endDate = Carbon::now();
-        $startDate = $endDate->copy()->subDays(14);
-        $patientSignups = [];
-        $medicalSignups = [];
-        $appointmentData = [];
-        $cancelAppointmentData = [];
-        $formattedDates = [];
-        $pro_cat_appointment = [];
+        $startDate = Carbon::now()->subDays(14);
+        $endDate = Carbon::now()->addDay();
 
-        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
-            $dailyPatientCount = User::whereHas("roles", function($q) {
-                $q->where("name", "patient");
-            })->whereDate('created_at', $date->toDateString())->count();
-        
-            $dailyMedicalCount = User::whereHas("roles", function($q) {
-                $q->where("name", "medical");
-            })->whereDate('created_at', $date->toDateString())->count();
+        $graphFactory = new GraphFactory($startDate, $endDate);
+        $patientSignups = $graphFactory->getGraphData('patient_signups');
+        $medicalSignups = $graphFactory->getGraphData('medical_signups');
+        $appointmentData = $graphFactory->getGraphData('appointments');
+        $cancelAppointmentData = $graphFactory->getGraphData('cancel_appointments');
+        $pro_cat_appointment = $graphFactory->getGraphData('pro_cat_appointments');
+        $total_monthly_revenue = $graphFactory->getGraphData('revenue');
+        $age = $graphFactory->getGraphData('age');
 
-            $dailyAppointmentCount = Appointment::whereDate('created_at', $date->toDateString())->count();
-            $cancelAppointmentCount = Appointment::whereDate('created_at', $date->toDateString())->where('status', 'cancelled')->count();
-
-            // get professional category appointment
-            $catagories = ProfessionalType::all();
-            foreach($catagories as $cat){
-                $professionals = User::where('professional_type_id', $cat->id)->get();
-                $count = 0;
-                foreach($professionals as $pro){
-                    $count += Appointment::where('med_id', $pro->id)->whereDate('created_at', $date->toDateString())->count();
-                }
-                $pro_cat_appointment[$cat->name][] = $count;
-            }        
-            $patientSignups[] = $dailyPatientCount;
-            $medicalSignups[] = $dailyMedicalCount;
-            $cancelAppointmentData[] = $cancelAppointmentCount;
-            $appointmentData[] = $dailyAppointmentCount;
-            $formattedDates[] = $date->format('d M'); // Format date as '10 May', '11 May', etc.
-
+        $professionalCounts = User::whereHas("roles", function ($q) {
+            $q->where("name", "medical");
+        })
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter users created within the last 15 days
+            ->select('professional_type_id', DB::raw('count(*) as count'))
+            ->groupBy('professional_type_id')
+            ->get();
+        foreach ($professionalCounts as $count) {
+            $dailyPatientCountCat[$count->professional_type_name] = $count->count;
         }
 
-        $patients = User::whereHas("roles", function($q){ $q->where("name", "patient"); })->get();
-        $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->get();
+        $total_revenue = TransactionHistory::sum('transaction_amount');
+        $patients = User::whereHas("roles", function ($q) {
+            $q->where("name", "patient");
+        })->get();
+        $medicals = User::whereHas("roles", function ($q) {
+            $q->where("name", "medical");
+        })->get();
         $appointments = Appointment::all();
-        return view('dashboard.index')->with(compact('patients','medicals','appointments','patientSignups', 'medicalSignups','appointmentData','cancelAppointmentData','formattedDates','pro_cat_appointment'));
+        $threeDaysAgo = Carbon::now()->subDays(30);
+        $result = Appointment::where('status', '!=', 'cancelled')
+            ->where('appointment_date', '>=', $threeDaysAgo)
+            ->select('med_id', DB::raw('count(*) as appointment_count'))
+            ->groupBy('med_id')
+            ->orderByDesc('appointment_count')
+            ->first();
+
+        // Extract the med_id and count
+        $medIdWithMaxAppointments = $result->med_id ?? null;
+        $maxDoc = User::find($medIdWithMaxAppointments);
+        if(! $maxDoc){
+            $maxDoc = User::whereHas("roles", function ($q) {
+                $q->where("name", "medical");
+            })->inRandomOrder()->get();
+        }
+        $maxAppointmentCount = $result->appointment_count ?? 0;
+        return view('dashboard.index')->with(compact('patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
     }
 }

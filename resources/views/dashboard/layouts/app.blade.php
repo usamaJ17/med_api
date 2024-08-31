@@ -42,7 +42,7 @@
   
 </div>
 <!-- ./wrapper -->		
-	@include('dashboard.layouts.chat')
+	{{-- @include('dashboard.layouts.chat') --}}
 	
 	<!-- Page Content overlay -->
 	

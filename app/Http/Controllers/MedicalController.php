@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Custom\GraphFactory;
 use App\Exports\ProfessionalsExport;
+use App\Models\Appointment;
+use App\Models\Article;
+use App\Models\Payouts;
+use App\Models\Review;
+use App\Models\TransactionHistory;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -52,9 +59,31 @@ class MedicalController extends Controller
     public function show(string $id)
     {
         $medical = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks')->find($id);
+        $payouts = Payouts::where('user_id',$id)->get();
+        $appointment = Appointment::where('med_id',$id)->get();
+        $endDate = Carbon::now()->addDay();
+        $formattedDates = [];
+        $total_monthly_revenue = [];
+        $startDate = $endDate->copy()->subDays(14);
+        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+            $dailyrevinue = TransactionHistory::where('user_id', $id)->whereDate('transaction_date', $date->toDateString())->sum('transaction_amount');
+            $total_monthly_revenue[] = $dailyrevinue;
+            $formattedDates[] = $date->format('d M'); 
+
+        }
         if($medical){
             $docs = $medical->GetAllMedia() ?? [];
-            return view('dashboard.medicals.show', compact('medical','docs'));
+            $startDate = Carbon::now()->subDays(14);
+            $endDate = Carbon::now()->addDay();
+            $total_revenue = TransactionHistory::where('user_id',$id)->sum('transaction_amount');
+            $graphFactory = new GraphFactory($startDate, $endDate, $id);
+            $appointmentData = $graphFactory->getGraphData('appointments');
+            $cancelAppointmentData = $graphFactory->getGraphData('cancel_appointments');
+            $atricals_count = Article::where('user_id',$id)->count();
+            $uniq_cus = Appointment::where('med_id',$id)->distinct('user_id')->count();
+            $tot_app = Appointment::where('med_id',$id)->count();
+            $reviews = Review::where('med_id',$id)->get();
+            return view('dashboard.medicals.show', compact('medical','docs','reviews','payouts','tot_app','appointment','uniq_cus','atricals_count','total_revenue','formattedDates','cancelAppointmentData','appointmentData','total_monthly_revenue'));
         }else{
             return redirect()->back()->with('error', 'Medical not found');
         }
@@ -100,6 +129,12 @@ class MedicalController extends Controller
     public function emergencyStatus(Request $request){
         $medical = User::find($request->id);
         $medical->can_emergency = $request->can_emergency;
+        $medical->save();
+        return response()->json(true);
+    }
+    public function nightEmergencyStatus(Request $request){
+        $medical = User::find($request->id);
+        $medical->can_night_emergency = $request->can_night_emergency;
         $medical->save();
         return response()->json(true);
     }

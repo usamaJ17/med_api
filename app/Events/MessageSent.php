@@ -75,7 +75,7 @@ class MessageSent implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'chat_id' => $this->message->id,
+            'chat_id' => $this->box_id,
             'message' => $this->message->toArray(),
         ];
     }

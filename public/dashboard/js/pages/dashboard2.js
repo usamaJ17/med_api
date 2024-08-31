@@ -75,46 +75,4 @@ $(function () {
 		}
 	  });
 	
-		var options = {
-          series: [44, 55, 41, 17, 15, 25],
-          chart: {
-			  type: 'donut',
-			  width: 250,
-			},
-			dataLabels: {
-			enabled: false,
-		  },
-		colors: ['#3246D3', '#00D0FF', '#ee3158', '#ffa800', '#1dbfc1', '#e4e6ef'],
-		legend: {
-		  show: false,
-		},
-			
-		  plotOptions: {
-			  pie: {
-				  donut: {
-					size: '75%',
-				  }
-			  }
-		  },
-		labels: ["Cardiology", "Endocrinology", "Physicians", "Dermatology", "Orthopedics", "Immunology"],
-        responsive: [{
-          breakpoint: 1600,
-          options: {
-            chart: {
-				width: 250,
-            }
-          }
-        },{
-          breakpoint: 500,
-          options: {
-            chart: {
-				width: 200,
-            }
-          }
-        }]
-        };
-
-        var chart = new ApexCharts(document.querySelector("#chart124"), options);
-        chart.render();
-	
 }); // End of use strict

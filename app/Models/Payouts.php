@@ -12,7 +12,10 @@ class Payouts extends Model
         'user_id',
         'amount',
         'status',
-        'rejected_reason'
+        'rejected_reason',
+        'completed_at',
+        'method',
+        'account_info'
     ];
     protected $table = 'payouts';
     public function user()

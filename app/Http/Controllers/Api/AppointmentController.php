@@ -89,6 +89,10 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function listAll(){
+        $appointments = Appointment::all();
+        return view('dashboard.appointments.index')->with(compact('appointments'));
+    }
     public function getSubAccount(Request $request){
         $appointments = Appointment::query()->where('sub_account_id', auth()->id())->where('is_paid',1);
         if($request->has('appointment_date')){
@@ -286,6 +290,11 @@ class AppointmentController extends Controller
     public function markAsPaid(Request $request){
         $app = Appointment::find($request->id);
         $app->is_paid = 1;
+        $app->gateway = $request->gateway;
+        $app->transaction_id = $request->transaction_id;
+        if($app->user_id != auth()->user()->id){
+            $app->pay_for_me = 1;
+        }
         $app->save();
         // create a chatbox between patient and professional
         $box = ChatController::createChatBox($app->user_id, $app->med_id);

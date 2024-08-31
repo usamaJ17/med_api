@@ -20,7 +20,10 @@ class Appointment extends Model
         'problem',
         'patient_status',
         'is_paid',
+        'gateway',
+        'transaction_id',
         'appointment_code',
+        'pay_for_me',
         'diagnosis',
         'status',
     ];

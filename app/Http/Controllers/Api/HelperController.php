@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Custom\GraphFactory;
 use App\Http\Controllers\Controller;
 use App\Models\DynamicFiled;
 use App\Models\Professions;
@@ -233,5 +234,14 @@ class HelperController extends Controller
             'message' => 'Timezones fetched successfully',
             'data' => $timezoneOffsets,
         ], 200);
+    }
+
+    public function graphs(Request $request){
+        $graphType = $request->input('type');
+        $graphFactory = new GraphFactory();
+        $graphData = $graphFactory->getGraphData($graphType);
+        dd($graphData);
+    
+        return view('dashboard.index')->with(compact('patients','medicals','age','appointments','patientSignups','dailyPatientCountCat', 'total_revenue','total_monthly_revenue','medicalSignups','appointmentData','cancelAppointmentData','formattedDates','pro_cat_appointment'));
     }
 }
