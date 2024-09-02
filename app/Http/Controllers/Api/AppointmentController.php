@@ -266,7 +266,7 @@ class AppointmentController extends Controller
         }
     }
     public function getReview(Request $request){
-        $reviews = Review::with('user')->query();
+        $reviews = Review::with('user'); 
         if(isset($request->med_id)){
             $reviews->where('med_id', $request->med_id);
         }
