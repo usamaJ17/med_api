@@ -12,8 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(RoleSeed::class);
-        $this->call(ProfessionalRanksSeed::class);
-        $this->call(AdminSeed::class);
+        //$this->call(ProfessionalRanksSeed::class);
+        $this->call(RoleSeeder::class);
     }
 }

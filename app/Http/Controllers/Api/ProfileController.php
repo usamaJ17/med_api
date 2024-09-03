@@ -74,7 +74,7 @@ class ProfileController extends Controller
     }
     public function getMedicalProfessionals(Request $request){
         $query = User::with('professionalDetails')->role('medical');
-
+        $query->where('is_verified', true);
         // Apply filters if provided
         if ($request->has('professional_id') && $request->professional_id != "") {
             $query->where('id', $request->professional_id);
