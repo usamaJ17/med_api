@@ -9,28 +9,44 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $article = Article::get();
+        $articles = Article::get();
+        if(!$request->ajax()){
+          return view('dashboard.article.index', compact('articles'));  
+        }
         $data = [
             'status' => 200, // add this line
             'message' => 'All Article fetched successfully',
-            'data' => ['article' => $article],
+            'data' => ['article' => $articles],
         ];
         return response()->json($data,200);
     }
+    public function status(Request $request){
+        $article = Article::find($request->id);
+        if($request->status == 'approve'){
+            $article->published = 1;
+        }elseif($request->status == 'reject'){
+            $article->published = 0;
+        }
+        $article->save();
+        return redirect()->back()->with('success','Article status updated successfully');
+    }
 
-    public function show($id)
+    public function show(Request $request,  $id)
     {
         $article = Article::with(['comments.user', 'likes'])->find($id);
         if(!$article) return response()->json([
             'status' => 404, // add this line
-            'message'=>'Article not found'],404);
+            'message'=>'Article not found'],404);    
         $data = [
             'status' => 200, // add this line
             'message' => 'Article fetched successfully',
             'data' => ['article'=>$article],
         ];
+        if(! $request->ajax()){
+            return view('dashboard.article.show', compact('article'));
+        }
         return response()->json($data,200);
     }
 

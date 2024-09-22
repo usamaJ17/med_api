@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SupportGroup extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'url'];
+    protected $fillable = ['name', 'description', 'url','type'];
 }

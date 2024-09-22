@@ -54,6 +54,47 @@ class DynamicCatagoryController extends Controller
         }
         return redirect()->back()->with('success', 'Title added successfully');
     }
+    public function professionalDocs()
+    {
+        $professional_docs = DynamicFiled::where('name','professional_docs')->first();
+        if($professional_docs){
+            $professional_docs_array = json_decode($professional_docs->data);
+        }else{
+            $professional_docs_array = [];
+        }
+        // dd($professional_docs_array);
+        return view('dashboard.dynamic_data.professional_docs', compact('professional_docs_array'));
+    }
+    public function deleteProfessionalDocs($name)
+    {
+        $titles = DynamicFiled::where('name','professional_docs')->first();
+        if($titles){
+            $title_array = json_decode($titles->data);
+            if(($key = array_search($name, $title_array)) !== false) {
+                unset($title_array[$key]);
+            }
+            $titles->data = json_encode(array_values($title_array));
+            $titles->save();
+        }
+        return response()->json(true);
+    }
+    public function storeProfessionalDocs(Request $request){
+        $titles = DynamicFiled::where('name','professional_docs')->first();
+        if($titles){
+            $tit_array = json_decode($titles->data);
+            $tit_array[] = $request->title;
+            $titles->data = json_encode($tit_array);
+            $titles->save();
+        }else{
+            $tit_array = [];
+            $tit_array[] = $request->title;
+            $titles = new DynamicFiled();
+            $titles->name = 'professional_docs';
+            $titles->data = json_encode($tit_array);
+            $titles->save();
+        }
+        return redirect()->back()->with('success', 'Title added successfully');
+    }
     public function rank()
     {
         $ranks = Ranks::all();

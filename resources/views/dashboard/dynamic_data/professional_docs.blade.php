@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.app')
 
 @section('title')
-    Professionals Titles
+    Professionals Docs
 @endsection
 @section('dynamic')
     active
 @endsection
-@section('dynamic.title')
+@section('dynamic.professional_docs')
     active
 @endsection
 @section('content')
@@ -14,12 +14,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Professionals Titles</h4>
+                <h4 class="page-title">Additional Professionals Docs</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i>Dynamic Data</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Professionals Titles</li>
+                            <li class="breadcrumb-item active" aria-current="page">Additional Professionals Docs</li>
                         </ol>
                     </nav>
                 </div>
@@ -39,11 +39,12 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        {{-- <th>Required</th> --}}
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($title_array as $item)
+                                    @foreach ($professional_docs_array as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item }}</td>
                                             <td>
@@ -76,11 +77,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dynamic.title.store') }}" method="POST">
+                    <form action="{{ route('dynamic.professional_docs.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Title</label>
-                            <input type="text" name="title" class="form-control" id="name" placeholder="Enter Name">
+                            <label for="name">Document Title</label>
+                            <input type="text" name="title" class="form-control" id="name" placeholder="Enter Document Name">
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -104,7 +105,7 @@
                     'autoWidth': false,
                     'dom': 'Bfrtip',
                     'buttons': [{
-                        text: 'Add New Title',
+                        text: 'Add New Document',
                         className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
                         action: function(e, dt, node, config) {
                             $('#add_new').modal('show'); // Show the modal
@@ -115,7 +116,7 @@
 
             function DeleteRecord(name) {
                 $.ajax({
-                    url : "{{ url('portal/dynamic/title/delete') }}"+"/"+name,
+                    url : "{{ url('portal/dynamic/professional_docs/delete') }}"+"/"+name,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"
@@ -128,7 +129,7 @@
             }
             function SaveRecord(name) {
                 $.ajax({
-                    url : "{{ url('portal/dynamic/title/delete') }}"+"/"+name,
+                    url : "{{ url('portal/dynamic/professional_docs/delete') }}"+"/"+name,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

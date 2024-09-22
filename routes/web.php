@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\DashboardController;
@@ -9,8 +10,10 @@ use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SignalingController;
 use App\Http\Controllers\SupportGroupController;
+use App\Http\Controllers\TweekController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +27,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('cert_test',function(){
+    return view('cert_test');
+});
 
 Route::get('/sym', function () {
     Artisan::call('storage:link');
@@ -43,6 +50,12 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('patient', PatientController::class);
     Route::resource('medical', MedicalController::class);
+    Route::resource('tweek', TweekController::class);
+    Route::resource('reminder', ReminderController::class);
+    Route::get('articles', [ArticleController::class,'index'])->name('articles.admin.index');
+    Route::post('articles/status', [ArticleController::class,'status'])->name('articles.admin.status');
+    Route::get('articles/details/{id}', [ArticleController::class,'show'])->name('articles.admin.show');
+
     Route::get('export/medical', [MedicalController::class,'export'])->name('medical.export');
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
     Route::post('complete_verification', [MedicalController::class,'completeVerification'])->name('complete_verification');
@@ -53,6 +66,10 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('dynamic/title', [DynamicCatagoryController::class,'title'])->name('dynamic.title');
     Route::delete('dynamic/title/delete/{name}', [DynamicCatagoryController::class,'deleteTitle'])->name('dynamic.title.delete');
     Route::post('dynamic/title/store', [DynamicCatagoryController::class,'storeTitle'])->name('dynamic.title.store');
+
+    Route::get('dynamic/professional_docs', [DynamicCatagoryController::class,'professionalDocs'])->name('dynamic.professional_docs');
+    Route::delete('dynamic/professional_docs/delete/{name}', [DynamicCatagoryController::class,'deleteProfessionalDocs'])->name('dynamic.professional_docs.delete');
+    Route::post('dynamic/professional_docs/store', [DynamicCatagoryController::class,'storeProfessionalDocs'])->name('dynamic.professional_docs.store');
 
     Route::get('dynamic/rank', [DynamicCatagoryController::class,'rank'])->name('dynamic.rank');
     Route::delete('dynamic/rank/delete/{name}', [DynamicCatagoryController::class,'deleterank'])->name('dynamic.rank.delete');

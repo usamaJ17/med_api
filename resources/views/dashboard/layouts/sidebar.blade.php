@@ -81,6 +81,9 @@
                             <li class="@yield('dynamic.rank')"><a href="{{ route('dynamic.rank') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Professionals Ranks</a></li>
+                            <li class="@yield('dynamic.professional_docs')"><a href="{{ route('dynamic.professional_docs') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Professionals Docs</a></li>
                         </ul>
                     </li>
                     <li class="treeview @yield('payments')">
@@ -116,6 +119,24 @@
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Mid Night Emergency Help</a></li>
                         </ul>
+                    </li>
+                    <li class="@yield('article')">
+                        <a href="{{ route('articles.admin.index') }}">
+                            <i data-feather="align-center"></i>
+                            <span>Articles</span>
+                        </a>
+                    </li>
+                    <li class="@yield('reminder')">
+                        <a href="{{ route('reminder.index') }}">
+                            <i data-feather="bell"></i>
+                            <span>Reminders</span>
+                        </a>
+                    </li>
+                    <li class="@yield('tweek')">
+                        <a href="{{ route('tweek.index') }}">
+                            <i data-feather="sliders"></i>
+                            <span>Tweeks</span>
+                        </a>
                     </li>
                 </ul>
 

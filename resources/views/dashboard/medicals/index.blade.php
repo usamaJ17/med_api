@@ -42,6 +42,7 @@
                                         <th>Professionals Name</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
+                                        <th>State</th>
                                         <th>Type</th>
                                         <th>Rank</th>
                                         <th>Last Appointment Date</th>
@@ -52,10 +53,11 @@
                                 <tbody>
                                     @foreach ($medicals as $medical)
                                         <tr class="hover-primary">
-                                            <td>#p-DH-{{ $medical->id }}</td>
-                                            <td>{{ $medical->first_name . $medical->last_name }}</td>
+                                            <td><a href="{{ route('medical.show',$medical->id ) }}"> #p-DH-{{ $medical->id }} </a></td>
+                                            <td><a href="{{ route('medical.show',$medical->id ) }}">{{ $medical->first_name . $medical->last_name }} </a></td>
                                             <td>{{ $medical->email }}</td>
                                             <td>{{ $medical->contact }}</td>
+                                            <td>{{ $medical->state }}</td>
                                             <td>{{ $medical->professionalDetails->professions->name }}</td>
                                             <td>{{ $medical->professionalDetails->ranks->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($medical->created_at)->format('d/m/Y')}}</td>

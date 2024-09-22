@@ -238,6 +238,27 @@
                 </div>
                 <div class="box bt-3 border-success">
                     <div class="box-header with-border">
+                        <h4 class="box-title">User Earning</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col" colspan="2">Total Earning</th>
+                                        <td scope="col" colspan="2">{{ $availableAmount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" colspan="2">Escrow Amount</th>
+                                        <td scope="col" colspan="2">{{ $escrowAmount }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box bt-3 border-success">
+                    <div class="box-header with-border">
                         <h4 class="box-title">Documents <small class="subtitle">Fetched {{ count($docs) }}
                                 Documents</small></h4>
                     </div>

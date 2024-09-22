@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
@@ -245,6 +246,13 @@ class User extends Authenticatable implements HasMedia
         }
     
         return $array;
+    }
+    public function reminders(): BelongsToMany
+    {
+        return $this->belongsToMany(Reminder::class, 'reminder_user')
+            ->withPivot('is_read')
+            ->using(ReminderUser::class)
+            ->withTimestamps();
     }
     
 }
