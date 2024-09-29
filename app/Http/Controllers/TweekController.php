@@ -55,6 +55,7 @@ class TweekController extends Controller
     {
         $tweek->value = $request->input('value');
         $tweek->save();
+        dd($request->file('media') );
         if (count($request->media) > 0) {
             foreach ($request->file('media') as $file) {
                 dd($file);

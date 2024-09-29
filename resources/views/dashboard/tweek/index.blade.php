@@ -87,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <label for="formFileMultiple" class="form-label">Media</label>
-                            <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
+                            <input class="form-control" type="file" name="media" id="formFileMultiple">
                         </div>                        
                 </div>
                 <div class="modal-footer">
