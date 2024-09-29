@@ -36,6 +36,9 @@ class HelperController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function saveUserFeedback(Requet $request){
+        
+    }
     public function deleteAccount($id)
     {
         $user = null;
