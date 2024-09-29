@@ -73,7 +73,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm" action="" method="POST">
+                    <form id="editForm" action="" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <label for="formFileMultiple" class="form-label">Media</label>
-                            <input class="form-control" type="file" name="media" id="formFileMultiple">
+                            <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
                         </div>                        
                 </div>
                 <div class="modal-footer">
