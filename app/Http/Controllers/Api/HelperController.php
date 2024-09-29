@@ -248,7 +248,7 @@ class HelperController extends Controller
     public function shareMessage(){
         // if role is patient
         if(Auth::user()->hasRole('patient')){
-            $tweak = Tweek::where('type', 'patient_share_message')->first();
+            $tweak = Tweek::where('type', 'Patient Share Message')->first();
             return response()->json([
                 'status' => 200,
                 'message' => 'Share Message fetched successfully',
@@ -256,7 +256,7 @@ class HelperController extends Controller
                 'media' => $tweak->getAllMedia()
             ]);
         }elseif(Auth::user()->hasRole('medical')){
-            $tweak = Tweek::where('type', 'medical_share_message')->first();
+            $tweak = Tweek::where('type', 'Medical Share Message')->first();
             return response()->json([
                 'status' => 200,
                 'message' => 'Share Message fetched successfully',

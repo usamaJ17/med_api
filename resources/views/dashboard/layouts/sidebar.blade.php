@@ -127,7 +127,7 @@
                         </a>
                     </li>
                     <li class="@yield('user')">
-                        <a href="{{ route('user.index') }}">
+                        <a href="#">
                             <i data-feather="user"></i>
                             <span>Users</span>
                         </a>
