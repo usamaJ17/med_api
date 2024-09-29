@@ -261,7 +261,7 @@ class HelperController extends Controller
                 'status' => 200,
                 'message' => 'Share Message fetched successfully',
                 'data' => $tweak->value,
-                'media' => $tweak->getAllMedia()
+                'media' => $tweak->getMedia()
             ]);
         }
     }
