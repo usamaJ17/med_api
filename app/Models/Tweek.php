@@ -18,6 +18,7 @@ class Tweek extends Model implements HasMedia
     public function getAllMedia()
     {
         $mediaItems = $this->getMedia(); // Retrieve all media items
+        return $mediaItems;
         $media = [];
         foreach($mediaItems as $item){
             $media[] = $item->getFullUrl();
