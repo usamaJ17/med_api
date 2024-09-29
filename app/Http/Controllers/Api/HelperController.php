@@ -252,7 +252,7 @@ class HelperController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Share Message fetched successfully',
-                'data' => $tweak->data,
+                'data' => $tweak->value,
                 'media' => $tweak->getAllMedia()
             ]);
         }elseif(Auth::user()->hasRole('medical')){
@@ -260,7 +260,7 @@ class HelperController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Share Message fetched successfully',
-                'data' => $tweak->data,
+                'data' => $tweak->value,
                 'media' => $tweak->getAllMedia()
             ]);
         }
