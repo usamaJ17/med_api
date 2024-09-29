@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tweek;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class TweekController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tweeks = Tweek::all();
-        return view('dashboard.tweek.index', compact('tweeks'));
+        $users = User::whereHas("roles", function($q){ $q->where("name", "!=", "patient")->where("name", "!=", "medical"); })->get();
+        return view('dashboard.users.index', compact('users'));
     }
 
     /**
@@ -35,7 +35,7 @@ class TweekController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tweek $tweek)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +43,7 @@ class TweekController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tweek $tweek)
+    public function edit(string $id)
     {
         //
     }
@@ -51,23 +51,15 @@ class TweekController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tweek $tweek)
+    public function update(Request $request, string $id)
     {
-        $tweek->value = $request->input('value');
-        $tweek->save();
-        if ($request->hasFile('media')) {
-            foreach ($request->file('media') as $file) {
-                // Save the file or attach it to a model using Spatie Media Library
-                $tweek->addMedia($file)->toMediaCollection();
-            }
-        }
-        return redirect()->back()->with('success', 'Tweek updated successfully.');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tweek $tweek)
+    public function destroy(string $id)
     {
         //
     }

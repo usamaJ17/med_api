@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
+use App\Models\Tweek;
 use App\Models\User;
 use DateTime;
 use DateTimeZone;
@@ -243,5 +244,25 @@ class HelperController extends Controller
         dd($graphData);
     
         return view('dashboard.index')->with(compact('patients','medicals','age','appointments','patientSignups','dailyPatientCountCat', 'total_revenue','total_monthly_revenue','medicalSignups','appointmentData','cancelAppointmentData','formattedDates','pro_cat_appointment'));
+    }
+    public function shareMessage(){
+        // if role is patient
+        if(Auth::user()->hasRole('patient')){
+            $tweak = Tweek::where('type', 'patient_share_message')->first();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Share Message fetched successfully',
+                'data' => $tweak->data,
+                'media' => $tweak->getAllMedia()
+            ]);
+        }elseif(Auth::user()->hasRole('medical')){
+            $tweak = Tweek::where('type', 'medical_share_message')->first();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Share Message fetched successfully',
+                'data' => $tweak->data,
+                'media' => $tweak->getAllMedia()
+            ]);
+        }
     }
 }

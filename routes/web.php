@@ -14,6 +14,7 @@ use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SignalingController;
 use App\Http\Controllers\SupportGroupController;
 use App\Http\Controllers\TweekController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::resource('medical', MedicalController::class);
     Route::resource('tweek', TweekController::class);
     Route::resource('reminder', ReminderController::class);
+    Route::resource('user', UserController::class);
     Route::get('articles', [ArticleController::class,'index'])->name('articles.admin.index');
     Route::post('articles/status', [ArticleController::class,'status'])->name('articles.admin.status');
     Route::get('articles/details/{id}', [ArticleController::class,'show'])->name('articles.admin.show');

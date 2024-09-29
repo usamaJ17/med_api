@@ -85,6 +85,10 @@
                             <input type="text" name="value" class="form-control" id="edit_value"
                                 placeholder="Enter Value">
                         </div>
+                        <div class="form-group">
+                            <label for="formFileMultiple" class="form-label">Media</label>
+                            <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
+                        </div>                        
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update Tweek</button>

@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('medical_info',[ProfileController::class,'saveMedicalDetails']);
   Route::post('personal_info',[AuthController::class,'savePersonalDetails']);
   Route::post('language',[AuthController::class,'saveLanguage']);
+  Route::get('get_share_message', [HelperController::class, 'shareMessage']);
   Route::post('notifications',[NotificationController::class,'save']);
   Route::post('notifications/status',[NotificationController::class,'changeStatus']);
   Route::get('notifications',[NotificationController::class,'getAll']);
