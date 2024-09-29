@@ -55,12 +55,11 @@ class TweekController extends Controller
     {
         $tweek->value = $request->input('value');
         $tweek->save();
-        if ($request->hasFile('media')) {
+        if ($request->hasFile('media') && is_array($request->file('media'))) {
             foreach ($request->file('media') as $file) {
-                // Save the file or attach it to a model using Spatie Media Library
                 $tweek->addMedia($file)->toMediaCollection();
             }
-        }
+        }        
         return redirect()->back()->with('success', 'Tweek updated successfully.');
     }
 
