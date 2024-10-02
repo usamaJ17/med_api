@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Validator;
 class AppointmentSummaryController extends Controller
 {
     public function addSummaryField(Request $request){
-        
+        $fields = $request->fields;
+        $var = str_replace("'", '"', $fields);
+        $summary_fields = json_decode($var, true);
         $fields = SummaryDynamicField::where('user_id',auth()->user()->id)->first();
         if($fields){
             $fields->update([
-                'fields' => json_encode($request->fields)
+                'fields' => json_encode($summary_fields)
             ]);
             return response()->json([
                 'status' => 200,
@@ -25,7 +27,7 @@ class AppointmentSummaryController extends Controller
         }else{
             SummaryDynamicField::create([
                 'user_id' => auth()->user()->id,
-                'fields' => json_encode($request->fields)
+                'fields' => json_encode($summary_fields)
             ]);
         }
         return response()->json([
@@ -36,7 +38,7 @@ class AppointmentSummaryController extends Controller
     public function getSummaryField(){
         $fields = SummaryDynamicField::where('user_id',auth()->user()->id)->first();
         if($fields){
-            $user_fields = json_decode($fields->fields, true); 
+            $user_fields = json_decode($fields->fields); 
         }else{
             $user_fields = [];
         }
@@ -65,10 +67,17 @@ class AppointmentSummaryController extends Controller
         return response()->json($res, 200);
     }
     public function store(Request $request){
-        $fields = AppointmentSummary::where('appointment_id','appointment_id')->first();
+        $summary = $request->summary;
+
+        // Convert single quotes to double quotes
+        $summary = str_replace("'", '"', $summary);
+
+        // Decode the string into a valid JSON object (associative array)
+        $summaryJson = json_decode($summary);
+        $fields = AppointmentSummary::where('appointment_id',$request->appointment_id)->first();
         if($fields){
             $fields->update([
-                'summary' => json_encode($request->summary)
+                'summary' => json_encode($summaryJson)
             ]);
             $data = [
                 'status' => 200,
@@ -77,7 +86,7 @@ class AppointmentSummaryController extends Controller
         }else{
             AppointmentSummary::create([
                 'appointment_id' => $request->appointment_id,
-                'summary' => json_encode($request->summary)
+                'summary' => json_encode($summaryJson)
             ]);
             $data = [
                 'status' => 200,
