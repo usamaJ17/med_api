@@ -36,7 +36,7 @@ class AppointmentSummaryController extends Controller
     public function getSummaryField(){
         $fields = SummaryDynamicField::where('user_id',auth()->user()->id)->first();
         if($fields){
-            $user_fields = json_decode($fields->fields);
+            $user_fields = json_decode($fields->fields, true); 
         }else{
             $user_fields = [];
         }
