@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AppointmentHoursController;
+use App\Http\Controllers\Api\AppointmentSummaryController;
 use App\Http\Controllers\Api\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -128,6 +129,12 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('clinical_notes_fields', [VitalSignsController::class, 'getFields']);
   Route::post('save_clinical_notes',[VitalSignsController::class,'saveNotes']);
   Route::post('clinical_notes_comment',[VitalSignsController::class,'saveComment']);
+
+  Route::post('appointment_summary_fields', [AppointmentSummaryController::class, 'addSummaryField']);
+  Route::get('appointment_summary_fields', [AppointmentSummaryController::class, 'getSummaryField']);
+
+  Route::post('appointment_summary', [AppointmentSummaryController::class, 'store']);
+  Route::get('appointment_summary', [AppointmentSummaryController::class, 'view']);
 
   Route::post('clinical_notes_fields', [VitalSignsController::class, 'addCustomField']);
 
