@@ -25,6 +25,9 @@ class VitalSigns extends Model
         return $this->belongsTo(User::class, 'submited_by', 'id');
     }
     public function getSubmitedByAttribute(){
-        return $this->submitedBy()->fullName();
+        $user = User::find($this->submited_by);
+        if($user){
+            return $user->fullName();
+        }
     }
 }
