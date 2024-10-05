@@ -247,6 +247,14 @@ class User extends Authenticatable implements HasMedia
     
         return $array;
     }
+    public function GetProfileUploads(){
+        $array = [];
+        $media =  $this->getMedia('profile_uploads');
+        foreach ($media as $med) {
+            $array[$med->name] = $med->getUrl();
+        }
+        return $array;
+    }
     public function reminders(): BelongsToMany
     {
         return $this->belongsToMany(Reminder::class, 'reminder_user')

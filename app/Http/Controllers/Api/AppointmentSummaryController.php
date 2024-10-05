@@ -95,6 +95,24 @@ class AppointmentSummaryController extends Controller
         }
         return response()->json($data, 200);
     }
+    public function uploadDocument(Request $request){
+        foreach($request->all()['files'] as $file){
+            auth()->user()->addMedia($file)->toMediaCollection('profile_uploads');
+        }
+        $data = [
+            'status' => 200,
+            'message' => 'Documents uploaded successfully',
+        ];
+        return response()->json($data, 200);
+    }
+    public function getDocument(){
+        $data = [
+            'status' => 200,
+            'message' => 'Documents fetched successfully',
+            'data' => auth()->user()->GetProfileUploads()
+        ];
+        return response()->json($data, 200);
+    }
     public function view(Request $request){
         $fields = AppointmentSummary::where('appointment_id',$request->appointment_id)->first();
         $res = [
