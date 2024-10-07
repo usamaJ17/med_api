@@ -107,8 +107,8 @@ class AppointmentSummaryController extends Controller
         return response()->json($data, 200);
     }
     public function getDocument(Request $request){
-        if(isset($request->parient_id)){
-            $user = User::find($request->parient_id);
+        if(isset($request->patient_id)){
+            $user = User::find($request->patient_id);
         }else{
             $user = auth()->user();
         }
