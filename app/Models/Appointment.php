@@ -35,11 +35,15 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected $appends = ['patient_name','patient_profile_url','med_name','med_profile_url','med_lang','patient_lang'];
+    protected $appends = ['patient_name','fee_int', 'patient_profile_url','med_name','med_profile_url','med_lang','patient_lang'];
     public function getPatientNameAttribute()
     {
         $user = User::find($this->user_id);
         return $user->first_name . ' ' . $user->last_name;
+    }
+    public function getFeeIntAttribute(){
+        // remove any non integer characters
+        return (int)filter_var($this->consultation_fees, FILTER_SANITIZE_NUMBER_INT);
     }
     public function getPatientProfileUrlAttribute()
     {

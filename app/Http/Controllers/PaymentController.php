@@ -177,10 +177,10 @@ class PaymentController extends Controller
 
                     if ($daysDifference > 7) {
                         $appointment->status = 'Completed';
-                        $availableAmount += $appointment->consultation_fees; // Sum for available amount
+                        $availableAmount += $appointment->fee_int; // Sum for available amount
                     } else {
                         $appointment->status = 'In Progress';
-                        $escrowAmount += $appointment->consultation_fees; // Sum for escrow amount
+                        $escrowAmount += $appointment->fee_int; // Sum for escrow amount
                     }
                 }
 
@@ -189,7 +189,7 @@ class PaymentController extends Controller
                     'user_name' => $appointment->patient_name,
                     'appointment_booked_on' => $appointment->created_at,
                     'appointment_date' => $appointment->appointment_date,
-                    'amount' => $appointment->consultation_fees,
+                    'amount' => $appointment->fee_int,
                     'status' => $appointment->status,
                 ];
             });
@@ -220,7 +220,7 @@ class PaymentController extends Controller
                     $daysDifference = $currentDate->diffInDays($appointmentDate);
 
                     if ($daysDifference > 7) {
-                        $availableAmount += $appointment->consultation_fees; // Sum for available amount
+                        $availableAmount += $appointment->fee_int; // Sum for available amount
                     }
                 }
             });
