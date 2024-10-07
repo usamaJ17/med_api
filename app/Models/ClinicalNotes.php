@@ -28,7 +28,9 @@ class ClinicalNotes extends Model
     {
         return $this->hasMany(ClinicalNotesCustomField::class, 'clinical_note_id');
     }
-    public function getNoteAttribute(){
-        return json_decode($this->note);
+    public function getNoteAttribute()
+    {
+        return $this->attributes['note'] ? json_decode($this->attributes['note']) : null;
     }
+    
 }
