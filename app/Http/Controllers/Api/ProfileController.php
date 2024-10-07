@@ -48,8 +48,12 @@ class ProfileController extends Controller
             'data'   => $med,
         ], 200);
     }
-    public function getMedicalDetails(){
-        $med = MedicalDetail::where('user_id',Auth::id())->first();
+    public function getMedicalDetails(Request $request){
+        if(isset($request->parient_id)){
+            $med = MedicalDetail::where('user_id',$request->parient_id)->first();
+        }else{
+            $med = MedicalDetail::where('user_id',Auth::id())->first();
+        }
         if(!$med) return response()->json([
             'status' => 404,
             'message'=> 'Details Not Found...',

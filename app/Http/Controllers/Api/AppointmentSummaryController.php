@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AppointmentSummary;
 use App\Models\DynamicFiled;
 use App\Models\SummaryDynamicField;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -105,11 +106,24 @@ class AppointmentSummaryController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function getDocument(){
+    public function getDocument(Request $request){
+        if(isset($request->parient_id)){
+            $user = User::find($request->parient_id);
+        }else{
+            $user = auth()->user();
+        }
+        if(!$user){
+            $data = [
+                'status' => 404,
+                'message' => 'User not found',
+                'data' => null
+            ];
+            return response()->json($data, 404);
+        }
         $data = [
             'status' => 200,
             'message' => 'Documents fetched successfully',
-            'data' => auth()->user()->GetProfileUploads()
+            'data' => $user->GetProfileUploads()
         ];
         return response()->json($data, 200);
     }
