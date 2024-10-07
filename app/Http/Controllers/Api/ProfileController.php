@@ -49,8 +49,8 @@ class ProfileController extends Controller
         ], 200);
     }
     public function getMedicalDetails(Request $request){
-        if(isset($request->parient_id)){
-            $med = MedicalDetail::where('user_id',$request->parient_id)->first();
+        if(isset($request->patient_id)){
+            $med = MedicalDetail::where('user_id',$request->patient_id)->first();
         }else{
             $med = MedicalDetail::where('user_id',Auth::id())->first();
         }
