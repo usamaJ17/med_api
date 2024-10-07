@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ClinicalNotes;
 use App\Models\ClinicalNotesCustomField;
+use App\Models\DynamicFiled;
 use App\Models\NotesComment;
+use App\Models\SummaryDynamicField;
 use App\Models\VitalSigns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,14 +71,17 @@ class VitalSignsController extends Controller
         ], 200);
     }
     public function saveNotes(Request $request){
+        $summary = $request->note;
+        $summary = str_replace("'", '"', $summary);
+        $summaryJson = json_decode($summary);
         $request->merge([
-            'created_by' => auth()->user()->id
+            'created_by' => auth()->user()->id,
+            'note' => json_encode($summaryJson)
         ]);
         $clinicalNote = ClinicalNotes::create($request->all());
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Created Successfully...',
-            'data'   => $clinicalNote,
         ], 200);
     }
     public function saveComment(Request $request){
@@ -91,20 +96,28 @@ class VitalSignsController extends Controller
         ], 200);
     }
     public function getFields(){
-        
-        $columns = Schema::getColumnListing((new ClinicalNotes)->getTable());
-        $filteredColumns = array_diff($columns, ['created_at', 'updated_at','created_by' ,'id']);
-        $requiredFields = array_slice(array_values($filteredColumns), 0, 2); // Get the first 2 fields as required
-
-        // Return the filtered columns as a JSON response with required fields marked
-        return response()->json([
+        $required = DynamicFiled::where('name','notes_required')->first();
+        $optional = DynamicFiled::where('name','notes_optional')->first();
+        if($required){
+            $required_fields = json_decode($required->data);
+        }else{
+            $required_fields = [];
+        }
+        if($optional){
+            $optional_fields = json_decode($optional->data);
+        }else{
+            $optional_fields = [];
+        }
+        $fieldsData = [
+            'required' => $required_fields,
+            'optional' => $optional_fields,
+        ];
+        $res = [
             'status' => 200,
-            'message' => 'Fields Fetched Successfully...',
-            'data' => [
-                'required' => $requiredFields,
-                'fields' => array_values($filteredColumns),
-            ],
-        ], 200);
+            'message'=> 'Clinical Notes fields fetched successfully...',
+            'data' => $fieldsData
+        ];
+        return response()->json($res, 200);
     }
     public function addCustomField(Request $request)
     {

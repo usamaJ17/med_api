@@ -10,7 +10,7 @@ class ClinicalNotes extends Model
     use HasFactory;
     protected $fillable = [
         'created_by',
-        'text',
+        'note',
         'title',
         'user_id'
     ];
@@ -27,5 +27,8 @@ class ClinicalNotes extends Model
     public function customFields()
     {
         return $this->hasMany(ClinicalNotesCustomField::class, 'clinical_note_id');
+    }
+    public function getNoteAttribute(){
+        return json_decode($this->note);
     }
 }

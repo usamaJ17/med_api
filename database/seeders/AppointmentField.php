@@ -21,5 +21,13 @@ class AppointmentField extends Seeder
             'name' => 'summary_optional',
             'data' => json_encode(['Tests to do','Referral Letter'])
         ]);
+        DynamicFiled::create([
+            'name' => 'notes_required',
+            'data' => json_encode(['Tests to do','Notes Letter'])
+        ]);
+        DynamicFiled::create([
+            'name' => 'notes_optional',
+            'data' => json_encode(['Tests to do','Notes Letter'])
+        ]);
     }
 }
