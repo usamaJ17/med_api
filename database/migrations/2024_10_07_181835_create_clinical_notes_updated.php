@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('clinical_notes', function (Blueprint $table) {
             $table->id();
             $table->longText('note')->nullable();
+            $table->string('title')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->string('patient_name')->nullable();
