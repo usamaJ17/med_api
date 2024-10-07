@@ -252,6 +252,7 @@ class User extends Authenticatable implements HasMedia
         $media =  $this->getMedia('profile_uploads');
         foreach ($media as $med) {
             $img_data = [
+                'name' => $this->fullName(),
                 'file_name' => $med->name,
                 'created_at' => $med->created_at,
                 'url' => $med->getUrl(),
