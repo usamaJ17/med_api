@@ -76,6 +76,21 @@ class ProfileController extends Controller
             'data'   => $pro,
         ], 200);
     }
+    public function completeProfile(Request $request){
+        $user = User::find($request->user_id);
+        if(!$user){
+            return response()->json([
+                'status' => 404,
+                'message'=> 'User Not Found...',
+            ]);
+        }else{
+            return response()->json([
+                'status' => 200,
+                'message'=> 'Profile Completed Successfully...',
+                'data'   => $user,
+            ], 200);
+        }
+    }
     public function getMedicalProfessionals(Request $request){
         $query = User::with('professionalDetails')->role('medical');
         $query->where('is_verified', true);
