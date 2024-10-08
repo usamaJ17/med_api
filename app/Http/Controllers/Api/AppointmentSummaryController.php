@@ -106,6 +106,15 @@ class AppointmentSummaryController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function getPdf(Request $request){
+        $url = 'https://portal.deluxehospital.com/storage/58/sample.pdf';
+        $data = [
+            'status' => 200,
+            'message' => 'PDF generated successfully',
+            'data' => $url
+        ];
+        return response()->json($data, 200);
+    }
     public function getDocument(Request $request){
         if(isset($request->patient_id)){
             $user = User::find($request->patient_id);

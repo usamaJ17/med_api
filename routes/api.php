@@ -139,6 +139,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('appointment_summary_document', [AppointmentSummaryController::class, 'uploadDocument']);
   Route::get('appointment_summary_document', [AppointmentSummaryController::class, 'getDocument']);
+  Route::get('appointment_summary_pdf', [AppointmentSummaryController::class, 'getPdf']);
   
   Route::post('clinical_notes_fields', [VitalSignsController::class, 'addCustomField']);
 
