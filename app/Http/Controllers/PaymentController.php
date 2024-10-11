@@ -158,6 +158,15 @@ class PaymentController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function getTransactions(Request $request){
+        $transactions = TransactionHistory::where('user_id', auth()->user()->id)->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Transactions Fetched Successfully',
+            'data' => $transactions
+        ];
+        return response()->json($data, 200);
+    }
     public function getProfessionalPayments(Request $request)
     {
         $escrowAmount = 0;

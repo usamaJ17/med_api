@@ -166,6 +166,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   // transactions
 
   Route::post('save_transactions',[PaymentController::class,'saveTransactions']);
+  Route::post('get_transactions',[PaymentController::class,'getTransactions']);
   Route::get('professional_payments',[PaymentController::class,'getProfessionalPayments']);
   Route::post('request_payout',[PaymentController::class,'requestPayout']);
   Route::get('professional_payout',[PaymentController::class,'getPayout']);
