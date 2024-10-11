@@ -173,7 +173,7 @@ class PaymentController extends Controller
                 if ($appointmentDate->isFuture()) {
                     $appointment->status = 'Uncompleted';
                 } elseif ($appointmentDate->isToday() || $appointmentDate->isPast()) {
-                    $daysDifference = $currentDate->diffInDays($appointmentDate);
+                    $daysDifference = $appointmentDate->diffInDays($currentDate);
 
                     if ($daysDifference > 7) {
                         $appointment->status = 'Completed';
@@ -191,6 +191,8 @@ class PaymentController extends Controller
                     'appointment_date' => $appointment->appointment_date,
                     'amount' => $appointment->fee_int,
                     'status' => $appointment->status,
+                    'appointment_type' => $appointment->appointment_type,
+                    'transaction_id' => $appointment->transaction_id
                 ];
             });
         $pay_data = [
@@ -217,7 +219,7 @@ class PaymentController extends Controller
                 $appointmentDate = Carbon::parse($appointment->appointment_date);
 
                 if (!$appointmentDate->isFuture()) {
-                    $daysDifference = $currentDate->diffInDays($appointmentDate);
+                    $daysDifference = $appointmentDate->diffInDays($currentDate);
 
                     if ($daysDifference > 7) {
                         $availableAmount += $appointment->fee_int; // Sum for available amount
@@ -253,7 +255,7 @@ class PaymentController extends Controller
     public function recordPayment(Request $request)
     {
         $request->merge(['user_id' => auth()->user()->id]);
-        Transactions::create($request->all());
+        TransactionHistory::create($request->all());
         $data = [
             'status' => 200,
             'message' => 'Payment Recorded Successfully'

@@ -15,7 +15,14 @@ class Payouts extends Model
         'rejected_reason',
         'completed_at',
         'method',
-        'account_info'
+        'bank_name',
+        'branch_address',
+        'account_number',
+        'account_holder_name',
+        'phone_number',
+        'mobile_network',
+        'crypto_currency',
+        'crypto_address',
     ];
     protected $table = 'payouts';
     public function user()

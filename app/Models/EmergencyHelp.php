@@ -18,7 +18,8 @@ class EmergencyHelp extends Model
         'method',
         'is_mid_night',
         'description',
-        'duration'
+        'gender',
+        'age',
     ];
     protected $table = 'emergency_help';
     public function user()

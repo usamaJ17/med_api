@@ -41,14 +41,15 @@ class EmergencyController extends Controller
     public function store(Request $request)
     {
         $emer = EmergencyHelp::create([
-            'user_id' => 7,
+            'user_id' => auth()->user()->id,
             'emergency_type' => $request->emergency_type,
             'requested_at' => now(),
             'is_mid_night' => $request->is_mid_night,
             'description' => $request->description,
-            'description' => $request->duration,
-            'description' => $request->method,
-            'description' => $request->amount,
+            'method' => $request->method,
+            'amount' => $request->amount,
+            'age' => $request->age,
+            'gender' => $request->gender,
         ]);
         $professionals = User::query();
         $professionals->whereHas("roles", function($q){ $q->where("name", "medical"); });

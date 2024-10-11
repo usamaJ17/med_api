@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SupportGroupController;
+use App\Http\Controllers\TweekController;
 use App\Http\Controllers\VitalSignsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -168,7 +169,8 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::get('professional_payments',[PaymentController::class,'getProfessionalPayments']);
   Route::post('request_payout',[PaymentController::class,'requestPayout']);
   Route::get('professional_payout',[PaymentController::class,'getPayout']);
-  
+
+  Route::get('tweeks', [TweekController::class, 'getApiData']); 
 
 
 });

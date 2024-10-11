@@ -70,4 +70,21 @@ class TweekController extends Controller
     {
         //
     }
+    public function getApiData(Request $request){
+        $tweeks = Tweek::where('type', $request->type)->get();
+        $tweeks = $tweeks->map(function ($tweek) {
+            return [
+                'id' => $tweek->id,
+                'type' => $tweek->type,
+                'value' => $tweek->value,
+                'media' => $tweek->getAllMedia(),
+            ];
+        });
+        $data = [
+            'status' => 200, 
+            'message' => 'Tweek fetched successfully',
+            'data' => $tweeks
+        ];
+        return response()->json($data);
+    }
 }
