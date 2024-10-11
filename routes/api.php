@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::get('get_emergency_professionals',[EmergencyController::class,'getEmergencyProfessionals']);
   Route::resource('emergency_help', EmergencyController::class);
+  Route::post('accept_emergency_help', [EmergencyController::class, 'accept']);
   Route::apiResource('vitals', VitalSignsController::class);
   Route::get('get_clinical_notes',[VitalSignsController::class,'getNotes']);
   Route::get('clinical_notes_fields', [VitalSignsController::class, 'getFields']);

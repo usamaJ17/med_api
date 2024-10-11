@@ -127,4 +127,14 @@ class EmergencyController extends Controller
             'data'   => $professionals,
         ], 200);
     }
+    public function accept(Request $request){
+        $emer = EmergencyHelp::find($request->id);
+        $emer->status = "accepted";
+        $emer->med_id = auth()->user()->id;
+        $emer->save();
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Emergency Request Accepted Successfully...',        
+        ], 200);
+    }
 }
