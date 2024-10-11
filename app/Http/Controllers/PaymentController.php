@@ -162,6 +162,8 @@ class PaymentController extends Controller
     {
         $escrowAmount = 0;
         $availableAmount = 0;
+        $total = 0;
+        $payoutsWithdrawn = Payouts::where('user_id', auth()->user()->id)->where('status', 'completed')->where('completed_at', '!=', null)->sum('amount');
 
         $appointments = Appointment::where('med_id', auth()->user()->id)
             ->where('is_paid', 1)
@@ -197,7 +199,9 @@ class PaymentController extends Controller
             });
         $pay_data = [
             'escrow_amount' => $escrowAmount,
-            'available_amount' => $availableAmount,
+            'available_amount' => $availableAmount - $payoutsWithdrawn,
+            'total_payout' => $payoutsWithdrawn,
+            'total_revenue' => $availableAmount + $escrowAmount,
             'appointments' => $appointments,
         ];
         $data = [
@@ -226,10 +230,12 @@ class PaymentController extends Controller
                     }
                 }
             });
+        $payoutsRequested = Payouts::where('user_id', auth()->user()->id)->where('status','!=' ,'rejected')->sum('amount');
+        $availableAmount = $availableAmount - $payoutsRequested;
         if ($availableAmount < $request->amount) {
             $data = [
                 'status' => 400,
-                'message' => 'Insufficient Funds'
+                'message' => 'Insufficient Funds, you can request upto ' . $availableAmount . ' GHS',
             ];
             return response()->json($data, 400);
         }
