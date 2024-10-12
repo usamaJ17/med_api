@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tweek;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TweekController extends Controller
 {
@@ -71,20 +72,28 @@ class TweekController extends Controller
         //
     }
     public function getApiData(Request $request){
-        $tweeks = Tweek::where('type', $request->type)->get();
-        $tweeks = $tweeks->map(function ($tweek) {
-            return [
-                'id' => $tweek->id,
-                'type' => $tweek->type,
-                'value' => $tweek->value,
-                'media' => $tweek->getAllMedia(),
+        $tweaks = Tweek::where('type', ucwords(str_replace('_', ' ', $request->type)))->get();
+        if($tweaks->count() > 0){
+            $tweaks = $tweaks->map(function ($tweek) {
+                return [
+                    'id' => $tweek->id,
+                    'type' => $tweek->type,
+                    'value' => $tweek->value,
+                    'media' => $tweek->getAllMedia(),
+                ];
+            });
+            $data = [
+                'status' => 200,
+                'message' => 'Tweek fetched successfully',
+                'data' => $tweaks
             ];
-        });
-        $data = [
-            'status' => 200, 
-            'message' => 'Tweek fetched successfully',
-            'data' => $tweeks
-        ];
+        }else{
+            $data = [
+                'status' => 404,
+                'message' => 'Tweek not found',
+            ];
+        }
+
         return response()->json($data);
     }
 }

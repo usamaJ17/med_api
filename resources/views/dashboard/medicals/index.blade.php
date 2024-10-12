@@ -98,11 +98,11 @@
                                 @endforeach
                             </select>
                         </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Download Excel</button>
                 </div>
-            </form>
         </div>
     </div>
     <!-- /.content -->
@@ -123,7 +123,7 @@
                     {
                         text: 'Export Data',
                         className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
-                        action: function(e, dt, node, config) {
+                        action: function() {
                             $('#add_new').modal('show'); // Show the modal
                         }
                     }
@@ -143,7 +143,7 @@
                 data : {
                     _token : "{{ csrf_token() }}"
                 },
-                success : function(response){
+                success : function(){
                     // reload page
                     location.reload();
                 }
