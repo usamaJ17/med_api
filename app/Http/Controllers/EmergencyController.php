@@ -21,7 +21,7 @@ class EmergencyController extends Controller
         }else{
             $emer->where('status','requested');
         }
-        $emer = $emer->get();
+        $emer = $emer->with('user')->get();
         return response()->json([
             'status' => 200,
             'message'=> 'Emergency Requests Fetched Successfully...',
