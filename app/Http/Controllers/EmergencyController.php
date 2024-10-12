@@ -16,6 +16,8 @@ class EmergencyController extends Controller
         $emer = EmergencyHelp::query();
         if(isset($request->user_id) && $request->user_id != null){
             $emer->where('user_id',$request->user_id);
+        }else if(isset($request->med_id) && $request->med_id != null){
+            $emer->where('med_id',$request->med_id);
         }else{
             $emer->where('status','requested');
         }
