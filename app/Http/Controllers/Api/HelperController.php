@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Custom\GraphFactory;
 use App\Http\Controllers\Controller;
+use App\Mail\EmailVerification;
 use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
@@ -13,6 +14,7 @@ use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class HelperController extends Controller
 {
@@ -33,6 +35,16 @@ class HelperController extends Controller
             'status' => 200,
             'message' => 'All Professions fetched successfully',
             'data' => ['professions' => $ranks],
+        ];
+        return response()->json($data, 200);
+    }
+    public function sendEmailVerification(Request $request){
+        $rand = rand(111111,999999);
+        Mail::to([$request->email])->send(new EmailVerification($rand));
+        $data = [
+            'status' => 200,
+            'message' => 'Email verification OTP sent on your email',
+            'data' => ['otp' => $rand],
         ];
         return response()->json($data, 200);
     }

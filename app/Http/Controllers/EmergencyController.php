@@ -13,7 +13,7 @@ class EmergencyController extends Controller
      */
     public function index(Request $request)
     {
-        $emer = EmergencyHelp::query();
+        $emer = EmergencyHelp::query()->with(['user','med']);
         if(isset($request->user_id) && $request->user_id != null){
             $emer->where('user_id',$request->user_id);
         }else if(isset($request->med_id) && $request->med_id != null){

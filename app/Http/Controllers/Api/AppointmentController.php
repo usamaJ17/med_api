@@ -59,7 +59,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function get(Request $request){
-        $appointments = Appointment::query()->where('user_id', auth()->id())->where('is_paid',1);
+        $appointments = Appointment::query()->with('med')->where('user_id', auth()->id())->where('is_paid',1);
         if($request->has('appointment_date')){
             $appointments->where('appointment_date', $request->appointment_date);
         }
@@ -162,7 +162,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function getMyPatientsAppointments(Request $request){
-        $appointments = Appointment::query()->where('med_id', auth()->id())->where('is_paid',1);
+        $appointments = Appointment::query()->with('user')->where('med_id', auth()->id())->where('is_paid',1);
         if($request->has('appointment_date')){
             $appointments->where('appointment_date', $request->appointment_date);
         }
@@ -193,7 +193,7 @@ class AppointmentController extends Controller
         return response()->json($data, 200);
     }
     public function getMyPatientsList(Request $request){
-        $appointments = Appointment::where('med_id', auth()->user()->id)->where('is_paid',1)
+        $appointments = Appointment::with('user')->where('med_id', auth()->user()->id)->where('is_paid',1)
         // ->with('user')
         ->orderBy('appointment_date', 'desc')
         ->get()
