@@ -6,10 +6,12 @@ use App\Models\Appointment;
 use App\Models\Payouts;
 use App\Models\TransactionHistory;
 use App\Models\Transactions;
+use App\Models\UserRefund;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Unicodeveloper\Paystack\Facades\Paystack;
@@ -43,6 +45,15 @@ class PaymentController extends Controller
     {
         $data = $request->all();
         Log::info($data);
+    }
+    public function refund(){
+        $refund = UserRefund::with('appointment')->where('user_id',Auth::id())->get();
+        $data = [
+            'status' => 200,
+            'message' => 'Refund History Fetched',
+            'data' => $refund
+        ];
+        return response()->json($data, 200);
     }
     public function payoutsAction(Request $request){
         $payout = Payouts::find($request->id); 

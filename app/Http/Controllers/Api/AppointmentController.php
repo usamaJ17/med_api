@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\ChatBox;
 use App\Models\Review;
+use App\Models\UserRefund;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -154,6 +155,16 @@ class AppointmentController extends Controller
         // change status of all appointments where user_id is the same as the user_id of the appointment
         $appointment->status = $request->status;
         $appointment->save();
+        if($appointment->status == 'cancelled'){
+            UserRefund::create(
+                [
+                    'user_id' => auth()->id(),
+                    'appointment_id' => $appointment->id,
+                    'amount' => $appointment->amount,
+                    'gateway' => $request->refund_option ? $request->refund_option : null,
+                ]
+            );
+        }
         $data = [
             'status' => 200,
             'message' => 'Appointment status changed successfully',

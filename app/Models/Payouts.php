@@ -22,6 +22,7 @@ class Payouts extends Model
         'phone_number',
         'mobile_network',
         'crypto_currency',
+        'crypto_network',
         'crypto_address',
     ];
     protected $table = 'payouts';

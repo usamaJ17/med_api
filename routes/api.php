@@ -173,6 +173,8 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('request_payout',[PaymentController::class,'requestPayout']);
   Route::get('professional_payout',[PaymentController::class,'getPayout']);
 
+  Route::get('refund', [PaymentController::class, 'refund']);
+
   Route::get('tweeks', [TweekController::class, 'getApiData']); 
 
 
