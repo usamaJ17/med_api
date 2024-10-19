@@ -95,7 +95,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
   Route::post('articles/share/{article_id}', [ArticleController::class, 'addShare']);
 
   // Support Groups
-  Route::get('support_groups', [SupportGroupController::class, 'index']);
+  Route::get('support_groups', [SupportGroupController::class, 'forApi']);
 
   // appointments
   Route::post('/appointments', [AppointmentHoursController::class, 'store']);

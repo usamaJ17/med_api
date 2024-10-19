@@ -23,6 +23,19 @@ class SupportGroupController extends Controller
         }
         return view('dashboard.support_groups.index', compact('groups'));
     }
+    public function forApi(Request $request){
+        $groups = SupportGroup::query();
+        if(isset($request->type) && $request->type != null){
+            $groups = $groups->where('type', $request->type);
+        }
+        $groups = $groups->get();
+        $data = [
+            'status' => 200,
+            'message' => 'All Support Groups fetched successfully',
+            'data' => $groups,
+        ];
+        return response()->json($data, 200);
+    }
 
     /**
      * Show the form for creating a new resource.
