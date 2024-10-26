@@ -27,4 +27,5 @@ class TransactionHistory extends Model
     public function appointment(){
         return $this->belongsTo(Appointment::class);
     }
+    // comment
 }
