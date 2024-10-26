@@ -42,6 +42,7 @@ Route::middleware(['cros'])->group(function () {
   Route::post('register',[AuthController::class,'register']);
   // Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
+  Route::post('fingerprint_login',[AuthController::class,'fingerprintLogin']);
   Route::post('verify_otp',[AuthController::class,'otp']);
   Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword']);
   Route::post('check_forgot_password_otp',[AuthController::class,'CheckOtpForgotPassword']);

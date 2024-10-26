@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Payouts;
 use App\Models\TransactionHistory;
-use App\Models\Transactions;
 use App\Models\UserRefund;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -18,15 +17,15 @@ use Unicodeveloper\Paystack\Facades\Paystack;
 
 class PaymentController extends Controller
 {
-    public function redirectToGateway()
-    {
-        try {
-            return Paystack::getAuthorizationUrl()->redirectNow();
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            return Redirect::back()->withMessage(['msg' => 'The paystack token has expired. Please refresh the page and try again.', 'type' => 'error']);
-        }
-    }
+//    public function redirectToGateway()
+//    {
+//        try {
+//            return Paystack::getAuthorizationUrl()->redirectNow();
+//        } catch (\Exception $e) {
+//            dd($e->getMessage());
+//            return Redirect::back()->withMessage(['msg' => 'The paystack token has expired. Please refresh the page and try again.', 'type' => 'error']);
+//        }
+//    }
 
     /**
      * Obtain Paystack payment information
@@ -41,11 +40,11 @@ class PaymentController extends Controller
         // you can store the authorization_code in your db to allow for recurrent subscriptions
         // you can then redirect or do whatever you want
     }
-    public function crypto_call(Request $request)
-    {
-        $data = $request->all();
-        Log::info($data);
-    }
+//    public function crypto_call(Request $request)
+//    {
+//        $data = $request->all();
+//        Log::info($data);
+//    }
     public function refund(){
         $refund = UserRefund::with('appointment')->where('user_id',Auth::id())->get();
         $data = [
@@ -170,7 +169,7 @@ class PaymentController extends Controller
         return response()->json($data, 200);
     }
     public function getTransactions(Request $request){
-        $transactions = TransactionHistory::where('user_id', auth()->user()->id)->get();
+        $transactions = TransactionHistory::with('appointment')->where('user_id', auth()->user()->id)->get();
         $data = [
             'status' => 200,
             'message' => 'Transactions Fetched Successfully',

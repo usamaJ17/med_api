@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
-use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -127,6 +126,34 @@ class AuthController extends Controller
                 'data'    => $data,
             ], 200);
         }
+    }
+    public function fingerprintLogin(Request $request): JsonResponse
+    {
+        $user = User::find($request->id);
+        Auth::login($user);
+        $user = User::with('professionalDetails','medicalDetails')->find(Auth::user()->id);
+        $user_details = [];
+        if($user->role == 'patient'){
+            $user_details = [
+                'personal_details' => $user->prepareUserData(),
+                'medical_details'  => $user->medicalDetails,
+            ];
+        }else if($user->role == 'medical'){
+            $user_details = [
+                'personal_details' => $user->prepareUserData(),
+                'professional_details'  => $user->professionalDetails,
+            ];
+        }
+        $data = [
+            'otp_sent'  => false,
+            'user'    => $user_details,
+            'token'   => $user->createToken('Med')->plainTextToken,
+        ];
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Login Successfully...',
+            'data'    => $data,
+        ], 200);
     }
     public function adminLogin(Request $request){
         $request->validate([
