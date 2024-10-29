@@ -3,6 +3,12 @@
 @section('title')
     Dashboard
 @endsection
+@section('dashboard')
+    active
+@endsection
+@section('dashboard.home')
+    active
+@endsection
 @section('content')
     <div class="section">
         <div class="row">

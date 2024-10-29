@@ -89,6 +89,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::post('payments/payouts/action', [PaymentController::class,'payoutsAction'])->name('payments.payouts.action');
 
     Route::get('appointments', [AppointmentController::class,'listAll'])->name('appointments.index');
+    Route::get('feedback', [DashboardController::class,'userFeedback'])->name('dashboard.user-feedback');
 
 });
 

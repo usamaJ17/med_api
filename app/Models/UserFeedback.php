@@ -15,4 +15,8 @@ class UserFeedback extends Model
         'message',
         'rating'
     ];
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

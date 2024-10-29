@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\ChatBox;
 use App\Models\Review;
+use App\Models\UserFeedback;
 use App\Models\UserRefund;
 use Illuminate\Http\Request;
 

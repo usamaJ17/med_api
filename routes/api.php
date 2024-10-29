@@ -125,6 +125,7 @@ Route::middleware(['auth:sanctum','cros'])->group(function () {
 
   Route::post('payment/record',[PaymentController::class,'recordPayment']);
   Route::get('medical_professionals',[ProfileController::class,'getMedicalProfessionals']);
+  Route::get('check_approve', [ProfileController::class, 'checkApprove']);
 
   Route::get('get_emergency_professionals',[EmergencyController::class,'getEmergencyProfessionals']);
   Route::resource('emergency_help', EmergencyController::class);

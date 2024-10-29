@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\ProfessionalType;
 use App\Models\TransactionHistory;
 use App\Models\User;
+use App\Models\UserFeedback;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,5 +71,13 @@ class DashboardController extends Controller
         }
         $maxAppointmentCount = $result->appointment_count ?? 0;
         return view('dashboard.index')->with(compact('patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
+    }
+    public function userFeedback(){
+        $startDate = Carbon::now()->subDays(30);
+        $endDate = Carbon::now()->addDay();
+        // get a graph data for daily numer of reviews fin range of start and end
+        $graphFactory = new GraphFactory($startDate, $endDate);
+        $patientSignups = $graphFactory->getGraphData('user_feedback');
+        dd($patientSignups);
     }
 }

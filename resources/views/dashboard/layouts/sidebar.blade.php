@@ -13,11 +13,24 @@
             <div class="multinav-scroll" style="height: 100%;">
                 <!-- sidebar menu-->
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li class="@yield('dashboard')">
-                        <a href="{{ route('dashboard') }}">
+                    <li class="treeview @yield('dashboard')">
+                        <a href="#">
                             <i data-feather="monitor"></i>
-                            <span>Dashboard</span>
+                            <span>Admin Panel</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('dashboard.home')"><a href="{{ route('dashboard') }}"><i
+                                            class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Dashboard</a></li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li class="@yield('dashboard.feedback')"><a href="{{ route('dashboard.user-feedback') }}"><i
+                                            class="icon-Commit"><span class="path1"></span><span
+                                                class="path2"></span></i>User Feedback</a></li>
+                        </ul>
                     </li>
                     <li class="@yield('support_groups')">
                         <a href="{{ route('support_groups.index') }}">

@@ -32,6 +32,18 @@ class ProfileController extends Controller
             'data'   => $pro,
         ], 200);
     }
+    public function checkApprove(Request $request){
+        $user = User::find($request->id);
+        if($user){
+            $data = [
+                'is_verified' => $user->is_verified,
+            ];
+            return response()->json([
+                'status' => 200,
+                'data'   => $data,
+            ]);
+        }
+    }
     public function saveMedicalDetails(Request $request){
         $med = MedicalDetail::updateOrCreate(['user_id'=>Auth::id()],$request->all());
         foreach ($request->allFiles() as $key => $file) {

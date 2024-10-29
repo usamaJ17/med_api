@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\ProfessionalType;
 use App\Models\TransactionHistory;
 use App\Models\User;
+use App\Models\UserFeedback;
 use Carbon\Carbon;
 
 class GraphFactory
@@ -79,6 +80,8 @@ class GraphFactory
                 return $this->getAppointmentData($date);
             case 'cancel_appointments':
                 return $this->getCancelAppointmentData($date);
+            case 'user_feedback':
+                return $this->getUserFeedbackData($date);
             default:
                 throw new \Exception("Invalid graph type : ". $type);
         }
@@ -129,6 +132,14 @@ class GraphFactory
         }
         $app =  $app->whereDate('appointment_date', $date->toDateString())->where('status', 'cancelled')->count();
         return $app;
+    }
+    protected function getUserFeedbackData($date){
+        $feedback = UserFeedback::where('created_at', $date->toDateString());
+        $data = [
+            'count' => $feedback->count(),
+            'average_rating' => $feedback->avg('rating')
+        ];
+        return $data;
     }
 
     protected function getAgeData()
