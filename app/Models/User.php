@@ -43,6 +43,7 @@ class User extends Authenticatable implements HasMedia
         'can_emergency',
         'can_night_emergency',
         'forgot_password',
+        'name_title',
         'speak',
         'time_zone',
         'device_token',
@@ -80,7 +81,7 @@ class User extends Authenticatable implements HasMedia
         return $this->roles->pluck('name')[0] ?? '';
     }
     public function fullName(){
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->name_title .' ' . $this->first_name . ' ' . $this->last_name;
     }
     public function getProfessionalTypeNameAttribute()
     {

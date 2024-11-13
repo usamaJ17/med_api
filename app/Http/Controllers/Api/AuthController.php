@@ -162,7 +162,7 @@ class AuthController extends Controller
         $user = User::where('email',$request->email)->first();
         if(!$user || !Hash::check($request->password,$user->password)){
             return redirect()->back()->with('error','Invalid Email OR Password...');
-        }else if($user->role != 'admin'){
+        }else if($user->role != 'admin' && $user->role != 'manager' && $user->role != 'editor'){
             return redirect()->back()->with('error','Invalid Email OR Password...');
         }else{
             Auth::login($user);

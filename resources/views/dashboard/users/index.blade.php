@@ -52,7 +52,7 @@
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#"
-                                                            onclick="editReminder({{ $user->id }}, '{{ $user->title }}', '{{ $user->note }}', '{{ $user->role }}')">Edit</a>
+                                                            onclick="editReminder({{ $user->id }}, '{{ $user->last_name }}', '{{ $user->first_name }}', '{{ $user->email }}', '{{ $user->role }}')">Edit</a>
                                                         <a class="dropdown-item" onclick="DeleteRecord({{ $user->id }})">Delete</a> 
                                                     </div>
                                                 </div>
@@ -74,7 +74,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Add/Edit Reminder</h5>
+                    <h5 class="modal-title" id="editModalLabel">Add/Edit User</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -84,25 +84,31 @@
                         @csrf
                         <input type="hidden" id="form_method" name="_method" value="POST">
                         <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" class="form-control" id="edit_title" placeholder="Enter Title">
+                            <label for="title">First Name</label>
+                            <input type="text" name="first_name" class="form-control" id="name" placeholder="Enter First Name">
                         </div>
                         <div class="form-group">
-                            <label for="note">Text</label>
-                            <textarea name="note" class="form-control" id="edit_note" placeholder="Enter Text"></textarea>
+                            <label for="title">Name</label>
+                            <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Enter Last Name">
                         </div>
                         <div class="form-group">
-                            <label for="role">For</label>
+                            <label for="note">Email</label>
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Password</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
                             <select name="role" class="form-control" id="edit_role">
-                                <option value="medical">Medical</option>
-                                <option value="patient">Patient</option>
                                 <option value="manager">Manager</option>
                                 <option value="editor">Editor</option>
                             </select>
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save Reminder</button>
+                    <button type="submit" class="btn btn-primary">Save User</button>
                 </div>
                 </form>
             </div>
@@ -123,7 +129,7 @@
                     'autoWidth': false,
                     'dom': 'Bfrtip',
                     'buttons': [{
-                        text: 'Add New Reminder',
+                        text: 'Add New User',
                         className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
                         action: function(e, dt, node, config) {
                             addReminder();
@@ -134,18 +140,22 @@
 
             // Open modal to add a new user
             function addReminder() {
-                $('#edit_title').val(''); // Clear the title
-                $('#edit_note').val(''); // Clear the note
-                $('#edit_role').val('medical'); // Set default role
+                $('#password').val(''); // Clear the title
+                $('#email').val(''); // Clear the title
+                $('#last_name').val(''); // Clear the title
+                $('#name').val(''); // Clear the note
+                $('#edit_role').val('editor'); // Set default role
                 $('#editForm').attr('action', '/portal/user'); // Set form action for store
                 $('#form_method').val('POST'); // Set form method for creating new user
                 $('#edit_modal').modal('show'); // Show the modal
             }
 
             // Open modal to edit an existing user
-            function editReminder(id, title, note, role) {
-                $('#edit_title').val(title); // Set the title
-                $('#edit_note').val(note); // Set the note
+            function editReminder(id, name, f_name, email,  role) {
+                $('#password').val(''); // Clear the title
+                $('#email').val(email); // Clear the title
+                $('#last_name').val(name); // Clear the title
+                $('#name').val(f_name); // Clear the note
                 $('#edit_role').val(role); // Set the role
                 $('#editForm').attr('action', '/portal/user/' + id); // Set form action for update
                 $('#form_method').val('PUT'); // Set form method for updating the user

@@ -75,9 +75,9 @@ class DashboardController extends Controller
     public function userFeedback(){
         $startDate = Carbon::now()->subDays(30);
         $endDate = Carbon::now()->addDay();
-        // get a graph data for daily numer of reviews fin range of start and end
         $graphFactory = new GraphFactory($startDate, $endDate);
-        $patientSignups = $graphFactory->getGraphData('user_feedback');
-        dd($patientSignups);
+        $userFeedback = $graphFactory->getGraphData('user_feedback');
+        $userFeedbackData = UserFeedback::all();
+        return view('dashboard.feedback')->with(compact('userFeedback','userFeedbackData'));
     }
 }

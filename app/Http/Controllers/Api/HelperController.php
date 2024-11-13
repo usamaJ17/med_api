@@ -15,6 +15,7 @@ use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Nnjeim\World\World;
 
 class HelperController extends Controller
 {
@@ -284,6 +285,14 @@ class HelperController extends Controller
                 'message' => 'Share Message fetched successfully',
                 'data' => $data,
             ]);
+        }
+    }
+    public function getCountries(){
+        $action =  World::countries();
+
+        if ($action->success) {
+            $countries = $action->data;
+            return response()->json([$countries]);
         }
     }
 }

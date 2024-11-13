@@ -25,8 +25,6 @@
                             <li class="@yield('dashboard.home')"><a href="{{ route('dashboard') }}"><i
                                             class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Dashboard</a></li>
-                        </ul>
-                        <ul class="treeview-menu">
                             <li class="@yield('dashboard.feedback')"><a href="{{ route('dashboard.user-feedback') }}"><i
                                             class="icon-Commit"><span class="path1"></span><span
                                                 class="path2"></span></i>User Feedback</a></li>
@@ -140,7 +138,7 @@
                         </a>
                     </li>
                     <li class="@yield('user')">
-                        <a href="#">
+                        <a href="{{route('user.index')}}">
                             <i data-feather="user"></i>
                             <span>Users</span>
                         </a>
