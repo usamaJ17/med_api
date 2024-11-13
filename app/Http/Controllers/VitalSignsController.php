@@ -63,7 +63,7 @@ class VitalSignsController extends Controller
         //
     }
     public function getNotes(Request $request){
-        $clinicalNote = ClinicalNotes::with('comments.addedBy')->where('user_id', $request->user_id)->get();
+        $clinicalNote = ClinicalNotes::with('creator' , 'user', 'comments.addedBy')->where('user_id', $request->user_id)->get();
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Fetched Successfully...',
