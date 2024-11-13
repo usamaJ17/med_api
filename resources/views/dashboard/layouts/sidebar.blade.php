@@ -137,12 +137,14 @@
                             <span>Articles</span>
                         </a>
                     </li>
+                    @if(auth()->user()->hasRole('admin'))
                     <li class="@yield('user')">
                         <a href="{{route('user.index')}}">
                             <i data-feather="user"></i>
                             <span>Users</span>
                         </a>
                     </li>
+                    @endif
                     <li class="@yield('reminder')">
                         <a href="{{ route('reminder.index') }}">
                             <i data-feather="bell"></i>

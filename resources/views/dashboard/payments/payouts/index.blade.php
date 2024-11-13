@@ -45,7 +45,9 @@
                                         <th>Method</th>
                                         <th>Account Info</th>
                                         <th>Reject Reason</th>
+                                        @if(auth()->user()->hasRole('admin'))
                                         <th>Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +68,7 @@
                                             <td>{{ $item->method }}</td>
                                             <td>{{ $item->account_info }}</td>
                                             <td>{{ $item->rejected_reason }}</td>
+                                            @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 @if ($item->status == 'requested')
                                                     <button type="button" data-id="{{ $item->id }}"
@@ -76,6 +79,7 @@
                                                         class="payout-action waves-effect waves-light btn btn-sm btn-danger mb-5">Reject</button>
                                                 @endif
                                             </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

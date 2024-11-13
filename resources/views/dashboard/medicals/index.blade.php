@@ -67,7 +67,9 @@
                                                 <a class="hover-primary dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('medical.show',$medical->id ) }}">View Details</a>
+                                                    @if(auth()->user()->hasRole('admin'))
                                                     <a class="dropdown-item" onclick="DeleteRecord({{ $medical->id }})">Delete</a>
+                                                    @endif
                                                 </div>
                                                 </div>
                                             </td>

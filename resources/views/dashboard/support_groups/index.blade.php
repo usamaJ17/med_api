@@ -40,7 +40,9 @@
                                         <th>Name</th>
                                         <th>Description</th>
                                         <th>Url</th>
-                                        <th></th>
+                                        @if(auth()->user()->hasRole('admin'))
+                                            <th></th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,16 +53,18 @@
                                             <td>{{ $group->name }}</td>
                                             <td>{{ $group->description }}</td>
                                             <td>{{ $group->url }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a class="hover-primary dropdown-toggle no-caret"
-                                                        data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                                    <div class="dropdown-menu">
-                                                        {{-- <a class="dropdown-item" href="{{ route('support_groups.edit',$patient->id ) }}">View Details</a> --}}
-                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $group->id }})">Delete</a> 
+                                            @if(auth()->user()->hasRole('admin'))
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a class="hover-primary dropdown-toggle no-caret"
+                                                            data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                                        <div class="dropdown-menu">
+                                                            {{-- <a class="dropdown-item" href="{{ route('support_groups.edit',$patient->id ) }}">View Details</a> --}}
+                                                            <a class="dropdown-item" onclick="DeleteRecord({{ $group->id }})">Delete</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -39,13 +39,16 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        @if(auth()->user()->hasRole('admin'))
                                         <th></th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($title_array as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item }}</td>
+                                            @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="hover-primary dropdown-toggle no-caret"
@@ -55,6 +58,7 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

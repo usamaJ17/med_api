@@ -53,7 +53,9 @@
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#"
                                                             onclick="editReminder({{ $reminder->id }}, '{{ $reminder->title }}', '{{ $reminder->note }}', '{{ $reminder->role }}')">Edit</a>
-                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $reminder->id }})">Delete</a> 
+                                                        @if(auth()->user()->hasRole('admin'))
+                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $reminder->id }})">Delete</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
