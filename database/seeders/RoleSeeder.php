@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
         $user = User::create([
             'last_name'=>'',
             'first_name'=>'admin',
-            'email' => 'admin@deluxhospital.com',
+            'email' => 'admin@deluxehospital.com',
             'password' => Hash::make('admin123'),
         ]);
         $user->assignRole('admin');
