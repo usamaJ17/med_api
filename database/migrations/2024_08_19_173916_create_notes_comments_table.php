@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notes_comments', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('clinical_note_id')->nullable();
-            $table->foreign('clinical_note_id')->references('id')->on('clinical_notes')->onDelete('cascade');
-            $table->unsignedBigInteger('added_by')->nullable();
-            $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
-            $table->string('body')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('notes_comments', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('clinical_note_id')->nullable();
+        //     $table->foreign('clinical_note_id')->references('id')->on('clinical_notes')->onDelete('cascade');
+        //     $table->unsignedBigInteger('added_by')->nullable();
+        //     $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
+        //     $table->string('body')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**

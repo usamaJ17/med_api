@@ -27,6 +27,8 @@ class Appointment extends Model
         'diagnosis',
         'status',
     ];
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,13 +37,14 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected $appends = ['patient_name','fee_int', 'patient_profile_url','med_name','med_profile_url','med_lang','patient_lang'];
+    protected $appends = ['patient_name', 'fee_int', 'patient_profile_url', 'med_name', 'med_profile_url', 'med_lang', 'patient_lang', 'chat_id', 'chat_status'];
     public function getPatientNameAttribute()
     {
         $user = User::find($this->user_id);
         return $user->first_name . ' ' . $user->last_name;
     }
-    public function getFeeIntAttribute(){
+    public function getFeeIntAttribute()
+    {
         // remove any non integer characters
         return (int)filter_var($this->consultation_fees, FILTER_SANITIZE_NUMBER_INT);
     }
@@ -73,5 +76,25 @@ class Appointment extends Model
     public function review()
     {
         return $this->hasOne(Review::class);
+    }
+
+    public function getChatStatusAttribute()
+    {
+        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+        if ($chatBox) {
+            return $chatBox->id;
+        } else {
+            return null;
+        }
+    }
+
+    public function getChatIdAttribute()
+    {
+        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+        if ($chatBox) {
+            return $chatBox->status;
+        } else {
+            return null;
+        }
     }
 }

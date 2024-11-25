@@ -21,6 +21,9 @@ class EmergencyHelp extends Model
         'gender',
         'age',
     ];
+
+    protected $appends = ["chat_id", "chat_status"];
+
     protected $table = 'emergency_help';
     public function user()
     {
@@ -29,5 +32,25 @@ class EmergencyHelp extends Model
     public function med()
     {
         return $this->belongsTo(User::class, 'med_id');
+    }
+
+
+    public function getChatStatusAttribute()
+    {
+        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+        if ($chatBox) {
+            return $chatBox->id;
+        } else {
+            return null;
+        }
+    }
+    public function getChatIdAttribute()
+    {
+        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+        if ($chatBox) {
+            return $chatBox->id;
+        } else {
+            return null;
+        }
     }
 }
