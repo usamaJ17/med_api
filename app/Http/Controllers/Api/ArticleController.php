@@ -4,50 +4,63 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\ArticleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    public function getArticleCategories(Request $request)
+    {
+        $categories = ArticleCategory::all();
+        $data = [
+            'status' => 200, // add this line
+            'message' => 'All Article Categories fetched successfully',
+            'data' => ['categories' => $categories],
+        ];
+        return response()->json($data, 200);
+    }
     public function index(Request $request)
     {
         $articles = Article::get();
-        if(!$request->ajax()){
-          return view('dashboard.article.index', compact('articles'));  
+        if (!$request->ajax()) {
+            return view('dashboard.article.index', compact('articles'));
         }
         $data = [
             'status' => 200, // add this line
             'message' => 'All Article fetched successfully',
             'data' => ['article' => $articles],
         ];
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
-    public function status(Request $request){
+    public function status(Request $request)
+    {
         $article = Article::find($request->id);
-        if($request->status == 'approve'){
+        if ($request->status == 'approve') {
             $article->published = 1;
-        }elseif($request->status == 'reject'){
+        } elseif ($request->status == 'reject') {
             $article->published = 0;
         }
         $article->save();
-        return redirect()->back()->with('success','Article status updated successfully');
+        return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
     public function show(Request $request,  $id)
     {
         $article = Article::with(['comments.user', 'likes'])->find($id);
-        if(!$article) return response()->json([
+        if (!$article) return response()->json([
             'status' => 404, // add this line
-            'message'=>'Article not found'],404);    
+            'message' => 'Article not found'
+        ], 404);
         $data = [
             'status' => 200, // add this line
             'message' => 'Article fetched successfully',
-            'data' => ['article'=>$article],
+            'data' => ['article' => $article],
         ];
-        if(! $request->ajax()){
+        if (! $request->ajax()) {
             return view('dashboard.article.show', compact('article'));
         }
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     public function store(Request $request)
@@ -72,7 +85,7 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'Article created successfully',
-            'data' => ['article'=>$article],
+            'data' => ['article' => $article],
         ];
 
         return response()->json($data, 200);
@@ -101,7 +114,7 @@ class ArticleController extends Controller
         $data = [
             'status' => 200, // add this line
             'message' => 'Article updated successfully',
-            'data' => ['article'=>$article],
+            'data' => ['article' => $article],
         ];
 
         return response()->json($data, 200);
@@ -117,7 +130,8 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function addShare($article_id){
+    public function addShare($article_id)
+    {
         $article = Article::find($article_id);
         $article->shares = $article->shares + 1;
         $article->save();
