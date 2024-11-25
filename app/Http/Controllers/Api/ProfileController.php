@@ -12,29 +12,39 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function saveProfessionalDetails(Request $request){
-        $pro = ProfessionalDetails::updateOrCreate(['user_id'=>Auth::id()],$request->all());
-        if(null !== $request->file('id_card')){
+    public function saveProfessionalDetails(Request $request)
+    {
+        $pro = ProfessionalDetails::updateOrCreate(['user_id' => Auth::id()], $request->all());
+        if (null !== $request->file('id_card')) {
             $pro->clearMediaCollection('id_card');
             $pro->addMedia($request->file('id_card'))->toMediaCollection('id_card');
         }
-        if(null !== $request->file('signature')){
+        if (null !== $request->file('signature')) {
             $pro->clearMediaCollection('signature');
             $pro->addMedia($request->file('signature'))->toMediaCollection('signature');
         }
-        if(null !== $request->file('degree_file')){
+        if (null !== $request->file('degree_file')) {
             $pro->clearMediaCollection('degree_file');
             $pro->addMedia($request->file('degree_file'))->toMediaCollection('degree_file');
         }
+
+
+        if ($request->has("name_title")) {
+            $user = User::find(Auth::id());
+            $user->name_title = $request->name_title;
+            $user->save();
+        }
+
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Saved Successfully...',
+            'message' => 'Details Saved Successfully...',
             'data'   => $pro,
         ], 200);
     }
-    public function checkApprove(Request $request){
+    public function checkApprove(Request $request)
+    {
         $user = User::find($request->id);
-        if($user){
+        if ($user) {
             $data = [
                 'is_verified' => $user->is_verified,
             ];
@@ -44,8 +54,9 @@ class ProfileController extends Controller
             ]);
         }
     }
-    public function saveMedicalDetails(Request $request){
-        $med = MedicalDetail::updateOrCreate(['user_id'=>Auth::id()],$request->all());
+    public function saveMedicalDetails(Request $request)
+    {
+        $med = MedicalDetail::updateOrCreate(['user_id' => Auth::id()], $request->all());
         foreach ($request->allFiles() as $key => $file) {
             if (strpos($key, 'file_type_') === 0) {
                 $med->clearMediaCollection($key);
@@ -56,54 +67,58 @@ class ProfileController extends Controller
         $media = $med->getMedia();
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Saved Successfully...',
+            'message' => 'Details Saved Successfully...',
             'data'   => $med,
         ], 200);
     }
-    public function getMedicalDetails(Request $request){
-        if(isset($request->patient_id)){
-            $med = MedicalDetail::where('user_id',$request->patient_id)->first();
-        }else{
-            $med = MedicalDetail::where('user_id',Auth::id())->first();
+    public function getMedicalDetails(Request $request)
+    {
+        if (isset($request->patient_id)) {
+            $med = MedicalDetail::where('user_id', $request->patient_id)->first();
+        } else {
+            $med = MedicalDetail::where('user_id', Auth::id())->first();
         }
-        if(!$med) return response()->json([
+        if (!$med) return response()->json([
             'status' => 404,
-            'message'=> 'Details Not Found...',
+            'message' => 'Details Not Found...',
         ], 404);
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Fetched Successfully...',
+            'message' => 'Details Fetched Successfully...',
             'data'   => $med,
         ], 200);
     }
-    public function getProfessionalDetails(){
-        $pro = ProfessionalDetails::where('user_id',Auth::id())->first();
-        if(!$pro) return response()->json([
+    public function getProfessionalDetails()
+    {
+        $pro = ProfessionalDetails::where('user_id', Auth::id())->first();
+        if (!$pro) return response()->json([
             'status' => 404,
-            'message'=> 'Details Not Found...',
+            'message' => 'Details Not Found...',
         ], 404);
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Fetched Successfully...',
+            'message' => 'Details Fetched Successfully...',
             'data'   => $pro,
         ], 200);
     }
-    public function completeProfile(Request $request){
+    public function completeProfile(Request $request)
+    {
         $user = User::find($request->user_id);
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'status' => 404,
-                'message'=> 'User Not Found...',
+                'message' => 'User Not Found...',
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 200,
-                'message'=> 'Profile Completed Successfully...',
+                'message' => 'Profile Completed Successfully...',
                 'data'   => $user,
             ], 200);
         }
     }
-    public function getMedicalProfessionals(Request $request){
+    public function getMedicalProfessionals(Request $request)
+    {
         $query = User::with('professionalDetails')->role('medical');
         $query->where('is_verified', true);
         // Apply filters if provided
@@ -114,9 +129,9 @@ class ProfileController extends Controller
             $query->where('professional_type_id', $request->professional_type_id);
         }
         if ($request->has('search') && $request->search != "") {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
-                  ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                    ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -130,75 +145,80 @@ class ProfileController extends Controller
             'data' => $professionals,
         ], 200);
     }
-    public function getMedicalProfessionalsMetaData(Request $request){
+    public function getMedicalProfessionalsMetaData(Request $request)
+    {
         $user = User::find($request->id);
-        if(!$user) return response()->json([
+        if (!$user) return response()->json([
             'status' => 404,
-            'message'=> 'Professional Not Found...',
+            'message' => 'Professional Not Found...',
         ], 404);
         $data = $user->professionalMetaData();
         return response()->json([
             'status' => 200,
-            'message'=> 'Details Fetched Successfully...',
+            'message' => 'Details Fetched Successfully...',
             'data'   => $data,
         ], 200);
     }
-    public function storeProfessionalType(Request $request){
+    public function storeProfessionalType(Request $request)
+    {
         $request->validate([
             'name' => 'required|string',
         ]);
         // upload icon and save path in db
-        if(null !== $request->file('icon')){
+        if (null !== $request->file('icon')) {
             $icon = $request->file('icon')->store('icons');
             $request->merge(['icon' => $icon]);
         }
         $pro = ProfessionalType::create($request->all());
         return response()->json([
             'status' => 200,
-            'message'=> 'Professional Type Created Successfully...',
+            'message' => 'Professional Type Created Successfully...',
             'data'   => $pro,
         ], 200);
     }
-    public function getProfessionalType(){
+    public function getProfessionalType()
+    {
         $pro = ProfessionalType::all();
         return response()->json([
             'status' => 200,
-            'message'=> 'Professional Type Fetched Successfully...',
+            'message' => 'Professional Type Fetched Successfully...',
             // 'data'   => ['professional_types' => $pro,'total' => $pro->count() ?? 0],
             'data'   =>  $pro,
         ], 200);
     }
-    public function updateProfessionalType(Request $request , $id){
+    public function updateProfessionalType(Request $request, $id)
+    {
         $request->validate([
             'name' => 'required|string',
         ]);
         $pro = ProfessionalType::find($id);
-        if(!$pro) return response()->json([
+        if (!$pro) return response()->json([
             'status' => 404,
-            'message'=> 'Professional Type Not Found...',
+            'message' => 'Professional Type Not Found...',
         ], 404);
         // upload icon and save path in db
-        if(null !== $request->file('icon')){
+        if (null !== $request->file('icon')) {
             $icon = $request->file('icon')->store('icons');
             $request->merge(['icon' => $icon]);
         }
         $pro->update($request->all());
         return response()->json([
             'status' => 200,
-            'message'=> 'Professional Type Updated Successfully...',
+            'message' => 'Professional Type Updated Successfully...',
             'data'   => $pro,
         ], 200);
     }
-    public function deleteProfessionalType($id){
+    public function deleteProfessionalType($id)
+    {
         $pro = ProfessionalType::find($id);
-        if(!$pro) return response()->json([
+        if (!$pro) return response()->json([
             'status' => 404,
-            'message'=> 'Professional Type Not Found...',
+            'message' => 'Professional Type Not Found...',
         ], 404);
         $pro->delete();
         return response()->json([
             'status' => 200,
-            'message'=> 'Professional Type Deleted Successfully...',
+            'message' => 'Professional Type Deleted Successfully...',
         ], 200);
     }
 }
