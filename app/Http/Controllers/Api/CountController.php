@@ -3,11 +3,55 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ArticleReadUser;
+use App\Models\ChatBoxMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CountController extends Controller
 {
+    public function markAsRead(Request $request)
+    {
+        $user = auth()->user();
+        $data = [
+            'status' => 400,
+            'message' => 'No type sent in request',
+            'data' => []
+        ];
+        if ($request->has("type") && $request->type == "articles") {
+            $articleIds = DB::table('articles')
+                ->whereNotIn('articles.id', function ($query) use ($user) {
+                    $query->select('artcle_read_users.article_id')
+                        ->from('artcle_read_users')
+                        ->where('artcle_read_users.user_id', '=', $user->id);
+                })
+                ->pluck("articles.id");
+
+            $articleIds = $articleIds->toArray();
+            foreach ($articleIds as $id) {
+                ArticleReadUser::create([
+                    "user_id" => $user->id,
+                    "article_id" => $id
+                ]);
+            }
+            $data["status"] = 200;
+            $data["message"] = "All Articles Mark as read successfully";
+            $data["data"] = [];
+        } else if ($request->has("type") && $request->type == "chat") {
+            $messages = ChatBoxMessage::where(["to_user_id" => $user->id])->get();
+            foreach ($messages as $message) {
+                $message->user_read = 1;
+                $message->save();
+            }
+            $data["status"] = 200;
+            $data["message"] = "All Chat Messages marked as read successfully";
+            $data["data"] = [];
+        }
+
+        return response()->json($data, $data["status"]);
+    }
+
+
     public function getCount(Request $request)
     {
         $data = [
@@ -19,12 +63,12 @@ class CountController extends Controller
 
         if ($request->has("type") && $request->type == "articles") {
 
-            $count = DB::table("articles")
-                ->leftJoin("artcle_read_users", function ($join) use ($user) {
-                    $join->on("artcle_read_users.article_id", "=", "articles.id")
-                        ->where("artcle_read_users.user_id", "=", $user->id);
+            $count = DB::table('articles')
+                ->whereNotIn('articles.id', function ($query) use ($user) {
+                    $query->select('artcle_read_users.article_id')
+                        ->from('artcle_read_users')
+                        ->where('artcle_read_users.user_id', '=', $user->id);
                 })
-                ->whereNull("artcle_read_users.id")
                 ->count();
             $data["status"] = 200;
             $data["message"] = "Unread article count fetched successfully";

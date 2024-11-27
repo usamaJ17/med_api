@@ -91,6 +91,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
   Route::get('get_comments/{article_id}', [CommentController::class, 'getComments']);
   Route::get("/get-count", [CountController::class, "getCount"]);
+  Route::post("mark_as_read", [CountController::class, "markAsRead"]);
   Route::post('articles/{article}/likes', [LikeController::class, 'store']);
   Route::delete('articles/{article}/likes', [LikeController::class, 'destroy']);
   Route::get('check_like/{article}', [LikeController::class, 'checkLike']);
