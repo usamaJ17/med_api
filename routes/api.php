@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AppointmentHoursController;
 use App\Http\Controllers\Api\AppointmentSummaryController;
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\api\CountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
@@ -82,13 +83,14 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('notifications', [NotificationController::class, 'getAll']);
   Route::delete('notifications/{id}', [NotificationController::class, 'delete']);
 
+  //Route::apiResource(name: 'articles', ArticleController::class);
   Route::apiResource('articles', ArticleController::class);
   Route::post('articles/update/{id}', [ArticleController::class, 'update']);
   Route::get('articles_categories', [ArticleController::class, "getArticleCategories"]);
   Route::post('articles/{article}/comments', [CommentController::class, 'store']);
   Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
   Route::get('get_comments/{article_id}', [CommentController::class, 'getComments']);
-
+  Route::get("/get-count", [CountController::class, "getCount"]);
   Route::post('articles/{article}/likes', [LikeController::class, 'store']);
   Route::delete('articles/{article}/likes', [LikeController::class, 'destroy']);
   Route::get('check_like/{article}', [LikeController::class, 'checkLike']);

@@ -22,6 +22,7 @@ class ArticleController extends Controller
     }
     public function index(Request $request)
     {
+
         $articles = Article::get();
         if (!$request->ajax()) {
             return view('dashboard.article.index', compact('articles'));
