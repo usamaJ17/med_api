@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AppointmentHoursController;
 use App\Http\Controllers\Api\AppointmentSummaryController;
 use App\Http\Controllers\Api\ArticleController;
-use App\Http\Controllers\api\CountController;
+use App\Http\Controllers\Api\CountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
