@@ -24,9 +24,9 @@ class ArticleController extends Controller
     {
 
         $articles = Article::get();
-        if (!$request->ajax()) {
-            return view('dashboard.article.index', compact('articles'));
-        }
+        // if (!$request->ajax()) {
+        //     return view('dashboard.article.index', compact('articles'));
+        // }
         $data = [
             'status' => 200, // add this line
             'message' => 'All Article fetched successfully',
