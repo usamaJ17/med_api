@@ -25,6 +25,7 @@ class AppointmentController extends Controller
 
             //finding appointment against this user
             $appointment = AppointmentHours::query()->where('user_id', auth()->id())->get();
+            response()->json($appointment, 200);
             if (!$appointment) {
                 return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
             }
