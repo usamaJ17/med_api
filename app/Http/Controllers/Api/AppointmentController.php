@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\AppointmentHours;
 use App\Models\ChatBox;
 use App\Models\ConsultationFee;
 use App\Models\Review;
@@ -23,7 +24,7 @@ class AppointmentController extends Controller
             $user = auth()->user();
 
             //finding appointment against this user
-            $appointment = Appointment::where(["user_id" => $user->id])->first();
+            $appointment = AppointmentHours::query()->where('user_id', auth()->id());
             if (!$appointment) {
                 return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
             }
