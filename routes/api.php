@@ -116,7 +116,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('subaccount/appointments', [AppointmentController::class, 'getSubAccount']);
   Route::post('appointments/paid', [AppointmentController::class, 'markAsPaid']);
   Route::get('appointments/pay_for_some', [AppointmentController::class, 'payForSome']);
-
+  Route::post("add_consultation_fee", [AppointmentController::class, "saveConsultationFee"]);
   // review after appointment
   Route::post('appointments/review', [AppointmentController::class, 'addReview']);
   Route::post('appointments/review/update', [AppointmentController::class, 'updateReview']);
