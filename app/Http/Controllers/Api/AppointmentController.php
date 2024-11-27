@@ -21,6 +21,8 @@ class AppointmentController extends Controller
                 'consultation_type' => 'required|string',
             ]);
             $user = auth()->user();
+            echo $user->id;
+            die;
             //finding appointment against this user
             $appointment = Appointment::where(["user_id" => $user->id])->first();
             if (!$appointment) {
