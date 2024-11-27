@@ -24,7 +24,7 @@ class AppointmentController extends Controller
             $user = auth()->user();
 
             //finding appointment against this user
-            $appointment = AppointmentHours::all();
+            $appointment = AppointmentHours::where(["user_id" => auth()->user()->id])->first();
             return response()->json($appointment, 200);
             response()->json($appointment, 200);
             if (!$appointment) {
