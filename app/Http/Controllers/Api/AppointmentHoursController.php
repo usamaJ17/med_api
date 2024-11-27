@@ -12,7 +12,7 @@ class AppointmentHoursController extends Controller
     {
         $validatedData = $request->validate([
             'appointment_type' => 'required|string',
-            'consultation_fees' => 'required|string',
+            // 'consultation_fees' => 'required|string',
         ]);
         // add user_id to validated data
         $validatedData['duration'] = $request->duration;
@@ -46,8 +46,8 @@ class AppointmentHoursController extends Controller
         if ($request->has('appointment_type')) {
             $appointment->where('appointment_type', $request->appointment_type);
         }
-        if($request->has('duration')){
-            $appointment->where('duration',$request->duration);
+        if ($request->has('duration')) {
+            $appointment->where('duration', $request->duration);
         }
         $appointment = $appointment->get();
         $data = [
@@ -57,13 +57,14 @@ class AppointmentHoursController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function checkAvailability(Request $request){
+    public function checkAvailability(Request $request)
+    {
         $appointment = AppointmentHours::query()->where('user_id', $request->professional_id);
         if ($request->has('appointment_type')) {
             $appointment->where('appointment_type', $request->appointment_type);
         }
-        if($request->has('duration')){
-            $appointment->where('duration',$request->duration);
+        if ($request->has('duration')) {
+            $appointment->where('duration', $request->duration);
         }
         $appointment = $appointment->get();
         $data = [
@@ -71,6 +72,6 @@ class AppointmentHoursController extends Controller
             'message' => 'Schedule fetched successfully',
             'data' => $appointment,
         ];
-        return response()->json($data, 200);   
+        return response()->json($data, 200);
     }
 }
