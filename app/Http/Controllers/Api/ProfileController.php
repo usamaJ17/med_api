@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    public function removeAccount(Request $request)
+    {
+        $user = auth()->user();
+        $user->deleted_by = $user->id;
+        $user->save();
+        $user->delete();
+        $data = [
+            "status" => 200,
+            "message" => "User Removed successfully",
+            "data" => []
+        ];
+        return response()->json($data, $data["status"]);
+    }
+
+
     public function saveProfessionalDetails(Request $request)
     {
         $pro = ProfessionalDetails::updateOrCreate(['user_id' => Auth::id()], $request->all());

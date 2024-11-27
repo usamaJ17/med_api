@@ -69,7 +69,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::post('device_token', [AuthController::class, 'saveDeviceToken']);
   Route::post('app_feedback', [HelperController::class, 'saveUserFeedback']);
   Route::post('email_verification', [HelperController::class, 'sendEmailVerification']);
-
+  Route::delete("remove_account", [ProfileController::class, "removeAccount"]);
   Route::get('complete_profile', [ProfileController::class, 'completeProfile']);
   Route::get('professional_info', [ProfileController::class, 'getProfessionalDetails']);
   Route::post('professional_info', [ProfileController::class, 'saveProfessionalDetails']);

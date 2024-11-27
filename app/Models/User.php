@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +48,7 @@ class User extends Authenticatable implements HasMedia
         'speak',
         'time_zone',
         'device_token',
+        'deleted_by'
     ];
 
     protected $excludeFields = ['id', 'password', 'professional_type_id', 'user_id', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
@@ -80,8 +82,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->roles->pluck('name')[0] ?? '';
     }
-    public function fullName(){
-        return $this->name_title .' ' . $this->first_name . ' ' . $this->last_name;
+    public function fullName()
+    {
+        return $this->name_title . ' ' . $this->first_name . ' ' . $this->last_name;
     }
     public function getProfessionalTypeNameAttribute()
     {
@@ -229,14 +232,14 @@ class User extends Authenticatable implements HasMedia
         $array = [];
         $med_details = $this->medicalDetails;
         $pro_details = $this->professionalDetails;
-    
+
         if ($med_details) {
             foreach ($med_details->media as $media) {
                 $key = ucfirst(str_replace("file_type_", "", $media->collection_name));
                 $array[$key] = $media->getUrl();
             }
         }
-    
+
         if ($pro_details) {
             $pro_media_urls = [
                 'ID Card' => $pro_details->id_card,
@@ -245,10 +248,11 @@ class User extends Authenticatable implements HasMedia
             ];
             $array = array_merge($array, $pro_media_urls);
         }
-    
+
         return $array;
     }
-    public function GetProfileUploads(){
+    public function GetProfileUploads()
+    {
         $array = [];
         $media =  $this->getMedia('profile_uploads');
         foreach ($media as $med) {
@@ -269,5 +273,4 @@ class User extends Authenticatable implements HasMedia
             ->using(ReminderUser::class)
             ->withTimestamps();
     }
-    
 }
