@@ -261,6 +261,7 @@ class User extends Authenticatable implements HasMedia
                 'file_name' => $med->name,
                 'created_at' => $med->created_at,
                 'url' => $med->getUrl(),
+                'comment' => $med->getCustomProperty('comment') ?? null
             ];
             $array[] = $img_data;
         }

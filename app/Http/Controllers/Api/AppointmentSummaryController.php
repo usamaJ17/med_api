@@ -12,20 +12,21 @@ use Illuminate\Support\Facades\Validator;
 
 class AppointmentSummaryController extends Controller
 {
-    public function addSummaryField(Request $request){
+    public function addSummaryField(Request $request)
+    {
         $fields = $request->fields;
         $var = str_replace("'", '"', $fields);
         $summary_fields = json_decode($var, true);
-        $fields = SummaryDynamicField::where('user_id',auth()->user()->id)->first();
-        if($fields){
+        $fields = SummaryDynamicField::where('user_id', auth()->user()->id)->first();
+        if ($fields) {
             $fields->update([
                 'fields' => json_encode($summary_fields)
             ]);
             return response()->json([
                 'status' => 200,
-                'message'=> 'Summary fields updated successfully...',
+                'message' => 'Summary fields updated successfully...',
             ], 200);
-        }else{
+        } else {
             SummaryDynamicField::create([
                 'user_id' => auth()->user()->id,
                 'fields' => json_encode($summary_fields)
@@ -33,26 +34,27 @@ class AppointmentSummaryController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'message'=> 'Summary fields added successfully...',
+            'message' => 'Summary fields added successfully...',
         ], 200);
     }
-    public function getSummaryField(){
-        $fields = SummaryDynamicField::where('user_id',auth()->user()->id)->first();
-        if($fields){
-            $user_fields = json_decode($fields->fields); 
-        }else{
+    public function getSummaryField()
+    {
+        $fields = SummaryDynamicField::where('user_id', auth()->user()->id)->first();
+        if ($fields) {
+            $user_fields = json_decode($fields->fields);
+        } else {
             $user_fields = [];
         }
-        $required = DynamicFiled::where('name','summary_required')->first();
-        $optional = DynamicFiled::where('name','summary_optional')->first();
-        if($required){
+        $required = DynamicFiled::where('name', 'summary_required')->first();
+        $optional = DynamicFiled::where('name', 'summary_optional')->first();
+        if ($required) {
             $required_fields = json_decode($required->data);
-        }else{
+        } else {
             $required_fields = [];
         }
-        if($optional){
+        if ($optional) {
             $optional_fields = json_decode($optional->data);
-        }else{
+        } else {
             $optional_fields = [];
         }
         $fieldsData = [
@@ -62,12 +64,13 @@ class AppointmentSummaryController extends Controller
         ];
         $res = [
             'status' => 200,
-            'message'=> 'Summary fields fetched successfully...',
+            'message' => 'Summary fields fetched successfully...',
             'data' => $fieldsData
         ];
         return response()->json($res, 200);
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $summary = $request->summary;
 
         // Convert single quotes to double quotes
@@ -75,8 +78,8 @@ class AppointmentSummaryController extends Controller
 
         // Decode the string into a valid JSON object (associative array)
         $summaryJson = json_decode($summary);
-        $fields = AppointmentSummary::where('appointment_id',$request->appointment_id)->first();
-        if($fields){
+        $fields = AppointmentSummary::where('appointment_id', $request->appointment_id)->first();
+        if ($fields) {
             $fields->update([
                 'summary' => json_encode($summaryJson)
             ]);
@@ -84,7 +87,7 @@ class AppointmentSummaryController extends Controller
                 'status' => 200,
                 'message' => 'Summary updated successfully',
             ];
-        }else{
+        } else {
             AppointmentSummary::create([
                 'appointment_id' => $request->appointment_id,
                 'summary' => json_encode($summaryJson)
@@ -96,9 +99,13 @@ class AppointmentSummaryController extends Controller
         }
         return response()->json($data, 200);
     }
-    public function uploadDocument(Request $request){
-        foreach($request->all()['files'] as $file){
-            auth()->user()->addMedia($file)->toMediaCollection('profile_uploads');
+    public function uploadDocument(Request $request)
+    {
+        foreach ($request->all()['files'] as $file) {
+            $media = auth()->user()->addMedia($file)->toMediaCollection('profile_uploads');
+            if ($request->has("comment")) {
+                $media->setCustomProperty('comment', $request->comment)->save();
+            }
         }
         $data = [
             'status' => 200,
@@ -106,7 +113,8 @@ class AppointmentSummaryController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function getPdf(Request $request){
+    public function getPdf(Request $request)
+    {
         $url = 'https://portal.deluxehospital.com/storage/58/sample.pdf';
         $data = [
             'status' => 200,
@@ -115,13 +123,14 @@ class AppointmentSummaryController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function getDocument(Request $request){
-        if(isset($request->patient_id)){
+    public function getDocument(Request $request)
+    {
+        if (isset($request->patient_id)) {
             $user = User::find($request->patient_id);
-        }else{
+        } else {
             $user = auth()->user();
         }
-        if(!$user){
+        if (!$user) {
             $data = [
                 'status' => 404,
                 'message' => 'User not found',
@@ -136,18 +145,19 @@ class AppointmentSummaryController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function view(Request $request){
-        $fields = AppointmentSummary::where('appointment_id',$request->appointment_id)->first();
+    public function view(Request $request)
+    {
+        $fields = AppointmentSummary::where('appointment_id', $request->appointment_id)->first();
         $res = [
             'summary' => json_decode($fields->summary)
         ];
-        if($fields){
+        if ($fields) {
             $data = [
                 'status' => 200,
                 'message' => 'Summary fetched successfully',
                 'data' => $res
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 404,
                 'message' => 'Summary not found',
