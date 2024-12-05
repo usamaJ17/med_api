@@ -28,6 +28,10 @@ class DashboardController extends Controller
         $graphFactory = new GraphFactory($startDate, $endDate);
         $patientSignups = $graphFactory->getGraphData('patient_signups');
         $medicalSignups = $graphFactory->getGraphData('medical_signups');
+
+        $patientSignupsStates = $graphFactory->getGraphData('patient_signups_states');
+        $medicalSignupsStates = $graphFactory->getGraphData('medical_signups_states');
+
         $appointmentData = $graphFactory->getGraphData('appointments');
         $cancelAppointmentData = $graphFactory->getGraphData('cancel_appointments');
         $pro_cat_appointment = $graphFactory->getGraphData('pro_cat_appointments');
@@ -70,7 +74,7 @@ class DashboardController extends Controller
             })->inRandomOrder()->get();
         }
         $maxAppointmentCount = $result->appointment_count ?? 0;
-        return view('dashboard.index')->with(compact('patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
+        return view('dashboard.index')->with(compact('patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
     }
     public function userFeedback(){
         $startDate = Carbon::now()->subDays(30);

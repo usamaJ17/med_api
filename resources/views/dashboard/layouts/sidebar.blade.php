@@ -95,6 +95,15 @@
                             <li class="@yield('dynamic.professional_docs')"><a href="{{ route('dynamic.professional_docs') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Professionals Docs</a></li>
+                            <li class="@yield('dynamic.article_category')"><a href="{{ route('dynamic.article_category') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Article Category</a></li>
+                            <li class="@yield('dynamic.clinical_notes')"><a href="{{ route('dynamic.clinical_notes') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Clinical Notes</a></li>
+                            <li class="@yield('dynamic.cusultation_summary')"><a href="{{ route('dynamic.cusultation_summary') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Cusultation Summary</a></li>
                         </ul>
                     </li>
                     <li class="treeview @yield('payments')">

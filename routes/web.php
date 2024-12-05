@@ -80,6 +80,26 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('dynamic/category', [DynamicCatagoryController::class,'category'])->name('dynamic.category');
     Route::delete('dynamic/category/delete/{id}', [DynamicCatagoryController::class,'deleteCategory'])->name('dynamic.category.delete');
     Route::post('dynamic/category/store', [DynamicCatagoryController::class,'storeCategory'])->name('dynamic.category.store');
+    Route::post('dynamic/category/update', [DynamicCatagoryController::class, 'updateCategory'])->name('dynamic.category.update');
+
+    
+    Route::get('dynamic/article_category', [DynamicCatagoryController::class,'article_category'])->name('dynamic.article_category');
+    Route::delete('dynamic/article_category/delete/{id}', [DynamicCatagoryController::class,'deleteArticleCategory'])->name('dynamic.article_category.delete');
+    Route::post('dynamic/article_category/store', [DynamicCatagoryController::class,'storeArticleCategory'])->name('dynamic.article_category.store');
+    Route::post('dynamic/article_category/update', [DynamicCatagoryController::class, 'updateArticleCategory'])->name('dynamic.article_category.update');
+    
+
+
+    Route::get('dynamic/clinical_notes', [DynamicCatagoryController::class,'clinical_notes'])->name('dynamic.clinical_notes');
+    Route::delete('dynamic/clinical_notes/delete/{id}', [DynamicCatagoryController::class,'deleteClinicalNotes'])->name('dynamic.clinical_notes.delete');
+    Route::post('dynamic/clinical_notes/store', [DynamicCatagoryController::class,'storeClinicalNotes'])->name('dynamic.clinical_notes.store');
+    Route::post('dynamic/clinical_notes/update', [DynamicCatagoryController::class, 'updateClinicalNotes'])->name('dynamic.clinical_notes.update');
+    
+    Route::get('dynamic/cusultation_summary', [DynamicCatagoryController::class,'cusultation_summary'])->name('dynamic.cusultation_summary');
+    Route::delete('dynamic/cusultation_summary/delete/{id}', [DynamicCatagoryController::class,'deleteCusultationSummary'])->name('dynamic.cusultation_summary.delete');
+    Route::post('dynamic/cusultation_summary/store', [DynamicCatagoryController::class,'storeCusultationSummary'])->name('dynamic.cusultation_summary.store');
+    Route::post('dynamic/cusultation_summary/update', [DynamicCatagoryController::class, 'updateCusultationSummary'])->name('dynamic.cusultation_summary.update');
+    
 
     Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
     Route::get('payments/payouts', [PaymentController::class,'payouts'])->name('payments.payouts');

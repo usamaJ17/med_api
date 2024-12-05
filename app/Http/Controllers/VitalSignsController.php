@@ -11,6 +11,7 @@ use App\Models\VitalSigns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use PDF;
 
 class VitalSignsController extends Controller
 {
@@ -64,12 +65,38 @@ class VitalSignsController extends Controller
     }
     public function getNotes(Request $request){
         $clinicalNote = ClinicalNotes::with('creator' , 'user', 'comments.addedBy')->where('user_id', $request->user_id)->get();
+
+        // $data = [
+        //     'background' => public_path('pdfs/background.png'), // Path to your background image
+        //     'date' => date('d/m/Y'),
+        //     'patient' => [
+        //         'id' => '454645',
+        //         'name' => 'John Doe',
+        //         'address' => '123 Street, City',
+        //         'phone' => '0311-1234567',
+        //         'age' => '20 y',
+        //         'weight' => '80 kg',
+        //         'doctor' => 'Dr. Smith',
+        //         'license' => '324534534',
+        //         'approval' => 'Yes'
+        //     ]
+        // ];
+
+        // $pdf = Pdf::loadView('pdf.prescription', $data)->setPaper('legal', 'portrait');
+       
+        // $filePath = public_path('prescriptions/prescription_' . time() . '.pdf');
+        // $pdf->save($filePath);
+        // return response()->json(['message' => 'PDF saved successfully!', 'file' => $filePath]);
+
+
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Fetched Successfully...',
             'data'   => $clinicalNote,
         ], 200);
     }
+
+
     public function saveNotes(Request $request){
         $summary = $request->note;
         $summary = str_replace("'", '"', $summary);

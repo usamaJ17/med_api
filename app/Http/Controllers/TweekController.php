@@ -52,17 +52,20 @@ class TweekController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tweek $tweek)
-    {
-        $tweek->value = $request->input('value');
-        $tweek->save();
-        if ($request->hasFile('media') && is_array($request->file('media'))) {
-            foreach ($request->file('media') as $file) {
-                $tweek->addMedia($file)->toMediaCollection();
-            }
-        }        
-        return redirect()->back()->with('success', 'Tweek updated successfully.');
-    }
+    
+     public function update(Request $request, Tweek $tweek)
+     {
+         $tweek->value = $request->input('value');
+         $tweek->service_fee = $request->input('service_fee');
+         $tweek->save();
+         if ($request->hasFile('media') && is_array($request->file('media'))) {
+             foreach ($request->file('media') as $file) {
+                 $tweek->addMedia($file)->toMediaCollection();
+             }
+         }        
+         return redirect()->back()->with('success', 'Tweek updated successfully.');
+     }
+ 
 
     /**
      * Remove the specified resource from storage.

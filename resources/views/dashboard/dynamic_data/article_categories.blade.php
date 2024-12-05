@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.app')
 
 @section('title')
-    Professionals Ranks
+Article Categories
 @endsection
 @section('dynamic')
     active
 @endsection
-@section('dynamic.rank')
+@section('dynamic.article_category')
     active
 @endsection
 @section('content')
@@ -14,12 +14,12 @@
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Professionals Ranks</h4>
+                <h4 class="page-title">Article Categories</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i>Dynamic Data</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Professionals Ranks</li>
+                            <li class="breadcrumb-item active" aria-current="page">Article Categories</li>
                         </ol>
                     </nav>
                 </div>
@@ -45,7 +45,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($ranks as $item)
+                                    @foreach ($article_categories as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item->name }}</td>
                                             @if(auth()->user()->hasRole('admin'))
@@ -54,7 +54,8 @@
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
+                                                    <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{$item->name}}')">Edit</a> 
+                                                    <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
                                                     </div>
                                                 </div>
                                             </td>
@@ -74,13 +75,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Add New Rank</h5>
+                    <h5 class="modal-title" id="myModalLabel">Add New</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dynamic.rank.store') }}" method="POST">
+                    <form action="{{ route('dynamic.article_category.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -93,10 +94,42 @@
             </form>
             </div>
         </div>
+    </div>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Consultation Summary</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editForm" action="{{ route('dynamic.article_category.update') }}"  method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="editId">
+                        <div class="form-group">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
         <!-- /.content -->
     @endsection
     @section('script')
         <script>
+            function editRecord(id, name) {
+                document.getElementById('editId').value = id;
+                document.getElementById('editName').value = name;
+                $('#editModal').modal('show')
+            }
             $(function() {
                 'use strict';
                 $('#example1').DataTable({
@@ -108,7 +141,7 @@
                     'autoWidth': false,
                     'dom': 'Bfrtip',
                     'buttons': [{
-                        text: 'Add New Rank',
+                        text: 'Add New Category',
                         className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
                         action: function(e, dt, node, config) {
                             $('#add_new').modal('show'); // Show the modal
@@ -119,7 +152,7 @@
 
             function DeleteRecord(id) {
                 $.ajax({
-                    url : "{{ url('portal/dynamic/rank/delete') }}"+"/"+id,
+                    url : "{{ url('portal/dynamic/article_category/delete') }}"+"/"+id,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

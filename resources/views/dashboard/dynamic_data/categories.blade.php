@@ -39,6 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Minimum Fee</th>
                                         @if(auth()->user()->hasRole('admin'))
                                         <th></th>
                                         @endif
@@ -48,13 +49,15 @@
                                     @foreach ($categories as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item->name }}</td>
+                                            <td>{{ $item->minimum_fee }}</td>
                                             @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
+                                                    <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{ $item->name }}', '{{ $item->minimum_fee }}')">Edit</a> 
+                                                    <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
                                                     </div>
                                                 </div>
                                             </td>
@@ -75,7 +78,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Add New</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -85,6 +88,10 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Minimun Fee</label>
+                            <input type="text" name="minimum_fee" class="form-control" id="minimum_fee" placeholder="Enter Minimun Fee">
                         </div>
                         <div class="form-group">
                             <label for="name">Icon</label>
@@ -97,10 +104,54 @@
             </form>
             </div>
         </div>
+    </div>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Consultation Summary</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editForm" action="{{ route('dynamic.category.update') }}"  method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="editId">
+                        <div class="form-group">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Minimun Fee</label>
+                            <input type="text" name="minimum_fee" class="form-control" id="minimumFee" placeholder="Enter Minimun Fee">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Icon</label>
+                            <input type="file" name="icon" class="form-control" id="icon" placeholder="Upload Icon">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
         <!-- /.content -->
     @endsection
     @section('script')
         <script>
+            function editRecord(id, name, minimum_fee) {
+                
+                        document.getElementById('editId').value = id;
+                        document.getElementById('editName').value = name;
+                        document.getElementById('minimumFee').value = minimum_fee;
+
+                        // Show the modal
+                        $('#editModal').modal('show');
+            }
             $(function() {
                 'use strict';
                 $('#example1').DataTable({

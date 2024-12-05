@@ -107,7 +107,22 @@
                                 <h4 class="box-title">User Signups</h4>
                             </div>
                             <div class="box-body">
+                                <div>
+                                    <button onclick="updateChartWithTimeFrame('daily')">Daily</button>
+                                    <button onclick="updateChartWithTimeFrame('weekly')">Weekly</button>
+                                    <button onclick="updateChartWithTimeFrame('monthly')">Monthly</button>
+                                </div>
                                 <div id="recent_trend"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h4 class="box-title">User Signups States</h4>
+                            </div>
+                            <div class="box-body">
+                                <div id="recent_trend_states"></div>
                             </div>
                         </div>
                     </div>
@@ -117,6 +132,11 @@
                                 <h4 class="box-title">Revenue</h4>
                             </div>
                             <div class="box-body">
+                                <div>
+                                    <button onclick="updateChartWithTimeFrame1('daily')">Daily</button>
+                                    <button onclick="updateChartWithTimeFrame1('weekly')">Weekly</button>
+                                    <button onclick="updateChartWithTimeFrame1('monthly')">Monthly</button>
+                                </div>
                                 <div id="revenue_trend"></div>
                             </div>
                         </div>
@@ -127,6 +147,11 @@
                                 <h4 class="box-title">Appointment</h4>
                             </div>
                             <div class="box-body">
+                                <div>
+                                    <button onclick="updateChartWithTimeFrame2('daily')">Daily</button>
+                                    <button onclick="updateChartWithTimeFrame2('weekly')">Weekly</button>
+                                    <button onclick="updateChartWithTimeFrame2('monthly')">Monthly</button>
+                                </div>
                                 <div id="appointment_overview"></div>
                             </div>
                         </div>
@@ -227,8 +252,10 @@
     <script>
         var patientSignups = @json($patientSignups);
         var dailyPatientCountCat = @json($dailyPatientCountCat);
+        var patientSignupsStates = @json($patientSignupsStates);
         var total_monthly_revenue = @json($total_monthly_revenue);
         var medicalSignups = @json($medicalSignups);
+        var medicalSignupsStates = @json($medicalSignupsStates);
         var appointmentData = @json($appointmentData);
         var cancelAppointmentData = @json($cancelAppointmentData);
         var pro_cat_appointment = @json($pro_cat_appointment);
@@ -262,14 +289,203 @@
         for (var i = 0; i < Object.keys(pro_cat_appointment).length; i++) {
             colors.push(baseColors[i % baseColors.length]);
         }
+        function groupDataByTimeFrame(data, timeFrame) {
+            const dates = data.date;
+            const counts = data.data;
+
+            let groupedData = {
+                date: [],
+                data: []
+            };
+
+            if (timeFrame === "daily") {
+                // Return the original data for daily view
+                return data;
+            } else if (timeFrame === "weekly") {
+                let weekCount = 0;
+                let weekLabel = [];
+
+                dates.forEach((date, index) => {
+                    weekCount += counts[index];
+                    weekLabel.push(date);
+
+                    // Group by 7 days (weekly)
+                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                        groupedData.date.push(weekLabel[0] + " - " + weekLabel[weekLabel.length - 1]);
+                        groupedData.data.push(weekCount);
+                        weekCount = 0; // Reset for the next week
+                        weekLabel = [];
+                    }
+                });
+            } else if (timeFrame === "monthly") {
+                let monthMap = {};
+
+                dates.forEach((date, index) => {
+                    const month = date.split(" ")[1]; // Extract month (e.g., "Nov", "Dec")
+                    if (!monthMap[month]) {
+                        monthMap[month] = 0;
+                    }
+                    monthMap[month] += counts[index];
+                });
+
+                groupedData.date = Object.keys(monthMap); // Months as labels
+                groupedData.data = Object.values(monthMap); // Counts for each month
+            }
+
+            return groupedData;
+        }
+        updateChartWithTimeFrame('daily');
+        var chart1;
+        function updateChartWithTimeFrame(timeFrame) {
+            const filteredData = groupDataByTimeFrame(patientSignups, timeFrame);
+            const filteredDataM = groupDataByTimeFrame(medicalSignups, timeFrame);
+            if (chart1) {
+                chart1.destroy();
+            }
+            var options = {
+                series: [{
+                    name: 'Patients',
+                    data: filteredData.data
+                }, {
+                    name: 'Medical Professionals',
+                    data: filteredDataM.data
+                }],
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
+                    show: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#ee3158', '#FFA800'],
+                },
+                colors: ['#ee3158', '#FFA800'],
+                xaxis: {
+                    categories: filteredData.date,
+
+                },
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+
+            chart1 = new ApexCharts(document.querySelector("#recent_trend"), options);
+            chart1.render();
+        }
+
+
+
+        // var options = {
+        //     series: [{
+        //         name: 'Patients',
+        //         data: patientSignups.data
+        //     }, {
+        //         name: 'Medical Professionals',
+        //         data: medicalSignups.data
+        //     }],
+        //     chart: {
+        //         type: 'area',
+        //         stacked: false,
+        //         foreColor: "#bac0c7",
+        //         zoom: {
+        //             type: 'x',
+        //             enabled: true,
+        //             autoScaleYaxis: true
+        //         },
+        //         height: 330,
+        //         toolbar: {
+        //             show: false,
+        //         }
+        //     },
+        //     fill: {
+        //         type: 'gradient',
+        //         gradient: {
+        //             shadeIntensity: 1,
+        //             inverseColors: false,
+        //             opacityFrom: 0.5,
+        //             opacityTo: 0,
+        //             stops: [0, 95, 100]
+        //         },
+        //     },
+        //     dataLabels: {
+        //         enabled: false,
+        //     },
+        //     grid: {
+        //         show: false,
+        //     },
+        //     stroke: {
+        //         show: true,
+        //         width: 2,
+        //         colors: ['#ee3158', '#FFA800'],
+        //     },
+        //     colors: ['#ee3158', '#FFA800'],
+        //     xaxis: {
+        //         categories: patientSignups.date,
+
+        //     },
+        //     legend: {
+        //         show: true,
+        //     },
+        //     tooltip: {
+        //         theme: 'dark',
+        //         y: {
+        //             formatter: function(val) {
+        //                 return val
+        //             }
+        //         },
+        //         marker: {
+        //             show: false,
+        //         },
+        //     }
+        // };
+
+        // var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
+        // chart.render();
 
         var options = {
             series: [{
                 name: 'Patients',
-                data: patientSignups.data
+                data: patientSignupsStates.data
             }, {
                 name: 'Medical Professionals',
-                data: medicalSignups.data
+                data: medicalSignupsStates.data
             }],
             chart: {
                 type: 'area',
@@ -308,7 +524,7 @@
             },
             colors: ['#ee3158', '#FFA800'],
             xaxis: {
-                categories: patientSignups.date,
+                categories: medicalSignupsStates.date,
 
             },
             legend: {
@@ -327,142 +543,157 @@
             }
         };
 
-        var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
+        var chart = new ApexCharts(document.querySelector("#recent_trend_states"), options);
         chart.render();
 
-        var options = {
-            series: [{
-                name: 'Revenue',
-                data: total_monthly_revenue.data
-            }],
-            chart: {
-                type: 'area',
-                stacked: false,
-                foreColor: "#bac0c7",
-                zoom: {
-                    type: 'x',
-                    enabled: true,
-                    autoScaleYaxis: true
+        updateChartWithTimeFrame1('daily');
+        var chart2;
+        function updateChartWithTimeFrame1(timeFrame) {
+            const filteredData = groupDataByTimeFrame(total_monthly_revenue, timeFrame);
+            if (chart2) {
+                chart2.destroy();
+            }
+            var options = {
+                series: [{
+                    name: 'Revenue',
+                    data: filteredData.data
+                }],
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
+                    }
                 },
-                height: 330,
-                toolbar: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
                     show: false,
-                }
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0,
-                    stops: [0, 95, 100]
                 },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            grid: {
-                show: false,
-            },
-            stroke: {
-                show: true,
-                width: 2,
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#00D0FF'],
+                },
                 colors: ['#00D0FF'],
-            },
-            colors: ['#00D0FF'],
-            xaxis: {
-                categories: total_monthly_revenue.date,
+                xaxis: {
+                    categories: filteredData.date,
 
-            },
-            legend: {
-                show: true,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: function(val) {
-                        return val
+                },
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+
+            chart2 = new ApexCharts(document.querySelector("#revenue_trend"), options);
+            chart2.render();
+        }
+
+        updateChartWithTimeFrame2('daily');
+        var chart3;
+        function updateChartWithTimeFrame2(timeFrame) {
+            const filteredData = groupDataByTimeFrame(appointmentData, timeFrame);
+            const filteredData1 = groupDataByTimeFrame(cancelAppointmentData, timeFrame);
+            if (chart3) {
+                chart3.destroy();
+            }
+            var options = {
+                series: [{
+                    name: 'Total',
+                    data: filteredData.data
+                }, {
+                    name: 'Cancelled',
+                    data: filteredData1.data
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 270,
+                    toolbar: {
+                        show: false
                     }
                 },
-                marker: {
+                colors: ['#2444e8', '#ee3158'],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '30%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                grid: {
                     show: false,
                 },
-            }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#revenue_trend"), options);
-        chart.render();
-
-
-        var options = {
-            series: [{
-                name: 'Total',
-                data: appointmentData.data
-            }, {
-                name: 'Cancelled',
-                data: cancelAppointmentData.data
-            }],
-            chart: {
-                type: 'bar',
-                height: 270,
-                toolbar: {
-                    show: false
-                }
-            },
-            colors: ['#2444e8', '#ee3158'],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '30%',
-                    endingShape: 'rounded'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            grid: {
-                show: false,
-            },
-            stroke: {
-                show: false,
-                width: 0,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: appointmentData.date,
-
-            },
-            yaxis: {
-                labels: {
-                    formatter: function(value) {
-                        return value.toFixed(0); // Format to show integers
-                    }
-                },
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
+                stroke: {
                     show: false,
+                    width: 0,
+                    colors: ['transparent']
                 },
+                xaxis: {
+                    categories: filteredData.date,
 
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: function(val) {
-                        return val + " Appointment"
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function(value) {
+                            return value.toFixed(0); // Format to show integers
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val + " Appointment"
+                        }
                     }
                 }
-            }
-        };
+            };
 
-        var chart = new ApexCharts(document.querySelector("#appointment_overview"), options);
-        chart.render();
-
+            chart3 = new ApexCharts(document.querySelector("#appointment_overview"), options);
+            chart3.render();
+        }
         var options = {
             series: [{
                 name: 'Total',
@@ -523,109 +754,110 @@
         var chart = new ApexCharts(document.querySelector("#age_group_overview"), options);
         chart.render();
 
-        var options = {
-            series: appointment_cat_series,
-            chart: {
-                type: 'area',
-                stacked: false,
-                foreColor: "#bac0c7",
-                zoom: {
-                    type: 'x',
-                    enabled: true,
-                    autoScaleYaxis: true
+            var options = {
+                series: appointment_cat_series,
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
+                    }
                 },
-                height: 330,
-                toolbar: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
                     show: false,
-                }
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0,
-                    stops: [0, 95, 100]
                 },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            grid: {
-                show: false,
-            },
-            stroke: {
-                show: true,
-                width: 2,
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#389F99', '#E8F9F9', '#689F38', '#EE1044', '#3D6EAE', '#FFA800', '#FF9D00'],
+                },
                 colors: ['#389F99', '#E8F9F9', '#689F38', '#EE1044', '#3D6EAE', '#FFA800', '#FF9D00'],
-            },
-            colors: ['#389F99', '#E8F9F9', '#689F38', '#EE1044', '#3D6EAE', '#FFA800', '#FF9D00'],
-            xaxis: {
-                categories: date_series_app_cat.data,
+                xaxis: {
+                    categories: date_series_app_cat.data,
 
-            },
-            legend: {
-                show: true,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: function(val) {
-                        return val
-                    }
                 },
-                marker: {
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
+            chart.render();
+
+
+            const labels = Object.keys(dailyPatientCountCat);
+            const series = Object.values(dailyPatientCountCat);
+            var options = {
+                series: series,
+                chart: {
+                    type: 'donut',
+                    width: 250,
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                colors: ['#3246D3', '#00D0FF', '#ee3158', '#ffa800', '#1dbfc1', '#e4e6ef'],
+                legend: {
                     show: false,
                 },
-            }
-        };
 
-        var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
-        chart.render();
-
-        const labels = Object.keys(dailyPatientCountCat);
-        const series = Object.values(dailyPatientCountCat);
-        var options = {
-            series: series,
-            chart: {
-                type: 'donut',
-                width: 250,
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            colors: ['#3246D3', '#00D0FF', '#ee3158', '#ffa800', '#1dbfc1', '#e4e6ef'],
-            legend: {
-                show: false,
-            },
-
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '75%',
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '75%',
+                        }
                     }
-                }
-            },
-            labels: labels,
-            responsive: [{
-                breakpoint: 1600,
-                options: {
-                    chart: {
-                        width: 250,
+                },
+                labels: labels,
+                responsive: [{
+                    breakpoint: 1600,
+                    options: {
+                        chart: {
+                            width: 250,
+                        }
                     }
-                }
-            }, {
-                breakpoint: 500,
-                options: {
-                    chart: {
-                        width: 200,
+                }, {
+                    breakpoint: 500,
+                    options: {
+                        chart: {
+                            width: 200,
+                        }
                     }
-                }
-            }]
-        };
+                }]
+            };
 
-        var chart = new ApexCharts(document.querySelector("#chart124"), options);
-        chart.render();
+            var chart = new ApexCharts(document.querySelector("#chart124"), options);
+            chart.render();
     </script>
 @endsection

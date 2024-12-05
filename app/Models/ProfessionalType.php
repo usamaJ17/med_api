@@ -9,7 +9,7 @@ class ProfessionalType extends Model
 {
     use HasFactory;
     protected $table = 'professsional_types';
-    protected $fillable = ['name', 'icon'];
+    protected $fillable = ['name', 'minimum_fee', 'icon'];
 
     public function professionals()
     {

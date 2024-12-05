@@ -54,7 +54,20 @@ class GraphFactory
         }else if($type == 'age'){
             return $this->getAgeData();
         } 
-        else {
+        elseif (in_array($type, ['patient_signups_states', 'medical_signups_states'])) {
+            $distinctStates = User::distinct()->pluck('state')->filter(); 
+            $stateData = [];
+    
+            // Loop through dates and aggregate statewise data
+            foreach ($distinctStates as $state) {
+                $data[] = $this->getDataByType($type, $state);
+                $formattedDates[] = $state;
+            } 
+            return [
+                'date' => $formattedDates,
+                'data' => $data,
+            ];
+        } else {
             for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
                 $formattedDates[] = $date->format('d M');
                 $data[] = $this->getDataByType($type, $date);
@@ -74,6 +87,10 @@ class GraphFactory
                 return $this->getPatientSignups($date);
             case 'medical_signups':
                 return $this->getMedicalSignups($date);
+            case 'patient_signups_states':
+                return $this->getPatientSignupsByState($date);
+            case 'medical_signups_states':
+                return $this->getMedicalSignupsByState($date);
             case 'revenue':
                 return $this->getDailyRevenue($date);
             case 'appointments':
@@ -100,7 +117,24 @@ class GraphFactory
             $q->where("name", "medical");
         })->whereDate('created_at', $date->toDateString())->count();
     }
-
+    protected function getPatientSignupsByState($state)
+    {
+        return User::whereHas("roles", function ($q) {
+                $q->where("name", "patient");
+            })
+            ->where('state', $state)
+            ->count(); // Returns an associative array with state as key and count as value
+    }
+    
+    protected function getMedicalSignupsByState($state)
+    {
+        return User::whereHas("roles", function ($q) {
+                $q->where("name", "medical");
+            })
+            ->where('state', $state)
+            ->count(); // Returns an associative array with state as key and count as value
+    }
+    
     protected function getDailyRevenue($date)
     {
         return TransactionHistory::whereDate('transaction_date', $date->toDateString())->sum('transaction_amount');
