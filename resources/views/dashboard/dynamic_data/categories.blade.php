@@ -39,7 +39,9 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Minimum Fee</th>
+                                        <th>Chat Fee</th>
+                                        <th>Audio Fee</th>
+                                        <th>Video Fee</th>
                                         @if(auth()->user()->hasRole('admin'))
                                         <th></th>
                                         @endif
@@ -49,14 +51,16 @@
                                     @foreach ($categories as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->minimum_fee }}</td>
+                                            <td>{{ $item->chat_fee }}</td>
+                                            <td>{{ $item->audio_fee }}</td>
+                                            <td>{{ $item->video_fee }}</td>
                                             @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                    <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{ $item->name }}', '{{ $item->minimum_fee }}')">Edit</a> 
+                                                    <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{ $item->name }}', '{{ $item->chat_fee }}', '{{ $item->audio_fee }}', '{{ $item->video_fee }}')">Edit</a> 
                                                     <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
                                                     </div>
                                                 </div>
@@ -90,8 +94,16 @@
                             <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name">
                         </div>
                         <div class="form-group">
-                            <label for="name">Minimun Fee</label>
-                            <input type="text" name="minimum_fee" class="form-control" id="minimum_fee" placeholder="Enter Minimun Fee">
+                            <label for="name">Chat Fee</label>
+                            <input type="text" name="chat_fee" class="form-control" id="chat_fee" placeholder="Enter Chat Fee">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Audio Fee</label>
+                            <input type="text" name="audio_fee" class="form-control" id="audio_fee" placeholder="Enter Audio Fee">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Video Fee</label>
+                            <input type="text" name="video_fee" class="form-control" id="video_fee" placeholder="Enter Video Fee">
                         </div>
                         <div class="form-group">
                             <label for="name">Icon</label>
@@ -124,8 +136,16 @@
                             <input type="text" class="form-control" id="editName" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Minimun Fee</label>
-                            <input type="text" name="minimum_fee" class="form-control" id="minimumFee" placeholder="Enter Minimun Fee">
+                            <label for="name">Chat Fee</label>
+                            <input type="text" name="chat_fee" class="form-control" id="chatFee" placeholder="Enter Chat Fee">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Audio Fee</label>
+                            <input type="text" name="audio_fee" class="form-control" id="audioFee" placeholder="Enter Audio Fee">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Video Fee</label>
+                            <input type="text" name="video_fee" class="form-control" id="videoFee" placeholder="Enter Video Fee">
                         </div>
                         <div class="form-group">
                             <label for="name">Icon</label>
@@ -143,11 +163,13 @@
     @endsection
     @section('script')
         <script>
-            function editRecord(id, name, minimum_fee) {
+            function editRecord(id, name, chat_fee, audio_fee, video_fee) {
                 
                         document.getElementById('editId').value = id;
                         document.getElementById('editName').value = name;
-                        document.getElementById('minimumFee').value = minimum_fee;
+                        document.getElementById('chatFee').value = chat_fee;
+                        document.getElementById('audioFee').value = audio_fee;
+                        document.getElementById('videoFee').value = video_fee;
 
                         // Show the modal
                         $('#editModal').modal('show');

@@ -64,7 +64,17 @@ class VitalSignsController extends Controller
         //
     }
     public function getNotes(Request $request){
-        $clinicalNote = ClinicalNotes::with('creator' , 'user', 'comments.addedBy')->where('user_id', $request->user_id)->get();
+        $clinicalNote = ClinicalNotes::with('creator' , 'user', 'comments.addedBy')->where('user_id', $request->user_id)->get();       
+
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Notes Fetched Successfully...',
+            'data'   => $clinicalNote,
+        ], 200);
+    }
+
+
+    public function saveNotes(Request $request){
 
         // $data = [
         //     'background' => public_path('pdfs/background.png'), // Path to your background image
@@ -86,18 +96,10 @@ class VitalSignsController extends Controller
        
         // $filePath = public_path('prescriptions/prescription_' . time() . '.pdf');
         // $pdf->save($filePath);
-        // return response()->json(['message' => 'PDF saved successfully!', 'file' => $filePath]);
+        // return response()->json(['message' => 'PDF saved successfully!', 'file' => $filePath, 'clinicalNote' => $clinicalNote]);
 
 
-        return response()->json([
-            'status' => 200,
-            'message'=> 'Notes Fetched Successfully...',
-            'data'   => $clinicalNote,
-        ], 200);
-    }
 
-
-    public function saveNotes(Request $request){
         $summary = $request->note;
         $summary = str_replace("'", '"', $summary);
         $summaryJson = json_decode($summary);

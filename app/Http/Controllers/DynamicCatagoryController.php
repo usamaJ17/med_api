@@ -143,7 +143,9 @@ class DynamicCatagoryController extends Controller
     public function storeCategory(Request $request){
         $request->validate([
             'name' => 'required|string',
-            'minimum_fee' => 'required|string',
+            'chat_fee' => 'required|string|max:20',
+            'audio_fee' => 'required|string|max:20',
+            'video_fee' => 'required|string|max:20',
         ]);
         // upload icon and save path in db
         if(null !== $request->file('icon')){
@@ -156,7 +158,9 @@ class DynamicCatagoryController extends Controller
     public function updateCategory(Request $request){
         $request->validate([
             'name' => 'required|string|max:255',
-            'minimum_fee' => 'required|string',
+            'chat_fee' => 'required|string|max:20',
+            'audio_fee' => 'required|string|max:20',
+            'video_fee' => 'required|string|max:20',
         ]);
         $category = ProfessionalType::findOrFail($request->id);
         if ($request->hasFile('icon')) {
@@ -171,7 +175,9 @@ class DynamicCatagoryController extends Controller
         }
        // Update the category details
         $category->name = $request->name;
-        $category->minimum_fee = $request->minimum_fee;
+        $category->chat_fee = $request->chat_fee;
+        $category->audio_fee = $request->audio_fee;
+        $category->video_fee = $request->video_fee;
 
         // Save the changes
         $category->save();
