@@ -8,6 +8,8 @@ use App\Models\DynamicFiled;
 use App\Models\NotesComment;
 use App\Models\SummaryDynamicField;
 use App\Models\VitalSigns;
+use App\Models\ProfessionalDetails;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -75,39 +77,55 @@ class VitalSignsController extends Controller
 
 
     public function saveNotes(Request $request){
-
-        // $data = [
-        //     'background' => public_path('pdfs/background.png'), // Path to your background image
-        //     'date' => date('d/m/Y'),
-        //     'patient' => [
-        //         'id' => '454645',
-        //         'name' => 'John Doe',
-        //         'address' => '123 Street, City',
-        //         'phone' => '0311-1234567',
-        //         'age' => '20 y',
-        //         'weight' => '80 kg',
-        //         'doctor' => 'Dr. Smith',
-        //         'license' => '324534534',
-        //         'approval' => 'Yes'
-        //     ]
-        // ];
-
-        // $pdf = Pdf::loadView('pdf.prescription', $data)->setPaper('legal', 'portrait');
-       
-        // $filePath = public_path('prescriptions/prescription_' . time() . '.pdf');
-        // $pdf->save($filePath);
-        // return response()->json(['message' => 'PDF saved successfully!', 'file' => $filePath, 'clinicalNote' => $clinicalNote]);
-
-
-
         $summary = $request->note;
         $summary = str_replace("'", '"', $summary);
         $summaryJson = json_decode($summary);
+        $professionDetail = User::with('professionalDetails')->where('id', auth()->user()->id)->first();
+        $patientDetail = User::with('medicalDetails')->where('id', $request->user_id)->first();
+
+        $pdfs_list = [];
+        foreach ($summaryJson as $key => $value) { 
+            $weight = isset($patientDetail['medical_details']['weight']) ? $patientDetail['medical_details']['weight'] . ' kg' : 'N/A';    
+            $registrationNumber = $professionDetail['professional_details']['regestraion_number'] ?? 'N/A';
+            if ($registrationNumber !== 'N/A') {
+                $maskedRegistrationNumber = '****' . substr($registrationNumber, -2);
+            } else {
+                $maskedRegistrationNumber = 'N/A';
+            }       
+            $data = [
+                'background' => public_path('pdfs/background.png'),
+                'date' => date('d/m/Y'),
+                'patient_id' => $patientDetail['id'] ?? 'N/A',
+                'patient_name' => $patientDetail['first_name'] . ' ' . $patientDetail['last_name'],
+                'patient_address' => $patientDetail['city'] . ', ' . $patientDetail['state'] . ', ' . $patientDetail['country'],
+                'patient_phone' => $patientDetail['contact'] ?? 'N/A',
+                'patient_age' => isset($patientDetail['dob']) ? date_diff(date_create($patientDetail['dob']), date_create('today'))->y . ' years' : 'N/A',
+                'patient_weight' => $weight,
+                'doctor_name' => $professionDetail['first_name'] . ' ' . $professionDetail['last_name'],
+                'doctor_license' => $maskedRegistrationNumber,
+                'doctor_signature' => $professionDetail['professional_details']['signature'] ?? 'N/A',
+                'note_key' => $key,
+                'note_value' => $value,
+            ];
+            $pdf = Pdf::loadView('pdf.prescription', $data)->setPaper('legal', 'portrait');        
+            $filePath = public_path('prescriptions/prescription_' . time() . '.pdf');
+            $pdf->save($filePath);
+            $pdfs_list[] =  $filePath;
+        }
+        return response()->json([
+            'status' => 200,
+            'message'=> 'Notes Created Successfully...',
+            'summaryJson' => $summaryJson,
+            'profession_detail' => $professionDetail,
+            'patient_detail' => $patientDetail,
+            'pdfs_list' => $pdfs_list,
+        ], 200);
+
         $request->merge([
             'created_by' => auth()->user()->id,
             'note' => json_encode($summaryJson)
         ]);
-        $clinicalNote = ClinicalNotes::create($request->all());
+        // $clinicalNote = ClinicalNotes::create($request->all());
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Created Successfully...',

@@ -12,7 +12,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: url("{{ public_path('pdfs/background2.png') }}") no-repeat center center;
+            background: url("{{ $background }}") no-repeat center center;
             background-size: contain;
             height: 14in;
             width: 8.5in;
@@ -30,14 +30,12 @@
         }
         .form-section {
             margin-top: 3in;
-            /* margin-left: 18px; */
             font-size: 14px;
             padding: 18px;
-			width:50%;
+            width: 50%;
         }
         .form-section-mid {
             margin-top: 15px;
-            /* margin-left: 20px; */
             font-size: 16px;
             padding: 18px;
         }
@@ -52,13 +50,16 @@
         <table class="form-section">
             <tr>
                 <td>
-                    <div class="input-line"><span style="margin-left:-2px">04</span><span style="margin-left:7px">12</span><span style="margin-left:10px">2024</span></div>
-                                
+                    <div class="input-line">
+                        <span style="margin-left:-2px">{{ date('d', strtotime($date)) }}</span>
+                        <span style="margin-left:7px">{{ date('m', strtotime($date)) }}</span>
+                        <span style="margin-left:10px">{{ date('Y', strtotime($date)) }}</span>
+                    </div>
                 </td>
             </tr>
             <tr>
                 <td style="padding-top: 8px;">
-                    <div class="input-line" style="margin-left: 12px;">454645</div>
+                    <div class="input-line" style="margin-left: 12px;">{{ $patient_id }}</div>
                 </td>
             </tr>
         </table>
@@ -70,23 +71,27 @@
                     <table>
                         <tr>
                             <td>
-                                <div class="input-line"><span style="margin-left:-2px">04</span><span style="margin-left:6px">12</span><span style="margin-left:10px">2024</span></div>
-                                <div class="input-line" style="margin-left: 100px;">123122</div>
+                                <div class="input-line">
+                                    <span style="margin-left:-2px">{{ date('d', strtotime($date)) }}</span>
+                                    <span style="margin-left:6px">{{ date('m', strtotime($date)) }}</span>
+                                    <span style="margin-left:10px">{{ date('Y', strtotime($date)) }}</span>
+                                </div>
+                                <div class="input-line" style="margin-left: 100px;">{{ $patient_id }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="1">
-                                <div class="input-line" style="margin-left: 80px; margin-top: 5px;">John Doe</div>
+                                <div class="input-line" style="margin-left: 80px; margin-top: 5px;">{{ $patient_name }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="1">
-                                <div class="input-line" style="margin-left: 100px; margin-top: 8px;">123 Street, City</div>
+                                <div class="input-line" style="margin-left: 100px; margin-top: 8px;">{{ $patient_address }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="1">
-                                <div class="input-line" style="margin-left: 128px; margin-top: 8px;">0311-1234567</div>
+                                <div class="input-line" style="margin-left: 128px; margin-top: 8px;">{{ $patient_phone }}</div>
                             </td>
                         </tr>
                     </table>
@@ -95,18 +100,26 @@
                     <table>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 38px; margin-top: -3px;">20 y</div>
+                                <div class="input-line" style="margin-left: 38px; margin-top: -3px;">{{ $patient_age }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left:65px; margin-top: 5px;">80 kg</div>
+                                <div class="input-line" style="margin-left:65px; margin-top: 5px;">{{ $patient_weight }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 77px; margin-top: 18px;"></div>
-                                <div class="input-line" style="margin-left: 45px; margin-top: 18px;"><img src="{{ public_path('pdfs/check.png') }}" alt="F" style="width: 12px; height: 12px;"></div>
+                                <div class="input-line" style="margin-left: 77px; margin-top: 18px;">
+                                    @if($patient_gender == 'Male')
+                                        <img src="{{ public_path('pdfs/check.png') }}" alt="M" style="width: 12px; height: 12px;">
+                                    @endif
+                                </div>
+                                <div class="input-line" style="margin-left: 45px; margin-top: 18px;">
+                                    @if($patient_gender == 'Female')
+                                        <img src="{{ public_path('pdfs/check.png') }}" alt="F" style="width: 12px; height: 12px;">
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -116,7 +129,7 @@
 
         <table class="form-section-mid" style="height:4.4in;margin-top: 0.8in;">
             <tr>
-				<td style="width:60%"><div style="margin-left: -30px;">fsdfd</div></td>
+				<td style="width:60%"><div style="margin-left: -30px;">{{ $note_value }}</div></td>
 				<td></td>
             </tr>
         </table>
@@ -128,17 +141,17 @@
                     <table>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: -30px;margin-top: 5px;">Yes</div>
+                                <div class="input-line" style="margin-left: -30px; margin-top: 8px;">{{ $doctor_name }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 130px; margin-top: 8px;">Dr. Smith</div>
+                                <div class="input-line" style="margin-left: 130px;margin-top: 5px;">{{ $doctor_signature }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 25px; margin-top: 5px;">324534534</div>
+                                <div class="input-line" style="margin-left: 25px; margin-top: 5px;">{{ $doctor_license }}</div>
                             </td>
                         </tr>
                     </table>
