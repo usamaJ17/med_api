@@ -11,6 +11,7 @@ class ClinicalNotes extends Model
     protected $fillable = [
         'created_by',
         'note',
+        'pdfs_list',
         'title',
         'user_id'
     ];

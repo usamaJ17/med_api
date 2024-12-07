@@ -82,8 +82,7 @@ class VitalSignsController extends Controller
         $summaryJson = json_decode($summary);
         $professionDetail = User::with('professionalDetails')->where('id', auth()->user()->id)->first();
         $patientDetail = User::with('medicalDetails')->where('id', $request->user_id)->first();
-
-        $pdfs_list = [];
+        $pdfs_list = array();
         foreach ($summaryJson as $key => $value) { 
             $weight = isset($patientDetail['medical_details']['weight']) ? $patientDetail['medical_details']['weight'] . ' kg' : 'N/A';    
             $registrationNumber = $professionDetail['professional_details']['regestraion_number'] ?? 'N/A';
@@ -92,8 +91,15 @@ class VitalSignsController extends Controller
             } else {
                 $maskedRegistrationNumber = 'N/A';
             }       
+            
+            if ($key === 'Prescription' || $key === 'prescription') {
+                $background = public_path('pdfs/background.png');
+            }
+            else{
+                $background = public_path('pdfs/background2.png');
+            }
             $data = [
-                'background' => public_path('pdfs/background.png'),
+                'background' => $background,
                 'date' => date('d/m/Y'),
                 'patient_id' => $patientDetail['id'] ?? 'N/A',
                 'patient_name' => $patientDetail['first_name'] . ' ' . $patientDetail['last_name'],
@@ -101,31 +107,35 @@ class VitalSignsController extends Controller
                 'patient_phone' => $patientDetail['contact'] ?? 'N/A',
                 'patient_age' => isset($patientDetail['dob']) ? date_diff(date_create($patientDetail['dob']), date_create('today'))->y . ' years' : 'N/A',
                 'patient_weight' => $weight,
+                'patient_gender' => $patientDetail['gender'] ?? 'N/A',
                 'doctor_name' => $professionDetail['first_name'] . ' ' . $professionDetail['last_name'],
                 'doctor_license' => $maskedRegistrationNumber,
                 'doctor_signature' => $professionDetail['professional_details']['signature'] ?? 'N/A',
                 'note_key' => $key,
                 'note_value' => $value,
             ];
-            $pdf = Pdf::loadView('pdf.prescription', $data)->setPaper('legal', 'portrait');        
-            $filePath = public_path('prescriptions/prescription_' . time() . '.pdf');
+            if ($key === 'Prescription' || $key === 'prescription') {
+                $prefix = 'prescription_';
+                $pdf = Pdf::loadView('pdf.prescription', $data)->setPaper('legal', 'portrait');
+            } else {
+                $prefix = 'none_prescription_';
+                $pdf = Pdf::loadView('pdf.consultation_summary', $data)->setPaper('legal', 'portrait');
+            }
+            $file_name = 'prescriptions/'. $prefix . time() . '.pdf';
+            if (!is_dir(public_path('prescriptions'))) {
+                mkdir(public_path('prescriptions'), 0777, true);
+            }
+            $filePath = public_path($file_name);
             $pdf->save($filePath);
-            $pdfs_list[] =  $filePath;
+            $pdfs_list[$value] =  $file_name;
         }
-        return response()->json([
-            'status' => 200,
-            'message'=> 'Notes Created Successfully...',
-            'summaryJson' => $summaryJson,
-            'profession_detail' => $professionDetail,
-            'patient_detail' => $patientDetail,
-            'pdfs_list' => $pdfs_list,
-        ], 200);
 
         $request->merge([
             'created_by' => auth()->user()->id,
-            'note' => json_encode($summaryJson)
+            'note' => json_encode($summaryJson),
+            'pdfs_list' => json_encode($pdfs_list)
         ]);
-        // $clinicalNote = ClinicalNotes::create($request->all());
+        $clinicalNote = ClinicalNotes::create($request->all());
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Created Successfully...',

@@ -283,6 +283,7 @@ return [
         'isRemoteEnabled' => true,
         'isHtml5ParserEnabled' => true,
         'isFontSubsettingEnabled' => true,
+        'isPhpEnabled' => true,
         'allowed_remote_hosts' => null,
         'defaultFont' => 'NotoSans',
 

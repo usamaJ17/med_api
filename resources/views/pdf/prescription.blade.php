@@ -16,8 +16,9 @@
             background-size: contain;
             height: 14in;
             width: 8.5in;
-            font-size: 16px;
+            font-size: 14px;
             -webkit-print-color-adjust: exact; 
+            font-family: "Gill Sans", sans-serif;
         }
         .content {
             padding: 0.7in;
@@ -28,15 +29,21 @@
             width: 100%;
             border-collapse: collapse;
         }
+        .form-section-top {
+            margin-top: 1.6in;
+            font-size: 14px;
+            padding: 18px;
+            width: 100%;
+        }
         .form-section {
-            margin-top: 3in;
+            margin-top: 0.19in;
             font-size: 14px;
             padding: 18px;
             width: 50%;
         }
         .form-section-mid {
             margin-top: 15px;
-            font-size: 16px;
+            font-size: 14px;
             padding: 18px;
         }
         .input-line {
@@ -47,18 +54,27 @@
 <body>
     <div class="content">
         <!-- Form Section -->
+        <table class="form-section-top">
+            <tr>
+                <td width="60%"></td>
+                <td>
+                    <h2 style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; text-align: center;">{{$note_key}}</h2>
+                </td>
+
+            </tr>
+        </table>
         <table class="form-section">
             <tr>
                 <td>
                     <div class="input-line">
-                        <span style="margin-left:-2px">{{ date('d', strtotime($date)) }}</span>
-                        <span style="margin-left:7px">{{ date('m', strtotime($date)) }}</span>
-                        <span style="margin-left:10px">{{ date('Y', strtotime($date)) }}</span>
+                        <span style="margin-left:-4px">{{ date('d', strtotime($date)) }}</span>
+                        <span style="margin-left:5px">{{ date('m', strtotime($date)) }}</span>
+                        <span style="margin-left:8px">{{ date('Y', strtotime($date)) }}</span>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td style="padding-top: 8px;">
+                <td style="padding-top: 6px;">
                     <div class="input-line" style="margin-left: 12px;">{{ $patient_id }}</div>
                 </td>
             </tr>
@@ -67,14 +83,14 @@
         <!-- Middle Section -->
         <table class="form-section-mid">
             <tr>
-                <td style="width: 70%; vertical-align: top; padding-right: 20px;">
+                <td style="width: 70%; vertical-align: top; padding-right: 22px;">
                     <table>
                         <tr>
                             <td>
                                 <div class="input-line">
                                     <span style="margin-left:-2px">{{ date('d', strtotime($date)) }}</span>
                                     <span style="margin-left:6px">{{ date('m', strtotime($date)) }}</span>
-                                    <span style="margin-left:10px">{{ date('Y', strtotime($date)) }}</span>
+                                    <span style="margin-left:8px">{{ date('Y', strtotime($date)) }}</span>
                                 </div>
                                 <div class="input-line" style="margin-left: 100px;">{{ $patient_id }}</div>
                             </td>
@@ -110,12 +126,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 77px; margin-top: 18px;">
+                                <div class="input-line" style="margin-left: 77px; margin-top: 21px;">
                                     @if($patient_gender == 'Male')
                                         <img src="{{ public_path('pdfs/check.png') }}" alt="M" style="width: 12px; height: 12px;">
                                     @endif
                                 </div>
-                                <div class="input-line" style="margin-left: 45px; margin-top: 18px;">
+                                <div class="input-line" style="margin-left: 45px; margin-top: 21px;">
                                     @if($patient_gender == 'Female')
                                         <img src="{{ public_path('pdfs/check.png') }}" alt="F" style="width: 12px; height: 12px;">
                                     @endif
@@ -129,7 +145,7 @@
 
         <table class="form-section-mid" style="height:4.4in;margin-top: 0.8in;">
             <tr>
-				<td style="width:60%"><div style="margin-left: -30px;">{{ $note_value }}</div></td>
+				<td style="width:60%"><div style="margin-left: -30px;">{ !! $note_value !! }</div></td>
 				<td></td>
             </tr>
         </table>
@@ -146,12 +162,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 130px;margin-top: 5px;">{{ $doctor_signature }}</div>
+                                <div class="input-line" style="margin-left: 130px;margin-top: 8px;">{{ $doctor_signature }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 25px; margin-top: 5px;">{{ $doctor_license }}</div>
+                                <div class="input-line" style="margin-left: 25px; margin-top: 8px;">{{ $doctor_license }}</div>
                             </td>
                         </tr>
                     </table>
