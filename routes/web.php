@@ -18,6 +18,7 @@ use App\Http\Controllers\UserController;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserWalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,5 +111,15 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
 
     Route::get('appointments', [AppointmentController::class,'listAll'])->name('appointments.index');
     Route::get('feedback', [DashboardController::class,'userFeedback'])->name('dashboard.user-feedback');
+    
+    Route::get('wallets', [UserWalletController::class, 'index'])->name('wallets.index');
+    Route::get('wallets/create', [UserWalletController::class, 'create'])->name('wallets.create');
+    Route::post('wallets', [UserWalletController::class, 'store'])->name('wallets.store');
+    Route::get('wallets/{wallet}', [UserWalletController::class, 'show'])->name('wallets.show');
+    Route::get('wallets/{wallet}/edit', [UserWalletController::class, 'edit'])->name('wallets.edit');
+    Route::put('wallets/{wallet}', [UserWalletController::class, 'update'])->name('wallets.update');
+    Route::delete('wallets/{wallet}', [UserWalletController::class, 'destroy'])->name('wallets.destroy');
+    Route::post('wallets/add-balance', [UserWalletController::class, 'addBalance'])->name('patient.addBalance');
+
 
 });

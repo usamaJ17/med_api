@@ -17,7 +17,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = User::whereHas("roles", function($q){ $q->where("name", "patient"); })->get();
+        $patients = User::whereHas("roles", function($q){ $q->where("name", "patient"); })->with('wallet')->get();
         return view('dashboard.patients.index', compact('patients'));
     }
 

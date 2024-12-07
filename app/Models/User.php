@@ -274,4 +274,8 @@ class User extends Authenticatable implements HasMedia
             ->using(ReminderUser::class)
             ->withTimestamps();
     }
+    public function wallet()
+    {
+        return $this->hasOne(UserWallet::class);
+    }
 }

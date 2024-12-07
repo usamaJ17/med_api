@@ -145,7 +145,7 @@
 
         <table class="form-section-mid" style="height:4.6in;margin-top: 0.6in;">
             <tr>
-				<td style="width:60%"><div style="margin-left: -30px;">{ !! $note_value !! }</div></td>
+				<td style="width:100%"><div style="margin-left: -30px;">{!! $note_value !!}</div></td>
 				<td></td>
             </tr>
         </table>
@@ -162,12 +162,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 130px;margin-top: 8px;">{{ $doctor_signature }}</div>
+                                <div class="input-line" style="margin-left: 130px;margin-top: 8px;">                                      
+                                    @if($doctor_signature != 'N/A')
+                                        <img src="{{ $doctor_signature }}" alt="" style="width: 80px; height: 30px;">
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <div class="input-line" style="margin-left: 25px; margin-top: 8px;">{{ $doctor_license }}</div>
+                            <td>                           
+                                <div class="input-line" style="margin-left: 25px; margin-top: 4px;">  
+                                    {{ $doctor_license }}
+                                </div> 
                             </td>
                         </tr>
                     </table>

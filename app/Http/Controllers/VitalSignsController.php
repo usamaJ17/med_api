@@ -80,12 +80,18 @@ class VitalSignsController extends Controller
         $summary = $request->note;
         $summary = str_replace("'", '"', $summary);
         $summaryJson = json_decode($summary);
-        $professionDetail = User::with('professionalDetails')->where('id', auth()->user()->id)->first();
+        $professionDetail = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails')->where('id', auth()->user()->id)->first();
+        //print_r($professionDetail);
         $patientDetail = User::with('medicalDetails')->where('id', $request->user_id)->first();
+        //  return response()->json([
+        //         'status' => 200,
+        //         'professionDetail'=> $patientDetail,
+        //     ], 200);
         $pdfs_list = array();
         foreach ($summaryJson as $key => $value) { 
-            $weight = isset($patientDetail['medical_details']['weight']) ? $patientDetail['medical_details']['weight'] . ' kg' : 'N/A';    
-            $registrationNumber = $professionDetail['professional_details']['regestraion_number'] ?? 'N/A';
+            $weight = isset($patientDetail->medicalDetails->weight) ? $patientDetail->medicalDetails->weight . ' kg' : 'N/A';    
+            $registrationNumber = $professionDetail->professionalDetails->regestraion_number ?? 'N/A';
+           
             if ($registrationNumber !== 'N/A') {
                 $maskedRegistrationNumber = '****' . substr($registrationNumber, -2);
             } else {
@@ -107,10 +113,10 @@ class VitalSignsController extends Controller
                 'patient_phone' => $patientDetail['contact'] ?? 'N/A',
                 'patient_age' => isset($patientDetail['dob']) ? date_diff(date_create($patientDetail['dob']), date_create('today'))->y . ' years' : 'N/A',
                 'patient_weight' => $weight,
-                'patient_gender' => $patientDetail['gender'] ?? 'N/A',
+                'patient_gender' => $patientDetail['gender'] ?? '',
                 'doctor_name' => $professionDetail['first_name'] . ' ' . $professionDetail['last_name'],
                 'doctor_license' => $maskedRegistrationNumber,
-                'doctor_signature' => $professionDetail['professional_details']['signature'] ?? 'N/A',
+                'doctor_signature' => $professionDetail->professionalDetails->signature ?? 'N/A',
                 'note_key' => $key,
                 'note_value' => $value,
             ];
