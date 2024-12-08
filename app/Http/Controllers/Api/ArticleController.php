@@ -58,10 +58,13 @@ class ArticleController extends Controller
             'message' => 'Article fetched successfully',
             'data' => ['article' => $article],
         ];
-        if (! $request->ajax()) {
-            return view('dashboard.article.show', compact('article'));
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json($data, 200);
         }
-        return response()->json($data, 200);
+        // if (! $request->ajax()) {
+        //     return view('dashboard.article.show', compact('article'));
+        // }
+        return view('dashboard.article.show', compact('article'));
     }
 
     public function store(Request $request)
