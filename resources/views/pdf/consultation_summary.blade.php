@@ -164,7 +164,7 @@
                             <td>
                                 <div class="input-line" style="margin-left: 130px;margin-top: 8px;">                                      
                                     @if($doctor_signature != 'N/A')
-                                        <img src="{{ $doctor_signature }}" alt="" style="width: 80px; height: 30px;">
+                                        <img src="{{ $doctor_signature }}" alt="" style="width: 80px; height: 30px;background: transparent;">
                                     @endif
                                 </div>
                             </td>

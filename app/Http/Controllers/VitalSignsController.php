@@ -85,7 +85,7 @@ class VitalSignsController extends Controller
         $patientDetail = User::with('medicalDetails')->where('id', $request->user_id)->first();
         //  return response()->json([
         //         'status' => 200,
-        //         'professionDetail'=> $patientDetail,
+        //         'professionDetail'=> $professionDetail,
         //     ], 200);
         $pdfs_list = array();
         foreach ($summaryJson as $key => $value) { 
