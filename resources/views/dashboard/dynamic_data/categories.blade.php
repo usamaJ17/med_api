@@ -87,7 +87,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dynamic.category.store') }}" method="POST">
+                    <form action="{{ route('dynamic.category.store') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -127,7 +127,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="editForm" action="{{ route('dynamic.category.update') }}"  method="POST">
+                <form id="editForm" action="{{ route('dynamic.category.update') }}"  method="POST"  enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="id" id="editId">
