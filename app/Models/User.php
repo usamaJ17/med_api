@@ -92,7 +92,9 @@ class User extends Authenticatable implements HasMedia
     }
     public function getProfileImageAttribute()
     {
-        return $this->getFirstMediaUrl();
+        // return $this->getFirstMediaUrl();
+        $profileImageUrl = $this->getFirstMediaUrl();
+        return $profileImageUrl ?: asset('default-avatar.png');
     }
     /**
      * Get the prepared user data.
