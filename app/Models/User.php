@@ -171,7 +171,8 @@ class User extends Authenticatable implements HasMedia
     // hide temp_role attribute
     public function MedReviews()
     {
-        return Review::where('med_id', $this->id)->get();
+        // return Review::where('med_id', $this->id)->get();
+        return $this->hasMany(Review::class, 'med_id'); 
     }
     public function userReviews()
     {

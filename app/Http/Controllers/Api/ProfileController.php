@@ -134,32 +134,80 @@ class ProfileController extends Controller
     }
     public function getMedicalProfessionals(Request $request)
     {
-        $query = User::with('professionalDetails')->role('medical');
+        $query = User::with(['professionalDetails', 'MedReviews'])->role('medical');
+        
         $query->where('is_verified', true);
-        // Apply filters if provided
+    
+        // Filter by professional ID
         if ($request->has('professional_id') && $request->professional_id != "") {
             $query->where('id', $request->professional_id);
         }
+    
+        // Filter by professional type ID
         if ($request->has('professional_type_id') && $request->professional_type_id != "") {
             $query->where('professional_type_id', $request->professional_type_id);
         }
+    
+        // Filter by search (first name or last name)
         if ($request->has('search') && $request->search != "") {
             $query->where(function ($q) use ($request) {
                 $q->where('first_name', 'like', '%' . $request->search . '%')
                     ->orWhere('last_name', 'like', '%' . $request->search . '%');
             });
         }
-
+    
+        // Filter by date
+        if ($request->has('date') && $request->date != "") {
+            $query->whereDate('created_at', $request->date);
+        }
+    
+        // Filter by time (example: availability at a specific time)
+        if ($request->has('time') && $request->time != "") {
+            $query->whereTime('created_at', $request->time);
+        }
+    
+        // Filter by location
+        if ($request->has('location') && $request->location != "") {
+            $query->where(function ($q) use ($request) {
+                $q->where('country', 'like', '%' . $request->location . '%')
+                    ->orWhere('state', 'like', '%' . $request->location . '%')
+                    ->orWhere('city', 'like', '%' . $request->location . '%');
+            });
+        }
+    
+        if ($request->has('rating') && $request->rating != "") {
+            $query->whereHas('MedReviews', function ($q) use ($request) {
+                $q->where('rating', '>=', $request->rating);
+            });
+        }
+    
+        // Filter by language
+        if ($request->has('language') && $request->language != "") {
+            $query->where('language', 'like', '%' . $request->language . '%');
+        }
+    
+        // Filter by online health professional (e.g., is_live field)
+        if ($request->has('online') && $request->online != "") {
+            $query->where('is_live', $request->online);
+        }
+    
+        // Filter by category ID
+        if ($request->has('category_id') && $request->category_id != "") {
+            $query->whereHas('professionalType', function ($q) use ($request) {
+                $q->where('id', $request->category_id);
+            });
+        }
+    
         // Get the filtered results
         $professionals = $query->get();
-
-
+    
         return response()->json([
             'status' => 200,
             'message' => 'Details Fetched Successfully...',
             'data' => $professionals,
         ], 200);
     }
+    
     public function getMedicalProfessionalsMetaData(Request $request)
     {
         $user = User::find($request->id);
