@@ -58,7 +58,35 @@ class DynamicCatagoryController extends Controller
         }
         return redirect()->back()->with('success', 'Title added successfully');
     }
-
+    public function updateTitle(Request $request)
+    {
+        $request->validate([
+            'oldName' => 'required|string',
+            'name' => 'required|string',
+        ]);
+    
+        $titles = DynamicFiled::where('name', 'professional_title')->first();
+    
+        if ($titles) {
+            $title_array = json_decode($titles->data, true);
+            
+            // Find the index of the old name
+            $key = array_search($request->oldName, $title_array);
+    
+            if ($key !== false) {
+                // Update the name in the array
+                $title_array[$key] = $request->name;
+                $titles->data = json_encode(array_values($title_array));
+                $titles->save();
+    
+                return redirect()->back()->with('success', 'Title updated successfully!');
+            } else {
+                return redirect()->back()->with('error', 'Old title not found!');
+            }
+        }
+        return redirect()->back()->with('error', 'No title not found!');
+    }
+    
 
 
 
@@ -105,6 +133,34 @@ class DynamicCatagoryController extends Controller
         }
         return redirect()->back()->with('success', 'Title added successfully');
     }
+    public function updateProfessionalDocs(Request $request)
+{
+    $request->validate([
+        'oldTitle' => 'required|string',
+        'newTitle' => 'required|string',
+    ]);
+
+    $titles = DynamicFiled::where('name', 'professional_docs')->first();
+
+    if ($titles) {
+        $tit_array = json_decode($titles->data, true); // Decode to associative array
+        
+        // Find and replace the old title
+        $key = array_search($request->oldTitle, $tit_array);
+        if ($key !== false) {
+            $tit_array[$key] = $request->newTitle;
+            $titles->data = json_encode(array_values($tit_array));
+            $titles->save();
+
+            return redirect()->back()->with('success', 'Title updated successfully');
+        } else {
+            return redirect()->back()->with('error', 'Old title not found');
+        }
+    }
+
+    return redirect()->back()->with('error', 'No professional documents found');
+}
+
     public function rank()
     {
         $ranks = Ranks::all();
@@ -125,7 +181,25 @@ class DynamicCatagoryController extends Controller
         Ranks::create($request->all());
         return redirect()->back()->with('success', 'rank added successfully');
     }
-
+    public function updateRank(Request $request)
+    {
+        $request->validate([
+            'editId' => 'required|integer|exists:ranks,id',
+            'name' => 'required|string|max:255',
+        ]);
+    
+        $rank = Ranks::find($request->editId);
+    
+        if ($rank) {
+            $rank->name = $request->name;
+            $rank->save();
+    
+            return redirect()->back()->with('success', 'Rank updated successfully');
+        }
+    
+        return redirect()->back()->with('error', 'Rank not found');
+    }
+    
 
     public function category()
     {

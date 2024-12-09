@@ -54,7 +54,8 @@
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
+                                                    <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{$item->name}}')">Edit</a> 
+                                                    <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
                                                     </div>
                                                 </div>
                                             </td>
@@ -93,10 +94,42 @@
             </form>
             </div>
         </div>
+    </div>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editForm" action="{{ route('dynamic.rank.update') }}"  method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="editId" id="editId">
+                        <div class="form-group">
+                            <label for="editName" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
         <!-- /.content -->
     @endsection
     @section('script')
         <script>
+            function editRecord(id, name) {
+                document.getElementById('editId').value = id;
+                document.getElementById('editName').value = name;
+                $('#editModal').modal('show')
+            }
             $(function() {
                 'use strict';
                 $('#example1').DataTable({

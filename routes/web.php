@@ -69,14 +69,17 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('dynamic/title', [DynamicCatagoryController::class,'title'])->name('dynamic.title');
     Route::delete('dynamic/title/delete/{name}', [DynamicCatagoryController::class,'deleteTitle'])->name('dynamic.title.delete');
     Route::post('dynamic/title/store', [DynamicCatagoryController::class,'storeTitle'])->name('dynamic.title.store');
+    Route::post('dynamic/title/update', [DynamicCatagoryController::class, 'updateTitle'])->name('dynamic.title.update');
 
     Route::get('dynamic/professional_docs', [DynamicCatagoryController::class,'professionalDocs'])->name('dynamic.professional_docs');
     Route::delete('dynamic/professional_docs/delete/{name}', [DynamicCatagoryController::class,'deleteProfessionalDocs'])->name('dynamic.professional_docs.delete');
     Route::post('dynamic/professional_docs/store', [DynamicCatagoryController::class,'storeProfessionalDocs'])->name('dynamic.professional_docs.store');
+    Route::post('dynamic/professional_docs/update', [DynamicCatagoryController::class, 'updateProfessionalDocs'])->name('dynamic.professional_docs.update');
 
     Route::get('dynamic/rank', [DynamicCatagoryController::class,'rank'])->name('dynamic.rank');
     Route::delete('dynamic/rank/delete/{name}', [DynamicCatagoryController::class,'deleterank'])->name('dynamic.rank.delete');
     Route::post('dynamic/rank/store', [DynamicCatagoryController::class,'storerank'])->name('dynamic.rank.store');
+    Route::post('dynamic/rank/update', [DynamicCatagoryController::class, 'updateRank'])->name('dynamic.rank.update');
 
     Route::get('dynamic/category', [DynamicCatagoryController::class,'category'])->name('dynamic.category');
     Route::delete('dynamic/category/delete/{id}', [DynamicCatagoryController::class,'deleteCategory'])->name('dynamic.category.delete');
