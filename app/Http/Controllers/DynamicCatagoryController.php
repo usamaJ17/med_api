@@ -353,6 +353,7 @@ class DynamicCatagoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'is_required' => 'required|string',
+            'type' => 'required|string',
         ]);     
         $pro = ConsultationSummaryField::create($request->all());
         return redirect()->back()->with('success', 'Clinical Notes added successfully');
@@ -361,11 +362,13 @@ class DynamicCatagoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'is_required' => 'required|string',
+            'type' => 'required|string',
         ]);
         $summary = ConsultationSummaryField::findOrFail($request->id);
         $summary->update([
             'name' => $request->name,
             'is_required' => $request->is_required,
+            'type' => $request->type,
         ]);
 
         return redirect()->back()->with('success', 'Consultation Summary updated successfully');

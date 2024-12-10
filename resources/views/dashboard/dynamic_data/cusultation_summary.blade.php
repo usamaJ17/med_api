@@ -40,6 +40,7 @@ Cusultation Summary
                                     <tr>
                                         <th>Title</th>
                                         <th>Required</th>
+                                        <th>Type</th>
                                         @if(auth()->user()->hasRole('admin'))
                                         <th></th>
                                         @endif
@@ -50,13 +51,14 @@ Cusultation Summary
                                         <tr class="hover-primary">
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->is_required }}</td>
+                                            <td>{{ $item->type }}</td>
                                             @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{ $item->name }}', '{{ $item->is_required }}')">Edit</a> 
+                                                        <a class="dropdown-item" onclick="editRecord({{ $item->id }}, '{{ $item->name }}', '{{ $item->is_required }}', '{{ $item->type }}')">Edit</a> 
                                                         <a class="dropdown-item" onclick="DeleteRecord({{ $item->id }})">Delete</a> 
                                                     </div>
                                                 </div>
@@ -97,6 +99,14 @@ Cusultation Summary
                             <option value="No">No</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="name">Type</label>
+                            <select type="text" name="type" class="form-control" id="type">
+                            <option value="">Select Option</option>
+                            <option value="Prescription">Prescription</option>
+                            <option value="Non-Prescription">Non-Prescription</option>
+                            </select>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -130,6 +140,14 @@ Cusultation Summary
                                 <option value="No">No</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="name">Type</label>
+                            <select type="text" name="type" class="form-control" id="editType">
+                            <option value="">Select Option</option>
+                            <option value="Prescription">Prescription</option>
+                            <option value="Non-Prescription">Non-Prescription</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -142,10 +160,11 @@ Cusultation Summary
     @endsection
     @section('script')
         <script>
-            function editRecord(id, name, is_required) {
+            function editRecord(id, name, is_required, type) {
                         document.getElementById('editId').value = id;
                         document.getElementById('editName').value = name;
                         document.getElementById('editIsRequired').value = is_required;
+                        document.getElementById('editType').value = type;
 
                         // Show the modal
                         $('#editModal').modal('show');
@@ -173,7 +192,7 @@ Cusultation Summary
 
             function DeleteRecord(id) {
                 $.ajax({
-                    url : "{{ url('portal/dynamic/clinical_notes/delete') }}"+"/"+id,
+                    url : "{{ url('portal/dynamic/cusultation_summary/delete') }}"+"/"+id,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"

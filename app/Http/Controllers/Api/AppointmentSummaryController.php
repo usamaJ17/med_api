@@ -45,18 +45,25 @@ class AppointmentSummaryController extends Controller
         } else {
             $user_fields = [];
         }
-        $required = DynamicFiled::where('name', 'summary_required')->first();
-        $optional = DynamicFiled::where('name', 'summary_optional')->first();
-        if ($required) {
-            $required_fields = json_decode($required->data);
-        } else {
-            $required_fields = [];
-        }
-        if ($optional) {
-            $optional_fields = json_decode($optional->data);
-        } else {
-            $optional_fields = [];
-        }
+        // $required = DynamicFiled::where('name', 'summary_required')->first();
+        // $optional = DynamicFiled::where('name', 'summary_optional')->first();
+        // if ($required) {
+        //     $required_fields = json_decode($required->data);
+        // } else {
+        //     $required_fields = [];
+        // }
+        // if ($optional) {
+        //     $optional_fields = json_decode($optional->data);
+        // } else {
+        //     $optional_fields = [];
+        // }
+        $required_fields = ConsultationSummaryField::where('is_required', 'Yes')
+            ->get(['name', 'type'])
+            ->toArray();
+
+        $optional_fields = ConsultationSummaryField::where('is_required', 'No')
+            ->get(['name', 'type'])
+            ->toArray();
         $fieldsData = [
             'required' => $required_fields,
             'optional' => $optional_fields,
