@@ -109,6 +109,25 @@ class HelperController extends Controller
             return response()->json($data, 200);
         }
     }
+    public function getProfessionalDocs()
+    {
+        $titles = DynamicFiled::where('name', 'professional_docs')->first();
+        if ($titles) {
+            $title_array = json_decode($titles->data);
+            $data = [
+                'status' => 200,
+                'message' => 'Professional Docs fetched successfully',
+                'data' => $title_array,
+            ];
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'status' => 200,
+                'message' => 'No Professional Doc found',
+            ];
+            return response()->json($data, 200);
+        }
+    }
     public function saveProfessionalTitles(Request $request)
     {
         $titles = DynamicFiled::where('name', 'professional_title')->first();
