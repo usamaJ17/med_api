@@ -51,6 +51,25 @@ class AppointmentController extends Controller
             return response()->json(["error" => $ex->getMessage()], 500);
         }
     }
+    public function getConsultationFee(Request $request){
+        $consultationFee = ConsultationFee::where('user_id', $request->user_id)->get();
+        if ($consultationFee) {
+            $data = [
+                'status' => 200,
+                'message' => 'Consultation fee fetched successfully',
+                'data' => $consultationFee,
+            ];
+        } else {
+            $data = [
+                'status' => 404,
+                'message' => 'No consultation fee found for the specified user',
+                'data' => null,
+            ];
+        }
+
+        return response()->json($data, $data['status']);
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
