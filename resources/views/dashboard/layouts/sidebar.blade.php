@@ -103,7 +103,7 @@
                                             class="path2"></span></i>Clinical Notes</a></li>
                             <li class="@yield('dynamic.consultation_summary')"><a href="{{ route('dynamic.consultation_summary') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
-                                            class="path2"></span></i>Cusultation Summary</a></li>
+                                            class="path2"></span></i>Consultation Summary</a></li>
                         </ul>
                     </li>
                     <li class="treeview @yield('payments')">
