@@ -101,7 +101,7 @@
                             <li class="@yield('dynamic.clinical_notes')"><a href="{{ route('dynamic.clinical_notes') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Clinical Notes</a></li>
-                            <li class="@yield('dynamic.cusultation_summary')"><a href="{{ route('dynamic.cusultation_summary') }}"><i
+                            <li class="@yield('dynamic.consultation_summary')"><a href="{{ route('dynamic.consultation_summary') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Cusultation Summary</a></li>
                         </ul>

@@ -334,12 +334,12 @@ class DynamicCatagoryController extends Controller
 
 
     
-    public function cusultation_summary()
+    public function consultation_summary()
     {
         
 
-        $cusultation_summary = ConsultationSummaryField::all();
-        return view('dashboard.dynamic_data.cusultation_summary', compact('cusultation_summary'));
+        $consultation_summary = ConsultationSummaryField::all();
+        return view('dashboard.dynamic_data.consultation_summary', compact('consultation_summary'));
     }
     public function deleteCusultationSummary($id)
     {

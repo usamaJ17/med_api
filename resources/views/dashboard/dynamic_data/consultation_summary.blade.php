@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.app')
 
 @section('title')
-Cusultation Summary
+Consultation Summary
 @endsection
 @section('dynamic')
     active
 @endsection
-@section('dynamic.cusultation_summary')
+@section('dynamic.consultation_summary')
     active
 @endsection
 @section('content')
@@ -14,12 +14,12 @@ Cusultation Summary
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Cusultation Summary</h4>
+                <h4 class="page-title">Consultation Summary</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i>Dynamic Data</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cusultation Summary</li>
+                            <li class="breadcrumb-item active" aria-current="page">Consultation Summary</li>
                         </ol>
                     </nav>
                 </div>
@@ -47,7 +47,7 @@ Cusultation Summary
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cusultation_summary as $item)
+                                    @foreach ($consultation_summary as $item)
                                         <tr class="hover-primary">
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->is_required }}</td>
@@ -85,7 +85,7 @@ Cusultation Summary
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('dynamic.cusultation_summary.store') }}" method="POST">
+                    <form action="{{ route('dynamic.consultation_summary.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -125,7 +125,7 @@ Cusultation Summary
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="editForm" action="{{ route('dynamic.cusultation_summary.update') }}"  method="POST">
+                <form id="editForm" action="{{ route('dynamic.consultation_summary.update') }}"  method="POST">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="id" id="editId">
@@ -192,7 +192,7 @@ Cusultation Summary
 
             function DeleteRecord(id) {
                 $.ajax({
-                    url : "{{ url('portal/dynamic/cusultation_summary/delete') }}"+"/"+id,
+                    url : "{{ url('portal/dynamic/consultation_summary/delete') }}"+"/"+id,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"
