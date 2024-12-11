@@ -37,7 +37,6 @@
                                     <tr>
                                         <th>Type</th>
                                         <th>Value</th>
-                                        <th>Service Fee</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -46,11 +45,10 @@
                                         <tr class="hover-primary">
                                             <td>{{ $tweek->type }}</td>
                                             <td>{{ $tweek->value }}</td>
-                                            <td>{{ ($tweek->service_fee)?$tweek->service_fee:'0' }}%</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="dropdown-item" href="#"
-                                                            onclick="editTweek({{ $tweek->id }}, '{{ $tweek->type }}', '{{ $tweek->value }}', '{{ $tweek->service_fee }}')">Edit</a>
+                                                            onclick="editTweek({{ $tweek->id }}, '{{ $tweek->type }}', '{{ $tweek->value }}')">Edit</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -88,11 +86,6 @@
                                 placeholder="Enter Value">
                         </div>
                         <div class="form-group">
-                            <label for="edit_service_fee">Service Fee(%)</label>
-                            <input type="text" name="service_fee" class="form-control" id="edit_service_fee"
-                                placeholder="Enter Service Fee">
-                        </div>
-                        <div class="form-group">
                             <label for="formFileMultiple" class="form-label">Media</label>
                             <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
                         </div>                        
@@ -120,10 +113,9 @@
                 })
             });
 
-            function editTweek(id, type, value, service_fee) {
+            function editTweek(id, type, valu) {
                 $('#edit_type').val(type); // Set the type as readonly
                 $('#edit_value').val(value); // Set the value to be editable
-                $('#edit_service_fee').val(service_fee); // Set the value to be editable
                 $('#editForm').attr('action', '/portal/tweek/' + id); // Set the action for update route
                 $('#edit_modal').modal('show'); // Open the modal
             }
