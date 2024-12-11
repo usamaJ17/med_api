@@ -113,7 +113,7 @@
                 })
             });
 
-            function editTweek(id, type, valu) {
+            function editTweek(id, type, value) {
                 $('#edit_type').val(type); // Set the type as readonly
                 $('#edit_value').val(value); // Set the value to be editable
                 $('#editForm').attr('action', '/portal/tweek/' + id); // Set the action for update route
