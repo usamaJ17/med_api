@@ -56,7 +56,6 @@ class TweekController extends Controller
      public function update(Request $request, Tweek $tweek)
      {
          $tweek->value = $request->input('value');
-         $tweek->service_fee = $request->input('service_fee');
          $tweek->save();
          if ($request->hasFile('media') && is_array($request->file('media'))) {
              foreach ($request->file('media') as $file) {
