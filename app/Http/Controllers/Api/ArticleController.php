@@ -23,12 +23,20 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
 
-        $articles = Article::get();
-        // if (!$request->ajax()) {
-        //     return view('dashboard.article.index', compact('articles'));
-        // }
+        $query = Article::query(); 
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        if ($request->has('order_by')) {
+            if ($request->order_by === 'newest') {
+                $query->orderBy('created_at', 'DESC');
+            } elseif ($request->order_by === 'oldest') {
+                $query->orderBy('created_at', 'ASC');
+            }
+        }
+        $articles = $query->get();
         $data = [
-            'status' => 200, // add this line
+            'status' => 200,
             'message' => 'All Article fetched successfully',
             'data' => ['article' => $articles],
         ];
@@ -50,20 +58,17 @@ class ArticleController extends Controller
     {
         $article = Article::with(['comments.user', 'likes'])->find($id);
         if (!$article) return response()->json([
-            'status' => 404, // add this line
+            'status' => 404,
             'message' => 'Article not found'
         ], 404);
         $data = [
-            'status' => 200, // add this line
+            'status' => 200, 
             'message' => 'Article fetched successfully',
             'data' => ['article' => $article],
         ];
         if ($request->wantsJson() || $request->is('api/*')) {
             return response()->json($data, 200);
         }
-        // if (! $request->ajax()) {
-        //     return view('dashboard.article.show', compact('article'));
-        // }
         return view('dashboard.article.show', compact('article'));
     }
 
@@ -72,9 +77,11 @@ class ArticleController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
+            'category_id' => 'required|string',
         ]);
 
         $article = Article::create([
+            'category_id' => $request->category_id,
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'body' => $request->body,
@@ -101,11 +108,12 @@ class ArticleController extends Controller
 
         $request->validate([
             'title' => 'sometimes|required|string|max:255',
+            'category_id' => 'sometimes|required|string',
             'body' => 'sometimes|required|string',
             'thumbnail' => 'sometimes|image',
         ]);
 
-        $article->update($request->only('title', 'body'));
+        $article->update($request->only('title', 'body', 'category_id'));
 
         if ($request->hasFile('thumbnail')) {
             $article->clearMediaCollection('thumbnails');

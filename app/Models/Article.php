@@ -11,14 +11,17 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['user_id', 'title', 'body', 'thumbnail','share_count','published'];
+    protected $fillable = ['category_id', 'user_id', 'title', 'body', 'thumbnail','share_count','published'];
     protected $hidden = ['user'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
+    public function category()
+    {
+        return $this->belongsTo(ArticleCategory::class,'category_id');
+    }
     public function comments()
     {
         return $this->hasMany(Comment::class);
@@ -36,7 +39,9 @@ class Article extends Model implements HasMedia
     }
     public function getThumbnailUrlAttribute()
     {
-        return $this->getFirstMediaUrl('thumbnails');
+        $profileImageUrl = $this->getFirstMediaUrl('thumbnails');
+        return $profileImageUrl ?: asset('dashboard/images/article.jpg');
+        // return $this->getFirstMediaUrl('thumbnails');
     }
     public function getVideoUrlAttribute()
     {
