@@ -414,21 +414,4 @@ class AppointmentController extends Controller
             return response()->json($data, 200);
         }
     }
-    public function appointment_hours(Request $request){
-        $app = AppointmentHours::where('user_id', $request->user_id)->get();
-        if ($app) {
-            $data = [
-                'status' => 200,
-                'message' => 'Working hours found',
-                'data' => $app,
-            ];
-            return response()->json($data, 200);
-        } else {
-            $data = [
-                'status' => 404,
-                'message' => 'Working hours not found',
-            ];
-            return response()->json($data, 200);
-        }
-    }
 }

@@ -25,7 +25,8 @@ class ProfessionalDetails extends Model implements HasMedia
         'degree',
         'institution',
     ];
-    protected $appends = ['profession_type', 'rank_name','id_card','signature','degree_file'];
+    // protected $appends = ['profession_type', 'rank_name','id_card','signature','degree_file'];
+    protected $appends = ['profession_type', 'rank_name', 'all_media'];
     protected $hidden = ['media'];
     
     // Define relationships, if any
@@ -61,5 +62,14 @@ class ProfessionalDetails extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('degree_file');
     }
-    
+    public function getAllMediaAttribute(){
+        return $this->media->map(function ($mediaItem) {
+            return [
+                'collection_name' => $mediaItem->collection_name,
+                'url' => $mediaItem->getFullUrl(),
+                'file_name' => $mediaItem->file_name,
+                'size' => $mediaItem->size,
+            ];
+        })->toArray();
+    }
 }

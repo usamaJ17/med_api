@@ -30,19 +30,27 @@ class ProfileController extends Controller
     public function saveProfessionalDetails(Request $request)
     {
         $pro = ProfessionalDetails::updateOrCreate(['user_id' => Auth::id()], $request->all());
-        if (null !== $request->file('id_card')) {
-            $pro->clearMediaCollection('id_card');
-            $pro->addMedia($request->file('id_card'))->toMediaCollection('id_card');
-        }
-        if (null !== $request->file('signature')) {
-            $pro->clearMediaCollection('signature');
-            $pro->addMedia($request->file('signature'))->toMediaCollection('signature');
-        }
-        if (null !== $request->file('degree_file')) {
-            $pro->clearMediaCollection('degree_file');
-            $pro->addMedia($request->file('degree_file'))->toMediaCollection('degree_file');
-        }
+        // if (null !== $request->file('id_card')) {
+        //     $pro->clearMediaCollection('id_card');
+        //     $pro->addMedia($request->file('id_card'))->toMediaCollection('id_card');
+        // }
+        // if (null !== $request->file('signature')) {
+        //     $pro->clearMediaCollection('signature');
+        //     $pro->addMedia($request->file('signature'))->toMediaCollection('signature');
+        // }
+        // if (null !== $request->file('degree_file')) {
+        //     $pro->clearMediaCollection('degree_file');
+        //     $pro->addMedia($request->file('degree_file'))->toMediaCollection('degree_file');
+        // }
 
+        $fileFields = array_keys($request->files->all());
+
+        foreach ($fileFields as $field) {
+            if ($request->hasFile($field)) {
+                $pro->clearMediaCollection($field);
+                $pro->addMedia($request->file($field))->toMediaCollection($field);
+            }
+        }
 
         if ($request->has("name_title")) {
             $user = User::find(Auth::id());
@@ -53,6 +61,20 @@ class ProfileController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Details Saved Successfully...',
+            'data'   => $pro,
+        ], 200);
+    }
+    public function getProfessionalDetails()
+    {
+        $pro = ProfessionalDetails::where('user_id', Auth::id())->first();
+        
+        if (!$pro) return response()->json([
+            'status' => 404,
+            'message' => 'Details Not Found...',
+        ], 404);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Details Fetched Successfully...',
             'data'   => $pro,
         ], 200);
     }
@@ -101,19 +123,6 @@ class ProfileController extends Controller
             'status' => 200,
             'message' => 'Details Fetched Successfully...',
             'data'   => $med,
-        ], 200);
-    }
-    public function getProfessionalDetails()
-    {
-        $pro = ProfessionalDetails::where('user_id', Auth::id())->first();
-        if (!$pro) return response()->json([
-            'status' => 404,
-            'message' => 'Details Not Found...',
-        ], 404);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Details Fetched Successfully...',
-            'data'   => $pro,
         ], 200);
     }
     public function completeProfile(Request $request)

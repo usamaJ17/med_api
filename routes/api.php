@@ -109,7 +109,6 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('/check_availability', [AppointmentHoursController::class, 'checkAvailability']);
   //
 
-  Route::get('appointment_hours', [AppointmentController::class, 'appointment_hours']);
   //
   Route::post('patient/appointments', [AppointmentController::class, 'store']);
   Route::post('appointments/update', [AppointmentController::class, 'update']);
