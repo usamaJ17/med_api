@@ -61,7 +61,7 @@ Route::middleware(['cros'])->group(function () {
   Route::get('get_device_token', [HelperController::class, 'getDeviceToken']);
   Route::get('/professional_titles', [HelperController::class, 'getProfessionalTitles']);
   Route::post('/professional_titles', [HelperController::class, 'saveProfessionalTitles']);
-  Route::post('/professional_docs', [HelperController::class, 'getProfessionalDocs']);
+  Route::get('/professional_docs', [HelperController::class, 'getProfessionalDocs']);
 });
 
 
