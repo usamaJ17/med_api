@@ -54,18 +54,45 @@ class GraphFactory
         }else if($type == 'age'){
             return $this->getAgeData();
         } 
-        elseif (in_array($type, ['patient_signups_states', 'medical_signups_states'])) {
-            $distinctStates = User::distinct()->pluck('state')->filter(); 
-            $stateData = [];
-    
-            // Loop through dates and aggregate statewise data
-            foreach ($distinctStates as $state) {
-                $data[] = $this->getDataByType($type, $state);
-                $formattedDates[] = $state;
-            } 
+        elseif ($type==='patient_signups_states') {
+            $patientData = [];
+            $patientDates = [];
+            $distinctStates = User::distinct()->pluck('state')->filter();
+            for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
+                $formattedDate = $date->format('d M');
+                foreach ($distinctStates as $state) {
+                    $data = $this->getDataByType($type, $date, $state); 
+                    $patientData[] = [
+                        'date' => $formattedDate,
+                        'state' => $state,
+                        'value' => $data, 
+                    ];
+                }
+                $patientDates[] = $formattedDate;
+            }
             return [
-                'date' => $formattedDates,
-                'data' => $data,
+                'date' => $patientDates,
+                'data' => $patientData,
+            ];
+        } elseif ($type==='medical_signups_states') {
+            $medicalData = [];
+            $medicalDates = [];
+            $distinctStates = User::distinct()->pluck('state')->filter();
+            for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
+                $formattedDate = $date->format('d M');
+                foreach ($distinctStates as $state) {
+                    $data = $this->getDataByType($type, $date, $state);
+                    $medicalData[] = [
+                        'date' => $formattedDate,
+                        'state' => $state,
+                        'value' => $data, 
+                    ];
+                }
+                $medicalDates[] = $formattedDate;
+            }
+            return [
+                'date' => $medicalDates,
+                'data' => $medicalData,
             ];
         } else {
             for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
@@ -80,7 +107,7 @@ class GraphFactory
         }
     }
 
-    protected function getDataByType(string $type, $date)
+    protected function getDataByType(string $type, $date, $state = null)
     {
         switch ($type) {
             case 'patient_signups':
@@ -88,9 +115,9 @@ class GraphFactory
             case 'medical_signups':
                 return $this->getMedicalSignups($date);
             case 'patient_signups_states':
-                return $this->getPatientSignupsByState($date);
+                return $this->getPatientSignupsByState($date, $state);
             case 'medical_signups_states':
-                return $this->getMedicalSignupsByState($date);
+                return $this->getMedicalSignupsByState($date, $state);
             case 'revenue':
                 return $this->getDailyRevenue($date);
             case 'appointments':
@@ -117,22 +144,24 @@ class GraphFactory
             $q->where("name", "medical");
         })->whereDate('created_at', $date->toDateString())->count();
     }
-    protected function getPatientSignupsByState($state)
+    protected function getPatientSignupsByState($date, $state)
     {
         return User::whereHas("roles", function ($q) {
                 $q->where("name", "patient");
             })
+            ->whereDate('created_at', $date->toDateString())
             ->where('state', $state)
-            ->count(); // Returns an associative array with state as key and count as value
+            ->count();
     }
     
-    protected function getMedicalSignupsByState($state)
+    protected function getMedicalSignupsByState($date, $state)
     {
         return User::whereHas("roles", function ($q) {
                 $q->where("name", "medical");
             })
+            ->whereDate('created_at', $date->toDateString())
             ->where('state', $state)
-            ->count(); // Returns an associative array with state as key and count as value
+            ->count(); 
     }
     
     protected function getDailyRevenue($date)

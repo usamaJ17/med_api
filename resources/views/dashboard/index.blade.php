@@ -119,10 +119,30 @@
                     <div class="col-xl-12 col-12">
                         <div class="box">
                             <div class="box-header">
-                                <h4 class="box-title">User Signups States</h4>
+                                <h4 class="box-title">Patient Signups States</h4>
                             </div>
                             <div class="box-body">
-                                <div id="recent_trend_states"></div>
+                                <div>
+                                    <button onclick="updateStatePChartWithTimeFrame('daily')">Daily</button>
+                                    <button onclick="updateStatePChartWithTimeFrame('weekly')">Weekly</button>
+                                    <button onclick="updateStatePChartWithTimeFrame('monthly')">Monthly</button>
+                                </div>
+                                <div id="patient_trend_chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h4 class="box-title">Medical Signups States</h4>
+                            </div>
+                            <div class="box-body">
+                                <div>
+                                    <button onclick="updateStateMChartWithTimeFrame('daily')">Daily</button>
+                                    <button onclick="updateStateMChartWithTimeFrame('weekly')">Weekly</button>
+                                    <button onclick="updateStateMChartWithTimeFrame('monthly')">Monthly</button>
+                                </div>
+                                <div id="medical_trend_chart"></div>
                             </div>
                         </div>
                     </div>
@@ -172,6 +192,11 @@
                                 <h4 class="box-title">Daily Consultations per professional category</h4>
                             </div>
                             <div class="box-body">
+                                <div>
+                                    <button onclick="updateCChartWithTimeFrame('daily')">Daily</button>
+                                    <button onclick="updateCChartWithTimeFrame('weekly')">Weekly</button>
+                                    <button onclick="updateCChartWithTimeFrame('monthly')">Monthly</button>
+                                </div>
                                 <div id="patients_pace"></div>
                             </div>
                         </div>
@@ -260,27 +285,7 @@
         var cancelAppointmentData = @json($cancelAppointmentData);
         var pro_cat_appointment = @json($pro_cat_appointment);
 
-        var date_series_app_cat;
-        var appointment_cat_series = [];
-
-        // Iterate over the keys of the `pro_cat_appointment` object
-        Object.keys(pro_cat_appointment).forEach(function(key) {
-            if (key === 'date') {
-                // Assign the date data to a separate variable
-                date_series_app_cat = {
-                    name: key,
-                    data: pro_cat_appointment[key]
-                };
-            } else if (key === 'data') {
-                // Transform the `data` part to the desired format
-                Object.keys(pro_cat_appointment[key]).forEach(function(subKey) {
-                    appointment_cat_series.push({
-                        name: subKey,
-                        data: pro_cat_appointment[key][subKey]
-                    });
-                });
-            }
-        });
+        
         var age = @json($age);
         var baseColors = ['#ee3158', '#1dbfc1', '#ff9900', '#ff5733', '#33ff57', '#3357ff'];
         var colors = [];
@@ -330,6 +335,88 @@
 
                 groupedData.date = Object.keys(monthMap); // Months as labels
                 groupedData.data = Object.values(monthMap); // Counts for each month
+            }
+
+            return groupedData;
+        }
+        function groupDataByTimeFrame1(data, statesData, dates, timeFrame) {
+            let groupedData = {
+                date: [],
+                data: {}
+            };
+
+            if (timeFrame === "daily") {
+                // Keep the original structure
+                groupedData.date = dates;
+                statesData.forEach(state => {
+                    groupedData.data[state] = dates.map(date => {
+                        const record = data.data.find(
+                            item => item.date === date && item.state === state
+                        );
+                        return record ? record.value : 0; // Default to 0 if no record is found
+                    });
+                });
+            } else if (timeFrame === "weekly") {
+                let weekCount = {};
+                let startOfWeek = null; // To track the first date of the week
+
+                dates.forEach((date, index) => {
+                    if (index % 7 === 0) {
+                        // Start of a new week
+                        startOfWeek = date;
+                    }
+
+                    statesData.forEach(state => {
+                        if (!weekCount[state]) weekCount[state] = 0;
+
+                        const record = data.data.find(
+                            item => item.date === date && item.state === state
+                        );
+                        weekCount[state] += record ? record.value : 0;
+                    });
+
+                    // Aggregate every 7 days or at the end of the dataset
+                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                        // Construct weekly label
+                        const endOfWeek = date; // Current date is the end of the week
+                        groupedData.date.push(`${startOfWeek} - ${endOfWeek}`);
+
+                        // Push aggregated data for each state
+                        statesData.forEach(state => {
+                            if (!groupedData.data[state]) groupedData.data[state] = [];
+                            groupedData.data[state].push(weekCount[state]);
+                            weekCount[state] = 0; // Reset for the next week
+                        });
+
+                        startOfWeek = null; // Reset the week start for the next week
+                    }
+                });
+            } else if (timeFrame === "monthly") {
+                let monthCount = {};
+                let monthLabels = {};
+
+                dates.forEach(date => {
+                    const month = date.split(" ")[1]; // Extract month (e.g., "Nov", "Dec")
+
+                    statesData.forEach(state => {
+                        if (!monthCount[state]) monthCount[state] = 0;
+
+                        const record = data.data.find(
+                            item => item.date === date && item.state === state
+                        );
+                        monthCount[state] += record ? record.value : 0;
+
+                        if (!monthLabels[month]) monthLabels[month] = true;
+                    });
+                });
+
+                groupedData.date = Object.keys(monthLabels); // Unique months as labels
+                statesData.forEach(state => {
+                    groupedData.data[state] = groupedData.date.map(month => {
+                        const monthRecords = data.data.filter(item => item.date.includes(month) && item.state === state);
+                        return monthRecords.reduce((sum, record) => sum + record.value, 0); // Sum values for the month
+                    });
+                });
             }
 
             return groupedData;
@@ -410,141 +497,152 @@
             chart1.render();
         }
 
-
-
-        // var options = {
-        //     series: [{
-        //         name: 'Patients',
-        //         data: patientSignups.data
-        //     }, {
-        //         name: 'Medical Professionals',
-        //         data: medicalSignups.data
-        //     }],
-        //     chart: {
-        //         type: 'area',
-        //         stacked: false,
-        //         foreColor: "#bac0c7",
-        //         zoom: {
-        //             type: 'x',
-        //             enabled: true,
-        //             autoScaleYaxis: true
-        //         },
-        //         height: 330,
-        //         toolbar: {
-        //             show: false,
-        //         }
-        //     },
-        //     fill: {
-        //         type: 'gradient',
-        //         gradient: {
-        //             shadeIntensity: 1,
-        //             inverseColors: false,
-        //             opacityFrom: 0.5,
-        //             opacityTo: 0,
-        //             stops: [0, 95, 100]
-        //         },
-        //     },
-        //     dataLabels: {
-        //         enabled: false,
-        //     },
-        //     grid: {
-        //         show: false,
-        //     },
-        //     stroke: {
-        //         show: true,
-        //         width: 2,
-        //         colors: ['#ee3158', '#FFA800'],
-        //     },
-        //     colors: ['#ee3158', '#FFA800'],
-        //     xaxis: {
-        //         categories: patientSignups.date,
-
-        //     },
-        //     legend: {
-        //         show: true,
-        //     },
-        //     tooltip: {
-        //         theme: 'dark',
-        //         y: {
-        //             formatter: function(val) {
-        //                 return val
-        //             }
-        //         },
-        //         marker: {
-        //             show: false,
-        //         },
-        //     }
-        // };
-
-        // var chart = new ApexCharts(document.querySelector("#recent_trend"), options);
-        // chart.render();
-
-        var options = {
-            series: [{
-                name: 'Patients',
-                data: patientSignupsStates.data
-            }, {
-                name: 'Medical Professionals',
-                data: medicalSignupsStates.data
-            }],
-            chart: {
-                type: 'area',
-                stacked: false,
-                foreColor: "#bac0c7",
-                zoom: {
-                    type: 'x',
-                    enabled: true,
-                    autoScaleYaxis: true
-                },
-                height: 330,
-                toolbar: {
-                    show: false,
-                }
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0,
-                    stops: [0, 95, 100]
-                },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            grid: {
-                show: false,
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['#ee3158', '#FFA800'],
-            },
-            colors: ['#ee3158', '#FFA800'],
-            xaxis: {
-                categories: medicalSignupsStates.date,
-
-            },
-            legend: {
-                show: true,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: function(val) {
-                        return val
+        updateStatePChartWithTimeFrame('daily');
+        var patientChart;
+        function updateStatePChartWithTimeFrame(timeFrame){
+            if (patientChart) {
+                patientChart.destroy();
+            }
+            const uniqueStates = [...new Set(patientSignupsStates.data.map(item => item.state))];
+            const groupedData = groupDataByTimeFrame1(patientSignupsStates, uniqueStates, patientSignupsStates.date,timeFrame);
+            const seriesData = uniqueStates.map(state => ({
+                name: state,
+                data: groupedData.data[state]
+            }));
+            var patientOptions = {
+                series: seriesData,
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
                     }
                 },
-                marker: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
                     show: false,
                 },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#ee3158'],
+                },
+                // colors: ['#ee3158'],
+                xaxis: {
+                    categories: groupedData.date,
+                },
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+            patientChart = new ApexCharts(document.querySelector("#patient_trend_chart"), patientOptions);
+            patientChart.render();
+        }
+        updateStateMChartWithTimeFrame('daily');
+        var medicalChart;
+        function updateStateMChartWithTimeFrame(timeFrame){
+            if (medicalChart) {
+                medicalChart.destroy();
             }
-        };
+            const uniqueStates1 = [...new Set(medicalSignupsStates.data.map(item => item.state))];
+            
+            const groupedData = groupDataByTimeFrame1(medicalSignupsStates, uniqueStates1, medicalSignupsStates.date,timeFrame);
+            const seriesData = uniqueStates1.map(state => ({
+                name: state,
+                data: groupedData.data[state]
+            }));
 
-        var chart = new ApexCharts(document.querySelector("#recent_trend_states"), options);
-        chart.render();
+            var medicalOptions = {
+                series: seriesData,
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
+                    show: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#FFA800'],
+                },
+                // colors: ['#FFA800'],
+                xaxis: {
+                    categories: groupedData.date,
+                },
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+
+            medicalChart = new ApexCharts(document.querySelector("#medical_trend_chart"), medicalOptions);
+            medicalChart.render();
+        }
+
 
         updateChartWithTimeFrame1('daily');
         var chart2;
@@ -754,8 +852,103 @@
         var chart = new ApexCharts(document.querySelector("#age_group_overview"), options);
         chart.render();
 
+        function groupDataByTimeFrame12(series, dates, timeFrame) {
+            let groupedData = {
+                date: [],
+                series: []
+            };
+
+            if (timeFrame === "daily") {
+                // Keep the original structure
+                groupedData.date = dates;
+                groupedData.series = series.map(s => ({
+                    name: s.name,
+                    data: s.data
+                }));
+            } else if (timeFrame === "weekly") {
+                // Weekly aggregation
+                let weekLabels = [];
+                let weekCounts = series.map(s => ({
+                    name: s.name,
+                    data: []
+                }));
+
+                dates.forEach((date, index) => {
+                    weekLabels.push(date);
+
+                    series.forEach((s, i) => {
+                        if (!weekCounts[i].data[weekCounts[i].data.length - 1]) {
+                            weekCounts[i].data[weekCounts[i].data.length - 1] = 0;
+                        }
+                        weekCounts[i].data[weekCounts[i].data.length - 1] += s.data[index];
+                    });
+
+                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                        groupedData.date.push(`${weekLabels[0]} - ${weekLabels[weekLabels.length - 1]}`);
+                        weekCounts.forEach((s, i) => {
+                            weekCounts[i].data.push(0); // Start a new week's aggregation
+                        });
+                        weekLabels = [];
+                    }
+                });
+
+                groupedData.series = weekCounts.map(s => ({
+                    name: s.name,
+                    data: s.data.slice(0, -1) // Remove the last empty week's data
+                }));
+            } else if (timeFrame === "monthly") {
+                // Monthly aggregation
+                let monthMap = {};
+                dates.forEach((date, index) => {
+                    const month = date.split(" ")[1]; // Assuming "dd MMM" format
+
+                    if (!monthMap[month]) {
+                        monthMap[month] = {};
+                        series.forEach(s => {
+                            monthMap[month][s.name] = 0;
+                        });
+                    }
+
+                    series.forEach(s => {
+                        monthMap[month][s.name] += s.data[index];
+                    });
+                });
+
+                groupedData.date = Object.keys(monthMap); // Months as labels
+                groupedData.series = series.map(s => ({
+                    name: s.name,
+                    data: groupedData.date.map(month => monthMap[month][s.name])
+                }));
+            }
+
+            return groupedData;
+        }
+        updateCChartWithTimeFrame("daily");
+        var cchart;
+        function updateCChartWithTimeFrame(timeFrame) {
+            var date_series_app_cat;
+            var appointment_cat_series = [];
+            Object.keys(pro_cat_appointment).forEach(function(key) {
+                if (key === 'date') {
+                    date_series_app_cat = {
+                        name: key,
+                        data: pro_cat_appointment[key]
+                    };
+                } else if (key === 'data') {
+                    Object.keys(pro_cat_appointment[key]).forEach(function(subKey) {
+                        appointment_cat_series.push({
+                            name: subKey,
+                            data: pro_cat_appointment[key][subKey]
+                        });
+                    });
+                }
+            });
+            const groupedData = groupDataByTimeFrame12(appointment_cat_series, date_series_app_cat.data, timeFrame);
+            if (cchart) {
+                cchart.destroy();
+            }
             var options = {
-                series: appointment_cat_series,
+                series:  groupedData.series,
                 chart: {
                     type: 'area',
                     stacked: false,
@@ -793,7 +986,7 @@
                 },
                 colors: ['#389F99', '#E8F9F9', '#689F38', '#EE1044', '#3D6EAE', '#FFA800', '#FF9D00'],
                 xaxis: {
-                    categories: date_series_app_cat.data,
+                    categories: groupedData.date,
 
                 },
                 legend: {
@@ -812,52 +1005,52 @@
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#patients_pace"), options);
-            chart.render();
+            cchart = new ApexCharts(document.querySelector("#patients_pace"), options);
+            cchart.render();
+        }
 
+        const labels = Object.keys(dailyPatientCountCat);
+        const series = Object.values(dailyPatientCountCat);
+        var options = {
+            series: series,
+            chart: {
+                type: 'donut',
+                width: 250,
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            colors: ['#3246D3', '#00D0FF', '#ee3158', '#ffa800', '#1dbfc1', '#e4e6ef'],
+            legend: {
+                show: false,
+            },
 
-            const labels = Object.keys(dailyPatientCountCat);
-            const series = Object.values(dailyPatientCountCat);
-            var options = {
-                series: series,
-                chart: {
-                    type: 'donut',
-                    width: 250,
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                colors: ['#3246D3', '#00D0FF', '#ee3158', '#ffa800', '#1dbfc1', '#e4e6ef'],
-                legend: {
-                    show: false,
-                },
-
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '75%',
-                        }
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '75%',
                     }
-                },
-                labels: labels,
-                responsive: [{
-                    breakpoint: 1600,
-                    options: {
-                        chart: {
-                            width: 250,
-                        }
+                }
+            },
+            labels: labels,
+            responsive: [{
+                breakpoint: 1600,
+                options: {
+                    chart: {
+                        width: 250,
                     }
-                }, {
-                    breakpoint: 500,
-                    options: {
-                        chart: {
-                            width: 200,
-                        }
+                }
+            }, {
+                breakpoint: 500,
+                options: {
+                    chart: {
+                        width: 200,
                     }
-                }]
-            };
+                }
+            }]
+        };
 
-            var chart = new ApexCharts(document.querySelector("#chart124"), options);
-            chart.render();
+        var chart = new ApexCharts(document.querySelector("#chart124"), options);
+        chart.render();
     </script>
 @endsection
