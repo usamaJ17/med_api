@@ -103,10 +103,10 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('support_groups', [SupportGroupController::class, 'forApi']);
 
   // appointments
-  Route::post('/appointments', [AppointmentHoursController::class, 'store']);
-  Route::get('/appointments', [AppointmentHoursController::class, 'show']);
+  Route::post('appointments', [AppointmentHoursController::class, 'store']);
+  Route::get('appointments', [AppointmentHoursController::class, 'show']);
 
-  Route::get('/check_availability', [AppointmentHoursController::class, 'checkAvailability']);
+  Route::get('check_availability', [AppointmentHoursController::class, 'checkAvailability']);
   //
 
   //

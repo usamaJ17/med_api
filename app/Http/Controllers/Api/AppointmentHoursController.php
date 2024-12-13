@@ -8,38 +8,45 @@ use Illuminate\Http\Request;
 
 class AppointmentHoursController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
+    public function store(Request $request){
+        $validator = \Validator::make($request->all(), [
             'appointment_type' => 'required|string',
-            // 'consultation_fees' => 'required|string',
+            'duration' => 'required|string',
+            'working_hours' => 'required|string',
+            'consultation_fees' => 'required|string',
         ]);
-        // add user_id to validated data
-        $validatedData['duration'] = $request->duration;
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+        $validatedData = $validator->validated();
         $validatedData['user_id'] = auth()->id();
         $validatedData['working_hours'] = json_decode($request->working_hours, true);
-        $validatedData["consultation_fees"] = 0;
-        // if a user has already created an appointment with the same appointment type and duration then update the appointment hours
-        $appointment = AppointmentHours::query()->where('user_id', auth()->id())
-            ->where('appointment_type', $request->appointment_type)
+        $appointment = AppointmentHours::query()
+            ->where('user_id', auth()->id())
+            ->where('appointment_type', $validatedData['appointment_type'])
             ->first();
+
         if ($appointment) {
             $appointment->update($validatedData);
-            $data = [
+            return response()->json([
                 'status' => 200,
                 'message' => 'Appointment hours updated successfully',
                 'data' => $appointment,
-            ];
-            return response()->json($data, 200);
+            ], 200);
         }
         $appointment = AppointmentHours::create($validatedData);
-        $data = [
+        return response()->json([
             'status' => 201,
             'message' => 'Appointment hours created successfully',
             'data' => $appointment,
-        ];
-        return response()->json($data, 201);
+        ], 201);
     }
+
 
     public function show(Request $request)
     {
@@ -74,22 +81,5 @@ class AppointmentHoursController extends Controller
             'data' => $appointment,
         ];
         return response()->json($data, 200);
-    }
-    public function appointment_hours(Request $request){
-        $app = AppointmentHours::where('user_id', $request->user_id)->get();
-        if ($app) {
-            $data = [
-                'status' => 200,
-                'message' => 'Working hours found',
-                'data' => $app,
-            ];
-            return response()->json($data, 200);
-        } else {
-            $data = [
-                'status' => 404,
-                'message' => 'Working hours not found',
-            ];
-            return response()->json($data, 200);
-        }
     }
 }

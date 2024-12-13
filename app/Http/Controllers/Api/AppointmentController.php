@@ -22,11 +22,7 @@ class AppointmentController extends Controller
                 'consultation_type' => 'required|string',
             ]);
             $user = auth()->user();
-
-            //finding appointment against this user
             $appointment = AppointmentHours::where(["user_id" => auth()->user()->id])->first();
-            //return response()->json($appointment, 200);
-            //response()->json($appointment, 200);
             if (!$appointment) {
                 return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
             }
