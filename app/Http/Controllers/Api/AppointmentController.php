@@ -17,12 +17,23 @@ class AppointmentController extends Controller
     public function saveConsultationFee(Request $request)
     {
         try {
-            $validatedData = $request->validate([
-                'fee' => 'required|numeric',
+            $validator = \Validator::make($request->all(), [
                 'consultation_type' => 'required|string',
+                'fee' => 'required|string',
             ]);
+        
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 422,
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+            $validatedData = $validator->validated();
             $user = auth()->user();
-            $appointment = AppointmentHours::where(["user_id" => auth()->user()->id])->first();
+            $appointment = AppointmentHours::query()
+                ->where('user_id', auth()->id())
+                ->where('appointment_type', $validatedData['consultation_type'])
+                ->first();
             if (!$appointment) {
                 return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
             }
