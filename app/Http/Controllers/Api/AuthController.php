@@ -290,8 +290,8 @@ class AuthController extends Controller
 
         foreach ($fileFields as $field) {
             if ($request->hasFile($field)) {
-                $pro->clearMediaCollection($field);
-                $pro->addMedia($request->file($field))->toMediaCollection($field);
+                $user->clearMediaCollection($field);
+                $user->addMedia($request->file($field))->toMediaCollection($field);
             }
         } 
 
