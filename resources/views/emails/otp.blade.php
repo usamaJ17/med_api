@@ -122,7 +122,7 @@
             Thank you for choosing Deluxe Hospital. We look forward to supporting your health journey.<br>
             Warm regards,<br>
             The Team that Cares<br>
-            <img src="{{ asset('dashboard/images/logo-letter.png')}}" alt="logo" ><br>
+            <img src="{{ asset('dashboard/images/logo-letter.png')}}" alt="logo" style='width: 150px;'><br>
             <a href="www.deluxehospital.com" target="_blank">www.deluxehospital.com</a>
             </p>
           </div>
