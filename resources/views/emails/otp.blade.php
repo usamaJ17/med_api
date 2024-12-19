@@ -123,7 +123,7 @@
             Warm regards,<br>
             The Team that Cares<br>
             <img src="{{ asset('dashboard/images/logo-letter.png')}}" alt="logo" style='width: 150px;'><br>
-            <a href="www.deluxehospital.com" target="_blank">www.deluxehospital.com</a>
+            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
             </p>
           </div>
         </div>
