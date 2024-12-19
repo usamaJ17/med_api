@@ -79,6 +79,7 @@
                 margin-top: 17px;
                 font-size: 16px;
                 font-weight: 500;
+                text-align: left;
               "
             >
             Dear {{ $name }},
@@ -88,8 +89,8 @@
                 margin: 0;
                 margin-top: 17px;
                 font-weight: 500;
-                letter-spacing: 0.56px;
-                text-align: left;
+                /* letter-spacing: 0.56px; */
+                text-align: justify;
               "
             >
               Thank you for choosing Deluxe Hospital! We are excited to support your health and wellness journey.<br>
@@ -112,8 +113,8 @@
                 margin: 0;
                 margin-top: 17px;
                 font-weight: 500;
-                letter-spacing: 0.56px;
-                text-align: left;
+                /* letter-spacing: 0.56px; */
+                text-align: justify;
               "
             >
             This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please disregard this email.<br>
@@ -121,6 +122,8 @@
             Thank you for choosing Deluxe Hospital. We look forward to supporting your health journey.<br>
             Warm regards,<br>
             The Team that Cares<br>
+            <img src="{{ asset('dashboard/images/logo-letter.png')}}" alt="logo" ><br>
+            <a href="www.deluxehospital.com" target="_blank">www.deluxehospital.com</a>
             </p>
           </div>
         </div>
