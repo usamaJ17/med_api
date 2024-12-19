@@ -89,6 +89,7 @@
                 margin-top: 17px;
                 font-weight: 500;
                 letter-spacing: 0.56px;
+                text-align: left;
               "
             >
               Thank you for choosing Deluxe Hospital! We are excited to support your health and wellness journey.<br>
@@ -112,6 +113,7 @@
                 margin-top: 17px;
                 font-weight: 500;
                 letter-spacing: 0.56px;
+                text-align: left;
               "
             >
             This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please disregard this email.<br>
