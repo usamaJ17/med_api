@@ -81,7 +81,7 @@
                 font-weight: 500;
               "
             >
-              Hey {{ $name }},
+            Dear {{ $name }},
             </p>
             <p
               style="
@@ -91,8 +91,8 @@
                 letter-spacing: 0.56px;
               "
             >
-              Thank you for choosing us. Use the following OTP
-              to complete registration
+              Thank you for choosing Deluxe Hospital! We are excited to support your health and wellness journey.<br>
+              To ensure we have the correct email address, please confirm your registration by entering the One-Time Password (OTP) below:
             </p>
             <p
               style="
@@ -105,6 +105,20 @@
               "
             >
               {{ $otp }}
+            </p>
+            <p
+              style="
+                margin: 0;
+                margin-top: 17px;
+                font-weight: 500;
+                letter-spacing: 0.56px;
+              "
+            >
+            This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please disregard this email.<br>
+            At Deluxe Hospital, we prioritize your comfort and care, providing exceptional telemedicine services right at your fingertips. Should you need any assistance, our dedicated support team is available around the clock via our mobile app.<br>
+            Thank you for choosing Deluxe Hospital. We look forward to supporting your health journey.<br>
+            Warm regards,<br>
+            The Team that Cares<br>
             </p>
           </div>
         </div>

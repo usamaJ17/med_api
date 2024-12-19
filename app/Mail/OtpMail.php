@@ -32,7 +32,7 @@ class OtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Otp Mail',
+            subject: 'Confirm Your Email - Welcome to Deluxe Hospital!',
         );
     }
 
