@@ -34,7 +34,7 @@ class OtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Confirm Your Email - Welcome to Deluxe Hospital!',
-            from: new Address('no-reply@deluxehospital.com', 'Deluxe Hospital'),
+            from: new Address('otp@deluxehospital.com', 'Deluxe Hospital'),
         );
     }
 
