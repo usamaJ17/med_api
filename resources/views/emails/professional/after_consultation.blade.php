@@ -165,7 +165,7 @@ Thank you for your dedication and commitment to providing exceptional follow-up 
             margin-top: 10px;
           "
         >
-          Visit us at <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+          Visit us at <a href="https://deluxehospital.com" target="_blank">deluxehospital.com</a>
         </p>
       </footer>
     </div>

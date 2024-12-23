@@ -33,6 +33,7 @@ class OtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Confirm Your Email - Welcome to Deluxe Hospital!',
+            from: ['email' => 'otp@deluxehospital.com', 'name' => 'Deluxe Hospital']
         );
     }
 
