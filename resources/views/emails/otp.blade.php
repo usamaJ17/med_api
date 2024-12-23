@@ -135,8 +135,7 @@
           text-align: center;
           padding-top: 20px;
           border-top: 1px solid #dddddd;
-        "
-      >
+        ">
         <img
           src="{{asset('dashboard/images/logo-letter.png')}}"
           alt="Deluxe Hospital Logo"

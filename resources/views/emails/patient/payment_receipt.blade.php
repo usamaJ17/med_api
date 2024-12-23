@@ -123,6 +123,62 @@
           </div>
         </div>
       </main>
+      
+      <footer
+        style="
+          margin-top: 20px;
+          text-align: center;
+          padding-top: 20px;
+          border-top: 1px solid #dddddd;
+        ">
+        <img
+          src="{{asset('dashboard/images/logo-letter.png')}}"
+          alt="Deluxe Hospital Logo"
+          style="width: 100px; margin-bottom: 15px;"
+        />
+        <div style="margin-bottom: 10px;">
+          <a href="https://www.tiktok.com/@deluxehospital?_t=8sMSBOZEAgo&_r=1" target="_blank"
+            ><img
+              src="{{asset('dashboard/images/social-icons/tiktok.png')}}"
+              alt="TikTok"
+              style="width: 24px; margin: 0 5px;"
+          /></a>
+          <a href="https://x.com/deluxe_hospital" target="_blank"
+            ><img
+              src="{{asset('dashboard/images/social-icons/twitter.png')}}"
+              alt="Twitter"
+              style="width: 24px; margin: 0 5px;"
+          /></a>
+          <a href="https://www.instagram.com/deluxe_hospital?igsh=amgxODE2dm1samkw&utm_source=qr" target="_blank"
+            ><img
+              src="{{asset('dashboard/images/social-icons/instagram.png')}}"
+              alt="Instagram"
+              style="width: 24px; margin: 0 5px;"
+          /></a>
+          <a href="t.me/deluxe_hospital" target="_blank"
+            ><img
+              src="{{asset('dashboard/images/social-icons/telegram.png')}}"
+              alt="Telegram"
+              style="width: 24px; margin: 0 5px;"
+          /></a>
+          <a href="https://youtu.be/ZZhXcvqeYsQ?si=Wz6mUKZBAW6ayDD5" target="_blank"
+            ><img
+              src="{{asset('dashboard/images/social-icons/youtube.png')}}"
+              alt="YouTube"
+              style="width: 24px; margin: 0 5px;"
+          /></a>
+        </div>
+        <p
+          style="
+            font-size: 12px;
+            color: #666666;
+            margin: 0;
+            margin-top: 10px;
+          "
+        >
+          Visit us at <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+        </p>
+      </footer>
     </div>
   </body>
 </html>
