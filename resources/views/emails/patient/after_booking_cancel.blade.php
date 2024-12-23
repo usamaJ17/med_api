@@ -63,6 +63,7 @@
           "
         >
           <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+          <img src="{{asset('dashboard/images/patient-email.png')}}"  style="width: 100%;"/>
             <p
               style="
                 margin: 0;

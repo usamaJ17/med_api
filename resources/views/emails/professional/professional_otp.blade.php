@@ -63,7 +63,7 @@
           "
         >
           <div style="width: 100%; max-width: 489px; margin: 0 auto;">
-            <img src="{{asset('dashboard/images/doctor-email.png')}}"/>
+            <img src="{{asset('dashboard/images/doctor-email.png')}}" style="width: 100%;"/>
             <h1
               style="
                 margin: 0;
