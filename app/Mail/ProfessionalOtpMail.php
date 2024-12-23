@@ -33,7 +33,7 @@ class ProfessionalOtpMail extends Mailable
     {
         return new Envelope(
             subject: 'Welcome to Deluxe Hospital! Verify Your Email to Begin Your Exciting Journey!',
-            from: ['email' => 'otp@deluxehospital.com', 'name' => 'Deluxe Hospital']
+            from: new Address('no-reply@deluxehospital.com', 'Deluxe Hospital'),
         );
     }
 
