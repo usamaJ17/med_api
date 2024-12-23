@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
+use App\Mail\ProfessionalOtpMail;
 use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -72,7 +73,12 @@ class AuthController extends Controller
                 $otp = random_int(111111, 999999);
                 $user->otp = $otp;
                 $user->save();
-                Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+                if($request->role == 'medical'){
+                    Mail::to([$user->email])->send(new ProfessionalOtpMail($otp,$user->name, true));
+                }
+                else{
+                    Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+                }
                 return response()->json([
                     'status'  => 401,
                     'message'=> 'Please verify to register, OTP email has been sent...',

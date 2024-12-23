@@ -63,6 +63,7 @@
           "
         >
           <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+            <img src="{{asset('dashboard/images/patient-email.png')}}"/>
             <h1
               style="
                 margin: 0;
@@ -93,8 +94,7 @@
                 text-align: justify;
               "
             >
-              Thank you for choosing Deluxe Hospital! We are excited to support your health and wellness journey.<br>
-              To ensure we have the correct email address, please confirm your registration by entering the One-Time Password (OTP) below:
+            Thank you for choosing Deluxe Hospital! We are excited to support your health and wellness journey. To ensure we have the correct email address, please confirm your registration by entering the One-Time Password (OTP) below:
             </p>
             <p
               style="
@@ -119,10 +119,11 @@
             >
             This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please disregard this email.<br>
             At Deluxe Hospital, we prioritize your comfort and care, providing exceptional telemedicine services right at your fingertips. Should you need any assistance, our dedicated support team is available around the clock via our mobile app.<br>
-            Thank you for choosing Deluxe Hospital. We look forward to supporting your health journey.<br>
-            Warm regards,<br>
-            The Team that Cares<br>
-            <img src="{{ asset('dashboard/images/logo-letter.png')}}" alt="logo" style='width: 150px;'><br>
+            Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
+            With caring thoughts,<br>
+            <strong>The Team that Cares</strong><br>
+            ❤️‍🩹<br>
+            <strong>Deluxe Hospital</strong><br>
             <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
             </p>
           </div>
