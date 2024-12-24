@@ -62,7 +62,7 @@
             text-align: center;
           "
         >
-            <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+            <div style="width: 100%; max-width: 530px; margin: 0 auto;">
                 <h1
                         style="
                 margin: 0;

@@ -62,7 +62,7 @@
             text-align: center;
           "
         >
-          <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+          <div style="width: 100%; max-width: 530px; margin: 0 auto;">
           <img src="{{asset('dashboard/images/doctor-email.png')}}" style="width: 100%;"/>
             <p
               style="
@@ -91,12 +91,12 @@
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br><br>
             We're thrilled that you'll be providing your expertise and care. Please prepare for the appointment and ensure you're ready to offer exceptional service.<br>
-            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
-            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
+            🎉 Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
+            🎉 Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
             🎉 Please take clear clinical notes.<br>
             🎉 You may encourage your patient to provide their vital signs through My Profile section of  patient's side of the app.<br>
             🎉 You may indicate investigations as patient will be able to do them privately and upload the results through Completed Appointment section of patient's side of the app.<br>
-            🎉You may also write <strong>medical advice</strong>, <strong>a prescription</strong>, <strong>referral letter</strong> etc in <strong>Consultation Summary section</strong>. Your client will be able to download them as pdf files<br>
+            🎉 You may also write <strong>medical advice</strong>, <strong>a prescription</strong>, <strong>referral letter</strong> etc in <strong>Consultation Summary section</strong>. Your client will be able to download them as pdf files<br>
             🎉 Please follow up on [Patient Name] at least once during the 7 days post-consultation. Your money will be ready for withdrawal after this period.<br>
              If you have any questions or need assistance, feel free to reach out to us.<br>
           </p>
