@@ -243,7 +243,7 @@ class AppointmentController extends Controller
                 [
                     'user_id' => auth()->id(),
                     'appointment_id' => $appointment->id,
-                    'amount' => $appointment->amount,
+                    'amount' => $appointment->consultation_fees,
                     'gateway' => $request->refund_option ? $request->refund_option : null,
                 ]
             );
