@@ -438,6 +438,30 @@ class AppointmentController extends Controller
             $app->pay_for_me = 1;
         }
         $app->save();
+        
+        $user = auth()->user();
+        $professional = User::find($app->med_id);    
+
+        Mail::to([$user->email])
+            ->send(new PaymentReceipt($professional->first_name." ".$professional->last_name, 
+            $app->appointment_date,  
+            $app->appointment_time, 
+            $app->appointment_type, 
+            $user->first_name." ".$user->last_name, 
+            $app->consultation_fees, 
+            $app->transaction_id, 
+            date('Y-m-d')));
+        
+        $notificationData = [
+            'title' => 'Payment Receipt',
+            'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
+            'type' => 'Appointment',
+            'from_user_id' => auth()->id(),
+            'to_user_id' => auth()->id(),
+            'is_read' => 0,
+        ];        
+        Notifications::create($notificationData);
+
         // create a chatbox between patient and professional
         $box = ChatController::createChatBox($app->user_id, $app->med_id);
         if ($box != true) {
