@@ -82,12 +82,10 @@ class AuthController extends Controller
                 $user->otp = $otp;
                 $user->save();
                 if($request->role == 'medical'){
-                    config(['mail.default' => 'alternative']);
                     Mail::mailer('alternative')->to([$user->email])
                         ->send(new ProfessionalOtpMail($otp, $user->name, true));
                 }
                 else{
-                    config(['mail.default' => 'alternative']);
                     Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp,$user->name, true));
                 }
                 return response()->json([
