@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\Notifications;
+use App\Models\Followers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,7 +88,20 @@ class ArticleController extends Controller
             'title' => $request->title,
             'body' => $request->body,
         ]);
+        $followers = Followers::where('user_id', Auth::user()->id)->get();
 
+        $sender = User::find($from_id); 
+        foreach ($followers as $follower) {
+            $notificationData = [
+                'title' => 'Article Created',
+                'description' => "<strong>Notification:</strong> Stay updated! $sender->first_name $sender->last_name has just posted a new article. Tap to read more in the Articles section.",
+                'type' => 'Article',
+                'from_user_id' => Auth::user()->id,
+                'to_user_id' => $follower->follower_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+        }
         if ($request->hasFile('thumbnail')) {
             $article->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnails');
         }

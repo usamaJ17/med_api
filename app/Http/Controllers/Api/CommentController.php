@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +23,18 @@ class CommentController extends Controller
             'article_id' => $articleId,
             'content' => $request->content,
         ]);
+        $likes = Like::where('article_id', $articleId)->get();
+        foreach ($likes as $like) {
+            $notificationData = [
+                'title' => 'Article Comment',
+                'description' => "<strong>Notification:</strong> A new comment has been added to an article you liked. Tap here to join the discussion in the Articles section.",
+                'type' => 'Article',
+                'from_user_id' => Auth::id(),
+                'to_user_id' => $like->user_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+        }
         $data = [
             'status' => 201, // add this line
             'message' => 'Comment added successfully',

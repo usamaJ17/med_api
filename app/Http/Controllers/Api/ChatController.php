@@ -41,6 +41,16 @@ class ChatController extends Controller
                 'status' => 1
             ]);
         }
+        $sender = User::find($from_id); 
+        $notificationData = [
+            'title' => 'Chat Created',
+            'description' => "<strong>New message Alert:</strong> You've received a new message from $sender->first_name $sender->last_name. Tap here to view and reply.",
+            'type' => 'Chat',
+            'from_user_id' => $from_id,
+            'to_user_id' => $to_id,
+            'is_read' => 0,
+        ];        
+        Notifications::create($notificationData);
         return true;
     }
     public function sendMessage(Request $request){
