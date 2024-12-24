@@ -17,6 +17,7 @@ use App\Mail\AfterBookingAppointment;
 use App\Mail\AfterBookingCancel;
 use App\Mail\AppointmentCancelPatient;
 use App\Mail\AppointmentBooking;
+use App\Mail\PaymentReceipt;
 use App\Models\Notifications;
 
 class AppointmentController extends Controller
