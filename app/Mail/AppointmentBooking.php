@@ -13,7 +13,6 @@ class AppointmentBooking extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $professional;
     public $name;
     public $p_name;
     public $age;
@@ -22,9 +21,8 @@ class AppointmentBooking extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($professional, $name, $p_name, $age, $appointment_dat, $appointment_time)
+    public function __construct($name, $appointment_dat, $appointment_time, $age, $p_name)
     {
-        $this->professional = $professional;
         $this->name = $name;
         $this->p_name = $p_name;
         $this->age = $age;

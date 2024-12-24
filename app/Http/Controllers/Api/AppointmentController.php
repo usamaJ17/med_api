@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\AfterBookingAppointment;
 use App\Mail\AfterBookingCancel;
 use App\Mail\AppointmentCancelPatient;
+use App\Mail\AppointmentBooking;
 use App\Models\Notifications;
 
 class AppointmentController extends Controller
@@ -106,7 +107,18 @@ class AppointmentController extends Controller
         $user = auth()->user();
         $professional = User::find($request->med_id);    
         Mail::to([$user->email])
-            ->send(new AfterBookingAppointment($professional->name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->name));
+            ->send(new AfterBookingAppointment($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name." ".$user->last_name));
+        Mail::to([$professional->email])
+        ->send(new AppointmentBooking($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
+        $notificationData = [
+            'title' => 'Appointment Created',
+            'description' => "Exciting news, $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
+            'type' => 'Appointment',
+            'from_user_id' => auth()->id(),
+            'to_user_id' => $professional->id,
+            'is_read' => 0,
+        ];        
+        Notifications::create($notificationData);
         $data = [
             'status' => 201,
             'message' => 'Appointment created successfully',
