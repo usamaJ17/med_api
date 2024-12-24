@@ -58,7 +58,15 @@ class AuthController extends Controller
                 ], 200);
             }
             $name = $user->first_name . ' ' . $user->last_name;
-            Mail::to([$user->email])->send(new OtpMail($otp,$name, true));
+            
+            if($request->role == 'medical'){
+                Mail::mailer('alternative')->to([$user->email])
+                    ->send(new ProfessionalOtpMail($otp, $user->name, true));
+            }
+            else{
+                Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp,$user->name, true));
+            }
+            
             $data = [
                 'email'   => $request->email,
             ];
@@ -74,9 +82,12 @@ class AuthController extends Controller
                 $user->otp = $otp;
                 $user->save();
                 if($request->role == 'medical'){
-                    Mail::mailer('alternative')->to([$user->email])->send(new ProfessionalOtpMail($otp,$user->name, true));
+                    config(['mail.default' => 'alternative']);
+                    Mail::mailer('alternative')->to([$user->email])
+                        ->send(new ProfessionalOtpMail($otp, $user->name, true));
                 }
                 else{
+                    config(['mail.default' => 'alternative']);
                     Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp,$user->name, true));
                 }
                 return response()->json([

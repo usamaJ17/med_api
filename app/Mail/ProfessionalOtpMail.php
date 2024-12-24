@@ -33,6 +33,7 @@ class ProfessionalOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('otp@deluxehospital.com', 'Deluxe Hospital'),
             subject: 'Welcome to Deluxe Hospital! Verify Your Email to Begin Your Exciting Journey!',
         );
     }
