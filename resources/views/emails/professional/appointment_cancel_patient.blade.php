@@ -84,7 +84,7 @@
                 text-align: justify;
               "
             >
-            We regret to inform you that your upcoming appointment with {{$p_name}}, scheduled for {{$appointment_date}}] at {{$appointment_time}}, has been canceled by the client. We understand that your time is valuable and apologize for any inconvenience this may cause.<br>
+            We regret to inform you that your upcoming appointment with {{$p_name}}, scheduled for {{$appointment_date}} at {{$appointment_time}}, has been canceled by the client. We understand that your time is valuable and apologize for any inconvenience this may cause.<br>
             We appreciate your understanding and flexibility in this matter. Please don't hesitate to reach out to our support team at via the app in case you require further assistance. Once again we apologise for the inconvenience this may have caused.<br>
             Thank you for your continued dedication and for being a valued member of the Deluxe Hospital community.<br>
           </p>

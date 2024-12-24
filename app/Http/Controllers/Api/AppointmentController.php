@@ -251,11 +251,11 @@ class AppointmentController extends Controller
             $user = auth()->user();
             $professional = User::find($appointment->med_id);    
             Mail::to([$user->email])
-            ->send(new AfterBookingCancel($professional->name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->name));
+            ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
-                'description' => "Your appointment with $professional->name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
+                'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
                 'type' => 'Appointment',
                 'from_user_id' => auth()->id(),
                 'to_user_id' => auth()->id(),
@@ -264,11 +264,11 @@ class AppointmentController extends Controller
             Notifications::create($notificationData);
 
             Mail::to([$professional->email])
-            ->send(new AppointmentCancelPatient($professional->name, $appointment->appointment_date,  $appointment->appointment_time, $user->name));
+            ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
-                'description' => " We're sorry to inform you that your appointment with $user->name on $appointment->appointment_date at $appointment->appointment_time has been canceled by the patient. We appreciate your understanding.",
+                'description' => " We're sorry to inform you that your appointment with $user->first_name $user->last_name on $appointment->appointment_date at $appointment->appointment_time has been canceled by the patient. We appreciate your understanding.",
                 'type' => 'Appointment',
                 'from_user_id' => auth()->id(),
                 'to_user_id' => $professional->id,
