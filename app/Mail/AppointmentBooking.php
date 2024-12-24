@@ -21,7 +21,7 @@ class AppointmentBooking extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $appointment_dat, $appointment_time, $age, $p_name)
+    public function __construct($name, $appointment_date, $appointment_time, $age, $p_name)
     {
         $this->name = $name;
         $this->p_name = $p_name;
