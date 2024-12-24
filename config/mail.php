@@ -45,7 +45,14 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
-
+        'alternative' => [
+            'transport' => 'smtp',
+            'host' => env('ALT_MAIL_HOST'),
+            'port' => env('ALT_MAIL_PORT'),
+            'encryption' => env('ALT_MAIL_ENCRYPTION'),
+            'username' => env('ALT_MAIL_USERNAME'),
+            'password' => env('ALT_MAIL_PASSWORD'),
+        ],
         'ses' => [
             'transport' => 'ses',
         ],
