@@ -74,10 +74,10 @@ class AuthController extends Controller
                 $user->otp = $otp;
                 $user->save();
                 if($request->role == 'medical'){
-                    Mail::to([$user->email])->send(new ProfessionalOtpMail($otp,$user->name, true));
+                    Mail::mailer('alternative')->to([$user->email])->send(new ProfessionalOtpMail($otp,$user->name, true));
                 }
                 else{
-                    Mail::to([$user->email])->send(new OtpMail($otp,$user->name, true));
+                    Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp,$user->name, true));
                 }
                 return response()->json([
                     'status'  => 401,
