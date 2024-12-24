@@ -10,6 +10,7 @@ use App\Models\ConsultationFee;
 use App\Models\Review;
 use App\Models\UserFeedback;
 use App\Models\UserRefund;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
