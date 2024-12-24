@@ -96,7 +96,11 @@ class AppointmentController extends Controller
             'user_id' => auth()->id(),
             'appointment_code' => $code
         ]);
-        $appointment = Appointment::create($request->all());
+        $appointment = Appointment::create($request->all());   
+        $user = auth()->user();
+        $professional = User::find($request->med_id);    
+        Mail::to([$user->email])
+            ->send(new AfterBookingAppointment($professional->name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->name));
         $data = [
             'status' => 201,
             'message' => 'Appointment created successfully',
