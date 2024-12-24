@@ -13,7 +13,7 @@ use App\Models\UserRefund;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AfterBookingAppointment;
+use App\Mail\patient\AfterBookingAppointment;
 
 class AppointmentController extends Controller
 {
