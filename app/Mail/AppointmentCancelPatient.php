@@ -20,7 +20,7 @@ class AppointmentCancelPatient extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($appointment_date, $appointment_time, $p_name, $name)
+    public function __construct( $name, $appointment_date, $appointment_time, $p_name)
     {
         $this->appointment_date = $appointment_date;
         $this->appointment_time = $appointment_time;
