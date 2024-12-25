@@ -511,8 +511,8 @@ class AppointmentController extends Controller
         foreach ($appointments as $appointment) {
             $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
   
-            $professional = User::find($request->med_id);    
-            $user = User::find($request->user_id);    
+            $professional = User::find($appointment->med_id);    
+            $user = User::find($appointment->user_id);    
             // Notification intervals and corresponding columns
             $p_name = $professional->first_name." ".$professional->last_name;
             $u_name = $user->first_name." ".$user->last_name;
@@ -568,8 +568,8 @@ class AppointmentController extends Controller
         foreach ($appointments as $appointment) {
             $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
   
-            $professional = User::find($request->med_id);    
-            $user = User::find($request->user_id);    
+            $professional = User::find($appointment->med_id);    
+            $user = User::find($appointment->user_id);    
             // Notification intervals and corresponding columns
             $p_name = $professional->first_name." ".$professional->last_name;
             $u_name = $user->first_name." ".$user->last_name;
