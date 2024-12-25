@@ -752,6 +752,15 @@ class AppointmentController extends Controller
             $u_name = $user->first_name . " " . $user->last_name;        
             Mail::to($user->email)
                 ->send(new AfterAppointment($p_name, $u_name));
+            $notificationData = [
+                'title' => 'After Appointment',
+                'description' => "Hi ".$u_name."! Great news - you've got a 7-day free follow-up period with ".$p_name."! Plus, you can check out a summary of your consultation in the app's Summary section. Stay well! The Team that Cares.",
+                'type' => 'Appointment',
+                'from_user_id' => $appointment->user_id,
+                'to_user_id' => $appointment->user_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
             $appointment->post_consultation_email_sent_p = true;
             $appointment->save();
         }
