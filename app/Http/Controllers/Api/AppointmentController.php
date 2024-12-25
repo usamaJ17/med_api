@@ -239,44 +239,7 @@ class AppointmentController extends Controller
         $appointment->patient_status = $request->status;
 
         $appointment->save();
-        if ($appointment->status == 'cancelled') {
-            UserRefund::create(
-                [
-                    'user_id' => auth()->id(),
-                    'appointment_id' => $appointment->id,
-                    'amount' => $appointment->consultation_fees,
-                    'gateway' => $request->refund_option ? $request->refund_option : null,
-                ]
-            );
-            
-            $user = auth()->user();
-            $professional = User::find($appointment->med_id);    
-            Mail::to([$user->email])
-            ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
-            
-            $notificationData = [
-                'title' => 'Appointment Canceled',
-                'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
-                'type' => 'Appointment',
-                'from_user_id' => auth()->id(),
-                'to_user_id' => auth()->id(),
-                'is_read' => 0,
-            ];        
-            Notifications::create($notificationData);
-
-            Mail::to([$professional->email])
-            ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
-            
-            $notificationData = [
-                'title' => 'Appointment Canceled',
-                'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
-                'type' => 'Appointment',
-                'from_user_id' => auth()->id(),
-                'to_user_id' => $professional->id,
-                'is_read' => 0,
-            ];        
-            Notifications::create($notificationData);
-        }
+        
         $data = [
             'status' => 200,
             'message' => 'Appointment status changed successfully',
