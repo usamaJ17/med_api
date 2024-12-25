@@ -13,17 +13,13 @@ class ProfileVerificationRequest extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $otp;
     public $name;
-    public $register;
     /**
      * Create a new message instance.
      */
-    public function __construct($otp,$name,$register=false)
+    public function __construct($name)
     {
-        $this->otp = $otp;
         $this->name = $name;
-        $this->register = $register;
     }
 
     /**

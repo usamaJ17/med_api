@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Custom\GraphFactory;
 use App\Http\Controllers\Controller;
 use App\Mail\EmailVerification;
+use App\Mail\ProfileVerificationRequest;
 use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
@@ -196,6 +197,18 @@ class HelperController extends Controller
         $user = User::find(Auth::id());
         $user->verification_requested_at = now();
         $user->save();
+        Mail::to([$user->email])
+            ->send(new ProfileVerificationRequest($user->first_name." ".$user->last_name));
+        
+        $notificationData = [
+            'title' => 'Verification Request',
+            'description' => "🎉 Your verification request is in! Our team is reviewing your credentials now. Get ready—your profile will be live soon! Thanks for choosing Deluxe Hospital! 🚀",
+            'type' => 'Profile',
+            'from_user_id' => auth()->id(),
+            'to_user_id' => auth()->id(),
+            'is_read' => 0,
+        ];        
+        Notifications::create($notificationData);
         return response()->json([
             'status' => 200,
             'message' => 'Verification Request sent successfully',
