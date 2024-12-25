@@ -598,7 +598,7 @@ class AppointmentController extends Controller
                     ];        
                     Notifications::create($notificationData);
                     // Send email notification
-                    Mail::to([$user->email])
+                    Mail::to([$professional->email])
                         ->send(new BeforeAppointmentDoctor($p_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->age, $u_name, $subject));
                     
                     // Mark the email as sent
