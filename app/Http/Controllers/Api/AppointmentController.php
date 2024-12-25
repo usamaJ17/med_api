@@ -23,6 +23,7 @@ use App\Mail\HealthProfessionalCancelsAppointment;
 use App\Mail\AppointmentCancel;
 use App\Mail\AppointmentCompleted;
 use App\Mail\BeforeAppointmentDoctor;
+use App\Mail\AppointmentRescheduled;
 use App\Mail\AfterConsultation;
 use App\Models\Notifications;
 use Carbon\Carbon;
@@ -146,9 +147,39 @@ class AppointmentController extends Controller
         $request->merge([
             'status' => "upcoming",
         ]);
+        $originalDate = $appointment->appointment_date;
+        $originalTime = $appointment->appointment_time;
+
         // only update those fields which are present in the request
         $appointment->fill($request->all());
         $appointment->save();
+        if ($request->has('appointment_date') && $originalDate !== $appointment->appointment_date ||
+            $request->has('appointment_time') && $originalTime !== $appointment->appointment_time) {
+            // Send reschedule email
+            $user = User::find($appointment->user_id);
+            $professional = User::find($appointment->med_id);    
+            if ($user && $professional) {
+                $u_name = $user->first_name . " " . $user->last_name;
+                $p_name = $professional->first_name . " " . $professional->last_name;
+    
+                Mail::to($user->email)->send(new AppointmentRescheduled(
+                    $p_name,
+                    $u_name,
+                    $appointment->appointment_date,
+                    $appointment->appointment_time
+                ));
+            }
+            
+            $notificationData = [
+                'title' => 'Appointment Rescheduled',
+                'description' => "📅 Appointment Rescheduled: $u_name has rescheduled their appointment to $appointment->appointment_date at $appointment->appointment_time. Please check your updated schedule. Thank you for your flexibility!",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => $appointment->med_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+        }
         $data = [
             'status' => 200,
             'message' => 'Appointment updated successfully',

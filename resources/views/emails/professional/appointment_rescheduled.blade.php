@@ -84,7 +84,7 @@
                 text-align: justify;
               "
             >
-            We wanted to inform you that [Patient's Name] has rescheduled their upcoming appointment.<br>
+            We wanted to inform you that {{ $p_name }} has rescheduled their upcoming appointment.<br>
             <strong>New Appointment Details:</strong><br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br><br>
