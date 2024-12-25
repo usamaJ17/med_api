@@ -16,11 +16,10 @@ class PatientUploadsTestResult extends Mailable
     public $name;
     public $p_name;
     public $submission_date;
-    public $appointment_time;
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $p_name, $age, $submission_date)
+    public function __construct($name, $p_name, $submission_date)
     {
         $this->name = $name;
         $this->p_name = $p_name;

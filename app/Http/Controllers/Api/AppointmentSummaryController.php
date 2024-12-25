@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppointmentSummary;
+use App\Models\Appointment;
 use App\Models\DynamicFiled;
 use App\Models\SummaryDynamicField;
 use App\Models\User;
@@ -116,18 +117,24 @@ class AppointmentSummaryController extends Controller
                 $media->setCustomProperty('comment', $request->comment)->save();
             }
         }        
-        // $professional = User::find($request->med_id);  
-        // Mail::to([$professional->email])
-        // ->send(new PatientUploadsTestResult($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
-        // $notificationData = [
-        //     'title' => 'Appointment Created',
-        //     'description' => "Exciting news, $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
-        //     'type' => 'Appointment',
-        //     'from_user_id' => auth()->id(),
-        //     'to_user_id' => $professional->id,
-        //     'is_read' => 0,
-        // ];        
-        // Notifications::create($notificationData);
+        $appointment = Appointment::where('id', $request->appointment_id)->first();
+        if ($appointment) {
+            $user = User::find($appointment->user_id);  
+            $professional = User::find($appointment->med_id);
+            if ($user && $professional) {  
+                Mail::to([$professional->email])
+                ->send(new PatientUploadsTestResult($professional->first_name." ".$professional->last_name, $user->first_name." ".$user->last_name, date('Y-m-d')));
+                $notificationData = [
+                    'title' => 'Appointment Uploads',
+                    'description' => "🔔 New Test Results: ".$user->first_name." ".$user->last_name." has submitted their test results. Please review them in your Deluxe Hospital account. Thank you!",
+                    'type' => 'Appointment',
+                    'from_user_id' => $appointment->user_id,
+                    'to_user_id' => $appointment->med_id,
+                    'is_read' => 0,
+                ];        
+                Notifications::create($notificationData);
+            }
+        }
         $data = [
             'status' => 200,
             'message' => 'Documents uploaded successfully',
