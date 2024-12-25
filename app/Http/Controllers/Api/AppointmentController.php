@@ -325,20 +325,33 @@ class AppointmentController extends Controller
                 ]
             );
             
-            $professional = auth()->user();
-            $user = User::find($appointment->user_id);    
+            $user = auth()->user();
+            $professional = User::find($appointment->med_id);    
             Mail::to([$user->email])
-            ->send(new HealthProfessionalCancelsAppointment($professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
+            ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
-                'description' => "<strong>Notification:</strong> Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
+                'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
                 'type' => 'Appointment',
                 'from_user_id' => auth()->id(),
-                'to_user_id' => $appointment->user_id,
+                'to_user_id' => auth()->id(),
                 'is_read' => 0,
             ];        
-            Notifications::create($notificationData);            
+            Notifications::create($notificationData);
+
+            Mail::to([$professional->email])
+            ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
+            
+            $notificationData = [
+                'title' => 'Appointment Canceled',
+                'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => $professional->id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
         }
         $data = [
             'status' => 200,
