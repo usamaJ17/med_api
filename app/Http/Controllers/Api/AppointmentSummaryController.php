@@ -9,6 +9,8 @@ use App\Models\SummaryDynamicField;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PatientUploadsTestResult;
 
 class AppointmentSummaryController extends Controller
 {
@@ -113,7 +115,19 @@ class AppointmentSummaryController extends Controller
             if ($request->has("comment")) {
                 $media->setCustomProperty('comment', $request->comment)->save();
             }
-        }
+        }        
+        // $professional = User::find($request->med_id);  
+        // Mail::to([$professional->email])
+        // ->send(new PatientUploadsTestResult($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
+        // $notificationData = [
+        //     'title' => 'Appointment Created',
+        //     'description' => "Exciting news, $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
+        //     'type' => 'Appointment',
+        //     'from_user_id' => auth()->id(),
+        //     'to_user_id' => $professional->id,
+        //     'is_read' => 0,
+        // ];        
+        // Notifications::create($notificationData);
         $data = [
             'status' => 200,
             'message' => 'Documents uploaded successfully',
