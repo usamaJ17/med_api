@@ -11,6 +11,7 @@ use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\Tweek;
 use App\Models\User;
+use App\Models\Notifications;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;

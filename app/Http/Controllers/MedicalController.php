@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use App\Models\Article;
 use App\Models\Payouts;
 use App\Models\Review;
+use App\Models\Notifications;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
