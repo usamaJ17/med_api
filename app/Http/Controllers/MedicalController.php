@@ -10,6 +10,8 @@ use App\Models\Payouts;
 use App\Models\Review;
 use App\Models\TransactionHistory;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationApproved;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -147,6 +149,18 @@ class MedicalController extends Controller
         $medical = User::find($request->id);
         $medical->is_verified = $request->status;
         $medical->save();
+        Mail::to([$medical->email])
+            ->send(new VerificationApproved($medical->first_name." ".$medical->last_name));
+        
+        $notificationData = [
+            'title' => 'Verification Request',
+            'description' => "🌟 Good news! Your profile on Deluxe Hospital is now live! 🎉 Set your fees and availability to start booking appointments with patients. Here’s to many successful appointments ahead! Cheers 🍾",
+            'type' => 'Profile',
+            'from_user_id' => auth()->id(),
+            'to_user_id' => auth()->id(),
+            'is_read' => 0,
+        ];        
+        Notifications::create($notificationData);
         return response()->json(true);
     }
     public function emergencyStatus(Request $request){
