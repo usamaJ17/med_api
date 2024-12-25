@@ -19,6 +19,8 @@ use App\Mail\AppointmentCancelPatient;
 use App\Mail\AppointmentBooking;
 use App\Mail\PaymentReceipt;
 use App\Mail\BeforeAppointment;
+use App\Mail\HealthProfessionalCancelsAppointment;
+use App\Mail\AppointmentCancel;
 use App\Mail\BeforeAppointmentDoctor;
 use App\Models\Notifications;
 use Carbon\Carbon;
@@ -233,26 +235,7 @@ class AppointmentController extends Controller
         // change status of all appointments where user_id is the same as the user_id of the appointment
         $appointment->status = 'completed';
         $appointment->patient_status = $request->status;
-        $appointment->save();
-        $data = [
-            'status' => 200,
-            'message' => 'Appointment status changed successfully',
-            'data' => $appointment,
-        ];
-        return response()->json($data, 200);
-    }
-    
-    public function changeStatus(Request $request)
-    {
-        $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
-        if (!$appointment) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Appointment not found',
-            ], 404);
-        }
-        // change status of all appointments where user_id is the same as the user_id of the appointment
-        $appointment->status = $request->status;
+
         $appointment->save();
         if ($appointment->status == 'cancelled') {
             UserRefund::create(
@@ -284,13 +267,58 @@ class AppointmentController extends Controller
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
-                'description' => " We're sorry to inform you that your appointment with $user->first_name $user->last_name on $appointment->appointment_date at $appointment->appointment_time has been canceled by the patient. We appreciate your understanding.",
+                'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
                 'type' => 'Appointment',
                 'from_user_id' => auth()->id(),
                 'to_user_id' => $professional->id,
                 'is_read' => 0,
             ];        
             Notifications::create($notificationData);
+        }
+        $data = [
+            'status' => 200,
+            'message' => 'Appointment status changed successfully',
+            'data' => $appointment,
+        ];
+        return response()->json($data, 200);
+    }
+    
+    public function changeStatus(Request $request)
+    {
+        $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
+        if (!$appointment) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Appointment not found',
+            ], 404);
+        }
+        // change status of all appointments where user_id is the same as the user_id of the appointment
+        $appointment->status = $request->status;
+        $appointment->save();
+        if ($appointment->status == 'cancelled') {
+            UserRefund::create(
+                [
+                    'user_id' => auth()->id(),
+                    'appointment_id' => $appointment->id,
+                    'amount' => $appointment->consultation_fees,
+                    'gateway' => $request->refund_option ? $request->refund_option : null,
+                ]
+            );
+            
+            $professional = auth()->user();
+            $user = User::find($appointment->user_id);    
+            Mail::to([$user->email])
+            ->send(new HealthProfessionalCancelsAppointment($professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
+            
+            $notificationData = [
+                'title' => 'Appointment Canceled',
+                'description' => "<strong>Notification:</strong> Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => $appointment->user_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);            
         }
         $data = [
             'status' => 200,

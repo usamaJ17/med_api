@@ -11,9 +11,9 @@ class AppointmentHoursController extends Controller
     public function store(Request $request){
         $validator = \Validator::make($request->all(), [
             'appointment_type' => 'required|string',
-            'duration' => 'required|string',
+            // 'duration' => 'required|string',
             'working_hours' => 'required|string',
-            'consultation_fees' => 'required|string',
+            // 'consultation_fees' => 'required|string',
         ]);
     
         if ($validator->fails()) {
