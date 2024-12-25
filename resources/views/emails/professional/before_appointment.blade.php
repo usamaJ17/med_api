@@ -84,7 +84,7 @@
                 text-align: justify;
               "
             >
-            This is a friendly reminder that you have an upcoming appointment on Deluxe Hospital in {{$time}}. We're excited about it!.<br>
+            This is a friendly reminder that you have an upcoming appointment on Deluxe Hospital {{$time}}. We're excited about it!.<br>
             <strong>Appointment Details:</strong><br>
             - <strong>Patient Name:</strong> {{$p_name}}<br>
             - <strong>Age:</strong> {{$age}}<br>

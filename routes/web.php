@@ -48,6 +48,10 @@ Route::get('/login', [DashboardController::class, 'login'])->name('login.form');
 Route::post('/login', [AuthController::class, 'adminLogin'])->name('login');
 Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
 
+Route::get('/send-patient-appointment-notifications', [AppointmentController::class, 'sendPatientNotifications']);
+Route::get('/send-professional-appointment-notifications', [AppointmentController::class, 'sendProfessionalNotifications']);
+
+
 Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('patient', PatientController::class);

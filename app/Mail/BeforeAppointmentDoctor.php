@@ -9,25 +9,27 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class BeforeAppointment extends Mailable
+class BeforeAppointmentDoctor extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $professional;
+    public $name;
+    public $p_name;
+    public $age;
     public $appointment_date;
     public $appointment_time;
-    public $consultation_type;
-    public $name;
+    public $time;
     /**
      * Create a new message instance.
      */
-    public function __construct($professional,$appointment_date, $appointment_time, $consultation_type, $name)
+    public function __construct($name, $age, $appointment_date, $appointment_time, $p_name)
     {
-        $this->professional = $professional;
+        $this->name = $name;
+        $this->p_name = $p_name;
+        $this->age = $age;
         $this->appointment_date = $appointment_date;
         $this->appointment_time = $appointment_time;
-        $this->consultation_type = $consultation_type;
-        $this->name = $name;
+        $this->time = $time;
     }
 
     /**
@@ -36,7 +38,7 @@ class BeforeAppointment extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Appointment Reminder - Your Upcoming Consultation with ".$this->professional,
+            subject: "Friendly Reminder - Get Ready to Make a Difference ".$this->time."!",
         );
     }
 
@@ -46,7 +48,7 @@ class BeforeAppointment extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.patient.before_appointment',
+            view: 'emails.professional.before_appointment',
         );
     }
 

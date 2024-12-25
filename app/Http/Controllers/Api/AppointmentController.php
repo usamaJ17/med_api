@@ -18,7 +18,10 @@ use App\Mail\AfterBookingCancel;
 use App\Mail\AppointmentCancelPatient;
 use App\Mail\AppointmentBooking;
 use App\Mail\PaymentReceipt;
+use App\Mail\BeforeAppointment;
+use App\Mail\BeforeAppointmentDoctor;
 use App\Models\Notifications;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -496,5 +499,117 @@ class AppointmentController extends Controller
             ];
             return response()->json($data, 200);
         }
+    }
+
+    public function sendPatientNotifications()
+    {
+        // Get future appointments that are within the next 24 hours and have not sent notifications
+        $appointments = Appointment::whereDate('appointment_date', '>=', Carbon::now()->toDateString())
+            ->where('status', '!=', 'cancelled')
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
+  
+            $professional = User::find($request->med_id);    
+            $user = User::find($request->user_id);    
+            // Notification intervals and corresponding columns
+            $p_name = $professional->first_name." ".$professional->last_name;
+            $u_name = $user->first_name." ".$user->last_name;
+            $intervals = [
+                '24_hours_before' => ['time' => $appointmentTime->copy()->subDay(), 'column' => '24_hours_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 24 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', ' subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
+                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 12 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', ' subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
+                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 1 hour. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', ' subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
+                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 15 minutes. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', ' subject'=>'Appointment Reminder - Your Consultation with '.$p_name.' is Starting Soon'],
+                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_due', 'message' => 'Reminder: Your appointment with '.$p_name.' is NOW. Please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', ' subject'=>'Appointment Reminder - Your Consultation with '.$p_name.' is NOW'],
+            ];
+
+            foreach ($intervals as $key => $interval) {
+                $time = $interval['time'];
+                $column = $interval['column'];
+                $message = $interval['message'];
+                $subject = $interval['subject'];
+
+                // Send notification only if the current time is past the interval time and not already sent
+                if (Carbon::now()->greaterThanOrEqualTo($time) && (!$column || !$appointment->$column)) {
+                    $notificationData = [
+                        'title' => 'Appointment Reminder',
+                        'description' => $message,
+                        'type' => 'Appointment',
+                        'from_user_id' => $appointment->user_id,
+                        'to_user_id' => $appointment->user_id,
+                        'is_read' => 0,
+                    ];        
+                    Notifications::create($notificationData);
+                    // Send email notification
+                    Mail::to([$user->email])
+                        ->send(new BeforeAppointment($p_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $u_name, $subject));
+       
+
+                    // Mark the email as sent
+                    if ($column) {
+                        $appointment->$column = true;
+                        $appointment->save();
+                    }
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Notifications processed successfully.'], 200);
+    }
+    public function sendProfessionalNotifications()
+    {
+        // Get future appointments that are within the next 24 hours and have not sent notifications
+        $appointments = Appointment::whereDate('appointment_date', '>=', Carbon::now()->toDateString())
+            ->where('status', '!=', 'cancelled')
+            ->where('patient_status', '!=', 'cancelled')
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
+  
+            $professional = User::find($request->med_id);    
+            $user = User::find($request->user_id);    
+            // Notification intervals and corresponding columns
+            $p_name = $professional->first_name." ".$professional->last_name;
+            $u_name = $user->first_name." ".$user->last_name;
+            $intervals = [
+                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 12hrs! 🌟', ' subject'=>' in 12hrs!'],
+                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 1hr! 🌟', ' in subject'=>' 1hr!'],
+                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 15 minutes ! 🌟', ' subject'=>' in 15 minutes!'],
+                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_due_p', 'message' => '🚀 Reminder: Your appointment with '.$u_name.' on Deluxe Hospital is due NOW. We\'re excited you will be providing exceptional service!🌟', ' subject'=>' is due NOW!'],
+            ];
+
+            foreach ($intervals as $key => $interval) {
+                $time = $interval['time'];
+                $column = $interval['column'];
+                $message = $interval['message'];
+                $subject = $interval['subject'];
+
+                // Send notification only if the current time is past the interval time and not already sent
+                if (Carbon::now()->greaterThanOrEqualTo($time) && (!$column || !$appointment->$column)) {
+                    $notificationData = [
+                        'title' => 'Appointment Reminder',
+                        'description' => $message,
+                        'type' => 'Appointment',
+                        'from_user_id' => $appointment->med_id,
+                        'to_user_id' => $appointment->med_id,
+                        'is_read' => 0,
+                    ];        
+                    Notifications::create($notificationData);
+                    // Send email notification
+                    Mail::to([$user->email])
+                        ->send(new BeforeAppointmentDoctor($p_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->age, $u_name, $subject));
+                    
+                    // Mark the email as sent
+                    if ($column) {
+                        $appointment->$column = true;
+                        $appointment->save();
+                    }
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Notifications processed successfully.'], 200);
     }
 }
