@@ -50,7 +50,7 @@ Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
 
 Route::get('/send-patient-appointment-notifications', [AppointmentController::class, 'sendPatientNotifications']);
 Route::get('/send-professional-appointment-notifications', [AppointmentController::class, 'sendProfessionalNotifications']);
-
+Route::get('/send-post-consultation-notifications', [AppointmentController::class, 'sendPostConsultationNotifications']);
 
 Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

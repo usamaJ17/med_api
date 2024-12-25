@@ -21,7 +21,9 @@ use App\Mail\PaymentReceipt;
 use App\Mail\BeforeAppointment;
 use App\Mail\HealthProfessionalCancelsAppointment;
 use App\Mail\AppointmentCancel;
+use App\Mail\AppointmentCompleted;
 use App\Mail\BeforeAppointmentDoctor;
+use App\Mail\AfterConsultation;
 use App\Models\Notifications;
 use Carbon\Carbon;
 
@@ -295,6 +297,24 @@ class AppointmentController extends Controller
         // change status of all appointments where user_id is the same as the user_id of the appointment
         $appointment->status = $request->status;
         $appointment->save();
+
+        if ($appointment->status == 'completed') {
+            $professional = auth()->user();
+            $user = User::find($appointment->user_id);    
+            Mail::to([$user->email])
+            ->send(new AppointmentCompleted($professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
+            
+            $notificationData = [
+                'title' => 'Appointment Completed',
+                'description' => "Great Job! Your consultation with $user->first_name $user->last_name is complete. Keep up the amazing care with follow-ups over the next 7 days. Your payment will be ready for withdrawal after that. Thank you for your dedication! 🚀",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => $appointment->med_id,
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData); 
+        }
+
         if ($appointment->status == 'cancelled') {
             UserRefund::create(
                 [
@@ -639,5 +659,35 @@ class AppointmentController extends Controller
         }
 
         return response()->json(['message' => 'Notifications processed successfully.'], 200);
+    }
+    public function sendPostConsultationNotifications(){
+        $appointments = Appointment::whereDate('appointment_date', '=', Carbon::now()->subDays(7)->toDateString())
+            ->where('status', 'completed')
+            ->where('patient_status', 'completed')
+            ->whereNull('post_consultation_email_sent')
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            $professional = User::find($appointment->med_id); // The professional (doctor)
+            $user = User::find($appointment->user_id); // The patient
+
+            if (!$professional || !$user) {
+                continue; 
+            }
+
+            // Compose notification and email details
+            $p_name = $professional->first_name . " " . $professional->last_name;
+            $u_name = $user->first_name . " " . $user->last_name;            
+
+            // Send email to the patient
+            Mail::to($user->email)
+                ->send(new AfterConsultation($p_name, $appointment->appointment_date, $appointment->appointment->time, $appointment->consultation_fees, $u_name));
+
+            // Mark the email as sent
+            $appointment->post_consultation_email_sent = true;
+            $appointment->save();
+        }
+
+        return response()->json(['message' => 'Post-consultation notifications processed successfully.'], 200);
     }
 }

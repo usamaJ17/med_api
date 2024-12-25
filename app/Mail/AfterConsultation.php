@@ -13,25 +13,21 @@ class AfterConsultation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $professional;
     public $name;
     public $p_name;
-    public $age;
     public $appointment_date;
     public $appointment_time;
-    public $time;
+    public $amount;
     /**
      * Create a new message instance.
      */
-    public function __construct($professional, $name, $p_name, $age, $appointment_dat, $appointment_time, $time)
+    public function __construct($name, $appointment_date, $appointment_time, $amount, $p_name)
     {
-        $this->professional = $professional;
         $this->name = $name;
         $this->p_name = $p_name;
-        $this->age = $age;
+        $this->amount = $amount;
         $this->appointment_date = $appointment_date;
         $this->appointment_time = $appointment_time;
-        $this->time = $time;
     }
 
     /**
