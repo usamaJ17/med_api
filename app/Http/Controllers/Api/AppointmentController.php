@@ -335,7 +335,7 @@ class AppointmentController extends Controller
         if ($appointment->status == 'completed') {
             $professional = auth()->user();
             $user = User::find($appointment->user_id);    
-            Mail::to([$user->email])
+            Mail::to([$professional->email])
             ->send(new AppointmentCompleted($professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
             
             $notificationData = [
