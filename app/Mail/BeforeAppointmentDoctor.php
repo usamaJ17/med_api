@@ -22,7 +22,7 @@ class BeforeAppointmentDoctor extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $age, $appointment_date, $appointment_time, $p_name, $time)
+    public function __construct($name, $appointment_date, $appointment_time, $age,  $p_name, $time)
     {
         $this->name = $name;
         $this->p_name = $p_name;

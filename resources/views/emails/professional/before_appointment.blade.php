@@ -91,7 +91,7 @@
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br><br>
             We're thrilled that you'll be providing your expertise and care. Please prepare for the appointment and ensure you're ready to offer exceptional service.<br>
-            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app {{$p_name}} will be there. You will have to start the consultation.<br>
+            🎉 Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app {{$p_name}} will be there. You will have to start the consultation.<br>
             🎉 Please take clear clinical notes.<br>
             🎉 You may encourage your patient to provide their vital signs through My Profile section of  patient's side of the app.<br>
             🎉 You may indicate investigations as patient will be able to do them privately and upload the results through Completed Appointment section of patient's side of the app.<br>
