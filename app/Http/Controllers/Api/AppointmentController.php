@@ -728,7 +728,7 @@ class AppointmentController extends Controller
 
             // Send email to the patient
             Mail::to($professional->email)
-                ->send(new AfterConsultation($p_name, $appointment->appointment_date, $appointment->appointment->time, $appointment->consultation_fees, $u_name));
+                ->send(new AfterConsultation($p_name, $appointment->appointment_date, $appointment->time, $appointment->consultation_fees, $u_name));
 
             // Mark the email as sent
             $appointment->post_consultation_email_sent = true;
