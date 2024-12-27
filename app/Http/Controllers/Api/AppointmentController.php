@@ -165,7 +165,7 @@ class AppointmentController extends Controller
                 $u_name = $user->first_name . " " . $user->last_name;
                 $p_name = $professional->first_name . " " . $professional->last_name;
     
-                Mail::to($user->email)->send(new AppointmentRescheduled(
+                Mail::to($professional->email)->send(new AppointmentRescheduled(
                     $p_name,
                     $u_name,
                     $appointment->appointment_date,
