@@ -711,7 +711,7 @@ class AppointmentController extends Controller
         $appointments = Appointment::whereDate('appointment_date', '=', Carbon::now()->subDays(7)->toDateString())
             ->where('status', 'completed')
             ->where('patient_status', 'completed')
-            ->whereNull('post_consultation_email_sent')
+            ->where('post_consultation_email_sent', '=', '0')
             ->get();
 
         foreach ($appointments as $appointment) {
