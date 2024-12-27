@@ -44,7 +44,7 @@ class AppointmentRescheduled extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.professional.appointment_booking',
+            view: 'emails.professional.appointment_rescheduled',
         );
     }
 
