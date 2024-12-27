@@ -20,7 +20,7 @@ class AppointmentRescheduled extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $p_name, $appointment_dat, $appointment_time)
+    public function __construct($name, $p_name, $appointment_date, $appointment_time)
     {
         $this->name = $name;
         $this->p_name = $p_name;
