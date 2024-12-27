@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use App\Models\DynamicFiled;
 use App\Models\SummaryDynamicField;
 use App\Models\User;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
