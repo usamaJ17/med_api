@@ -120,11 +120,11 @@
             This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please disregard this email.<br>
             At Deluxe Hospital, we prioritize your comfort and care, providing exceptional telemedicine services right at your fingertips. Should you need any assistance, our dedicated support team is available around the clock via our mobile app.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

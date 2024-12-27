@@ -85,7 +85,7 @@
               "
             >
             This is a friendly reminder of your upcoming appointment with {{$professional}} on Deluxe Hospital. Here are the details of your scheduled consultation:<br>
-            <strong>Appointment Reminder:</strong><br>
+            <br><strong>Appointment Reminder:</strong><br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br>
             - <strong>Type of Consultation:</strong> {{$consultation_type}}<br>
@@ -103,11 +103,11 @@
             If you need to reschedule or cancel, please do so as soon as possible in the "Appointments" section of the app<br>
             We are committed to ensuring a smooth and comfortable experience for you. If you have any questions or require assistance, please reach out to us via the app.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

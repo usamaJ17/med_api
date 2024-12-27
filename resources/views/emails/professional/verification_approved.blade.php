@@ -86,7 +86,7 @@
             >
             We are thrilled to inform you that your profile has been successfully verified and is now live on Deluxe Hospital!<br>
 
-            <strong>What's Next?</strong><br>
+            <br><strong>What's Next?</strong><br>
             1. <strong>Share Your Digital Flyer</strong>: Let your patients know you're available by sharing your digital flyer. It's a great way to spread the word!<br>
             2. <strong>Post a Short Health Article</strong>:Posting a health article that addresses a common health problem will increase your visibility and build your reputable personal brand. <br><br>
 
@@ -104,11 +104,11 @@
               "
             >
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. Here's to many successful appointments ahead! Cheers<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

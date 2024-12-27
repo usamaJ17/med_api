@@ -85,19 +85,18 @@
               "
             >
             This is a friendly reminder that you have an upcoming appointment on Deluxe Hospital {{$time}}. We're excited about it!.<br>
-            <strong>Appointment Details:</strong><br>
+            <br><strong>Appointment Details:</strong><br>
             - <strong>Patient Name:</strong> {{$p_name}}<br>
             - <strong>Age:</strong> {{$age}}<br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br><br>
             We're thrilled that you'll be providing your expertise and care. Please prepare for the appointment and ensure you're ready to offer exceptional service.<br>
-            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
-            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app [Patient name] will be there. You will have to start the consultation.<br>
+            🎉Your money is safe in our escrow account. When the appointment is due, please navigate to Chat section of the app {{$p_name}} will be there. You will have to start the consultation.<br>
             🎉 Please take clear clinical notes.<br>
             🎉 You may encourage your patient to provide their vital signs through My Profile section of  patient's side of the app.<br>
             🎉 You may indicate investigations as patient will be able to do them privately and upload the results through Completed Appointment section of patient's side of the app.<br>
             🎉You may also write <strong>medical advice</strong>, <strong>a prescription</strong>, <strong>referral letter</strong> etc in <strong>Consultation Summary section</strong>. Your client will be able to download them as pdf files<br>
-            🎉 Please follow up on [Patient Name] at least once during the 7 days post-consultation. Your money will be ready for withdrawal after this period.<br>
+            🎉 Please follow up on {{$p_name}} at least once during the 7 days post-consultation. Your money will be ready for withdrawal after this period.<br>
              If you have any questions or need assistance, feel free to reach out to us.<br>
           </p>
             <p
@@ -110,11 +109,11 @@
               "
             >
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. Let's make this appointment a success!<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

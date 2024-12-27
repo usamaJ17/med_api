@@ -99,11 +99,11 @@
                 text-align: justify;
               "
             >
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

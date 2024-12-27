@@ -85,7 +85,7 @@
               "
             >
             We're thrilled to inform you that you've successfully booked and paid for an appointment with {{$professional}} for {{$b_name}} through Deluxe Hospital. Thank you for taking this step to ensure their healthcare needs are met.<br>
-            <strong>Appointment Details:</strong><br>
+            <br><strong>Appointment Details:</strong><br>
             - <strong>Beneficiary:</strong> {{$b_name}}<br>
             - <strong>Health Professional:</strong> {{$professional}}<br>
             - <strong>Appointment Date:</strong> {{$appointment_date}}<br>
@@ -104,11 +104,11 @@
             >
             Your transaction is confirmed, and we've emailed you the details for your records. If you have any questions or need assistance, our support team is here to help. Feel free to reach out to us.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

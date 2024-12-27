@@ -86,7 +86,7 @@
             >
             We have fantastic news for you!<br>
             Your appointment with {{$professional}} through Deluxe Hospital has been successfully booked and paid for. Below are the details of your transaction:<br>
-            <strong>Appointment Details:</strong><br>
+            <br><strong>Appointment Details:</strong><br>
             - <strong>Appointment Date:</strong> {{$appointment_date}}<br>
             - <strong>Appointment Time:</strong> {{$appointment_time}}<br>
             - <strong>Type of Consultation:</strong> {{$consultation_type}}<br>
@@ -107,11 +107,11 @@
             We've emailed you the receipt for your records. You're all set for your upcoming appointment!<br>
             If you have any questions or need assistance, feel free to reach out to our support team. We're here to ensure you have a seamless experience with Deluxe Hospital.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

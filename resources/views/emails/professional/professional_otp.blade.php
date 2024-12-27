@@ -121,12 +121,12 @@
             >
             Enter this code on the email verification screen within the next 10 minutes to kickstart your journey with us.<br>
             If you did not initiate this request, please disregard this email.<br>
-            Thank you for choosing the <strong>Deluxe Hospital app</strong>.  We can’t wait to support you as you deliver exceptional care to your patients.<br>
-            With caring thoughts,<br>
+            Thank you for choosing the <strong>Deluxe Hospital app</strong>.  We can't wait to support you as you deliver exceptional care to your patients.<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

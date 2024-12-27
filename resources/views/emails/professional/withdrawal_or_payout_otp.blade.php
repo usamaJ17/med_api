@@ -110,11 +110,11 @@
             Please enter this code on the confirmation screen within the next 10 minutes to complete your withdrawal request.<br>
             If you did not initiate this request, please contact our support team immediately.<br>
             Thank you for your attention to this matter and for being a valued member of Deluxe Hospital.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

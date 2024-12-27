@@ -98,11 +98,11 @@
             >
             If you have any questions or need further assistance, please feel free to reach out to us via the app. We're here to assist you every step of the way. You can always re-book with any of our experienced health professionals. If you have a medical emergency you can use our Emergency Help service. To do this, please navigate to the Home Screen of the Deluxe Hospital app, and tab on the Emergency Help button on the upper right hand corner.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

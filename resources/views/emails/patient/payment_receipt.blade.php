@@ -85,7 +85,7 @@
               "
             >
             Great news! Your appointment with {{$professional}} is confirmed, and we've successfully received your payment. In order to protect you, we keep this money in our escrow account until after your appointment. We're excited to assist you with your healthcare needs.<br>
-            <strong>Payment Receipt:</strong><br>
+            <br><strong>Payment Receipt:</strong><br>
             - <strong>Patient Name:</strong> {{$name}}<br>
             - <strong>Health Professional:</strong> {{$professional}}<br>
             - <strong>Appointment Date:</strong> {{$appointment_date}}<br>
@@ -94,7 +94,7 @@
             - <strong>Transaction ID</strong> {{$transaction_id}}<br>
             - <strong>Payment Date:</strong> {{$payment_date}}<br><br>
 
-            <strong>Appointment Details:</strong><br>
+            <br><strong>Appointment Details:</strong><br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br>
             - <strong>Type of Consultation:</strong> {{$consultation_type}}<br>
@@ -114,11 +114,11 @@
             If you have any questions or need assistance, please reach out to us via the app.<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
             See you soon!<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

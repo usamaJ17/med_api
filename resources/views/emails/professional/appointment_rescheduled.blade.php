@@ -85,7 +85,7 @@
               "
             >
             We wanted to inform you that {{ $p_name }} has rescheduled their upcoming appointment.<br>
-            <strong>New Appointment Details:</strong><br>
+            <br><strong>New Appointment Details:</strong><br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br><br>
             We apologize for any inconvenience this may cause and appreciate your flexibility. You do not have to do anything if you're ok with the new schedule. If that is not the case you may initiate a conversation with {{$p_name}} via chat.<br>
@@ -103,11 +103,11 @@
                 text-align: justify;
               "
             >
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

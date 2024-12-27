@@ -86,9 +86,9 @@
             >
             Fantastic news! Your consultation with {{$p_name}} is successfully completed!<br>
             Now, let's keep the momentum going by ensuring top-notch follow-up care over the next 7 days. Your dedication to patient health is truly valued.<br>
-            <strong>What's Next?</strong><br>
+            <br><strong>What's Next?</strong><br>
             - <strong>Follow-Up Period</strong>: Continue providing excellent care and support to your patient during this period.<br>
-            - <strong>Payment Release</strong>: After the 7-day follow-up, your payment held in escrow will be released and ready for withdrawal!<br>
+            - <strong>Payment Release</strong>: After the 7-day follow-up, your payment held in escrow will be released and ready for withdrawal!<br><br>
             
             Thank you for your outstanding commitment to providing exceptional care. If you have any questions or need assistance, our support team is here for you. Contact us via the app.<br><br>
 
@@ -103,11 +103,11 @@
                 text-align: justify;
               "
             >
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

@@ -85,8 +85,8 @@
               "
             >
             We are excited to inform you that your payment for the recent consultation with {{$p_name}} is now available for withdrawal!<br>
-Thank you for your dedication and commitment to providing exceptional follow-up care during the past 7 days. Your hard work and professionalism are greatly appreciated.<br>
-            <strong>Payment  Details:</strong><br>
+            Thank you for your dedication and commitment to providing exceptional follow-up care during the past 7 days. Your hard work and professionalism are greatly appreciated.<br>
+            <br><strong>Payment  Details:</strong><br>
             - <strong>Amount Available:</strong> {{$amount}}<br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Patient Name:</strong> {{$p_name}}<br><br>
@@ -103,11 +103,11 @@ Thank you for your dedication and commitment to providing exceptional follow-up 
                 text-align: justify;
               "
             >
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

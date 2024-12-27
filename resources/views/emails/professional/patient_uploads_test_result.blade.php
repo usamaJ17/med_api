@@ -86,7 +86,7 @@
             >
             We hope this message finds you well.<br>
             We wanted to inform you that {{$p_name}} has submitted new test results for your review. These results are now available in your Deluxe Hospital account.<br>
-            <strong>Patient  Details:</strong><br>
+            <br><strong>Patient  Details:</strong><br>
             - <strong>Patient Name:</strong> {{$p_name}}<br>
             - <strong>Submission Date:</strong> {{$submission_date}}<br><br>
             Please log in to your account to review the test results and provide any necessary follow-up care or recommendations.<br>
@@ -103,11 +103,11 @@
                 text-align: justify;
               "
             >
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

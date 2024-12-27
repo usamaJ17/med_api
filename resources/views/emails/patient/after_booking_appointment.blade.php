@@ -85,7 +85,7 @@
               "
             >
             We are delighted to confirm your appointment with {{$professional}} on Deluxe Hospital. Below are the details of your scheduled appointment:<br>
-            <strong>Appointment Details:</strong><br>
+            <br><strong>Appointment Details:</strong><br>
             - <strong>Date:</strong> {{$appointment_date}}<br>
             - <strong>Time:</strong> {{$appointment_time}}<br>
             - <strong>Type of Consultation:</strong> {{$consultation_type}}<br>
@@ -100,15 +100,15 @@
                 text-align: justify;
               "
             >
-            <strong>How to Join Your Appointment:</strong> At the scheduled time, please log in to the Deluxe Hospital app and navigate to the Chat section. [Health Professional's Name] will be there.<br>
+            <strong>How to Join Your Appointment:</strong> At the scheduled time, please log in to the Deluxe Hospital app and navigate to the Chat section. {{$professional}} will be there.<br>
             If you need to reschedule or cancel your appointment, please do so at least 24 hours in advance at Appointments section.<br>
             We are committed to providing you with a seamless and comfortable experience. If you have any questions or require further assistance, do not hesitate to reach out to us via the mobile app<br>
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>

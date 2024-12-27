@@ -85,7 +85,7 @@
               "
             >
             Fantastic news! 🎉 We've received your verification request. Our team is now diligently reviewing your credentials to ensure everything is in order.<br>
-            <strong>What's Next?</strong><br>
+            <br><strong>What's Next?</strong><br>
             1. <strong>Review Process</strong>: Our expert team is on it, carefully checking your submitted credentials.<br>
             2. <strong>Stay Tuned</strong>: You'll receive an email notification as soon as your verification is complete.<br>
             3. <strong>Go Live</strong>: Once verified, your profile will be activated and ready for patients to book appointments with you!<br>
@@ -104,11 +104,11 @@
               "
             >
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. Exciting times ahead!<br>
-            With caring thoughts,<br>
+            <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
             ❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
-            <a href="{{ url('/') }}" target="_blank">{{ url('/') }}</a>
+            
             </p>
           </div>
         </div>
