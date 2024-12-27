@@ -111,7 +111,7 @@
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. Let's make this appointment a success!<br>
             <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
-            ❤️‍🩹<br>
+            <span style="margin-left: 38px;"></span>❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
             
             </p>

@@ -100,7 +100,7 @@
             Thank you for choosing the <strong>Deluxe Hospital app</strong>. We look forward to supporting your health journey.<br>
             <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
-            ❤️‍🩹<br>
+            <span style="margin-left: 38px;"></span>❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
             
             </p>

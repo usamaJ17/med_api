@@ -112,7 +112,7 @@
             Thank you for your attention to this matter and for being a valued member of Deluxe Hospital.<br>
             <br>With caring thoughts,<br>
             <strong>The Team that Cares</strong><br>
-            ❤️‍🩹<br>
+            <span style="margin-left: 38px;"></span>❤️‍🩹<br>
             <strong>Deluxe Hospital</strong><br>
             
             </p>
