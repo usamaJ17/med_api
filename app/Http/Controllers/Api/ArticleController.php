@@ -26,16 +26,8 @@ class ArticleController extends Controller
     {
 
         $query = Article::query(); 
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-        if ($request->has('order_by')) {
-            if ($request->order_by === 'newest') {
-                $query->orderBy('created_at', 'DESC');
-            } elseif ($request->order_by === 'oldest') {
-                $query->orderBy('created_at', 'ASC');
-            }
-        }
+        $query->orderBy('created_at', 'DESC');
+        $query->take(6);
         $articles = $query->get();
         $data = [
             'status' => 200,
