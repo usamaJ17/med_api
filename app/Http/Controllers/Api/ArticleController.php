@@ -49,6 +49,7 @@ class ArticleController extends Controller
             'message' => 'Article comments fetched successfully',
             'data' => ['comments' => $article],
         ];
+        return response()->json($data, 200);
     }
     public function index(Request $request)
     {
