@@ -119,12 +119,12 @@ class AppointmentController extends Controller
         $user = auth()->user();
         $professional = User::find($request->med_id);    
         Mail::to([$user->email])
-            ->send(new AfterBookingAppointment($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name." ".$user->last_name));
+            ->send(new AfterBookingAppointment($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name." ".$user->last_name));
         Mail::to([$professional->email])
         ->send(new AppointmentBooking($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
         $notificationData = [
             'title' => 'Appointment Created',
-            'description' => "Exciting news, $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
+            'description' => "Exciting news, $professional->name_title $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
             'type' => 'Appointment',
             'from_user_id' => auth()->id(),
             'to_user_id' => $professional->id,
@@ -276,11 +276,11 @@ class AppointmentController extends Controller
             $user = auth()->user();
             $professional = User::find($appointment->med_id);    
             Mail::to([$user->email])
-            ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
+            ->send(new AfterBookingCancel($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
-                'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
+                'description' => "Your appointment with $professional->name_title $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
                 'type' => 'Appointment',
                 'from_user_id' => auth()->id(),
                 'to_user_id' => auth()->id(),
@@ -542,7 +542,7 @@ class AppointmentController extends Controller
         $professional = User::find($app->med_id);    
 
         Mail::to([$user->email])
-            ->send(new PaymentReceipt($professional->first_name." ".$professional->last_name, 
+            ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
             $app->appointment_date,  
             $app->appointment_time, 
             $app->appointment_type, 
@@ -553,7 +553,7 @@ class AppointmentController extends Controller
         
         $notificationData = [
             'title' => 'Payment Receipt',
-            'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
+            'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
             'type' => 'Appointment',
             'from_user_id' => auth()->id(),
             'to_user_id' => auth()->id(),
@@ -609,7 +609,7 @@ class AppointmentController extends Controller
             $professional = User::find($appointment->med_id);    
             $user = User::find($appointment->user_id);    
             // Notification intervals and corresponding columns
-            $p_name = $professional->first_name." ".$professional->last_name;
+            $p_name = $professional->name_title . " " .$professional->first_name." ".$professional->last_name;
             $u_name = $user->first_name." ".$user->last_name;
             $intervals = [
                 '24_hours_before' => ['time' => $appointmentTime->copy()->subDay(), 'column' => '24_hours_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 24 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
@@ -750,7 +750,7 @@ class AppointmentController extends Controller
             if (!$professional || !$user) {
                 continue; 
             }
-            $p_name = $professional->first_name . " " . $professional->last_name;
+            $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
             $u_name = $user->first_name . " " . $user->last_name;        
             Mail::to($user->email)
                 ->send(new AfterAppointment($p_name, $u_name));
