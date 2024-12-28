@@ -37,20 +37,23 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
-    public function show_comments(Request $request,  $id)
-    {
-        $article = Comment::with(['user'])->where('article_id', $id);
-        if (!$article) return response()->json([
-            'status' => 404,
-            'message' => 'Article not found'
-        ], 404);
+    public function show_comments(Request $request, $id){
+        $comments = Comment::with(['user'])->where('article_id', $id)->get();
+        if ($comments->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No comments found for this article'
+            ], 404);
+        }
         $data = [
-            'status' => 200, 
+            'status' => 200,
             'message' => 'Article comments fetched successfully',
-            'data' => ['comments' => $article],
+            'data' => ['comments' => $comments],
         ];
+
         return response()->json($data, 200);
     }
+
     public function index(Request $request)
     {
 
