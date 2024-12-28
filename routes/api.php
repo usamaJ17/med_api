@@ -62,6 +62,9 @@ Route::middleware(['cros'])->group(function () {
   Route::get('/professional_titles', [HelperController::class, 'getProfessionalTitles']);
   Route::post('/professional_titles', [HelperController::class, 'saveProfessionalTitles']);
   Route::get('/professional_docs', [HelperController::class, 'getProfessionalDocs']);
+
+  
+  Route::get('all-articles-for-web', [ArticleController::class, "all_articles_for_web"]);
 });
 
 
