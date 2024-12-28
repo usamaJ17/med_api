@@ -36,6 +36,23 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function show_comments(Request $request,  $id)
+    {
+        $article = Article::with(['comments.user', 'likes'])->find($id);
+        if (!$article) return response()->json([
+            'status' => 404,
+            'message' => 'Article not found'
+        ], 404);
+        $data = [
+            'status' => 200, 
+            'message' => 'Article fetched successfully',
+            'data' => ['article' => $article],
+        ];
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json($data, 200);
+        }
+        return view('dashboard.article.show', compact('article'));
+    }
     public function index(Request $request)
     {
 
