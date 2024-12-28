@@ -151,7 +151,7 @@ class MedicalController extends Controller
         $medical->is_verified = $request->status;
         $medical->save();
         Mail::to([$medical->email])
-            ->send(new VerificationApproved($medical->first_name." ".$medical->last_name));
+            ->send(new VerificationApproved($medical->name_title . " " .$medical->first_name." ".$medical->last_name));
         
         $notificationData = [
             'title' => 'Verification Request',

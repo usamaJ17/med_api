@@ -121,7 +121,7 @@ class AppointmentController extends Controller
         Mail::to([$user->email])
             ->send(new AfterBookingAppointment($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name." ".$user->last_name));
         Mail::to([$professional->email])
-        ->send(new AppointmentBooking($professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
+        ->send(new AppointmentBooking($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
         $notificationData = [
             'title' => 'Appointment Created',
             'description' => "Exciting news, $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
@@ -163,7 +163,7 @@ class AppointmentController extends Controller
             $professional = User::find($appointment->med_id);    
             if ($user && $professional) {
                 $u_name = $user->first_name . " " . $user->last_name;
-                $p_name = $professional->first_name . " " . $professional->last_name;
+                $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
     
                 Mail::to($professional->email)->send(new AppointmentRescheduled(
                     $p_name,
@@ -297,7 +297,7 @@ class AppointmentController extends Controller
             Notifications::create($notificationData);
 
             Mail::to([$professional->email])
-            ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
+            ->send(new AppointmentCancelPatient($professional->name_title . " " .$professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Canceled',
@@ -336,7 +336,7 @@ class AppointmentController extends Controller
             $professional = auth()->user();
             $user = User::find($appointment->user_id);    
             Mail::to([$professional->email])
-            ->send(new AppointmentCompleted($professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
+            ->send(new AppointmentCompleted($professional->name_title . " " .$professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
             
             $notificationData = [
                 'title' => 'Appointment Completed',
@@ -666,7 +666,7 @@ class AppointmentController extends Controller
             $professional = User::find($appointment->med_id);    
             $user = User::find($appointment->user_id);    
             // Notification intervals and corresponding columns
-            $p_name = $professional->first_name." ".$professional->last_name;
+            $p_name = $professional->name_title . " " .$professional->first_name." ".$professional->last_name;
             $u_name = $user->first_name." ".$user->last_name;
             $intervals = [
                 '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 12hrs! 🌟', 'subject'=>' in 12hrs!'],
@@ -723,7 +723,7 @@ class AppointmentController extends Controller
             }
 
             // Compose notification and email details
-            $p_name = $professional->first_name . " " . $professional->last_name;
+            $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
             $u_name = $user->first_name . " " . $user->last_name;            
 
             // Send email to the patient

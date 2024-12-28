@@ -124,7 +124,7 @@ class AppointmentSummaryController extends Controller
             $professional = User::find($appointment->med_id);
             if ($user && $professional) {  
                 Mail::to([$professional->email])
-                ->send(new PatientUploadsTestResult($professional->first_name." ".$professional->last_name, $user->first_name." ".$user->last_name, date('Y-m-d')));
+                ->send(new PatientUploadsTestResult($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $user->first_name." ".$user->last_name, date('Y-m-d')));
                 $notificationData = [
                     'title' => 'Appointment Uploads',
                     'description' => "🔔 New Test Results: ".$user->first_name." ".$user->last_name." has submitted their test results. Please review them in your Deluxe Hospital account. Thank you!",

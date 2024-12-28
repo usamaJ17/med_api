@@ -199,7 +199,7 @@ class HelperController extends Controller
         $user->verification_requested_at = now();
         $user->save();
         Mail::to([$user->email])
-            ->send(new ProfileVerificationRequest($user->first_name." ".$user->last_name));
+            ->send(new ProfileVerificationRequest($user->name_title . " " .$user->first_name." ".$user->last_name));
         
         $notificationData = [
             'title' => 'Verification Request',
