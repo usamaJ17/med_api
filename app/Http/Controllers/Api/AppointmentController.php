@@ -272,14 +272,6 @@ class AppointmentController extends Controller
         $appointment->status = 'completed';
         $appointment->patient_status = $request->status;
         if ($request->patient_status == 'cancelled') {
-            UserRefund::create(
-                [
-                    'user_id' => auth()->id(),
-                    'appointment_id' => $appointment->id,
-                    'amount' => $appointment->consultation_fees,
-                    'gateway' => $request->refund_option ? $request->refund_option : null,
-                ]
-            );
             
             $user = auth()->user();
             $professional = User::find($appointment->med_id);    
@@ -308,6 +300,14 @@ class AppointmentController extends Controller
                 'is_read' => 0,
             ];        
             Notifications::create($notificationData);
+            UserRefund::create(
+                [
+                    'user_id' => auth()->id(),
+                    'appointment_id' => $appointment->id,
+                    'amount' => $appointment->consultation_fees,
+                    'gateway' => $request->refund_option ? $request->refund_option : null,
+                ]
+            );
         }
         $appointment->save();
         
