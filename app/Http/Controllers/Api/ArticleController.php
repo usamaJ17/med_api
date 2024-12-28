@@ -25,7 +25,7 @@ class ArticleController extends Controller
     public function all_articles_for_web(Request $request)
     {
 
-        $query = Article::query(); 
+        $query = Article::with('category'); 
         $query->orderBy('created_at', 'DESC');
         $query->take(6);
         $articles = $query->get();
