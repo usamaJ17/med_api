@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Comment;
 use App\Models\ArticleCategory;
 use App\Models\Notifications;
 use App\Models\Followers;
@@ -38,20 +39,16 @@ class ArticleController extends Controller
     }
     public function show_comments(Request $request,  $id)
     {
-        $article = Article::with(['comments.user', 'likes'])->find($id);
+        $article = Comment::with(['user'])->where('article_id', $id);
         if (!$article) return response()->json([
             'status' => 404,
             'message' => 'Article not found'
         ], 404);
         $data = [
             'status' => 200, 
-            'message' => 'Article fetched successfully',
-            'data' => ['article' => $article],
+            'message' => 'Article comments fetched successfully',
+            'data' => ['comments' => $article],
         ];
-        if ($request->wantsJson() || $request->is('api/*')) {
-            return response()->json($data, 200);
-        }
-        return view('dashboard.article.show', compact('article'));
     }
     public function index(Request $request)
     {
