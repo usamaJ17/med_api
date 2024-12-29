@@ -109,6 +109,9 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::post('dynamic/consultation_summary/update', [DynamicCatagoryController::class, 'updateCusultationSummary'])->name('dynamic.consultation_summary.update');
     
 
+    Route::get('refund_history', [PaymentController::class,'refund_history'])->name('refund_history');
+
+    
     Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
     Route::get('payments/payouts', [PaymentController::class,'payouts'])->name('payments.payouts');
 

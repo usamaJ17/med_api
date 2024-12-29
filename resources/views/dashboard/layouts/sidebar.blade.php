@@ -123,6 +123,12 @@
                                             class="path2"></span></i>Payouts</a></li>
                         </ul>
                     </li>
+                    <li class="treeview @yield('refund_history')">
+                        <a href="{{ route('refund_history') }}">
+                            <i data-feather="credit-card"></i>
+                            <span>Refund History</span>
+                        </a>
+                    </li>
                     <li class="treeview @yield('emergencyhelp')">
                         <a href="#">
                             <i data-feather="phone-call"></i>

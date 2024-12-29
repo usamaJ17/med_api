@@ -45,6 +45,10 @@ class PaymentController extends Controller
 //        $data = $request->all();
 //        Log::info($data);
 //    }
+    public function refund_history(){
+        $refunds = UserRefund::with('user', 'appointment')->get();
+        return view('dashboard.refunds.index', compact('refunds'));
+    }
     public function refund(){
         $refund = UserRefund::with('appointment')->where('user_id',Auth::id())->get();
         $data = [
