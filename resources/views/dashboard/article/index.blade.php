@@ -45,7 +45,12 @@
                                     @foreach ($articles as $article)
                                         <tr class="hover-primary">
                                             <td>{{ $article->title }}</td>
-                                            <td>{{ $article->user->fullName() }}</td>
+                                            <td> 
+                                                @if ($article->user)
+                                                    {{ $article->user->fullName() }}
+                                                @else
+                                                    N/A
+                                                @endif
                                             <td>
                                                 @if ($article->published == 1)
                                                     <span style="color: green;">Approved</span>

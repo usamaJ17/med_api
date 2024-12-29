@@ -59,7 +59,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::resource('tweek', TweekController::class);
     Route::resource('reminder', ReminderController::class);
     Route::resource('user', UserController::class);
-    Route::get('articles', [ArticleController::class,'index'])->name('articles.admin.index');
+    Route::get('articles', [ArticleController::class,'index_web'])->name('articles.admin.index');
     Route::post('articles/status', [ArticleController::class,'status'])->name('articles.admin.status');
     Route::get('articles/details/{id}', [ArticleController::class,'show'])->name('articles.admin.show');
 

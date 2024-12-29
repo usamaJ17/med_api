@@ -48,7 +48,7 @@ Refund History
                                     @foreach ($refunds as $refund)
                                         <tr class="hover-primary">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $refund->user->first_name ." ". $refund->user->last_name }}</td>
+                                            <td>{{ $refund->user->fullName() }}</td>
                                             <td>{{ $refund->appointment->appointment_type }}</td>
                                             <td>{{ $refund->appointment->appointment_date }}</td>
                                             <td>{{ $refund->appointment->appointment_time }}</td>

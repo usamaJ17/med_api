@@ -54,6 +54,13 @@ class ArticleController extends Controller
         return response()->json($data, 200);
     }
 
+    public function index_web(Request $request)
+    {
+
+        $articles = Article::with('user')->get();
+        // print_r($articles);
+        return view('dashboard.article.index', compact('articles'));
+    }
     public function index(Request $request)
     {
 
