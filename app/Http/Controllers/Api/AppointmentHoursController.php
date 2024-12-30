@@ -32,17 +32,17 @@ class AppointmentHoursController extends Controller
             ->first();
 
         if ($appointment) {
-            $appointment->update($validatedData);        
+            $appointment->update($validatedData);
             return response()->json([
                 'status' => 200,
-                'message' => 'Appointment hours added successfully.',
+                'message' => 'Appointment hours updated successfully',
                 'data' => $appointment,
-            ]);
+            ], 200);
         }
-        $appointment = AppointmentHours::create($validatedData);        
+        $appointment = AppointmentHours::create($validatedData);
         return response()->json([
-            'status' => 200,
-            'message' => 'Appointment hours created successfully.',
+            'status' => 201,
+            'message' => 'Appointment hours created successfully',
             'data' => $appointment,
         ], 200);
     }
