@@ -27,25 +27,59 @@
     </div>
 
     <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <div class="col-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                      <h4 class="box-title">{{ $article->title }}</h4>
-                    </div>
-                    <div class="box-body">
-                      {!! $article->body !!}
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                      Author : {{ $article->user->fullName() }}
-                    </div>
-                    <!-- /.box-footer-->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h4 class="box-title">{{ $article->title }}</h4>
                 </div>
+                <div class="box-body">
+                    <!-- Show Thumbnail -->
+                    @if($article->getFirstMediaUrl('thumbnails'))
+                        <div class="mb-3">
+                            <img src="{{ $article->getFirstMediaUrl('thumbnails') }}" alt="Thumbnail" class="img-fluid" style="max-width: 100%; height: auto;">
+                        </div>
+                    @endif
+                    
+                    <!-- Article Body -->
+                    {!! $article->body !!}
+                    
+                    <!-- Show Media Files -->
+                    <div class="media-files mt-4">
+                        @foreach($article->getMedia('media') as $media)
+                            @if(str_contains($media->mime_type, 'image'))
+                                <div class="mb-3">
+                                    <img src="{{ $media->getUrl() }}" alt="Media Image" class="img-fluid" style="max-width: 100%; height: auto;">
+                                </div>
+                            @elseif(str_contains($media->mime_type, 'video'))
+                                <div class="mb-3">
+                                    <video controls style="max-width: 100%; height: auto;">
+                                        <source src="{{ $media->getUrl() }}" type="{{ $media->mime_type }}">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            @elseif(str_contains($media->mime_type, 'audio'))
+                                <div class="mb-3">
+                                    <audio controls style="width: 100%;">
+                                        <source src="{{ $media->getUrl() }}" type="{{ $media->mime_type }}">
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    Author : {{ $article->user->fullName() }}
+                </div>
+                <!-- /.box-footer-->
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     <!-- /.content -->
 @endsection
 @section('script')

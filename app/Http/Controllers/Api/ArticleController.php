@@ -58,8 +58,9 @@ class ArticleController extends Controller
     {
 
         $articles = Article::with('user')->get();
+        $categories = ArticleCategory::all();
         // print_r($articles);
-        return view('dashboard.article.index', compact('articles'));
+        return view('dashboard.article.index', compact(['articles', 'categories']));
     }
     public function index(Request $request)
     {
@@ -112,7 +113,56 @@ class ArticleController extends Controller
         }
         return view('dashboard.article.show', compact('article'));
     }
+    public function store_web(Request $request){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'category_id' => 'required|string',
+        ]);
 
+        $article = Article::create([
+            'category_id' => $request->category_id,
+            'user_id' => Auth::user()->id,
+            'title' => $request->title,
+            'body' => $request->body,
+            'published' => 1,
+        ]);
+        if ($request->hasFile('thumbnail')) {
+            $article->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnails');
+        }
+        if ($request->hasFile('media')) {
+            $article->addMedia($request->file('media'))->toMediaCollection('media');
+        }
+        return redirect()->back()->with('success', 'Article created successfully');
+    }
+    public function edit($id)
+    {
+        $article = Article::findOrFail($id);
+        return response()->json($article);
+    }
+    public function update_web(Request $request, $id){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'category_id' => 'required',
+        ]);
+
+        $article = Article::findOrFail($id);
+        $article->update($request->all());
+
+        // Handle file uploads
+        if ($request->hasFile('thumbnail')) {
+            $article->clearMediaCollection('thumbnails');
+            $article->addMedia($request->file('thumbnail'))->toMediaCollection('thumbnails');
+        }
+
+        if ($request->hasFile('media')) {
+            $article->clearMediaCollection('media');
+            $article->addMedia($request->file('media'))->toMediaCollection('media');
+        }
+
+        return redirect()->route('articles.admin.index')->with('success', 'Article updated successfully.');
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -129,7 +179,7 @@ class ArticleController extends Controller
         ]);
         $followers = Followers::where('user_id', Auth::user()->id)->get();
 
-        $sender = User::find($from_id); 
+        $sender = User::find(Auth::user()->id); 
         foreach ($followers as $follower) {
             $notificationData = [
                 'title' => 'Article Created',

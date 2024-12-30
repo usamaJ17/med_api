@@ -31,52 +31,83 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function saveConsultationFee(Request $request)
-    {
+    public function saveConsultationFee(Request $request){
         try {
-            $validator = \Validator::make($request->all(), [
+            $validatedData = $request->validate([
                 'consultation_type' => 'required|string',
                 'fee' => 'required|string',
                 'duration' => 'required|string',
             ]);
-        
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 422,
-                    'errors' => $validator->errors(),
-                ], 422);
-            }
-            $validatedData = $validator->validated();
             $user = auth()->user();
-            $appointment = AppointmentHours::query()
-                ->where('user_id', auth()->id())
-                ->where('appointment_type', $validatedData['consultation_type'])
-                ->first();
-            if (!$appointment) {
-                return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
-            }
-
-            $consultationFee = ConsultationFee::where(["appointment_id" => $appointment->id, "consultation_type" => $request->consultation_type])->first();
-            if (!$consultationFee) {
-                $consultationFee = new ConsultationFee([
-                    "consultation_type" => $request->consultation_type,
-                    "appointment_id" => $appointment->id,
-                    "user_id" => $user->id
-                ]);
-            }
-
-            $consultationFee->fee = $request->fee;
-            $consultationFee->duration = $request->duration;
+            $consultationFee = ConsultationFee::firstOrNew(
+                [
+                    'consultation_type' => $validatedData['consultation_type'],
+                    'user_id' => $user->id
+                ]
+            );
+            $consultationFee->fee = $validatedData['fee'];
+            $consultationFee->duration = $validatedData['duration'];
             $consultationFee->save();
             return response()->json([
-                "status" => 200,
-                "message" => "Consultation updated successfully",
-                "data" => $consultationFee
+                'status' => 200,
+                'message' => 'Consultation fee updated successfully',
+                'data' => $consultationFee
             ], 200);
+
         } catch (\Exception $ex) {
-            return response()->json(["error" => $ex->getMessage()], 500);
+            return response()->json([
+                'status' => 500,
+                'error' => $ex->getMessage(),
+            ], 500);
         }
     }
+
+    // public function saveConsultationFee(Request $request)
+    // {
+    //     try {
+    //         $validator = \Validator::make($request->all(), [
+    //             'consultation_type' => 'required|string',
+    //             'fee' => 'required|string',
+    //             'duration' => 'required|string',
+    //         ]);
+        
+    //         if ($validator->fails()) {
+    //             return response()->json([
+    //                 'status' => 422,
+    //                 'errors' => $validator->errors(),
+    //             ], 422);
+    //         }
+    //         $validatedData = $validator->validated();
+    //         $user = auth()->user();
+    //         $appointment = AppointmentHours::query()
+    //             ->where('user_id', auth()->id())
+    //             ->where('appointment_type', $validatedData['consultation_type'])
+    //             ->first();
+    //         if (!$appointment) {
+    //             return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
+    //         }
+
+    //         $consultationFee = ConsultationFee::where(["appointment_id" => $appointment->id, "consultation_type" => $request->consultation_type])->first();
+    //         if (!$consultationFee) {
+    //             $consultationFee = new ConsultationFee([
+    //                 "consultation_type" => $request->consultation_type,
+    //                 "appointment_id" => $appointment->id,
+    //                 "user_id" => $user->id
+    //             ]);
+    //         }
+
+    //         $consultationFee->fee = $request->fee;
+    //         $consultationFee->duration = $request->duration;
+    //         $consultationFee->save();
+    //         return response()->json([
+    //             "status" => 200,
+    //             "message" => "Consultation updated successfully",
+    //             "data" => $consultationFee
+    //         ], 200);
+    //     } catch (\Exception $ex) {
+    //         return response()->json(["error" => $ex->getMessage()], 500);
+    //     }
+    // }
     public function getConsultationFee(Request $request){
         $consultationFee = ConsultationFee::where('user_id', $request->user_id)->get();
         if ($consultationFee) {

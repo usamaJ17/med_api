@@ -60,9 +60,12 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::resource('reminder', ReminderController::class);
     Route::resource('user', UserController::class);
     Route::get('articles', [ArticleController::class,'index_web'])->name('articles.admin.index');
+    Route::post('articles', [ArticleController::class,'store_web'])->name('articles.admin.store');
     Route::post('articles/status', [ArticleController::class,'status'])->name('articles.admin.status');
     Route::get('articles/details/{id}', [ArticleController::class,'show'])->name('articles.admin.show');
-
+    Route::get('articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.admin.edit');
+    Route::put('articles/{id}', [ArticleController::class, 'update_web'])->name('articles.admin.update');
+    
     Route::get('export/medical', [MedicalController::class,'export'])->name('medical.export');
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
     Route::post('complete_verification', [MedicalController::class,'completeVerification'])->name('complete_verification');
