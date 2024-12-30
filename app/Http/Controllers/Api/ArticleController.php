@@ -25,39 +25,18 @@ class ArticleController extends Controller
     }
     public function all_articles_for_web(Request $request)
     {
-        try {
-            // Fetch paginated articles
-            $articles = Article::with('category')
-                ->orderBy('created_at', 'DESC')
-                ->paginate(6); // Change 6 to the number of items per page
-    
-            // Prepare the response
-            $data = [
-                'status' => 200,
-                'message' => 'All Articles fetched successfully',
-                'data' => [
-                    'articles' => $articles->items(), // Current page items
-                    'pagination' => [
-                        'total' => $articles->total(),
-                        'per_page' => $articles->perPage(),
-                        'current_page' => $articles->currentPage(),
-                        'last_page' => $articles->lastPage(),
-                        'from' => $articles->firstItem(),
-                        'to' => $articles->lastItem(),
-                    ],
-                ],
-            ];
-    
-            return response()->json($data, 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Error fetching articles',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+
+        $query = Article::with('category'); 
+        $query->orderBy('created_at', 'DESC');
+        $query->take(6);
+        $articles = $query->get();
+        $data = [
+            'status' => 200,
+            'message' => 'All Article fetched successfully',
+            'data' => ['article' => $articles],
+        ];
+        return response()->json($data, 200);
     }
-    
     public function show_comments(Request $request, $id){
         $comments = Comment::with(['user'])->where('article_id', $id)->get();
         if ($comments->isEmpty()) {
