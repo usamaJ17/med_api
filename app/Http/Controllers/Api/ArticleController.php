@@ -163,7 +163,7 @@ class ArticleController extends Controller
         if ($request->hasFile('media')) {
             $article->addMedia($request->file('media'))->toMediaCollection('media');
         }
-        return redirect()->back()->with('success', 'Article created successfully');
+        return redirect()->route('articles.admin.index')->with('success', 'Article created successfully');
     }
     public function edit($id)
     {
@@ -265,7 +265,18 @@ class ArticleController extends Controller
 
         return response()->json($data, 200);
     }
-
+    public function create()
+    {
+        $categories = ArticleCategory::all();
+        
+        return view('dashboard.article.create', compact('categories'));
+    }
+    public function edit_admin($id)
+    {
+        $article = Article::findOrFail($id);
+        $categories = ArticleCategory::all();
+        return view('dashboard.article.edit', compact('article', 'categories'));
+    }
     public function destroy($id)
     {
         $article = Article::findOrFail($id);

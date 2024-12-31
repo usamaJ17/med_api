@@ -66,7 +66,9 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.admin.edit');
     Route::put('articles/{id}', [ArticleController::class, 'update_web'])->name('articles.admin.update');
     Route::delete('articles/delete/{id}', [ArticleController::class, 'destroy'])->name('articles.delete');
-    
+    Route::get('articles/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::get('articles/{id}/edit_admin', [ArticleController::class, 'edit_admin'])->name('articles.admin.edit');
+
     Route::get('export/medical', [MedicalController::class,'export'])->name('medical.export');
     Route::get('verification/medical', [MedicalController::class,'verification_requests'])->name('medical.verify');
     Route::post('complete_verification', [MedicalController::class,'completeVerification'])->name('complete_verification');

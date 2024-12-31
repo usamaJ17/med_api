@@ -64,7 +64,7 @@
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a href="#" class="dropdown-item" onclick="editArticle({{ $article->id }})">Edit</a>
+                                                    <a href="{{ route('articles.admin.edit', $article->id) }}" class="dropdown-item">Edit</a>
                                                         <a href="#" class="dropdown-item" onclick="deleteArticle({{ $article->id }})">Delete</a>
                                                         <a class="dropdown-item"
                                                             onclick="ChangeStatus({{ $article->id }},'approve')">Approve</a>
@@ -83,133 +83,6 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="edit_article_modal" tabindex="-1" role="dialog" aria-labelledby="editArticleLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editArticleLabel">Edit Article</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="editArticleForm" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    @csrf
-                    @method('PUT')
-                    <!-- Title Field -->
-                    <div class="form-group">
-                        <label for="edit_title">Title</label>
-                        <input type="text" name="title" class="form-control" id="edit_title" required>
-                    </div>
-
-                    <!-- Body Field -->
-                    <div class="form-group">
-                        <label for="editor2">Body</label>
-                        <textarea id="editor2" name="body" rows="10" cols="80"></textarea>
-                    </div>
-
-                    <!-- Category Field -->
-                    <div class="form-group">
-                        <label for="edit_category_id">Category</label>
-                        <select name="category_id" class="form-control" id="edit_category_id" required>
-                            <option value="" disabled>Select a Category</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Thumbnail Upload -->
-                    <div class="form-group">
-                        <label for="edit_thumbnail" class="form-label">Thumbnail</label>
-                        <div class="input-group">
-                            <input type="file" name="thumbnail" class="form-control" id="edit_thumbnail" accept="image/*">
-                        </div>
-                    </div>
-
-                    <!-- Media Upload -->
-                    <div class="form-group">
-                        <label for="edit_media" class="form-label">Upload Media</label>
-                        <div class="input-group">
-                            <input type="file" name="media" class="form-control" id="edit_media" accept="audio/*,video/*,image/*">
-                        </div>
-                        <small class="form-text text-muted">Supported formats: audio, video, images.</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-    <div class="modal fade" id="add_new" tabindex="-1" role="dialog" aria-labelledby="addNewArticleLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addNewArticleLabel">Add New Article</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ route('articles.admin.store') }}" method="POST" enctype="multipart/form-data">
-                     
-                    <div class="modal-body">
-                       @csrf
-                        <!-- Title Field -->
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title" required>
-                        </div>
-
-                        <!-- Body Field -->
-                        <div class="form-group">
-                            <label for="body">Body</label>
-                            <textarea id="editor1" name="body" rows="10" cols="80">
-						    </textarea>
-                        </div>
-
-                        <!-- Category Field -->
-                        <div class="form-group">
-                            <label for="category_id">Category</label>
-                            <select name="category_id" class="form-control" id="category_id" required>
-                                <option value="" disabled selected>Select a Category</option>
-                                <!-- Populate dynamically from database -->
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Thumbnail Upload -->
-                        <div class="form-group">
-                            <label for="thumbnail" class="form-label">Thumbnail</label>
-                            <div class="input-group">
-                                <input type="file" name="thumbnail" class="form-control" id="thumbnail" accept="image/*">
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="media" class="form-label">Upload Media</label>
-                            <div class="input-group">
-                                <input type="file" name="media" class="form-control" id="media" accept="audio/*,video/*,image/*">
-                                
-                            </div>
-                            <small class="form-text text-muted">Supported formats: audio, video, images.</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Article</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
     @endsection
     @section('script')
         <script>
@@ -263,9 +136,9 @@
                     'dom': 'Bfrtip',
                     'buttons': [{
                         text: 'Add New Article',
-                        className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
-                        action: function(e, dt, node, config) {
-                            $('#add_new').modal('show'); // Show the modal
+                        className: 'btn btn-sm btn-success mb-5 text-white', // Add your custom button classes here
+                        action: function (e, dt, node, config) {
+                            window.location.href = "{{route('articles.create')}}"; // Navigate to the desired URL
                         }
                     }]
                 })
