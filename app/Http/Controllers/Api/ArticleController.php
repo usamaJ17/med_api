@@ -26,8 +26,15 @@ class ArticleController extends Controller
     public function all_articles_for_web(Request $request)
     {
         $perPage = $request->input('per_page', 6); 
-        $query = Article::with('category')
-            ->orderBy('created_at', 'DESC');
+        $categoryId = $request->input('category_id');
+        $orderBy = $request->input('order_by', 'desc');
+
+
+        $query = Article::with('category');
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+        $query->orderBy('created_at', $orderBy);
         $articles = $query->paginate($perPage);
         $data = [
             'status' => 200,
