@@ -25,18 +25,41 @@ class ArticleController extends Controller
     }
     public function all_articles_for_web(Request $request)
     {
-
-        $query = Article::with('category'); 
-        $query->orderBy('created_at', 'DESC');
-        $query->take(6);
-        $articles = $query->get();
+        $perPage = $request->input('per_page', 6); 
+        $query = Article::with('category')
+            ->orderBy('created_at', 'DESC');
+        $articles = $query->paginate($perPage);
         $data = [
             'status' => 200,
-            'message' => 'All Article fetched successfully',
-            'data' => ['article' => $articles],
+            'message' => 'All Articles fetched successfully',
+            'data' => [
+                'articles' => $articles->items(),
+                'pagination' => [
+                    'total' => $articles->total(),
+                    'count' => $articles->count(),
+                    'per_page' => $articles->perPage(),
+                    'current_page' => $articles->currentPage(),
+                    'total_pages' => $articles->lastPage(),
+                ],
+            ],
         ];
         return response()->json($data, 200);
     }
+
+    // public function all_articles_for_web(Request $request)
+    // {
+
+    //     $query = Article::with('category'); 
+    //     $query->orderBy('created_at', 'DESC');
+    //     $query->take(6);
+    //     $articles = $query->get();
+    //     $data = [
+    //         'status' => 200,
+    //         'message' => 'All Article fetched successfully',
+    //         'data' => ['article' => $articles],
+    //     ];
+    //     return response()->json($data, 200);
+    // }
     public function show_comments(Request $request, $id){
         $comments = Comment::with(['user'])->where('article_id', $id)->get();
         if ($comments->isEmpty()) {
