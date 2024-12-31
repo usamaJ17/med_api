@@ -216,7 +216,7 @@
             
             function deleteArticle(name) {
                 $.ajax({
-                    url : "{{ url('articles/delete') }}"+"/"+name,
+                    url : "{{ route('articles.delete', ['id' => '']) }}" + name,
                     type: 'DELETE',
                     data: {
                         _token: "{{ csrf_token() }}"
