@@ -65,6 +65,7 @@
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
                                                         <a href="#" class="dropdown-item" onclick="editArticle({{ $article->id }})">Edit</a>
+                                                        <a href="#" class="dropdown-item" onclick="deleteArticle({{ $article->id }})">Delete</a>
                                                         <a class="dropdown-item"
                                                             onclick="ChangeStatus({{ $article->id }},'approve')">Approve</a>
                                                         <a class="dropdown-item"
@@ -212,6 +213,20 @@
     @endsection
     @section('script')
         <script>
+            
+            function deleteArticle(name) {
+                $.ajax({
+                    url : "{{ url('articles/delete') }}"+"/"+name,
+                    type: 'DELETE',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        // reload page
+                        location.reload();
+                    }
+                });
+            }
             function editArticle(articleId) {
                 $.ajax({
                     url: `articles/${articleId}/edit`, // Adjust to your route
