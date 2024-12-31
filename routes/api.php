@@ -66,6 +66,7 @@ Route::middleware(['cros'])->group(function () {
   
   Route::get('all-articles-for-web', [ArticleController::class, "all_articles_for_web"]);
   Route::get('show-article-comments/{article}', [ArticleController::class, "show_comments"]);
+  Route::get('articles_categories_home', [ArticleController::class, "getArticleCategories"]);
 });
 
 
