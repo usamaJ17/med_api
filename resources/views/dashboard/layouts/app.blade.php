@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="{{ asset('dashboard/css/style.css')}}">
 	<link rel="stylesheet" href="{{ asset('dashboard/css/skin_color.css')}}">
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
+            type="text/css" />
     @yield('css')
 </head>
 
@@ -59,9 +61,15 @@
 	
 	<!-- Rhythm Admin App -->
 	<script src="{{ asset('dashboard/js/template.js')}}"></script>
-	<script src="{{ asset('dashboard/assets/vendor_components/ckeditor/ckeditor.js')}}"></script>
-	<script src="{{ asset('dashboard/js/pages/editor.js')}}"></script>
+
 	<script src="{{ asset('dashboard/js/pages/dashboard2.js')}}"></script>
+	<!-- <script src="{{ asset('dashboard/assets/vendor_components/ckeditor/ckeditor.js')}}"></script> -->
+	 
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+	<script src="{{ asset('dashboard/js/pages/editor.js')}}"></script>
+	<!-- <script>
+			new FroalaEditor("#editor");
+	</script> -->
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @yield('script')
 	
