@@ -10,6 +10,7 @@ use App\Models\DynamicFiled;
 use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\Tweek;
+use App\Models\DynamicDoc;
 use App\Models\User;
 use App\Models\Notifications;
 use DateTime;
@@ -113,22 +114,21 @@ class HelperController extends Controller
     }
     public function getProfessionalDocs()
     {
-        $titles = DynamicFiled::where('name', 'professional_docs')->first();
-        if ($titles) {
-            $title_array = json_decode($titles->data);
+        $titles = DynamicDoc::get();
+        if ($titles->isNotEmpty()) {
             $data = [
                 'status' => 200,
                 'message' => 'Professional Docs fetched successfully',
-                'data' => $title_array,
+                'data' => $titles,
             ];
-            return response()->json($data, 200);
         } else {
             $data = [
                 'status' => 200,
-                'message' => 'No Professional Doc found',
+                'message' => 'No Professional Docs found',
+                'data' => [],
             ];
-            return response()->json($data, 200);
         }
+        return response()->json($data, 200);
     }
     public function saveProfessionalTitles(Request $request)
     {

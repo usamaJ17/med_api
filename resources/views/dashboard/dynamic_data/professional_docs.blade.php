@@ -39,24 +39,25 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        {{-- <th>Required</th> --}}
+                                        <th>Type</th>
                                         @if(auth()->user()->hasRole('admin'))
                                         <th></th>
                                         @endif
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($professional_docs_array as $item)
+                                    @foreach ($professional_docs as $item)
                                         <tr class="hover-primary">
-                                            <td>{{ $item }}</td>
+                                            <td>{{ $item->title }}</td>
+                                            <td>{{ $item->doc_type }}</td>
                                             @if(auth()->user()->hasRole('admin'))
                                             <td>
                                                 <div class="btn-group">
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                    <a class="dropdown-item" onclick="editRecord('{{$item}}')">Edit</a> 
-                                                    <a class="dropdown-item" onclick="DeleteRecord(`{{ $item }}`)">Delete</a> 
+                                                    <a class="dropdown-item" onclick="editRecord({{$item->id}},  '{{$item->title}}', '{{$item->doc_type}}')">Edit</a> 
+                                                    <a class="dropdown-item" onclick="DeleteRecord(`{{ $item->id }}`)">Delete</a> 
                                                     </div>
                                                 </div>
                                             </td>
@@ -88,6 +89,14 @@
                             <label for="name">Document Title</label>
                             <input type="text" name="title" class="form-control" id="name" placeholder="Enter Document Name">
                         </div>
+                        <div class="form-group">
+                            <label for="name">Doc Type</label>
+                            <select type="text" name="doc_type" class="form-control" id="doc_type">
+                            <option value="">Select Option</option>
+                            <option value="signature">Signature</option>
+                            <option value="other_doc">Other Doc</option>
+                            </select>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -109,10 +118,18 @@
                 <form id="editForm" action="{{ route('dynamic.professional_docs.update') }}"  method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="oldTitle" id="editOldName">
+                        <input type="hidden" name="id" id="editId">
                         <div class="form-group">
                             <label for="editName" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="editName" name="newTitle" required>
+                            <input type="text" class="form-control" id="editName" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Doc Type</label>
+                            <select type="text" name="doc_type" class="form-control" id="editType">
+                            <option value="">Select Option</option>
+                            <option value="signature">Signature</option>
+                            <option value="other_doc">Other Doc</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -126,9 +143,10 @@
     @endsection
     @section('script')
         <script>
-            function editRecord(name) {
-                document.getElementById('editOldName').value = name;
+            function editRecord(id, name, doc_type) {
+                document.getElementById('editId').value = id;
                 document.getElementById('editName').value = name;
+                document.getElementById('editType').value = doc_type;
                 $('#editModal').modal('show')
             }
             $(function() {

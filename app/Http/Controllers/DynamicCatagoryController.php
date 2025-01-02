@@ -8,6 +8,7 @@ use App\Models\ClinicalNotesField;
 use App\Models\ConsultationSummaryField;
 use App\Models\ArticleCategory;
 use App\Models\Ranks;
+use App\Models\DynamicDoc;
 use App\Models\SupportGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -92,74 +93,47 @@ class DynamicCatagoryController extends Controller
 
 
     
-    public function professionalDocs()
-    {
-        $professional_docs = DynamicFiled::where('name','professional_docs')->first();
-        if($professional_docs){
-            $professional_docs_array = json_decode($professional_docs->data);
-        }else{
-            $professional_docs_array = [];
-        }
-        // dd($professional_docs_array);
-        return view('dashboard.dynamic_data.professional_docs', compact('professional_docs_array'));
+    public function professionalDocs(){
+        $professional_docs = DynamicDoc::get();
+        return view('dashboard.dynamic_data.professional_docs', compact('professional_docs'));
     }
-    public function deleteProfessionalDocs($name)
-    {
-        $titles = DynamicFiled::where('name','professional_docs')->first();
-        if($titles){
-            $title_array = json_decode($titles->data);
-            if(($key = array_search($name, $title_array)) !== false) {
-                unset($title_array[$key]);
-            }
-            $titles->data = json_encode(array_values($title_array));
-            $titles->save();
-        }
-        return response()->json(true);
+
+    public function deleteProfessionalDocs($id){
+        DynamicDoc::where('id', $id)
+        ->delete();
+        return response()->json($deleted > 0);
     }
+
     public function storeProfessionalDocs(Request $request){
-        $titles = DynamicFiled::where('name','professional_docs')->first();
-        if($titles){
-            $tit_array = json_decode($titles->data);
-            $tit_array[] = $request->title;
-            $titles->data = json_encode($tit_array);
-            $titles->save();
-        }else{
-            $tit_array = [];
-            $tit_array[] = $request->title;
-            $titles = new DynamicFiled();
-            $titles->name = 'professional_docs';
-            $titles->data = json_encode($tit_array);
-            $titles->save();
+        $exists = DynamicDoc::where('title', $request->title)
+        ->exists();
+        if (!$exists) {
+            DynamicDoc::create([
+                'title' => $request->title,
+                'doc_type' => $request->doc_type,
+            ]);
+            return redirect()->back()->with('success', 'Title added successfully');
         }
-        return redirect()->back()->with('success', 'Title added successfully');
+
+        return redirect()->back()->with('error', 'Title already exists');
     }
-    public function updateProfessionalDocs(Request $request)
-{
-    $request->validate([
-        'oldTitle' => 'required|string',
-        'newTitle' => 'required|string',
-    ]);
 
-    $titles = DynamicFiled::where('name', 'professional_docs')->first();
+    public function updateProfessionalDocs(Request $request){
+        $request->validate([
+            'title' => 'required|string',
+            'doc_type' => 'required|string',
+        ]);
 
-    if ($titles) {
-        $tit_array = json_decode($titles->data, true); // Decode to associative array
-        
-        // Find and replace the old title
-        $key = array_search($request->oldTitle, $tit_array);
-        if ($key !== false) {
-            $tit_array[$key] = $request->newTitle;
-            $titles->data = json_encode(array_values($tit_array));
+        $titles = DynamicDoc::where('id', $request->id)->first();
+
+        if ($titles) {
+            $titles->title = $request->title;
+            $titles->doc_type = $request->doc_type;
             $titles->save();
-
             return redirect()->back()->with('success', 'Title updated successfully');
-        } else {
-            return redirect()->back()->with('error', 'Old title not found');
         }
+        return redirect()->back()->with('error', 'No professional documents found');
     }
-
-    return redirect()->back()->with('error', 'No professional documents found');
-}
 
     public function rank()
     {
