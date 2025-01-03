@@ -99,9 +99,9 @@ class ArticleController extends Controller
         $comments = Comment::with(['user'])->where('article_id', $id)->get();
         if ($comments->isEmpty()) {
             return response()->json([
-                'status' => 404,
+                'status' => 200,
                 'message' => 'No comments found for this article'
-            ], 404);
+            ], 200);
         }
         $data = [
             'status' => 200,
