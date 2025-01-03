@@ -157,7 +157,7 @@ class ArticleController extends Controller
     public function show(Request $request,  $category,  $name)
     {
         $formattedCategory = strtolower(str_replace('-', ' ', $category));
-        $categories = ArticleCategory::where('LOWER(name)', $formattedCategory)->first();
+        $categories = ArticleCategory::whereRaw('LOWER(name)', $formattedCategory)->first();
         if (!$categories) {
             return response()->json([
                 'status' => 404,
