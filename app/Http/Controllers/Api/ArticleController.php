@@ -154,9 +154,23 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
-    public function show(Request $request,  $id)
+    public function show(Request $request,  $category,  $name)
     {
-        $article = Article::with(['comments.user', 'likes'])->find($id);
+        $formattedCategory = strtolower(str_replace('-', ' ', $category));
+        $categories = ArticleCategory::where('LOWER(name)', $formattedCategory)->first();
+        if (!$categories) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Category not found'
+            ], 404);
+        }
+        
+        $formattedName = strtolower(str_replace('-', ' ', $name));
+
+        $article = Article::with(['comments.user', 'likes'])
+        ->whereRaw('LOWER(title) = ?', [$formattedName])
+        ->where('category_id', $categories->id)->first();
+
         if (!$article) return response()->json([
             'status' => 404,
             'message' => 'Article not found'
