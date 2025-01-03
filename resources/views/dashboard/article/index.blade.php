@@ -84,12 +84,21 @@
         </div>
     </section>
     <style>
-        .fr-toolbar .fr-btn-grp {
-            margin:0;
-        }
-        .fr-box.fr-basic .fr-wrapper {
-            background: #ededed;
-        }
+       .ck-editor__editable {
+    /* Ensure proper dimensions */
+    min-height: 300px; /* Matches your CKEditor height configuration */
+    max-height: auto;
+    overflow: auto;
+
+    /* Ensure proper padding and appearance */
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    font-size: 14px; /* Adjust font size */
+    font-family: Arial, sans-serif; /* Match your page styling */
+}
+
     </style>
     <div class="modal fade" id="edit_article_modal" tabindex="-1" role="dialog" aria-labelledby="editArticleLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -235,12 +244,8 @@
                         // Populate the form fields with response data
                         $('#edit_title').val(response.title);
                         $('#editor2').val(response.body);
-                        new FroalaEditor("#editor2", {
-  height: 300 // Set height to 300 pixels
-});
-                        // CKEDITOR.instances['editor2'].setData(response.body);
                         $('#edit_category_id').val(response.category_id);
-
+                        editEditor(response.body);
                         // Set form action URL
                         $('#editArticleForm').attr('action', `articles/${articleId}`);
 

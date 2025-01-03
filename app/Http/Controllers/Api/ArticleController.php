@@ -13,6 +13,34 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    public function upload_file(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = 'uploads/' . $filename;
+
+            // Move the file to the public/uploads directory
+            $file->move(public_path('uploads'), $filename);
+    
+            $url = asset($filePath);
+
+
+            return response()->json([
+                'uploaded' => true,
+                'url' => $url,
+            ]);
+        }
+
+        return response()->json([
+            'uploaded' => false,
+            'error' => [
+                'message' => 'No file uploaded.',
+            ],
+        ]);
+    }
+    
+    
     public function getArticleCategories(Request $request)
     {
         $categories = ArticleCategory::all();
@@ -278,7 +306,7 @@ class ArticleController extends Controller
     public function addShare($article_id)
     {
         $article = Article::find($article_id);
-        $article->shares = $article->shares + 1;
+        $article->share_count = $article->share_count + 1;
         $article->save();
         $data = [
             'status' => 200,
