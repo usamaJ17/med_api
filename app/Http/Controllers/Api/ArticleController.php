@@ -154,7 +154,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
-    public function show(Request $request,  $category,  $name)
+    public function show_web(Request $request,  $category,  $name)
     {
         $formattedCategory = strtolower(str_replace('-', ' ', $category));
         $categories = ArticleCategory::whereRaw('LOWER(name) = ?', [$formattedCategory])->first();
@@ -171,6 +171,23 @@ class ArticleController extends Controller
         ->whereRaw('LOWER(title) = ?', [$formattedName])
         ->where('category_id', $categories->id)->first();
 
+        if (!$article) return response()->json([
+            'status' => 404,
+            'message' => 'Article not found'
+        ], 404);
+        $data = [
+            'status' => 200, 
+            'message' => 'Article fetched successfully',
+            'data' => ['article' => $article],
+        ];
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json($data, 200);
+        }
+        return view('dashboard.article.show', compact('article'));
+    }
+    public function show(Request $request,  $id)
+    {
+        $article = Article::with(['comments.user', 'likes'])->find($id);
         if (!$article) return response()->json([
             'status' => 404,
             'message' => 'Article not found'
