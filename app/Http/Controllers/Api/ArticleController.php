@@ -154,13 +154,9 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
-    public function show(Request $request,  $name)
+    public function show(Request $request,  $id)
     {
-        $slug = strtolower(trim(rtrim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-')));
-
-        // Find the article by slug
-        $article = Article::with(['comments.user', 'likes'])->where('slug', $slug)->first();
-
+        $article = Article::with(['comments.user', 'likes'])->find($id);
         if (!$article) return response()->json([
             'status' => 404,
             'message' => 'Article not found'
