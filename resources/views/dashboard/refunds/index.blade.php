@@ -42,6 +42,8 @@ Refund History
                                         <th>Appointment Time</th>
                                         <th>Amount</th>
                                         <th>Gateway</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,6 +56,29 @@ Refund History
                                             <td>{{ $refund->appointment->appointment_time }}</td>
                                             <td>{{ $refund->amount }}</td>
                                             <td>{{ $refund->gateway }}</td>
+                                            <td>
+                                                @if ($refund->status == 'complete')
+                                                    <span style="color: green;">Completed</span>
+                                                @elseif ($refund->status == 'reject')
+                                                    <span style="color: red;">Rejected</span>
+                                                @else
+                                                    <span style="color: #ffa800;">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="hover-primary dropdown-toggle no-caret"
+                                                        data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item"
+                                                            onclick="ChangeStatus({{ $refund->id }},'complete')">Complete</a>
+                                                        <a class="dropdown-item"
+                                                            onclick="ChangeStatus({{ $refund->id }},'reject')">Reject</a>
+                                                        <a class="dropdown-item"
+                                                            onclick="ChangeStatus({{ $refund->id }},'pending')">Pending</a>
+                                                    </div>
+                                                </div>                                                
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -64,43 +89,6 @@ Refund History
             </div>
         </div>
     </section>
-    <!-- Edit Modal -->
-    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Tweek</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm" action="" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label for="type">Type</label>
-                            <input type="text" name="type" class="form-control" id="edit_type" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="value">Value</label>
-                            <input type="text" name="value" class="form-control" id="edit_value"
-                                placeholder="Enter Value">
-                        </div>
-                        <div class="form-group">
-                            <label for="formFileMultiple" class="form-label">Media</label>
-                            <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
-                        </div>                        
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update Tweek</button>
-                </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- /.content -->
     @endsection
     @section('script')
         <script>
@@ -116,11 +104,20 @@ Refund History
                 })
             });
 
-            function editTweek(id, type, value) {
-                $('#edit_type').val(type); // Set the type as readonly
-                $('#edit_value').val(value); // Set the value to be editable
-                $('#editForm').attr('action', '/portal/tweek/' + id); // Set the action for update route
-                $('#edit_modal').modal('show'); // Open the modal
+            function ChangeStatus(id, status) {
+                $.ajax({
+                    url: "{{ url('portal/refund/status') }}",
+                    type: 'POSt',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        status: status,
+                        id: id
+                    },
+                    success: function(response) {
+                        // reload page
+                        location.reload();
+                    }
+                });
             }
         </script>
     @endsection

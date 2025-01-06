@@ -49,6 +49,16 @@ class PaymentController extends Controller
         $refunds = UserRefund::with('user', 'appointment')->get();
         return view('dashboard.refunds.index', compact('refunds'));
     }
+    public function refund_status(Request $request){
+        $refund = UserRefund::find($request->id); 
+        if($refund){
+            $refund->status = $request->status;
+            $refund->save();
+            return redirect()->back()->with('success', 'Refund Updated Successfully');
+        }else{
+            return redirect()->back()->with('error', 'Refund Not Found');
+        }
+    }
     public function refund(){
         $refund = UserRefund::with('appointment')->where('user_id',Auth::id())->get();
         $data = [

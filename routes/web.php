@@ -117,6 +117,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     
 
     Route::get('refund_history', [PaymentController::class,'refund_history'])->name('refund_history');
+    Route::post('refund/status', [PaymentController::class,'refund_status'])->name('refund.status');
 
     
     Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
