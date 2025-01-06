@@ -164,7 +164,7 @@
                     <div class="col-xl-12 col-12">
                         <div class="box">
                             <div class="box-header">
-                                <h4 class="box-title">Appointment States Wise</h4>
+                                <h4 class="box-title">Number of patients Booking appointments per Region</h4>
                             </div>
                             <div class="box-body">
                                 <div>
