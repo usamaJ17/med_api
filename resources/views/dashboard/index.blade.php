@@ -525,6 +525,7 @@
                 name: state,
                 data: groupedData.data[state]
             }));
+            
             var patientOptions = {
                 series: seriesData,
                 chart: {
@@ -560,9 +561,9 @@
                 stroke: {
                     show: true,
                     width: 2,
-                    colors: ['#ee3158'],
+                    // colors: colours,
                 },
-                // colors: ['#ee3158'],
+                // colors: colours,
                 xaxis: {
                     categories: groupedData.date,
                 },
@@ -631,9 +632,9 @@
                 stroke: {
                     show: true,
                     width: 2,
-                    colors: ['#ee3158'],
+                    // colors: colours,
                 },
-                // colors: ['#ee3158'],
+                // colors: colours,
                 xaxis: {
                     categories: groupedData.date,
                 },
@@ -668,7 +669,7 @@
                 name: state,
                 data: groupedData.data[state]
             }));
-
+            
             var medicalOptions = {
                 series: seriesData,
                 chart: {
@@ -704,9 +705,9 @@
                 stroke: {
                     show: true,
                     width: 2,
-                    colors: ['#FFA800'],
+                    // colors: colours,
                 },
-                // colors: ['#FFA800'],
+                // colors: colours,
                 xaxis: {
                     categories: groupedData.date,
                 },
