@@ -51,6 +51,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php 
+                                    echo "<pre>";
+                                    print_r($medicals);
+                                    echo "</pre>";
+                                    ?>
                                     @foreach ($medicals as $medical)
                                         <tr class="hover-primary">
                                             <td><a href="{{ route('medical.show',$medical->id ) }}"> #p-DH-{{ $medical->id }} </a></td>
