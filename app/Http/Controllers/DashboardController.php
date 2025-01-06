@@ -36,6 +36,9 @@ class DashboardController extends Controller
         $cancelAppointmentData = $graphFactory->getGraphData('cancel_appointments');
         $pro_cat_appointment = $graphFactory->getGraphData('pro_cat_appointments');
         $total_monthly_revenue = $graphFactory->getGraphData('revenue');
+
+        $appointment_state_overview = $graphFactory->getGraphData('appointment_state_overview');
+
         $age = $graphFactory->getGraphData('age');
         $dailyPatientCountCat = [];
         $professionalCounts = User::whereHas("roles", function ($q) {
@@ -74,7 +77,7 @@ class DashboardController extends Controller
             })->inRandomOrder()->get();
         }
         $maxAppointmentCount = $result->appointment_count ?? 0;
-        return view('dashboard.index')->with(compact('patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
+        return view('dashboard.index')->with(compact('appointment_state_overview', 'patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
     }
     public function userFeedback(){
         $startDate = Carbon::now()->subDays(30);

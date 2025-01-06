@@ -94,7 +94,28 @@ class GraphFactory
                 'date' => $medicalDates,
                 'data' => $medicalData,
             ];
-        } else {
+        } 
+        elseif ($type==='appointment_state_overview') {
+            $medicalData = [];
+            $medicalDates = [];
+            $distinctStates = User::distinct()->pluck('state')->filter();
+            for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
+                $formattedDate = $date->format('d M');
+                foreach ($distinctStates as $state) {
+                    $data = $this->getDataByType($type, $date, $state);
+                    $medicalData[] = [
+                        'date' => $formattedDate,
+                        'state' => $state,
+                        'value' => $data, 
+                    ];
+                }
+                $medicalDates[] = $formattedDate;
+            }
+            return [
+                'date' => $medicalDates,
+                'data' => $medicalData,
+            ];
+        }else {
             for ($date = $this->startDate->copy(); $date->lte($this->endDate); $date->addDay()) {
                 $formattedDates[] = $date->format('d M');
                 $data[] = $this->getDataByType($type, $date);
@@ -118,6 +139,8 @@ class GraphFactory
                 return $this->getPatientSignupsByState($date, $state);
             case 'medical_signups_states':
                 return $this->getMedicalSignupsByState($date, $state);
+            case 'appointment_state_overview':
+                return $this->getAppointmentByState($date, $state);
             case 'revenue':
                 return $this->getDailyRevenue($date);
             case 'appointments':
@@ -152,6 +175,14 @@ class GraphFactory
             ->whereDate('created_at', $date->toDateString())
             ->where('state', $state)
             ->count();
+    }
+    protected function getAppointmentByState($date, $state)
+    {
+        return  Appointment::whereHas("user", function ($q) use ($state) {
+                    $q->where("state", $state);
+                })
+                ->whereDate('created_at', $date->toDateString())
+                ->count();
     }
     
     protected function getMedicalSignupsByState($date, $state)

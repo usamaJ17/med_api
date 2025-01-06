@@ -164,6 +164,21 @@
                     <div class="col-xl-12 col-12">
                         <div class="box">
                             <div class="box-header">
+                                <h4 class="box-title">Appointment States Wise</h4>
+                            </div>
+                            <div class="box-body">
+                                <div>
+                                    <button onclick="updateStateApChartWithTimeFrame('daily')">Daily</button>
+                                    <button onclick="updateStateApChartWithTimeFrame('weekly')">Weekly</button>
+                                    <button onclick="updateStateApChartWithTimeFrame('monthly')">Monthly</button>
+                                </div>
+                                <div id="appointment_state_overview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-12">
+                        <div class="box">
+                            <div class="box-header">
                                 <h4 class="box-title">Appointment</h4>
                             </div>
                             <div class="box-body">
@@ -284,6 +299,7 @@
         var appointmentData = @json($appointmentData);
         var cancelAppointmentData = @json($cancelAppointmentData);
         var pro_cat_appointment = @json($pro_cat_appointment);
+        var appointment_state_overview = @json($appointment_state_overview);
 
         
         var age = @json($age);
@@ -497,6 +513,77 @@
             chart1.render();
         }
 
+        updateStateApChartWithTimeFrame('daily');
+        var appointmentChart;
+        function updateStateApChartWithTimeFrame(timeFrame){
+            if (appointmentChart) {
+                appointmentChart.destroy();
+            }
+            const uniqueStates = [...new Set(appointment_state_overview.data.map(item => item.state))];
+            const groupedData = groupDataByTimeFrame1(appointment_state_overview, uniqueStates, appointment_state_overview.date,timeFrame);
+            const seriesData = uniqueStates.map(state => ({
+                name: state,
+                data: groupedData.data[state]
+            }));
+            var patientOptions = {
+                series: seriesData,
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    foreColor: "#bac0c7",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    height: 330,
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 95, 100]
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
+                    show: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['#ee3158'],
+                },
+                // colors: ['#ee3158'],
+                xaxis: {
+                    categories: groupedData.date,
+                },
+                legend: {
+                    show: true,
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function(val) {
+                            return val
+                        }
+                    },
+                    marker: {
+                        show: false,
+                    },
+                }
+            };
+            appointmentChart = new ApexCharts(document.querySelector("#appointment_state_overview"), patientOptions);
+            appointmentChart.render();
+        }
         updateStatePChartWithTimeFrame('daily');
         var patientChart;
         function updateStatePChartWithTimeFrame(timeFrame){
