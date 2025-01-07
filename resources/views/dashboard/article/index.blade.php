@@ -134,6 +134,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="slug">Slug</label>
+                            <input type="text" name="slug" class="form-control" id="edit_slug" required>
+                        </div>
                         <!-- Thumbnail Upload -->
                         <div class="form-group">
                             <label for="edit_thumbnail" class="form-label">Thumbnail</label>
@@ -189,6 +193,10 @@
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">Slug</label>
+                            <input type="text" name="slug" class="form-control" id="slug" required>
                         </div>
                         <!-- Thumbnail Upload -->
                         <div class="form-group">
@@ -259,6 +267,7 @@
                     success: function(response) {
                         // Populate the form fields with response data
                         $('#edit_title').val(response.title);
+                        $('#edit_slug').val(response.slug);
                         $('#editor2').val(response.body);
                         $('#edit_category_id').val(response.category_id);
                         quill2.deleteText(0, quill2.getLength());

@@ -154,7 +154,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
-    public function show_web(Request $request,  $category,  $name)
+    public function show_web(Request $request,  $category,  $slug)
     {
         $formattedCategory = strtolower(str_replace('-', ' ', $category));
         $categories = ArticleCategory::whereRaw('LOWER(name) = ?', [$formattedCategory])->first();
@@ -164,11 +164,9 @@ class ArticleController extends Controller
                 'message' => 'Category not found'
             ], 404);
         }
-        
-        $formattedName = strtolower(str_replace('-', ' ', $name));
 
         $article = Article::with(['comments.user', 'likes'])
-        ->whereRaw('LOWER(title) = ?', [$formattedName])
+        ->whereRaw('slug = ?', [$slug])
         ->where('category_id', $categories->id)->first();
 
         if (!$article) return response()->json([
