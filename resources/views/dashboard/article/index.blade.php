@@ -6,6 +6,9 @@
 @section('article')
     active
 @endsection
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -118,12 +121,10 @@
                             <label for="edit_title">Title</label>
                             <input type="text" name="title" class="form-control" id="edit_title" required>
                         </div>
-                        <!-- Body Field -->
-                        <div class="form-group">
-                            <label for="editor2">Body</label>
-                            <textarea id="editor2" name="body" rows="10" cols="80"></textarea>
+                        <div> 
+                            <input type="hidden" name="body" id="body_edit_content">
+                            <div id="editor_edit"></div>
                         </div>
-                        <!-- Category Field -->
                         <div class="form-group">
                             <label for="edit_category_id">Category</label>
                             <select name="category_id" class="form-control" id="edit_category_id" required>
@@ -151,7 +152,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" id="update_article" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -166,7 +167,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('articles.admin.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('articles.admin.store') }}" method="POST" enctype="multipart/form-data" id="add_form">
                      
                     <div class="modal-body">
                        @csrf
@@ -175,11 +176,8 @@
                             <label for="title">Title</label>
                             <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title" required>
                         </div>
-                        <!-- Body Field -->
-                        <div class="form-group">
-                            <label for="body">Body</label>
-                            <textarea id="editor1" name="body" rows="10" cols="80">
-						    </textarea>
+                        <input type="hidden" name="body" id="body_content">
+                        <div id="editor">
                         </div>
                         <!-- Category Field -->
                         <div class="form-group">
@@ -204,14 +202,13 @@
                             <label for="media" class="form-label">Upload Media</label>
                             <div class="input-group">
                                 <input type="file" name="media" class="form-control" id="media" accept="audio/*,video/*,image/*">
-                                
                             </div>
                             <small class="form-text text-muted">Supported formats: audio, video, images.</small>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Article</button>
+                        <button type="button" class="btn btn-primary" id="save_article">Save Article</button>
                     </div>
                 </form>
             </div>
@@ -221,7 +218,26 @@
     @endsection
 
     @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
         <script>
+            const quill = new Quill('#editor', {
+                theme: 'snow',
+                toolbar: [
+                    ['bold', 'italic', 'underline'], // Text formatting
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
+                    ['link', 'image', 'video'], // Links and media
+                    ['clean'] // Remove formatting
+                ],
+                placeholder: 'Start your article...',
+            });
+            $('#save_article').on('click' , function() {
+                $('#body_content').val(quill.root.innerHTML)
+                $('#add_form').submit();
+            });
+            const quill2 = new Quill('#editor_edit', {
+                theme: 'snow',
+                placeholder: 'Start your article...',
+            });
             
             function deleteArticle(name) {
                 $.ajax({
@@ -245,11 +261,9 @@
                         $('#edit_title').val(response.title);
                         $('#editor2').val(response.body);
                         $('#edit_category_id').val(response.category_id);
-                        editEditor(response.body);
-                        // Set form action URL
+                        quill2.deleteText(0, quill2.getLength());
+                        quill2.clipboard.dangerouslyPasteHTML(0, response.body);
                         $('#editArticleForm').attr('action', `articles/${articleId}`);
-
-                        // Show the modal
                         $('#edit_article_modal').modal('show');
                     },
                     error: function(error) {
@@ -258,6 +272,10 @@
                     }
                 });
             }
+            $('#update_article').on('click', function() {
+                $('#body_edit_content').val(quill2.root.innerHTML);
+                $('#editArticleForm').submit();
+            });
 
             $(function() {
                 'use strict';
