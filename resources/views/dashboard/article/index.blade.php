@@ -262,10 +262,11 @@
             const quill = new Quill('#editor', {
                 theme: 'snow',
                 modules: {
-                    toolbar: toolbarOptions
+                    toolbar: toolbarOptions,
                 },
                 placeholder: 'Start your article...',
             });
+            addWebPImageUploadingFunctionality(quill);
             $('#save_article').on('click' , function() {
                 $('#body_content').val(quill.root.innerHTML)
                 $('#add_form').submit();
@@ -273,10 +274,37 @@
             const quill2 = new Quill('#editor_edit', {
                 theme: 'snow',
                 modules: {
-                    toolbar: toolbarOptions
+                    toolbar: toolbarOptions,
                 },
                 placeholder: 'Start your article...',
             });
+            addWebPImageUploadingFunctionality(quill2);
+            function addWebPImageUploadingFunctionality(editorInstance) {
+                const toolbar = editorInstance.getModule('toolbar');
+                toolbar.addHandler('image', function () {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/webp, image/*');
+                    input.click();
+                    input.onchange = function () {
+                        const file = input.files[0];
+                        if (file) {
+                            // Ensure the file is an image
+                            if (!file.type.startsWith('image/')) {
+                                alert('Please upload a valid image.');
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = function () {
+                                const range = quill.getSelection();
+                                const base64Image = reader.result;
+                                quill.insertEmbed(range.index, 'image', base64Image);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    };
+                });
+            }
             
             function deleteArticle(name) {
                 $.ajax({
