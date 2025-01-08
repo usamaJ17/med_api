@@ -228,14 +228,31 @@
     @section('script')
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
         <script>
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],       
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'formula'],
+
+                [{ 'header': 1 }, { 'header': 2 }],              
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],     
+                [{ 'indent': '-1'}, { 'indent': '+1' }],         
+                [{ 'direction': 'rtl' }],                        
+
+                [{ 'size': ['small', false, 'large', 'huge'] }], 
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ 'color': [] }, { 'background': [] }],         
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+
+                ['clean']                                        
+            ];
             const quill = new Quill('#editor', {
                 theme: 'snow',
-                toolbar: [
-                    ['bold', 'italic', 'underline'], // Text formatting
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
-                    ['link', 'image', 'video'], // Links and media
-                    ['clean'] // Remove formatting
-                ],
+                modules: {
+                    toolbar: toolbarOptions
+                },
                 placeholder: 'Start your article...',
             });
             $('#save_article').on('click' , function() {
@@ -244,6 +261,9 @@
             });
             const quill2 = new Quill('#editor_edit', {
                 theme: 'snow',
+                modules: {
+                    toolbar: toolbarOptions
+                },
                 placeholder: 'Start your article...',
             });
             

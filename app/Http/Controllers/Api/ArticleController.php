@@ -212,6 +212,7 @@ class ArticleController extends Controller
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'body' => $request->body,
+            'slug' => $request->slug,
             'published' => 1,
         ]);
         if ($request->hasFile('thumbnail')) {
