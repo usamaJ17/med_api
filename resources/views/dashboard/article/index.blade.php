@@ -8,6 +8,17 @@
 @endsection
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <style>
+        .ql-snow .ql-stroke {
+            stroke: #fbfbfb !important;
+        }
+        .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+            fill: #fbfbfb !important;
+        }
+        .ql-snow .ql-picker {
+            color: #fbfbfb !important;
+        }
+    </style>
 @endsection
 @section('content')
     <!-- Content Header (Page header) -->
