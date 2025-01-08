@@ -10,6 +10,8 @@ use App\Models\ConsultationFee;
 use App\Models\Review;
 use App\Models\UserFeedback;
 use App\Models\UserRefund;
+use App\Models\PayForMeReceiptForPayee;
+use App\Models\PayForMeReceiptForPayeeBeneficiary;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -565,33 +567,74 @@ class AppointmentController extends Controller
         $app->gateway = $request->gateway;
         $app->transaction_id = $request->transaction_id;
         if ($app->user_id != auth()->user()->id) {
-            $app->pay_for_me = 1;
+            $app->pay_for_me = auth()->user()->id;
         }
         $app->save();
         
         $user = auth()->user();
         $professional = User::find($app->med_id);    
-
-        Mail::to([$user->email])
-            ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
-            $app->appointment_date,  
-            $app->appointment_time, 
-            $app->appointment_type, 
-            $user->first_name." ".$user->last_name, 
-            $app->consultation_fees, 
-            $app->transaction_id, 
-            date('Y-m-d')));
-        
-        $notificationData = [
-            'title' => 'Payment Receipt',
-            'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
-            'type' => 'Appointment',
-            'from_user_id' => auth()->id(),
-            'to_user_id' => auth()->id(),
-            'is_read' => 0,
-        ];        
-        Notifications::create($notificationData);
-
+        if ($app->user_id != auth()->user()->id) {
+            
+            Mail::to([$user->email])
+                ->send(new PayForMeReceiptForPayee($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
+                $app->appointment_date,  
+                $app->appointment_time, 
+                $app->appointment_type, 
+                $user->first_name." ".$user->last_name, 
+                auth()->user()->first_name.' '.auth()->user()->last_name,
+                $app->consultation_fees)
+            );
+            Mail::to([$user->email])
+                ->send(new PayForMeReceiptForPayeeBeneficiary($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
+                $app->appointment_date,  
+                $app->appointment_time, 
+                $app->appointment_type, 
+                $user->first_name." ".$user->last_name,
+                $app->consultation_fees,
+                $app->transaction_id,  
+                date('Y-m-d'))
+            );
+            $notificationData = [
+                'title' => 'Payment Receipt',
+                'description' => "<strong>Notification:</strong> Fantastic! You've successfully paid for $user->first_name $user->last_name\'s appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details and confirmation!",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => auth()->id(),
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+            $notificationData = [
+                'title' => 'Payment Receipt',
+                'description' => "<strong>Notification:</strong> Awesome news! ". auth()->user()->first_name." ".auth()->user()->last_name." has paid for your appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details. See you soon!",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => auth()->id(),
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+            
+        }
+        else{
+            Mail::to([$user->email])
+                ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
+                $app->appointment_date,  
+                $app->appointment_time, 
+                $app->appointment_type, 
+                $user->first_name." ".$user->last_name, 
+                $app->consultation_fees, 
+                $app->transaction_id, 
+                date('Y-m-d')));
+            
+            $notificationData = [
+                'title' => 'Payment Receipt',
+                'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
+                'type' => 'Appointment',
+                'from_user_id' => auth()->id(),
+                'to_user_id' => auth()->id(),
+                'is_read' => 0,
+            ];        
+            Notifications::create($notificationData);
+        }
         // create a chatbox between patient and professional
         $box = ChatController::createChatBox($app->user_id, $app->med_id);
         if ($box != true) {
