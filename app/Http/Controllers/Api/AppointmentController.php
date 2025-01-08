@@ -572,6 +572,7 @@ class AppointmentController extends Controller
         $app->save();
         
         $user = auth()->user();
+        $patient = User::find($app->user_id);
         $professional = User::find($app->med_id);    
         if ($app->user_id != auth()->user()->id) {
             
@@ -580,16 +581,16 @@ class AppointmentController extends Controller
                 $app->appointment_date,  
                 $app->appointment_time, 
                 $app->appointment_type, 
-                $user->first_name." ".$user->last_name, 
-                auth()->user()->first_name.' '.auth()->user()->last_name,
+                $patient->first_name." ".$patient->last_name, 
+                $user->first_name.' '.$user->last_name,
                 $app->consultation_fees)
             );
-            Mail::to([$user->email])
+            Mail::to([$patient->email])
                 ->send(new PayForMeReceiptForPayeeBeneficiary($professional->name_title . " " .$professional->first_name." ".$professional->last_name, 
                 $app->appointment_date,  
                 $app->appointment_time, 
                 $app->appointment_type, 
-                $user->first_name." ".$user->last_name,
+                $patient->first_name." ".$patient->last_name,
                 $app->consultation_fees,
                 $app->transaction_id,  
                 date('Y-m-d'))
