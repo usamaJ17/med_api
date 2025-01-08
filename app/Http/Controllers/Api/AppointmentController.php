@@ -566,6 +566,12 @@ class AppointmentController extends Controller
         $app->is_paid = 1;
         $app->gateway = $request->gateway;
         $app->transaction_id = $request->transaction_id;
+        $data = [
+            'status' => 200,
+            'user_id' => $app->user_id,
+            'id' => auth()->user()->id,
+        ];
+        return response()->json($data, 200);
         if ($app->user_id != auth()->user()->id) {
             $app->pay_for_me = auth()->user()->id;
         }
