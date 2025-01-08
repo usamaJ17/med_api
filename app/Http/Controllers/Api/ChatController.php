@@ -6,6 +6,7 @@ use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\ChatBox;
 use App\Models\User;
+use App\Models\Notifications;
 use App\Models\ChatBoxMessage;
 use Illuminate\Http\Request;
 
