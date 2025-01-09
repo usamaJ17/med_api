@@ -17,7 +17,6 @@ class PayForMeReceiptForPayeeBeneficiary extends Mailable
     public $appointment_date;
     public $appointment_time;
     public $consultation_type;
-    public $p_name;
     public $b_name;
     public $amount;
     public $transaction_id;
@@ -25,13 +24,12 @@ class PayForMeReceiptForPayeeBeneficiary extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($professional,$appointment_date, $appointment_time, $consultation_type, $name, $amount, $transaction_id, $payment_date)
+    public function __construct($professional,$appointment_date, $appointment_time, $consultation_type, $b_name, $amount, $transaction_id, $payment_date)
     {
         $this->professional = $professional;
         $this->appointment_date = $appointment_date;
         $this->appointment_time = $appointment_time;
         $this->consultation_type = $consultation_type;
-        $this->p_name = $p_name;
         $this->b_name = $b_name;
         $this->amount = $amount;
         $this->transaction_id = $transaction_id;
