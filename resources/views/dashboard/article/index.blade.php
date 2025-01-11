@@ -18,6 +18,12 @@
         .ql-snow .ql-picker {
             color: #fbfbfb !important;
         }
+        .ql-snow .ql-picker-options {
+            background-color: #112547 !important;
+        }
+        .ql-snow .ql-picker-options .ql-picker-item {
+            color: fbfbfb;
+        }
     </style>
 @endsection
 @section('content')
@@ -248,9 +254,8 @@
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
                 [{ 'script': 'sub'}, { 'script': 'super' }],     
                 [{ 'indent': '-1'}, { 'indent': '+1' }],         
-                [{ 'direction': 'rtl' }],                        
+                [{ 'direction': 'rtl' }],
 
-                [{ 'size': ['small', false, 'large', 'huge'] }], 
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
                 [{ 'color': [] }, { 'background': [] }],         

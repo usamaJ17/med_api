@@ -35,7 +35,7 @@ class Article extends Model implements HasMedia
 
     public function getAuthorAttribute()
     {
-        return $this->user ? $this->user->prepareUserData() : null;
+        return $this->user ? $this->user->prepareArticleAuthorData() : null;
     }
     public function getThumbnailUrlAttribute()
     {
