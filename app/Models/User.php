@@ -115,7 +115,6 @@ class User extends Authenticatable implements HasMedia
             $data['name_title'] = '';
             $data['profile_image'] = url('/uploads/logo.jpeg');
         }
-        dd($data);
         return $data;
     }
 
