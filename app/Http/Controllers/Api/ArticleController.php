@@ -58,12 +58,16 @@ class ArticleController extends Controller
         $orderBy = $request->input('order_by', 'desc');
 
 
-        $query = Article::with('category');
+        $query = Article::with('category')->where('published' , 1);
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
         $query->orderBy('created_at', $orderBy);
         $articles = $query->paginate($perPage);
+        // use for each $articles and update the profile url
+        foreach ($articles as $article) {
+
+        }
         $data = [
             'status' => 200,
             'message' => 'All Articles fetched successfully',
