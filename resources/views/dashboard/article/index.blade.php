@@ -301,9 +301,9 @@
                             }
                             const reader = new FileReader();
                             reader.onload = function () {
-                                const range = quill.getSelection();
+                                const range = editorInstance.getSelection();
                                 const base64Image = reader.result;
-                                quill.insertEmbed(range.index, 'image', base64Image);
+                                editorInstance.insertEmbed(range.index, 'image', base64Image);
                             };
                             reader.readAsDataURL(file);
                         }

@@ -296,7 +296,8 @@ class HelperController extends Controller
     }
     public function shareMessage(){
         // if role is patient
-        if(Auth::user()->hasRole('patient')){
+//        if(Auth::user()->hasRole('patient')){
+        if(1){
             $tweak = Tweek::where('type', 'Patient Share Message')->first();
             $data = [
                 'share_text' => $tweak->value,

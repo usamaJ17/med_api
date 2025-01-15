@@ -59,6 +59,7 @@ class TweekController extends Controller
          $tweek->save();
          if ($request->hasFile('media') && is_array($request->file('media'))) {
              foreach ($request->file('media') as $file) {
+                 $tweek->clearMediaCollection();
                  $tweek->addMedia($file)->toMediaCollection();
              }
          }        
