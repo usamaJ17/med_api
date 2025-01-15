@@ -72,8 +72,7 @@ Route::middleware(['cros'])->group(function () {
 });
 
 
-//Route::middleware(['auth:sanctum', 'cros'])->group(function () {
-Route::middleware(['cros'])->group(function () {
+Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::post('logout', [AuthController::class, 'logout']);
   Route::post('device_token', [AuthController::class, 'saveDeviceToken']);
   Route::post('app_feedback', [HelperController::class, 'saveUserFeedback']);
