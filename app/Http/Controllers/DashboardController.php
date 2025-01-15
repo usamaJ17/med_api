@@ -22,7 +22,7 @@ class DashboardController extends Controller
     public function index()
     {
 
-        $startDate = Carbon::now()->subDays(14);
+        $startDate = Carbon::create(2024, 8, 1); // Sets the date to August 1st, 2024
         $endDate = Carbon::now()->addDay();
 
         $graphFactory = new GraphFactory($startDate, $endDate);
