@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('dashboard.layouts.app')
 
 @section('title')
@@ -35,16 +36,16 @@
             <div class="col-xl-8 col-12">
                 <div class="box bt-3 border-primary">
                     <div class="box-body text-end min-h-150"
-                        style="background-image:url({{ asset('dashboard/images/auth-bg/bg-8.jpg') }}); background-repeat: no-repeat; background-position: center;background-size: cover;">
+                         style="background-image:url({{ asset('dashboard/images/auth-bg/bg-8.jpg') }}); background-repeat: no-repeat; background-position: center;background-size: cover;">
                     </div>
                     <div class="box-body wed-up position-relative">
                         <div class="d-md-flex align-items-end">
                             <img src="{{ $patient->getFirstMediaUrl() }}" style="max-height: 150px; width: auto"
-                                class="bg-success-light rounded10 me-20" alt="" />
+                                 class="bg-success-light rounded10 me-20" alt=""/>
                             <div>
                                 <h3>{{ $patient->first_name . ' ' . $patient->last_name }}</h3>
                                 <p><i class="fa fa-clock-o"></i> Join on
-                                    {{ \Carbon\Carbon::parse($patient->created_at)->format('d/m/Y H:m') }}</p>
+                                    {{ Carbon::parse($patient->created_at)->format('d/m/Y H:m') }}</p>
                             </div>
                         </div>
                     </div>
@@ -57,24 +58,24 @@
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <tbody>
-                                    <tr>
-                                        <th scope="col">First Name</th>
-                                        <td scope="col">{{ $patient->first_name }}</td>
-                                        <th scope="col">Last Name</th>
-                                        <td scope="col">{{ $patient->last_name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">Contact</th>
-                                        <td scope="col">{{ $patient->contact }}</td>
-                                        <th scope="col">Email</th>
-                                        <td scope="col">{{ $patient->email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">Date of Birth</th>
-                                        <td scope="col">{{ $patient->dob }}</td>
-                                        <th scope="col">Gender</th>
-                                        <td scope="col">{{ $patient->gender }}</td>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">First Name</th>
+                                    <td scope="col">{{ $patient->first_name }}</td>
+                                    <th scope="col">Last Name</th>
+                                    <td scope="col">{{ $patient->last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Contact</th>
+                                    <td scope="col">{{ $patient->contact }}</td>
+                                    <th scope="col">Email</th>
+                                    <td scope="col">{{ $patient->email }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Date of Birth</th>
+                                    <td scope="col">{{ $patient->dob }}</td>
+                                    <th scope="col">Gender</th>
+                                    <td scope="col">{{ $patient->gender }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -135,18 +136,41 @@
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <tbody>
-                                    <tr>
-                                        <th scope="col">Country</th>
-                                        <td scope="col">{{ $patient->country }}</td>
-                                        <th scope="col">State</th>
-                                        <td scope="col">{{ $patient->state }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">City</th>
-                                        <td scope="col">{{ $patient->city }}</td>
-                                        <th scope="col">Language</th>
-                                        <td scope="col">{{ $patient->language }}</td>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">Country</th>
+                                    <td scope="col">{{ $patient->country }}</td>
+                                    <th scope="col">State</th>
+                                    <td scope="col">{{ $patient->state }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="col">City</th>
+                                    <td scope="col">{{ $patient->city }}</td>
+                                    <th scope="col">Language</th>
+                                    <td scope="col">{{ $patient->language }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box bt-3 border-primary">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">User Wallet</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="col">Balance</th>
+                                    <td scope="col">
+                                        @if($patient->wallet)
+                                            ${{ number_format($patient->wallet->balance, 2) }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -166,25 +190,25 @@
                     <div class="box-body">
                         <table class="table mb-0" id="exampleapppat">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Date & Time</th>
-                                    <th>Status</th>
-                                    <th>Type</th>
-                                    <th>Health Professional</th>
-                                    <th>Amount</th>
-                                    <th>Transaction ID</th>
-                                    <th>Payment Method</th>
-                                    <th>Pay For Me</th>
-                                </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Type</th>
+                                <th>Health Professional</th>
+                                <th>Amount</th>
+                                <th>Transaction ID</th>
+                                <th>Payment Method</th>
+                                <th>Pay For Me</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach ($appointment as $item)
+                            @foreach ($appointment as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
+                                    <td>{{ Carbon::parse($item->appointment_date)->format('d F Y') }}
                                         @
-                                        {{ \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') }}</td>
+                                        {{ Carbon::parse($item->appointment_time)->format('h:i A') }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td>{{ $item->appointment_type }}</td>
                                     <td>{{ $item->med->fullName() }}</td>
@@ -193,7 +217,7 @@
                                     <td>{{ $item->gateway }}</td>
                                     <td>{{ $item->pay_for_me ? "Yes" : "No" }}</td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -209,32 +233,32 @@
                     <div class="box-body">
                         <table class="table mb-0" id="example1">
                             <thead>
-                                <tr>
-                                    <th>Appointment ID</th>
-                                    <th>Transaction ID</th>
-                                    <th>Scheduled Date & Time</th>
-                                    <th>Date & Time of cancellation</th>
-                                    <th>Original Amount Paid</th>
-                                    <th>Method</th>
-                                    <th>Refund Method Status</th>
-                                </tr>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <th>Transaction ID</th>
+                                <th>Scheduled Date & Time</th>
+                                <th>Date & Time of cancellation</th>
+                                <th>Original Amount Paid</th>
+                                <th>Method</th>
+                                <th>Refund Method Status</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($appointment as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
-                                        @
-                                        {{ \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') }}</td>
-                                    <td>{{ $item->status }}</td>
-                                    <td>{{ $item->appointment_type }}</td>
-                                    <td>{{ $item->med->fullName() }}</td>
-                                    <td>{{ $item->consultation_fees }}</td>
-                                    <td>{{ $item->transaction_id }}</td>
-                                    <td>{{ $item->gateway }}</td>
-                                    <td>{{ $item->pay_for_me ? "Yes" : "No" }}</td>
-                                </tr>
-                                @endforeach --}}
+                            {{-- @foreach ($appointment as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
+                                    @
+                                    {{ \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') }}</td>
+                                <td>{{ $item->status }}</td>
+                                <td>{{ $item->appointment_type }}</td>
+                                <td>{{ $item->med->fullName() }}</td>
+                                <td>{{ $item->consultation_fees }}</td>
+                                <td>{{ $item->transaction_id }}</td>
+                                <td>{{ $item->gateway }}</td>
+                                <td>{{ $item->pay_for_me ? "Yes" : "No" }}</td>
+                            </tr>
+                            @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -246,7 +270,7 @@
 @endsection
 @section('script')
     <script>
-        $(function() {
+        $(function () {
             'use strict';
             $('#example1').DataTable({
                 'paging': true,
@@ -284,13 +308,14 @@
                 data: {
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(response) {
+                success: function (response) {
                     // reload page
                     location.reload();
                 }
             });
         }
-        $('#verify_btn').on('click', function() {
+
+        $('#verify_btn').on('click', function () {
             $.ajax({
                 url: "{{ route('complete_verification') }}",
                 type: 'POST',
@@ -299,12 +324,12 @@
                     id: "{{ $patient->id }}",
                     status: 1
                 },
-                success: function(response) {
+                success: function (response) {
                     location.reload();
                 }
             });
         });
-        $('#un_verify_btn').on('click', function() {
+        $('#un_verify_btn').on('click', function () {
             $.ajax({
                 url: "{{ route('complete_verification') }}",
                 type: 'POST',
@@ -313,12 +338,12 @@
                     id: "{{ $patient->id }}",
                     status: 0
                 },
-                success: function(response) {
+                success: function (response) {
                     location.reload();
                 }
             });
         });
-        $('#md_checkbox_23').change(function() {
+        $('#md_checkbox_23').change(function () {
             var isChecked = $(this).is(':checked');
             var val = 0;
             if (isChecked) {
@@ -333,15 +358,15 @@
                     id: "{{ $patient->id }}",
                     _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log('Checkbox state updated successfully');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error updating checkbox state:', error);
                 }
             });
         });
-        $('#md_checkbox_24').change(function() {
+        $('#md_checkbox_24').change(function () {
             var isChecked = $(this).is(':checked');
             var val = 0;
             if (isChecked) {
@@ -356,10 +381,10 @@
                     id: "{{ $patient->id }}",
                     _token: '{{ csrf_token() }}' // Include CSRF token if using Laravel
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log('Checkbox state updated successfully');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error updating checkbox state:', error);
                 }
             });
@@ -407,7 +432,7 @@
             },
             yaxis: {
                 labels: {
-                    formatter: function(value) {
+                    formatter: function (value) {
                         return value.toFixed(0); // Format to show integers
                     }
                 },
@@ -425,7 +450,7 @@
             tooltip: {
                 theme: 'dark',
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val + " Appointment"
                     }
                 }

@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('dashboard.layouts.app')
 
 @section('title')
@@ -10,8 +11,8 @@
     active
 @endsection
 @section('content')
-      <!-- Content Header (Page header) -->	  
-      <div class="content-header">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
                 <h4 class="page-title">Medical Professionals Verification</h4>
@@ -25,10 +26,10 @@
                     </nav>
                 </div>
             </div>
-            
+
         </div>
     </div>
-      
+
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -38,44 +39,49 @@
                         <div class="table-responsive rounded card-table">
                             <table class="table border-no" id="example1">
                                 <thead>
-                                    <tr>
-                                        <th>Professional ID</th>
-                                        <th>Professionals Name</th>
-                                        <th>Email</th>
-                                        <th>Phone Number</th>
-                                        <th>Type</th>
-                                        <th>Rank</th>
-                                        <th>Verification Requested At</th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>Professional ID</th>
+                                    <th>Professionals Name</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Type</th>
+                                    <th>Rank</th>
+                                    <th>Verification Requested At</th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($medicals as $medical)
-                                        <tr class="hover-primary">
-                                            <td>#p-DH-{{ $medical->id }}</td>
-                                            <td>{{ $medical->first_name . $medical->last_name }}</td>
-                                            <td>{{ $medical->email }}</td>
-                                            <td>{{ $medical->contact }}</td>
-                                            <td>{{ $medical->professionalDetails->professions->name }}</td>
-                                            <td>{{ $medical->professionalDetails->ranks->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($medical->verification_requested_at)->format('d/m/Y H:m')}}</td>
-                                            <td>												
-                                                <div class="btn-group">
-                                                <a class="hover-primary dropdown-toggle no-caret" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                @foreach ($medicals as $medical)
+                                    <tr class="hover-primary">
+                                        <td>#p-DH-{{ $medical->id ?? 'N/A' }}</td>
+                                        <td>{{ $medical->first_name ?? 'N/A' }} {{ $medical->last_name ?? 'N/A' }}</td>
+                                        <td>{{ $medical->email ?? 'N/A' }}</td>
+                                        <td>{{ $medical->contact ?? 'N/A' }}</td>
+                                        <td scope="col">{{ $medical->professionalType->name ?? $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
+                                        <td>{{ $medical->professionalDetails->ranks->name ?? 'N/A' }}</td>
+                                        <td>{{ $medical->verification_requested_at ? Carbon::parse($medical->verification_requested_at)->format('d/m/Y H:i') : 'N/A' }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="hover-primary dropdown-toggle no-caret"
+                                                   data-bs-toggle="dropdown">
+                                                    <i class="fa fa-ellipsis-h"></i>
+                                                </a>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="{{ route('medical.show',$medical->id ) }}">View Details</a>
+                                                    <a class="dropdown-item"
+                                                       href="{{ route('medical.show', $medical->id ) }}">View
+                                                        Details</a>
                                                 </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach										
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>			
+        </div>
     </section>
     <!-- /.content -->
 @endsection
@@ -89,18 +95,18 @@
                 'searching': true,
                 'ordering': true,
                 'info': true,
-                'autoWidth': false 
+                'autoWidth': false
             })
         });
-        function DeleteRecord(id){
-            console.log(id);
+
+        function DeleteRecord(id) {
             $.ajax({
-                url : "{{ url('portal/patient') }}"+"/"+id,
-                type : 'DELETE',
-                data : {
-                    _token : "{{ csrf_token() }}"
+                url: "{{ url('portal/patient') }}" + "/" + id,
+                type: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}"
                 },
-                success : function(response){
+                success: function (response) {
                     // reload page
                     location.reload();
                 }
