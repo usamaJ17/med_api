@@ -56,7 +56,7 @@ active
                                     <td>{{ $medical->first_name ?? 'N/A' }} {{ $medical->last_name ?? 'N/A' }}</td>
                                     <td>{{ $medical->email ?? 'N/A' }}</td>
                                     <td>{{ $medical->contact ?? 'N/A' }}</td>
-                                    <td>{{ $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
+                                    <td scope="col">{{ $medical->professionalType->name ?? $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
                                     <td>{{ $medical->professionalDetails->ranks->name ?? 'N/A' }}</td>
                                     <td>{{ $medical->verification_requested_at ? \Carbon\Carbon::parse($medical->verification_requested_at)->format('d/m/Y H:i') : 'N/A' }}</td>
                                     <td>

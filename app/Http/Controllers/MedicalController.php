@@ -36,7 +36,7 @@ class MedicalController extends Controller
      */
     public function verification_requests()
     {
-        $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->where('verification_requested_at','!=',null)->with('professionalDetails.professions','professionalDetails.ranks')->get();
+        $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->where('verification_requested_at','!=',null)->with('professionalDetails.professions','professionalDetails.ranks','professionalType')->get();
         return view('dashboard.medicals.verification_request', compact('medicals'));
     }
 
