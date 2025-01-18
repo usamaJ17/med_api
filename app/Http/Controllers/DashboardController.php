@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Custom\GraphFactory;
 use App\Models\Appointment;
-use App\Models\ProfessionalType;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\UserFeedback;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -19,6 +17,7 @@ class DashboardController extends Controller
     {
         return view('dashboard.auth.login');
     }
+
     public function index()
     {
         $startDate = Carbon::now()->subDays(14); // If we want to show data of only previous 14 days
@@ -71,20 +70,22 @@ class DashboardController extends Controller
         // Extract the med_id and count
         $medIdWithMaxAppointments = $result->med_id ?? null;
         $maxDoc = User::find($medIdWithMaxAppointments);
-        if(! $maxDoc){
+        if (!$maxDoc) {
             $maxDoc = User::whereHas("roles", function ($q) {
                 $q->where("name", "medical");
             })->inRandomOrder()->get();
         }
         $maxAppointmentCount = $result->appointment_count ?? 0;
-        return view('dashboard.index')->with(compact('appointment_state_overview', 'patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals','maxDoc','maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
+        return view('dashboard.index')->with(compact('appointment_state_overview', 'patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals', 'maxDoc', 'maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
     }
-    public function userFeedback(){
+
+    public function userFeedback()
+    {
         $startDate = Carbon::now()->subDays(30);
         $endDate = Carbon::now()->addDay();
         $graphFactory = new GraphFactory($startDate, $endDate);
         $userFeedback = $graphFactory->getGraphData('user_feedback');
         $userFeedbackData = UserFeedback::all();
-        return view('dashboard.feedback')->with(compact('userFeedback','userFeedbackData'));
+        return view('dashboard.feedback')->with(compact('userFeedback', 'userFeedbackData'));
     }
 }
