@@ -21,8 +21,8 @@ class DashboardController extends Controller
     }
     public function index()
     {
-
-        $startDate = Carbon::create(2024, 8, 1); // Sets the date to August 1st, 2024
+        $startDate = Carbon::now()->subDays(14); // If we want to show data of only previous 14 days
+        // $startDate = Carbon::create(2024, 8, 1); // If we want to show all time data
         $endDate = Carbon::now()->addDay();
 
         $graphFactory = new GraphFactory($startDate, $endDate);
