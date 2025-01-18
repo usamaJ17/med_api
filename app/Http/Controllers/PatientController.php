@@ -42,7 +42,7 @@ class PatientController extends Controller
      */
     public function show(string $id)
     {
-        $patient = User::whereHas("roles", function($q){ $q->where("name", "patient"); })->with('professionalDetails.professions','professionalDetails.ranks')->find($id);
+        $patient = User::whereHas("roles", function($q){ $q->where("name", "patient"); })->with('professionalDetails.professions','professionalDetails.ranks','wallet')->find($id);
         $appointment = Appointment::where('user_id',$id)->get();
         if($patient){
             $startDate = Carbon::now()->subDays(14);

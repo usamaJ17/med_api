@@ -152,6 +152,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="box bt-3 border-primary">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">User Wallet</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">Balance</th>
+                                        <td scope="col">
+                                            @if($patient->wallet)
+                                                ${{ number_format($patient->wallet->balance, 2) }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">

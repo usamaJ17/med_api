@@ -24,7 +24,7 @@ class MedicalController extends Controller
      */
     public function index()
     {
-        $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks')->get();
+        $medicals = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails.professions','professionalDetails.ranks','professionalType')->get();
         $fields = [];
         if($medicals->count() > 0){
             $fields = $medicals[0]->getAllProfessionalFields();
@@ -67,12 +67,12 @@ class MedicalController extends Controller
         $endDate = Carbon::now()->addDay();
         $formattedDates = [];
         $total_monthly_revenue = [];
+        $payoutsWithdrawn = Payouts::where('user_id',$id)->where('status', 'completed')->where('completed_at', '!=', null)->sum('amount');
         $startDate = $endDate->copy()->subDays(14);
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
             $dailyrevinue = TransactionHistory::where('user_id', $id)->whereDate('transaction_date', $date->toDateString())->sum('transaction_amount');
             $total_monthly_revenue[] = $dailyrevinue;
             $formattedDates[] = $date->format('d M'); 
-
         }
         if($medical){
             $escrowAmount = 0;
@@ -109,7 +109,7 @@ class MedicalController extends Controller
             $uniq_cus = Appointment::where('med_id',$id)->distinct('user_id')->count();
             $tot_app = Appointment::where('med_id',$id)->count();
             $reviews = Review::where('med_id',$id)->get();
-            return view('dashboard.medicals.show', compact('medical','docs','escrowAmount','availableAmount', 'reviews','payouts','tot_app','appointment','uniq_cus','atricals_count','total_revenue','formattedDates','cancelAppointmentData','appointmentData','total_monthly_revenue'));
+            return view('dashboard.medicals.show', compact('medical','docs','escrowAmount','availableAmount','payoutsWithdrawn', 'reviews','payouts','tot_app','appointment','uniq_cus','atricals_count','total_revenue','formattedDates','cancelAppointmentData','appointmentData','total_monthly_revenue'));
         }else{
             return redirect()->back()->with('error', 'Medical not found');
         }

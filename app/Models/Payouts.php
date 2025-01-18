@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payouts extends Model
 {
     use HasFactory;
+    protected $table = 'payouts';
     protected $fillable = [
         'user_id',
         'amount',
@@ -25,7 +26,6 @@ class Payouts extends Model
         'crypto_network',
         'crypto_address',
     ];
-    protected $table = 'payouts';
     public function user()
     {
         return $this->belongsTo(User::class);

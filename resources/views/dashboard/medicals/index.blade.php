@@ -60,7 +60,7 @@ active
                                     <td>{{ $medical->email ?? 'N/A' }}</td>
                                     <td>{{ $medical->contact ?? 'N/A' }}</td>
                                     <td>{{ $medical->state ?? 'N/A' }}</td>
-                                    <td>{{ optional($medical->professionalDetails)->professions->name ?? 'N/A' }}</td>
+                                    <td>{{ $medical->professionalType->name ?? $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
                                     <td>{{ optional($medical->professionalDetails)->ranks->name ?? 'N/A' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($medical->created_at)->format('d/m/Y') }}</td>
                                     <td><span class="badge @if($medical->is_verified) badge-success-light @else badge-danger-light @endif">

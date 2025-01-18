@@ -104,7 +104,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="col">Profession</th>
-                                        <td scope="col">{{ $medical->professionalDetails->professions->name }}</td>
+                                        <td scope="col">{{ $medical->professionalType->name ?? $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
                                         <th scope="col">Rank</th>
                                         <td scope="col">{{ $medical->professionalDetails->ranks->name }}</td>
                                     </tr>
@@ -250,7 +250,23 @@
                                     </tr>
                                     <tr>
                                         <th scope="col" colspan="2">Escrow Amount</th>
-                                        <td scope="col" colspan="2">{{ $escrowAmount }}</td>
+                                    <td scope="col" colspan="2">
+                                        @if(!empty($escrowAmount))
+                                        {{ $escrowAmount }}
+                                        @else
+                                        0
+                                        @endif
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" colspan="2">Withdraw Amount</th>
+                                    <td scope="col" colspan="2">
+                                        @if(!empty($payoutsWithdrawn))
+                                        {{ $payoutsWithdrawn }}
+                                        @else
+                                        0
+                                        @endif
+                                    </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -486,7 +502,7 @@
             }
 
             $.ajax({
-                url: '{{ route('emergency_status') }}', // Replace with your endpoint URL
+                url: "{{ route('emergency_status') }}",
                 type: 'POST',
                 data: {
                     can_emergency: val,
@@ -509,7 +525,7 @@
             }
 
             $.ajax({
-                url: '{{ route('night_emergency_status') }}', // Replace with your endpoint URL
+                url: "{{ route('night_emergency_status') }}",
                 type: 'POST',
                 data: {
                     can_night_emergency: val,
