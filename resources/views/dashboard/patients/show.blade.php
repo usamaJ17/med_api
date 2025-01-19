@@ -43,9 +43,9 @@
                             <img src="{{ $patient->getFirstMediaUrl() }}" style="max-height: 150px; width: auto"
                                  class="bg-success-light rounded10 me-20" alt=""/>
                             <div>
-                                <h3>{{ $patient->first_name . ' ' . $patient->last_name }}</h3>
+                                <h3>{{ ($patient->first_name ?? 'N/A') . ' ' . ($patient->last_name ?? 'N/A') }}</h3>
                                 <p><i class="fa fa-clock-o"></i> Join on
-                                    {{ Carbon::parse($patient->created_at)->format('d/m/Y H:m') }}</p>
+                                {{ $patient->created_at ? Carbon::parse($patient->created_at)->format('d/m/Y H:i') : 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
@@ -60,21 +60,21 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">First Name</th>
-                                    <td scope="col">{{ $patient->first_name }}</td>
+                                    <td scope="col">{{ $patient->first_name ?? 'N/A' }}</td>
                                     <th scope="col">Last Name</th>
-                                    <td scope="col">{{ $patient->last_name }}</td>
+                                    <td scope="col">{{ $patient->last_name  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Contact</th>
-                                    <td scope="col">{{ $patient->contact }}</td>
+                                    <td scope="col">{{ $patient->contact ?? 'N/A' }}</td>
                                     <th scope="col">Email</th>
-                                    <td scope="col">{{ $patient->email }}</td>
+                                    <td scope="col">{{ $patient->email ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Date of Birth</th>
-                                    <td scope="col">{{ $patient->dob }}</td>
+                                    <td scope="col">{{ $patient->dob  ?? 'N/A'}}</td>
                                     <th scope="col">Gender</th>
-                                    <td scope="col">{{ $patient->gender }}</td>
+                                    <td scope="col">{{ $patient->gender ?? 'N/A' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -105,11 +105,11 @@
                                                     </div>
                                                     <div class="d-flex flex-column flex-grow-1 fw-500">
                                                         <p class="hover-primary text-fade mb-1 fs-14">
-                                                            {{ $item->user->fullName() }}</p>
+                                                        {{ $item->user && $item->user->fullName() ? $item->user->fullName() : 'N/A' }}</p>
                                                         <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i>
-                                                            {{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
+                                                            {{ $item->appointment_date ? \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') : 'N/A' }}
                                                             @
-                                                            {{ \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') }}
+                                                            {{ $item->appointment_time ? \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') : 'N/A' }} 
                                                             <span class="mx-20">{{ $item->consultation_fees }}</span>
                                                         </p>
                                                     </div>
@@ -138,15 +138,15 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">Country</th>
-                                    <td scope="col">{{ $patient->country }}</td>
+                                    <td scope="col">{{ $patient->country  ?? 'N/A' }}</td>
                                     <th scope="col">State</th>
-                                    <td scope="col">{{ $patient->state }}</td>
+                                    <td scope="col">{{ $patient->state  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">City</th>
-                                    <td scope="col">{{ $patient->city }}</td>
+                                    <td scope="col">{{ $patient->city  ?? 'N/A'}}</td>
                                     <th scope="col">Language</th>
-                                    <td scope="col">{{ $patient->language }}</td>
+                                    <td scope="col">{{ $patient->language  ?? 'N/A'}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -205,16 +205,17 @@
                             <tbody>
                             @foreach ($appointment as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ Carbon::parse($item->appointment_date)->format('d F Y') }}
-                                        @
-                                        {{ Carbon::parse($item->appointment_time)->format('h:i A') }}</td>
-                                    <td>{{ $item->status }}</td>
-                                    <td>{{ $item->appointment_type }}</td>
-                                    <td>{{ $item->med->fullName() }}</td>
-                                    <td>{{ $item->consultation_fees }}</td>
-                                    <td>{{ $item->transaction_id }}</td>
-                                    <td>{{ $item->gateway }}</td>
+                                    <td>{{ $item->id ?? 'N/A' }}</td>
+                                    <td>
+                                        {{ $item->appointment_date ? \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') : 'N/A' }} @ 
+                                        {{ $item->appointment_time ? \Carbon\Carbon::parse($item->appointment_time)->format('h:i A') : 'N/A' }}
+                                    </td>
+                                    <td>{{ $item->status ?? 'N/A' }}</td>
+                                    <td>{{ $item->appointment_type ?? 'N/A' }}</td>
+                                    <td>{{ $item->med && $item->med->fullName() ? $item->med->fullName() : 'N/A' }}</td>
+                                    <td>{{ $item->consultation_fees ?? 'N/A' }}</td>
+                                    <td>{{ $item->transaction_id ?? 'N/A' }}</td>
+                                    <td>{{ $item->gateway ?? 'N/A' }}</td>
                                     <td>{{ $item->pay_for_me ? "Yes" : "No" }}</td>
                                 </tr>
                             @endforeach

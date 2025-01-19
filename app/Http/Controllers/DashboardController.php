@@ -20,8 +20,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $startDate = Carbon::now()->subDays(14); // If we want to show data of only previous 14 days
-        // $startDate = Carbon::create(2024, 8, 1); // If we want to show all time data
+        $startDate = Carbon::now()->startOfMonth();
         $endDate = Carbon::now()->addDay();
 
         $graphFactory = new GraphFactory($startDate, $endDate);
@@ -43,7 +42,7 @@ class DashboardController extends Controller
         $professionalCounts = User::whereHas("roles", function ($q) {
             $q->where("name", "medical");
         })
-            ->whereBetween('created_at', [$startDate, $endDate]) // Filter users created within the last 15 days
+            ->whereBetween('created_at', [$startDate, $endDate]) // Filter users created within current month
             ->select('professional_type_id', DB::raw('count(*) as count'))
             ->groupBy('professional_type_id')
             ->get();
@@ -88,4 +87,5 @@ class DashboardController extends Controller
         $userFeedbackData = UserFeedback::all();
         return view('dashboard.feedback')->with(compact('userFeedback', 'userFeedbackData'));
     }
+
 }

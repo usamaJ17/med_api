@@ -23,7 +23,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Patients</p>
-                                        <h3 class="fw-500 my-0">{{ count($patients) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($patients) ? count($patients) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Medical Professionals</p>
-                                        <h3 class="fw-500 my-0">{{ count($medicals) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($medicals) ? count($medicals) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Appointments</p>
-                                        <h3 class="fw-500 my-0">{{ count($appointments) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($appointments) ? count($appointments) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Earning</p>
-                                        <h3 class="fw-500 my-0">{{ $total_revenue }} GHS</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($total_revenue) ? $total_revenue : 0 }} GHS</h3>
                                     </div>
                                 </div>
                             </div>
@@ -442,6 +442,7 @@
         function updateChartWithTimeFrame(timeFrame) {
             const filteredData = groupDataByTimeFrame(patientSignups, timeFrame);
             const filteredDataM = groupDataByTimeFrame(medicalSignups, timeFrame);
+            
             if (chart1) {
                 chart1.destroy();
             }
