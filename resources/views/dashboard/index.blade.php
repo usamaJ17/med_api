@@ -23,7 +23,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Patients</p>
-                                        <h3 class="fw-500 my-0">{{ count($patients) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($patients) ? count($patients) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Medical Professionals</p>
-                                        <h3 class="fw-500 my-0">{{ count($medicals) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($medicals) ? count($medicals) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Appointments</p>
-                                        <h3 class="fw-500 my-0">{{ count($appointments) }}</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($appointments) ? count($appointments) : 0 }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                     </div>
                                     <div>
                                         <p class="text-fade fs-16 mb-0">Earning</p>
-                                        <h3 class="fw-500 my-0">{{ $total_revenue }} GHS</h3>
+                                        <h3 class="fw-500 my-0">{{ isset($total_revenue) ? $total_revenue : 0 }} GHS</h3>
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +111,7 @@
                                     <button onclick="updateChartWithTimeFrame('daily')">Daily</button>
                                     <button onclick="updateChartWithTimeFrame('weekly')">Weekly</button>
                                     <button onclick="updateChartWithTimeFrame('monthly')">Monthly</button>
+                                    <button onclick="updateChartWithTimeFrame('all_time')">All Time</button>
                                 </div>
                                 <div id="recent_trend"></div>
                             </div>
@@ -126,6 +127,7 @@
                                     <button onclick="updateStatePChartWithTimeFrame('daily')">Daily</button>
                                     <button onclick="updateStatePChartWithTimeFrame('weekly')">Weekly</button>
                                     <button onclick="updateStatePChartWithTimeFrame('monthly')">Monthly</button>
+                                    <button onclick="updateStatePChartWithTimeFrame('all_time')">All Time</button>
                                 </div>
                                 <div id="patient_trend_chart"></div>
                             </div>
@@ -141,6 +143,7 @@
                                     <button onclick="updateStateMChartWithTimeFrame('daily')">Daily</button>
                                     <button onclick="updateStateMChartWithTimeFrame('weekly')">Weekly</button>
                                     <button onclick="updateStateMChartWithTimeFrame('monthly')">Monthly</button>
+                                    <button onclick="updateStateMChartWithTimeFrame('all_time')">All Time</button>
                                 </div>
                                 <div id="medical_trend_chart"></div>
                             </div>
@@ -156,6 +159,7 @@
                                     <button onclick="updateChartWithTimeFrame1('daily')">Daily</button>
                                     <button onclick="updateChartWithTimeFrame1('weekly')">Weekly</button>
                                     <button onclick="updateChartWithTimeFrame1('monthly')">Monthly</button>
+                                    <button onclick="updateChartWithTimeFrame1('all_time')">All Time</button>
                                 </div>
                                 <div id="revenue_trend"></div>
                             </div>
@@ -171,6 +175,7 @@
                                     <button onclick="updateStateApChartWithTimeFrame('daily')">Daily</button>
                                     <button onclick="updateStateApChartWithTimeFrame('weekly')">Weekly</button>
                                     <button onclick="updateStateApChartWithTimeFrame('monthly')">Monthly</button>
+                                    <button onclick="updateStateApChartWithTimeFrame('all_time')">All Time</button>
                                 </div>
                                 <div id="appointment_state_overview"></div>
                             </div>
@@ -186,6 +191,7 @@
                                     <button onclick="updateChartWithTimeFrame2('daily')">Daily</button>
                                     <button onclick="updateChartWithTimeFrame2('weekly')">Weekly</button>
                                     <button onclick="updateChartWithTimeFrame2('monthly')">Monthly</button>
+                                    <button onclick="updateChartWithTimeFrame2('all_time')">All Time</button>
                                 </div>
                                 <div id="appointment_overview"></div>
                             </div>
@@ -211,6 +217,7 @@
                                     <button onclick="updateCChartWithTimeFrame('daily')">Daily</button>
                                     <button onclick="updateCChartWithTimeFrame('weekly')">Weekly</button>
                                     <button onclick="updateCChartWithTimeFrame('monthly')">Monthly</button>
+                                    <button onclick="updateCChartWithTimeFrame('all_time')">All Time</button>
                                 </div>
                                 <div id="patients_pace"></div>
                             </div>
@@ -311,8 +318,22 @@
             colors.push(baseColors[i % baseColors.length]);
         }
         function groupDataByTimeFrame(data, timeFrame) {
-            const dates = data.date;
-            const counts = data.data;
+            const currentMonth = new Date().toLocaleString('default', { month: 'short' }); // Current month (e.g., "Jan", "Feb")
+            const currentYear = new Date().getFullYear(); // Current year
+
+            const filteredData = {
+                date: data.date.filter(date => {
+                    const [day, month] = date.split(" "); // Extract day and month (e.g., "21 Aug")
+                    return month === currentMonth; // Match the month
+                }),
+                data: []
+            };
+
+            // Match the data points with the filtered dates
+            filteredData.data = filteredData.date.map(date => {
+                const index = data.date.indexOf(date);
+                return index !== -1 ? data.data[index] : 0;
+            });
 
             let groupedData = {
                 date: [],
@@ -320,18 +341,18 @@
             };
 
             if (timeFrame === "daily") {
-                // Return the original data for daily view
-                return data;
+                // Return the filtered data for daily view
+                return filteredData;
             } else if (timeFrame === "weekly") {
                 let weekCount = 0;
                 let weekLabel = [];
 
-                dates.forEach((date, index) => {
-                    weekCount += counts[index];
+                filteredData.date.forEach((date, index) => {
+                    weekCount += filteredData.data[index];
                     weekLabel.push(date);
 
                     // Group by 7 days (weekly)
-                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                    if ((index + 1) % 7 === 0 || index === filteredData.date.length - 1) {
                         groupedData.date.push(weekLabel[0] + " - " + weekLabel[weekLabel.length - 1]);
                         groupedData.data.push(weekCount);
                         weekCount = 0; // Reset for the next week
@@ -339,33 +360,50 @@
                     }
                 });
             } else if (timeFrame === "monthly") {
-                let monthMap = {};
+                // For the current month, simply sum all values
+                groupedData.date = [currentMonth + " " + currentYear]; // Label for the current month
+                groupedData.data = [filteredData.data.reduce((sum, count) => sum + count, 0)];
+            } else if (timeFrame === "all_time") {
+                // Group all data by months, no date filtering
+                const allData = {};
 
-                dates.forEach((date, index) => {
-                    const month = date.split(" ")[1]; // Extract month (e.g., "Nov", "Dec")
-                    if (!monthMap[month]) {
-                        monthMap[month] = 0;
+                data.date.forEach((date, index) => {
+                    const [day, month, year] = date.split(" "); // Extract day, month, and year (e.g., "21 Aug 2023")
+                    const monthYear = `${month}`; // Create a unique label for each month-year combination
+
+                    if (!allData[monthYear]) {
+                        allData[monthYear] = 0;
                     }
-                    monthMap[month] += counts[index];
+
+                    allData[monthYear] += data.data[index]; // Sum data for the month-year
                 });
 
-                groupedData.date = Object.keys(monthMap); // Months as labels
-                groupedData.data = Object.values(monthMap); // Counts for each month
+                groupedData.date = Object.keys(allData); // Get all month-year labels
+                groupedData.data = Object.values(allData); // Get all summed data values
             }
 
             return groupedData;
         }
+
         function groupDataByTimeFrame1(data, statesData, dates, timeFrame) {
+            const currentMonth = new Date().toLocaleString('default', { month: 'short' }); // Current month (e.g., "Jan", "Feb")
+
+            // Filter dates for the current month only
+            const filteredDates = dates.filter(date => {
+                const [day, month] = date.split(" "); // Extract day and month (ignoring year)
+                return month === currentMonth; // Match the month
+            });
+
             let groupedData = {
                 date: [],
                 data: {}
             };
 
             if (timeFrame === "daily") {
-                // Keep the original structure
-                groupedData.date = dates;
+                // Keep the original structure for the current month only
+                groupedData.date = filteredDates;
                 statesData.forEach(state => {
-                    groupedData.data[state] = dates.map(date => {
+                    groupedData.data[state] = filteredDates.map(date => {
                         const record = data.data.find(
                             item => item.date === date && item.state === state
                         );
@@ -376,7 +414,7 @@
                 let weekCount = {};
                 let startOfWeek = null; // To track the first date of the week
 
-                dates.forEach((date, index) => {
+                filteredDates.forEach((date, index) => {
                     if (index % 7 === 0) {
                         // Start of a new week
                         startOfWeek = date;
@@ -392,7 +430,7 @@
                     });
 
                     // Aggregate every 7 days or at the end of the dataset
-                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                    if ((index + 1) % 7 === 0 || index === filteredDates.length - 1) {
                         // Construct weekly label
                         const endOfWeek = date; // Current date is the end of the week
                         groupedData.date.push(`${startOfWeek} - ${endOfWeek}`);
@@ -408,40 +446,51 @@
                     }
                 });
             } else if (timeFrame === "monthly") {
-                let monthCount = {};
-                let monthLabels = {};
+                // For the current month, aggregate data by state
+                groupedData.date = [currentMonth]; // Label for the current month
+                statesData.forEach(state => {
+                    const monthRecords = data.data.filter(
+                        item => filteredDates.includes(item.date) && item.state === state
+                    );
+                    groupedData.data[state] = [
+                        monthRecords.reduce((sum, record) => sum + record.value, 0) // Sum values for the month
+                    ];
+                });
+            } else if (timeFrame === "all_time") {
+                // Group all data by months without filtering
+                const allData = {};
 
                 dates.forEach(date => {
-                    const month = date.split(" ")[1]; // Extract month (e.g., "Nov", "Dec")
+                    const [day, month, year] = date.split(" "); // Extract day, month, and year
+                    const monthYear = `${month}`; // Create unique month-year label
 
                     statesData.forEach(state => {
-                        if (!monthCount[state]) monthCount[state] = 0;
+                        if (!allData[monthYear]) allData[monthYear] = {};
+                        if (!allData[monthYear][state]) allData[monthYear][state] = 0;
 
                         const record = data.data.find(
                             item => item.date === date && item.state === state
                         );
-                        monthCount[state] += record ? record.value : 0;
 
-                        if (!monthLabels[month]) monthLabels[month] = true;
+                        allData[monthYear][state] += record ? record.value : 0;
                     });
                 });
 
-                groupedData.date = Object.keys(monthLabels); // Unique months as labels
+                groupedData.date = Object.keys(allData); // Month-year labels
                 statesData.forEach(state => {
-                    groupedData.data[state] = groupedData.date.map(month => {
-                        const monthRecords = data.data.filter(item => item.date.includes(month) && item.state === state);
-                        return monthRecords.reduce((sum, record) => sum + record.value, 0); // Sum values for the month
-                    });
+                    groupedData.data[state] = groupedData.date.map(monthYear => allData[monthYear][state]);
                 });
             }
 
             return groupedData;
         }
+
         updateChartWithTimeFrame('daily');
         var chart1;
         function updateChartWithTimeFrame(timeFrame) {
             const filteredData = groupDataByTimeFrame(patientSignups, timeFrame);
             const filteredDataM = groupDataByTimeFrame(medicalSignups, timeFrame);
+            
             if (chart1) {
                 chart1.destroy();
             }
@@ -941,37 +990,49 @@
         chart.render();
 
         function groupDataByTimeFrame12(series, dates, timeFrame) {
+            const currentMonth = new Date().toLocaleString('default', { month: 'short' }); // Current month (e.g., "Jan", "Feb")
+
+            // Filter dates for the current month only
+            const filteredDates = dates.filter(date => {
+                const [day, month] = date.split(" "); // Extract day and month (ignoring year)
+                return month === currentMonth; // Match the month
+            });
+
             let groupedData = {
                 date: [],
                 series: []
             };
 
             if (timeFrame === "daily") {
-                // Keep the original structure
-                groupedData.date = dates;
+                // Keep the original structure for the current month only
+                groupedData.date = filteredDates;
                 groupedData.series = series.map(s => ({
                     name: s.name,
-                    data: s.data
+                    data: filteredDates.map(date => {
+                        const index = dates.indexOf(date);
+                        return index !== -1 ? s.data[index] : 0; // Default to 0 if no data for the date
+                    })
                 }));
             } else if (timeFrame === "weekly") {
-                // Weekly aggregation
+                // Weekly aggregation for the current month
                 let weekLabels = [];
                 let weekCounts = series.map(s => ({
                     name: s.name,
                     data: []
                 }));
 
-                dates.forEach((date, index) => {
+                filteredDates.forEach((date, index) => {
                     weekLabels.push(date);
 
                     series.forEach((s, i) => {
                         if (!weekCounts[i].data[weekCounts[i].data.length - 1]) {
                             weekCounts[i].data[weekCounts[i].data.length - 1] = 0;
                         }
-                        weekCounts[i].data[weekCounts[i].data.length - 1] += s.data[index];
+                        const dataIndex = dates.indexOf(date);
+                        weekCounts[i].data[weekCounts[i].data.length - 1] += dataIndex !== -1 ? s.data[dataIndex] : 0;
                     });
 
-                    if ((index + 1) % 7 === 0 || index === dates.length - 1) {
+                    if ((index + 1) % 7 === 0 || index === filteredDates.length - 1) {
                         groupedData.date.push(`${weekLabels[0]} - ${weekLabels[weekLabels.length - 1]}`);
                         weekCounts.forEach((s, i) => {
                             weekCounts[i].data.push(0); // Start a new week's aggregation
@@ -985,7 +1046,31 @@
                     data: s.data.slice(0, -1) // Remove the last empty week's data
                 }));
             } else if (timeFrame === "monthly") {
-                // Monthly aggregation
+                // Monthly aggregation for the current month
+                let monthMap = {};
+                filteredDates.forEach((date, index) => {
+                    const month = date.split(" ")[1]; // Assuming "dd MMM" format
+
+                    if (!monthMap[month]) {
+                        monthMap[month] = {};
+                        series.forEach(s => {
+                            monthMap[month][s.name] = 0;
+                        });
+                    }
+
+                    series.forEach(s => {
+                        const dataIndex = dates.indexOf(date);
+                        monthMap[month][s.name] += dataIndex !== -1 ? s.data[dataIndex] : 0;
+                    });
+                });
+
+                groupedData.date = Object.keys(monthMap); // Months as labels
+                groupedData.series = series.map(s => ({
+                    name: s.name,
+                    data: groupedData.date.map(month => monthMap[month][s.name])
+                }));
+            } else if (timeFrame === "all_time") {
+                // Group all data by months without filtering
                 let monthMap = {};
                 dates.forEach((date, index) => {
                     const month = date.split(" ")[1]; // Assuming "dd MMM" format
@@ -1011,6 +1096,7 @@
 
             return groupedData;
         }
+
         updateCChartWithTimeFrame("daily");
         var cchart;
         function updateCChartWithTimeFrame(timeFrame) {

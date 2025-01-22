@@ -48,17 +48,17 @@
                             </span>
                         </div>
                         <div class="bg-success rounded10 p-15 fs-18 d-inline"><i class="fa fa-stethoscope"></i>
-                            {{ $medical->professionalDetails->professions->name }}</div>
+                            {{ $medical->professionalDetails->professions->name ?? 'N/A' }}</div>
                     </div>
                     <div class="box-body wed-up position-relative">
                         <div class="d-md-flex align-items-end">
                             <img src="{{ $medical->getFirstMediaUrl() }}" style="max-height: 150px; width: auto"
                                  class="bg-success-light rounded10 me-20" alt=""/>
                             <div>
-                                <h3>{{ $medical->first_name . ' ' . $medical->last_name }}</h3>
-                                <h5>{{ $medical->professionalDetails->ranks->name }}</h5>
+                                <h3>{{ ($medical->first_name ?? 'N/A') . ' ' . ($medical->last_name ?? 'N/A') }}</h3>
+                                <h5>{{ $medical->professionalDetails->ranks->name ?? 'N/A' }}                                </h5>
                                 <p><i class="fa fa-clock-o"></i> Join on
-                                    {{ Carbon::parse($medical->created_at)->format('d/m/Y H:m') }}</p>
+                                {{ $medical->created_at ? Carbon::parse($medical->created_at)->format('d/m/Y H:i') : 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                             <label for="md_checkbox_24">Receive Midnight Emergency Calls</label>
                         </div>
                         <h4>Biography</h4>
-                        <p>{{ $medical->professionalDetails->bio }}</p>
+                        <p>{{ $medical->professionalDetails->bio ?? 'N/A' }}</p>
                     </div>
                 </div>
                 <div class="box bt-3 border-success">
@@ -87,45 +87,45 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">First Name</th>
-                                    <td scope="col">{{ $medical->first_name }}</td>
+                                    <td scope="col">{{ $medical->first_name ?? 'N/A'}}</td>
                                     <th scope="col">Last Name</th>
-                                    <td scope="col">{{ $medical->last_name }}</td>
+                                    <td scope="col">{{ $medical->last_name ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Contact</th>
-                                    <td scope="col">{{ $medical->contact }}</td>
+                                    <td scope="col">{{ $medical->contact ?? 'N/A' }}</td>
                                     <th scope="col">Email</th>
-                                    <td scope="col">{{ $medical->email }}</td>
+                                    <td scope="col">{{ $medical->email  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Date of Birth</th>
-                                    <td scope="col">{{ $medical->dob }}</td>
+                                    <td scope="col">{{ $medical->dob ?? 'N/A' }}</td>
                                     <th scope="col">Gender</th>
-                                    <td scope="col">{{ $medical->gender }}</td>
+                                    <td scope="col">{{ $medical->gender ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Profession</th>
                                     <td scope="col">{{ $medical->professionalType->name ?? $medical->professionalDetails->professions->name ?? 'N/A' }}</td>
                                     <th scope="col">Rank</th>
-                                    <td scope="col">{{ $medical->professionalDetails->ranks->name }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->ranks->name  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">License Authority</th>
-                                    <td scope="col">{{ $medical->professionalDetails->license_authority }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->license_authority ?? 'N/A' }}</td>
                                     <th scope="col">Regestraion Number</th>
-                                    <td scope="col">{{ $medical->professionalDetails->regestraion_number }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->regestraion_number ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Work At</th>
-                                    <td scope="col">{{ $medical->professionalDetails->work_at }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->work_at ?? 'N/A' }}</td>
                                     <th scope="col">Experence</th>
-                                    <td scope="col">{{ $medical->professionalDetails->experence }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->experence ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Degree</th>
-                                    <td scope="col">{{ $medical->professionalDetails->degree }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->degree ?? 'N/A' }}</td>
                                     <th scope="col">Institution</th>
-                                    <td scope="col">{{ $medical->professionalDetails->institution }}</td>
+                                    <td scope="col">{{ $medical->professionalDetails->institution  ?? 'N/A'}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -142,23 +142,23 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">Total Revenue Earned</th>
-                                    <td scope="col">{{ $total_revenue }} GHS</td>
+                                    <td scope="col">{{ $total_revenue ?? 'N/A' }} GHS</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Number Of Articles</th>
-                                    <td scope="col">{{ $atricals_count }}</td>
+                                    <td scope="col">{{ $atricals_count  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Number Of Followers</th>
-                                    <td scope="col">{{ $medical->followers_count }}</td>
+                                    <td scope="col">{{ $medical->followers_count ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Total Unique Patients</th>
-                                    <td scope="col">{{ $uniq_cus }}</td>
+                                    <td scope="col">{{ $uniq_cus ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">Total Appointments</th>
-                                    <td scope="col">{{ $tot_app }}</td>
+                                    <td scope="col">{{ $tot_app ?? 'N/A' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -189,17 +189,17 @@
                                                 </div>
                                                 <div class="d-flex flex-column flex-grow-1 fw-500">
                                                     <p class="hover-primary text-fade mb-1 fs-14">
-                                                        {{ $item->user->fullName() }}</p>
+                                                        {{ $item->user->fullName() ?? 'N/A' }}</p>
                                                     <p class="mb-0 text-muted"><i class="fa fa-clock-o me-5"></i>
-                                                        {{ Carbon::parse($item->appointment_date)->format('d F Y') }}
+                                                        {{ $item->appointment_date ? Carbon::parse($item->appointment_date)->format('d F Y') : 'N/A' }}
                                                         @
-                                                        {{ Carbon::parse($item->appointment_time)->format('h:i A') }}
-                                                        <span class="mx-20">{{ $item->consultation_fees }}</span>
+                                                        {{ $item->appointment_time ? Carbon::parse($item->appointment_time)->format('h:i A') : 'N/A' }}
+                                                        <span class="mx-20">{{ $item->consultation_fees  ?? 'N/A'}}</span>
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <button
-                                                            class="waves-effect btn btn-primary btn-sm">{{ ucfirst($item->status) }}</button>
+                                                            class="waves-effect btn btn-primary btn-sm">{{ ucfirst($item->status) ?? 'N/A' }}</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -222,15 +222,15 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">Country</th>
-                                    <td scope="col">{{ $medical->country }}</td>
+                                    <td scope="col">{{ $medical->country ?? 'N/A' }}</td>
                                     <th scope="col">State</th>
-                                    <td scope="col">{{ $medical->state }}</td>
+                                    <td scope="col">{{ $medical->state ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col">City</th>
-                                    <td scope="col">{{ $medical->city }}</td>
+                                    <td scope="col">{{ $medical->city ?? 'N/A' }}</td>
                                     <th scope="col">Language</th>
-                                    <td scope="col">{{ $medical->language }}</td>
+                                    <td scope="col">{{ $medical->language ?? 'N/A' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -247,7 +247,7 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col" colspan="2">Total Earning</th>
-                                    <td scope="col" colspan="2">{{ $availableAmount }}</td>
+                                    <td scope="col" colspan="2">{{ $availableAmount  ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="col" colspan="2">Escrow Amount</th>
@@ -276,7 +276,7 @@
                 </div>
                 <div class="box bt-3 border-success">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Documents <small class="subtitle">Fetched {{ count($docs) }}
+                        <h4 class="box-title">Documents <small class="subtitle">Fetched {{ count($docs) ?? 'N/A' }}
                                 Documents</small></h4>
                     </div>
                     <div class="box-body">
@@ -287,7 +287,7 @@
                                 </div>
                                 <div class="d-flex flex-column fw-500">
                                     <a href="{{ $item }}" target="_blank"
-                                       class="text-dark hover-primary mb-1 fs-16"> {{ $key }}</a>
+                                       class="text-dark hover-primary mb-1 fs-16"> {{ $key ?? 'N/A' }}</a>
                                 </div>
                             </div>
                         @endforeach
@@ -326,10 +326,10 @@
                                                 <div class="media-body">
                                                     <p class="fs-16">
                                                         <a class="hover-primary"
-                                                           href="#">{{ $item->user->fullName() }}</a>
+                                                           href="#">{{ $item->user->fullName() ?? 'N/A' }}</a>
                                                     </p>
                                                     <span
-                                                            class="text-muted">{{ Carbon::parse($item->created_at)->diffForHumans() }}</span>
+                                                            class="text-muted">{{ $item->created_at ? Carbon::parse($item->created_at)->diffForHumans() : 'N/A' }}</span>
                                                 </div>
                                                 <div class="media-right">
                                                     <div class="d-flex" title="{{ $item->rating }} out of 5">
@@ -357,7 +357,7 @@
 
                                             </div>
                                             <div class="media pt-0">
-                                                <p class="text-fade">{{ $item->body }} </p>
+                                                <p class="text-fade">{{ $item->body  ?? 'N/A'}} </p>
                                             </div>
                                         </td>
                                     </tr>
@@ -390,16 +390,16 @@
                                 @foreach ($payouts as $item)
                                     <tr class="hover-primary">
                                         <td>
-                                            <a href="{{ route('medical.show', $item->user->id) }}">{{ $item->user->first_name }}
-                                                {{ $item->user->last_name }} </a></td>
-                                        <td>{{ $item->amount }}</td>
-                                        <td>{{ $item->status }} @if ($item->status == 'completed')
+                                            <a href="{{ route('medical.show', $item->user->id) }}">{{ $item->user->first_name ?? 'N/A' }}
+                                                {{ $item->user->last_name ?? 'N/A' }} </a></td>
+                                        <td>{{ $item->amount  ?? 'N/A'}}</td>
+                                        <td>{{ $item->status  ?? 'N/A'}} @if ($item->status == 'completed')
                                                 (Completed At :
-                                                {{ Carbon::parse($item->completed_at)->format('h:i A, d F Y') }}
+                                                {{ $item->completed_at ? Carbon::parse($item->completed_at)->format('h:i A, d F Y') : 'N/A' }}
                                                 )
                                             @endif
                                         </td>
-                                        <td>{{ $item->rejected_reason }}</td>
+                                        <td>{{ $item->rejected_reason ?? 'N/A' }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
