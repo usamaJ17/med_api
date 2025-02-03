@@ -146,6 +146,28 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
+    public function fetch_articles(Request $request)
+    {
+
+        $query = Article::query();
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        if ($request->has('order_by')) {
+            if ($request->order_by === 'newest') {
+                $query->orderBy('created_at', 'DESC');
+            } elseif ($request->order_by === 'oldest') {
+                $query->orderBy('created_at', 'ASC');
+            }
+        }
+        $articles = $query->get();
+        $data = [
+            'status' => 200,
+            'message' => 'All Article fetched successfully',
+            'data' => ['article' => $articles],
+        ];
+        return response()->json($data, 200);
+    }
     public function status(Request $request)
     {
         $article = Article::find($request->id);

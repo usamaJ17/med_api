@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
 
   Route::get('all_articles', [ArticleController::class, "index"]);
   Route::apiResource('articles', ArticleController::class);
+  Route::get('fetch_articles', [ArticleController::class , 'fetch_articles']);
   Route::post('articles/update/{id}', [ArticleController::class, 'update']);
   Route::get('articles_categories', [ArticleController::class, "getArticleCategories"]);
   Route::post('articles/{article}/comments', [CommentController::class, 'store']);
