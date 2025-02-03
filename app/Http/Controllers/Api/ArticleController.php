@@ -126,11 +126,12 @@ class ArticleController extends Controller
     }
     public function index(Request $request)
     {
+        $query = Article::select('id','category_id','slug' , 'user_id', 'title', 'thumbnail','share_count','published');
 
-        $query = Article::query(); 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
         }
+
         if ($request->has('order_by')) {
             if ($request->order_by === 'newest') {
                 $query->orderBy('created_at', 'DESC');
@@ -138,14 +139,16 @@ class ArticleController extends Controller
                 $query->orderBy('created_at', 'ASC');
             }
         }
+
         $articles = $query->get();
-        $data = [
+
+        return response()->json([
             'status' => 200,
-            'message' => 'All Article fetched successfully',
+            'message' => 'All articles fetched successfully',
             'data' => ['article' => $articles],
-        ];
-        return response()->json($data, 200);
+        ], 200);
     }
+
     public function fetch_articles(Request $request)
     {
 
