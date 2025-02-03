@@ -301,14 +301,14 @@ class AuthController extends Controller
              $user->addMedia($request->file('profile_image'))->toMediaCollection();
          }
 
-        $fileFields = array_keys($request->files->all());
-
-        foreach ($fileFields as $field) {
-            if ($request->hasFile($field)) {
-                $user->clearMediaCollection($field);
-                $user->addMedia($request->file($field))->toMediaCollection($field);
-            }
-        } 
+//        $fileFields = array_keys($request->files->all());
+//
+//        foreach ($fileFields as $field) {
+//            if ($request->hasFile($field)) {
+//                $user->clearMediaCollection($field);
+//                $user->addMedia($request->file($field))->toMediaCollection($field);
+//            }
+//        }
 
         
         // remove email and password from request if present
