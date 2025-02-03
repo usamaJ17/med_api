@@ -296,10 +296,10 @@ class AuthController extends Controller
     }
     public function savePersonalDetails(Request $request){
         $user = User::find(Auth::user()->id);
-        // if(null !== $request->file('profile_image')){
-        //     $user->clearMediaCollection();
-        //     $user->addMedia($request->file('profile_image'))->toMediaCollection();
-        // }
+         if(null !== $request->file('profile_image')){
+             $user->clearMediaCollection();
+             $user->addMedia($request->file('profile_image'))->toMediaCollection();
+         }
 
         $fileFields = array_keys($request->files->all());
 
