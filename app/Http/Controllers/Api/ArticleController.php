@@ -126,28 +126,22 @@ class ArticleController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Article::select('id','category_id','slug' , 'user_id', 'title', 'thumbnail','share_count','published');
+        $query = Article::select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published')
+            ->orderBy('created_at', 'DESC');
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        if ($request->has('order_by')) {
-            if ($request->order_by === 'newest') {
-                $query->orderBy('created_at', 'DESC');
-            } elseif ($request->order_by === 'oldest') {
-                $query->orderBy('created_at', 'ASC');
-            }
-        }
-
-        $articles = $query->get();
+        $articles = $query->paginate(10);
 
         return response()->json([
             'status' => 200,
             'message' => 'All articles fetched successfully',
-            'data' => ['article' => $articles],
+            'data' => $articles,
         ], 200);
     }
+
 
     public function fetch_articles(Request $request)
     {
