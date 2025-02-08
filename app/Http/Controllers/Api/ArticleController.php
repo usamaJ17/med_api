@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Comment;
 use App\Models\ArticleCategory;
-use App\Models\Notifications;
+use App\Models\Comment;
 use App\Models\Followers;
+use App\Models\Notifications;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,19 +20,13 @@ class ArticleController extends Controller
             $file = $request->file('upload');
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = 'uploads/' . $filename;
-
-            // Move the file to the public/uploads directory
             $file->move(public_path('uploads'), $filename);
-    
             $url = asset($filePath);
-
-
             return response()->json([
                 'uploaded' => true,
                 'url' => $url,
             ]);
         }
-
         return response()->json([
             'uploaded' => false,
             'error' => [
@@ -39,8 +34,8 @@ class ArticleController extends Controller
             ],
         ]);
     }
-    
-    
+
+
     public function getArticleCategories(Request $request)
     {
         $categories = ArticleCategory::all();
@@ -51,14 +46,15 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
+
     public function all_articles_for_web(Request $request)
     {
-        $perPage = $request->input('per_page', 6); 
+        $perPage = $request->input('per_page', 6);
         $categoryId = $request->input('category_id');
         $orderBy = $request->input('order_by', 'desc');
 
 
-        $query = Article::with('category')->where('published' , 1);
+        $query = Article::with('category')->where('published', 1);
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
@@ -99,7 +95,8 @@ class ArticleController extends Controller
     //     ];
     //     return response()->json($data, 200);
     // }
-    public function show_comments(Request $request, $id){
+    public function show_comments(Request $request, $id)
+    {
         $comments = Comment::with(['user'])->where('article_id', $id)->get();
         if ($comments->isEmpty()) {
             return response()->json([
@@ -124,6 +121,7 @@ class ArticleController extends Controller
         // print_r($articles);
         return view('dashboard.article.index', compact(['articles', 'categories']));
     }
+
     public function index(Request $request)
     {
         $query = Article::select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published')
@@ -165,6 +163,7 @@ class ArticleController extends Controller
         ];
         return response()->json($data, 200);
     }
+
     public function status(Request $request)
     {
         $article = Article::find($request->id);
@@ -177,7 +176,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article status updated successfully');
     }
 
-    public function show_web(Request $request,  $category,  $slug)
+    public function show_web(Request $request, $category, $slug)
     {
         $formattedCategory = strtolower(str_replace('-', ' ', $category));
         $categories = ArticleCategory::whereRaw('LOWER(name) = ?', [$formattedCategory])->first();
@@ -189,15 +188,15 @@ class ArticleController extends Controller
         }
 
         $article = Article::with(['comments.user', 'likes'])
-        ->whereRaw('slug = ?', [$slug])
-        ->where('category_id', $categories->id)->first();
+            ->whereRaw('slug = ?', [$slug])
+            ->where('category_id', $categories->id)->first();
 
         if (!$article) return response()->json([
             'status' => 404,
             'message' => 'Article not found'
         ], 404);
         $data = [
-            'status' => 200, 
+            'status' => 200,
             'message' => 'Article fetched successfully',
             'data' => ['article' => $article],
         ];
@@ -206,7 +205,8 @@ class ArticleController extends Controller
         }
         return view('dashboard.article.show', compact('article'));
     }
-    public function show(Request $request,  $id)
+
+    public function show(Request $request, $id)
     {
         $article = Article::with(['comments.user', 'likes'])->find($id);
         if (!$article) return response()->json([
@@ -214,7 +214,7 @@ class ArticleController extends Controller
             'message' => 'Article not found'
         ], 404);
         $data = [
-            'status' => 200, 
+            'status' => 200,
             'message' => 'Article fetched successfully',
             'data' => ['article' => $article],
         ];
@@ -223,7 +223,9 @@ class ArticleController extends Controller
         }
         return view('dashboard.article.show', compact('article'));
     }
-    public function store_web(Request $request){
+
+    public function store_web(Request $request)
+    {
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
@@ -246,12 +248,15 @@ class ArticleController extends Controller
         }
         return redirect()->route('articles.admin.index')->with('success', 'Article created successfully');
     }
+
     public function edit($id)
     {
         $article = Article::findOrFail($id);
         return response()->json($article);
     }
-    public function update_web(Request $request, $id){
+
+    public function update_web(Request $request, $id)
+    {
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
@@ -274,6 +279,7 @@ class ArticleController extends Controller
 
         return redirect()->route('articles.admin.index')->with('success', 'Article updated successfully.');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -290,7 +296,7 @@ class ArticleController extends Controller
         ]);
         $followers = Followers::where('user_id', Auth::user()->id)->get();
 
-        $sender = User::find(Auth::user()->id); 
+        $sender = User::find(Auth::user()->id);
         foreach ($followers as $follower) {
             $notificationData = [
                 'title' => 'Article Created',
@@ -299,7 +305,7 @@ class ArticleController extends Controller
                 'from_user_id' => Auth::user()->id,
                 'to_user_id' => $follower->follower_id,
                 'is_read' => 0,
-            ];        
+            ];
             Notifications::create($notificationData);
         }
         if ($request->hasFile('thumbnail')) {
@@ -310,8 +316,7 @@ class ArticleController extends Controller
         }
         $data = [
             'status' => 200, // add this line
-            'message' => 'Article created successfully',
-            'data' => ['article' => $article],
+            'message' => 'Article submitted successfully, wait for admin approval.',
         ];
 
         return response()->json($data, 200);
@@ -327,6 +332,13 @@ class ArticleController extends Controller
             'body' => 'sometimes|required|string',
             'thumbnail' => 'sometimes|image',
         ]);
+        if($article->user_id != Auth::user()->id){
+            $data = [
+                'status' => 403, // add this line
+                'message' => 'You are not allowed to update this article.',
+            ];
+            return response()->json($data, 403);
+        }
 
         $article->update($request->only('title', 'body', 'category_id'));
 
@@ -346,16 +358,32 @@ class ArticleController extends Controller
 
         return response()->json($data, 200);
     }
+
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        $article->delete();
+        if($article){
+            if($article->user_id != Auth::user()->id){
+                $data = [
+                    'status' => 403, // add this line
+                    'message' => 'You are not allowed to update this article.',
+                ];
+                return response()->json($data, 403);
+            }
+            $article->delete();
+            $data = [
+                'status' => 200, // add this line
+                'message' => 'Article deleted successfully',
+            ];
+            return response()->json($data, 200);
+        }
         $data = [
-            'status' => 200, // add this line
-            'message' => 'Article deleted successfully',
+            'status' => 404, // add this line
+            'message' => 'Article not found',
         ];
-        return response()->json($data, 200);
+        return response()->json($data, 404);
     }
+
     public function addShare($article_id)
     {
         $article = Article::find($article_id);
