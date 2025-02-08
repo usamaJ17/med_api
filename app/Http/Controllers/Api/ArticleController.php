@@ -61,9 +61,6 @@ class ArticleController extends Controller
         $query->orderBy('created_at', $orderBy);
         $articles = $query->paginate($perPage);
         // use for each $articles and update the profile url
-        foreach ($articles as $article) {
-
-        }
         $data = [
             'status' => 200,
             'message' => 'All Articles fetched successfully',
@@ -325,7 +322,6 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-
         $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'category_id' => 'sometimes|required|string',
