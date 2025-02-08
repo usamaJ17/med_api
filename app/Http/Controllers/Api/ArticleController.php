@@ -195,11 +195,14 @@ class ArticleController extends Controller
         $data = [
             'status' => 200,
             'message' => 'Article fetched successfully',
-            'data' => [
-                'article' => $article,
+//            'data' => [
+//                'article' => $article
+//            ],
+            'media' => [
                 'media_type' => $article->getFirstMedia('media') ? $article->getFirstMedia('media')->mime_type : null,
                 'media_url' => $article->getFirstMedia('media') ? $article->getFirstMedia('media')->getUrl() : null
             ]
+
         ];
         if ($request->wantsJson() || $request->is('api/*')) {
             return response()->json($data, 200);
