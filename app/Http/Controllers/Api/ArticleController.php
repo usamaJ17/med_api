@@ -192,9 +192,6 @@ class ArticleController extends Controller
             'status' => 404,
             'message' => 'Article not found'
         ], 404);
-        $media = $article->getFirstMedia('media'); // Get media if available
-        $mediaType = $media ? $media->mime_type : null;
-        $mediaUrl = $media ? $media->getUrl() : null;
         $data = [
             'status' => 200,
             'message' => 'Article fetched successfully',
