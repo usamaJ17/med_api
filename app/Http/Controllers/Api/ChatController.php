@@ -27,10 +27,12 @@ class ChatController extends Controller
     public static function createChatBox($from_id, $to_id)
     {
         $chatbox = ChatBox::where('sender_id', $from_id)
-            ->where('receiver_id', $to_id)
-            ->orWhere('sender_id', $to_id)
-            ->where('receiver_id', $from_id)
-            ->first();
+            ->where('receiver_id', $to_id)->first();
+        if(!$chatbox){
+            ChatBox::where('sender_id', $to_id)
+                ->where('receiver_id', $from_id)
+                ->first();
+        }
         if ($chatbox) {
             if ($chatbox->status == 0) {
                 $chatbox->status = 1;
@@ -53,7 +55,7 @@ class ChatController extends Controller
             'is_read' => 0,
         ];        
         Notifications::create($notificationData);
-        return true;
+        return $chatbox;
     }
     public function sendMessage(Request $request){
         $chatbox = ChatBox::find($request->chat_box_id);

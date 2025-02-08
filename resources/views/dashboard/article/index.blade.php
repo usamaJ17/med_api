@@ -130,9 +130,9 @@
                     </button>
                 </div>
                 <form id="editArticleForm" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
                     <div class="modal-body">
-                        @csrf
-                        @method('PUT')
                         <!-- Title Field -->
                         <div class="form-group">
                             <label for="edit_title">Title</label>
@@ -189,7 +189,6 @@
                     </button>
                 </div>
                 <form action="{{ route('articles.admin.store') }}" method="POST" enctype="multipart/form-data" id="add_form">
-                     
                     <div class="modal-body">
                        @csrf
                         <!-- Title Field -->

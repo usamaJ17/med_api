@@ -13,6 +13,7 @@ class Appointment extends Model
         'med_id',
         'appointment_type',
         'consultation_fees',
+        'chat_id',
         'appointment_time',
         'appointment_date',
         'gender',
@@ -37,7 +38,7 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class);
     }
-    protected $appends = ['patient_name', 'fee_int', 'patient_profile_url', 'med_name', 'med_profile_url', 'med_lang', 'patient_lang', 'chat_id', 'chat_status'];
+    protected $appends = ['patient_name', 'fee_int', 'patient_profile_url', 'med_name', 'med_profile_url', 'med_lang', 'patient_lang', 'chat_status'];
     public function getPatientNameAttribute()
     {
         $user = User::find($this->user_id);
@@ -76,16 +77,6 @@ class Appointment extends Model
     public function review()
     {
         return $this->hasOne(Review::class);
-    }
-
-    public function getChatStatusAttribute()
-    {
-        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
-        if ($chatBox) {
-            return $chatBox->id;
-        } else {
-            return null;
-        }
     }
 
     public function getChatIdAttribute()
