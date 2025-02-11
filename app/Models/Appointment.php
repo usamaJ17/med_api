@@ -44,6 +44,15 @@ class Appointment extends Model
         $user = User::find($this->user_id);
         return $user->first_name . ' ' . $user->last_name;
     }
+    public function getChatStatusAttribute()
+    {
+        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+        if ($chatBox) {
+            return $chatBox->id;
+        } else {
+            return null;
+        }
+    }
     public function getFeeIntAttribute()
     {
         // remove any non integer characters
