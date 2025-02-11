@@ -121,7 +121,8 @@ class ArticleController extends Controller
 
     public function index(Request $request)
     {
-        $query = Article::select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published')
+        $query = Article::with('category')->select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published')
+            ->where('published', 1)
             ->orderBy('created_at', 'DESC');
 
         if ($request->has('category_id')) {
