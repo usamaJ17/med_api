@@ -72,7 +72,9 @@
                                                     N/A
                                                 @endif
                                             <td>
-                                                @if ($article->published == 1)
+                                                @if ($article->published == 2)
+                                                    <span style="color: yellow;">Pending</span>
+                                                @elseif ($article->published == 1)
                                                     <span style="color: green;">Approved</span>
                                                 @else
                                                     <span style="color: red;">Rejected</span>
