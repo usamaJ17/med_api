@@ -88,10 +88,18 @@
                                                     <div class="dropdown-menu">
                                                         <a href="#" class="dropdown-item" onclick="editArticle({{ $article->id }})">Edit</a>
                                                         <a href="#" class="dropdown-item" onclick="deleteArticle({{ $article->id }})">Delete</a>
-                                                        <a class="dropdown-item"
-                                                            onclick="ChangeStatus({{ $article->id }},'approve')">Approve</a>
-                                                        <a class="dropdown-item"
-                                                            onclick="ChangeStatus({{ $article->id }},'reject')">Reject</a>
+                                                        @if ($article->published == 2)
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $article->id }},'approve')">Approve</a>
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $article->id }},'reject')">Reject</a>
+                                                        @elseif ($article->published == 1)
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $article->id }},'reject')">Reject</a>
+                                                        @else
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $article->id }},'approve')">Approve</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
