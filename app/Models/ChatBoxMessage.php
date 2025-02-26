@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -49,5 +50,24 @@ class ChatBoxMessage extends Model implements HasMedia
             return $media->getFullUrl();
         }
         return $this->attributes['message'];
+    }
+    public function getCreatedAtFormattedAttribute(): ?string
+    {
+        return $this->convertTimezone($this->created_at);
+    }
+
+    public function getUpdatedAtFormattedAttribute(): ?string
+    {
+        return $this->convertTimezone($this->updated_at);
+    }
+
+    private function convertTimezone($timestamp): ?string
+    {
+        return config('app.timezone');
+        $timezone = auth()->check() && auth()->user()->time_zone
+            ? auth()->user()->time_zone
+            : config('app.timezone');
+
+        return $timestamp ? Carbon::parse($timestamp)->timezone($timezone)->toDateTimeString() : null;
     }
 }

@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ChatBox extends Model
 {
     use HasFactory;
+
+    /**
+     * @var \Illuminate\Support\HigherOrderCollectionProxy|int|mixed
+     */
     protected $table = 'chat_box';
-    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to'];
+    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to' , 'unread_count'];
     protected $appends = ['notification','name','last_message'];
     protected $hidden = ['notification_to'];
 

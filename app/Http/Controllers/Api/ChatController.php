@@ -75,6 +75,7 @@ class ChatController extends Controller
                 }
                 $msg = ChatBoxMessage::find($message->id);
                 $chatbox->notification_to = $request->to_user_id;
+                $chatbox->unread_count = ($chatbox->unread_count ?? 0) + 1;
                 $chatbox->save();
                 $data = [
                     'status' => 201,
