@@ -14,7 +14,7 @@ class ChatBoxMessage extends Model implements HasMedia
 
     protected $table = 'chat_box_messages';
     protected $fillable = ['chat_box_id', 'from_user_id','message_type', 'to_user_id', 'message', 'is_read'];
-    protected $appends = ['type'];
+    protected $appends = ['type' , 'message_time'];
     protected $hidden = ['media'];
 
     public function fromUser()
@@ -51,14 +51,9 @@ class ChatBoxMessage extends Model implements HasMedia
         }
         return $this->attributes['message'];
     }
-    public function getCreatedAtAttribute(): ?string
+    public function getMessageTimeAttribute(): ?string
     {
         return $this->convertTimezone($this->created_at);
-    }
-
-    public function getUpdatedAtAttribute(): ?string
-    {
-        return $this->convertTimezone($this->updated_at);
     }
 
     private function convertTimezone($timestamp): ?string
