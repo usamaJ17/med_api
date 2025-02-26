@@ -51,12 +51,12 @@ class ChatBoxMessage extends Model implements HasMedia
         }
         return $this->attributes['message'];
     }
-    public function getCreatedAtFormattedAttribute(): ?string
+    public function getCreatedAtAttribute(): ?string
     {
         return $this->convertTimezone($this->created_at);
     }
 
-    public function getUpdatedAtFormattedAttribute(): ?string
+    public function getUpdatedAtAttribute(): ?string
     {
         return $this->convertTimezone($this->updated_at);
     }
