@@ -58,7 +58,6 @@ class ChatBoxMessage extends Model implements HasMedia
 
     private function convertTimezone($timestamp): ?string
     {
-        return config('app.timezone');
         $timezone = auth()->check() && auth()->user()->time_zone
             ? auth()->user()->time_zone
             : config('app.timezone');
