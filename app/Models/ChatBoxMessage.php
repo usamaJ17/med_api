@@ -13,7 +13,7 @@ class ChatBoxMessage extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     protected $table = 'chat_box_messages';
-    protected $fillable = ['chat_box_id', 'from_user_id','message_type', 'to_user_id', 'message', 'is_read'];
+    protected $fillable = ['chat_box_id', 'from_user_id','message_type', 'to_user_id', 'message', 'is_read' , 'duration'];
     protected $appends = ['type' , 'message_time'];
     protected $hidden = ['media'];
 

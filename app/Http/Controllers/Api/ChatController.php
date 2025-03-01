@@ -71,8 +71,11 @@ class ChatController extends Controller
                         ->toMediaCollection();
                 }else{
                     $message->message = $request->message;
-                    $message->save();
                 }
+                if($request->message_type == 'missed' || $request->message_type == 'incoming' || $request->message_type == 'outgoing'){
+                    $message->duration = $request->duration;
+                }
+                $message->save();
                 $msg = ChatBoxMessage::find($message->id);
                 $chatbox->notification_to = $request->to_user_id;
                 $chatbox->unread_count = ($chatbox->unread_count ?? 0) + 1;
