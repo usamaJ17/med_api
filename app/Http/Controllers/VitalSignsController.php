@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClinicalNotes;
 use App\Models\ClinicalNotesCustomField;
+use App\Models\ClinicalNotesField;
 use App\Models\DynamicFiled;
 use App\Models\NotesComment;
 use App\Models\SummaryDynamicField;
@@ -182,6 +183,21 @@ class VitalSignsController extends Controller
         ];
         return response()->json($res, 200);
     }
+    public function getClinicalNotesFields(){
+        $required_fields = ClinicalNotesField::where('is_required', 'Yes')->pluck('name')->toArray();
+        $optional_fields = ClinicalNotesField::where('is_required', 'No')->pluck('name')->toArray();
+        $fieldsData = [
+            'required' => $required_fields,
+            'optional' => $optional_fields,
+        ];
+        $res = [
+            'status' => 200,
+            'message'=> 'Clinical Notes fields fetched successfully...',
+            'data' => $fieldsData
+        ];
+        return response()->json($res, 200);
+    }
+
     public function addCustomField(Request $request)
     {
         $request->merge([

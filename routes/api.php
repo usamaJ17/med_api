@@ -146,7 +146,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::post('accept_emergency_help', [EmergencyController::class, 'accept']);
   Route::apiResource('vitals', VitalSignsController::class);
   Route::get('get_clinical_notes', [VitalSignsController::class, 'getNotes']);
-  Route::get('clinical_notes_fields', [VitalSignsController::class, 'getFields']);
+  Route::get('clinical_notes_fields', [VitalSignsController::class, 'getClinicalNotesFields']);
   Route::post('save_clinical_notes', [VitalSignsController::class, 'saveNotes']);
   Route::post('clinical_notes_comment', [VitalSignsController::class, 'saveComment']);
 
