@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AgoraCalling;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AppointmentHoursController;
 use App\Http\Controllers\Api\AppointmentSummaryController;
@@ -174,6 +175,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::delete('delete_messages', [ChatController::class, 'deleteMessage']);
   // Route::get('new_chats',[ChatController::class,'createChatBox']);
 
+  Route::get('agora_auth_token' , [AgoraCalling::class , 'token']);
   // followers and following
   Route::post('follow', [HelperController::class, 'follow']);
   Route::get('followers', [HelperController::class, 'getFollowers']);
