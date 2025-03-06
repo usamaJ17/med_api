@@ -114,7 +114,7 @@ class VitalSignsController extends Controller
                 'patient_phone' => $patientDetail['contact'] ?? 'N/A',
                 'patient_age' => isset($patientDetail['dob']) ? date_diff(date_create($patientDetail['dob']), date_create('today'))->y . ' years' : 'N/A',
                 'patient_weight' => $weight,
-                'patient_gender' => isset($patientDetail['gender']) ? $patientDetail['gender'] :  'N/A',
+                'patient_gender' => $patientDetail['gender'] ?? '',
                 'doctor_name' => $professionDetail['first_name'] . ' ' . $professionDetail['last_name'],
                 'doctor_license' => $maskedRegistrationNumber,
                 'doctor_signature' => $professionDetail->professionalDetails->signature ?? 'N/A',

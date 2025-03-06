@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AgoraCalling;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
@@ -51,7 +52,7 @@ Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
 Route::get('/send-patient-appointment-notifications', [AppointmentController::class, 'sendPatientNotifications']);
 Route::get('/send-professional-appointment-notifications', [AppointmentController::class, 'sendProfessionalNotifications']);
 Route::get('/send-post-consultation-notifications', [AppointmentController::class, 'sendPostConsultationNotifications']);
-
+Route::get('/agora_auth_token' , [AgoraCalling::class , 'token']);
 Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('patient', PatientController::class);
