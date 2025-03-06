@@ -36,7 +36,7 @@ class ProcessProfileImage implements ShouldQueue
             ]
         ]);
         $response = json_decode($response->getBody(), true);
-        if($response->status == 'complete'){
+        if($response['status'] == 'complete'){
             $imageUrl = $response['downloads']['url'];
             $user = User::find($this->user_id);
             $user->clearMediaCollection();
