@@ -6,10 +6,12 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ProcessProfileImage implements ShouldQueue
 {
-    use Queueable;
+    use Queueable ,InteractsWithQueue, Queueable, SerializesModels;
     private $user_id;
     private $image_id;
 
