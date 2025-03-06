@@ -31,7 +31,6 @@ class ProcessProfileImage implements ShouldQueue
     {
         $client = new Client();
         $apiUrl = 'https://api.magichour.ai/v1/image-projects/' . $this->image_id;
-
         $response = $client->get($apiUrl, [
             'headers' => [
                 'Authorization' => 'Bearer ' . env('MAGIC_HOUR_API')
