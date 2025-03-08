@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Barryvdh\DomPDF\PDF;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class GenerateAppointmentSummaryPDF implements ShouldQueue
 {
-    use Queueable;
+    use Queueable ,InteractsWithQueue, SerializesModels;
     private $summaryJson;
     private $patientId;
     private $professionalId;

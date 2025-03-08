@@ -13,7 +13,7 @@ class ChatBox extends Model
      * @var \Illuminate\Support\HigherOrderCollectionProxy|int|mixed
      */
     protected $table = 'chat_box';
-    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to' , 'unread_count'];
+    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to' , 'expired_at' ,'unread_count'];
     protected $appends = ['notification','name','last_message'];
     protected $hidden = ['notification_to'];
 
@@ -41,5 +41,9 @@ class ChatBox extends Model
     public function getLastMessageAttribute()
     {
         return $this->messages->last();
+    }
+
+    public function appointment(){
+        return $this->belongsTo(Appointment::class, 'appointment_id');
     }
 }

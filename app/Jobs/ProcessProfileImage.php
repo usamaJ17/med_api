@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessProfileImage implements ShouldQueue
 {
-    use Queueable ,InteractsWithQueue, Queueable, SerializesModels;
+    use Queueable ,InteractsWithQueue, SerializesModels;
     private $user_id;
     private $image_id;
 

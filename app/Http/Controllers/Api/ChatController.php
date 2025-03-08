@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\ChatBox;
 use App\Models\User;
 use App\Models\Notifications;
 use App\Models\ChatBoxMessage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
     public function getAllChats()
     {
+        ChatBox::where('expired_at', '<', now())->update(['status' => 0]);
         $chatboxes = ChatBox::with('sender','receiver')->where('sender_id', auth()->id())
             ->orWhere('receiver_id', auth()->id())
             ->get();
@@ -24,8 +27,17 @@ class ChatController extends Controller
         ];
         return response()->json($data);
     }
-    public static function createChatBox($from_id, $to_id)
+
+    private function calculateExpiryTimeStamp($appId){
+        $appointment = Appointment::find($appId);
+        $endingDate = $appointment->appointment_date;
+        $endingTime = $appointment->appointment_time;
+        $appointmentDateTime = Carbon::parse("$endingDate $endingTime");
+        return $appointmentDateTime->copy()->addDays(7);
+    }
+    public static function createChatBox($from_id, $to_id , $appId)
     {
+        $expiredTime = self::calculateExpiryTimeStamp($appId);
         $chatbox = ChatBox::where('sender_id', $from_id)
             ->where('receiver_id', $to_id)->first();
         if(!$chatbox){
@@ -36,12 +48,16 @@ class ChatController extends Controller
         if ($chatbox) {
             if ($chatbox->status == 0) {
                 $chatbox->status = 1;
+                $chatbox->appointment_id = $appId;
+                $chatbox->expired_at = $expiredTime;
                 $chatbox->save();
             }
         }else{
             $chatbox = ChatBox::create([
                 'sender_id' => $from_id,
                 'receiver_id' => $to_id,
+                'appointment_id' => $appId,
+                'expired_at' => $expiredTime,
                 'status' => 1
             ]);
         }
@@ -86,21 +102,19 @@ class ChatController extends Controller
                     'data' => $msg
                 ];
                 broadcast(new MessageSent($message, $chatbox->id))->toOthers();
-                return response()->json($data);
             }else{
                 $data = [
                     'status' => 404,
                     'message' => 'Chat Box Not Active',
                 ];
-                return response()->json($data);
             }
         }else{
             $data = [
                 'status' => 404,
                 'message' => 'Chat Box Not Found',
             ];
-            return response()->json($data);
         }
+        return response()->json($data);
     }
     public function getMessage(Request $request){
         $chatbox = ChatBox::find($request->chat_box_id);

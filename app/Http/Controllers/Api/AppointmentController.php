@@ -642,7 +642,7 @@ class AppointmentController extends Controller
 //            Notifications::create($notificationData);
 //        }
         // create a chatbox between patient and professional
-        $box = ChatController::createChatBox($app->user_id, $app->med_id);
+        $box = ChatController::createChatBox($app->user_id, $app->med_id , $app->id);
         $app->chat_id = $box->id;
         $app->save();
         if (!$box) {
