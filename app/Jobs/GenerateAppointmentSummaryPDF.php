@@ -33,6 +33,7 @@ class GenerateAppointmentSummaryPDF implements ShouldQueue
      */
     public function handle(): void
     {
+        \Log::info("IN PDF STATUS");
         $pdfs_list = array();
         $professionDetail = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails')->where('id', $this->professionalId)->first();
         $patientDetail = User::with('medicalDetails')->where('id', $this->patientId)->first();
