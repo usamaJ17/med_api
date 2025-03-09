@@ -13,13 +13,13 @@ class AgoraCalling
         $appID = env('AGORA_APP_ID');
         $appCertificate = env('AGORA_APP_CERTIFICATE');
         $channelName = $request->channelName;
-        $user = Auth::user()->id;
-        $role = RtcTokenBuilder::RoleAttendee;
+        $user = 0;
+        $role = RtcTokenBuilder::RolePublisher;
         $expireTimeInSeconds = 3600;
         $currentTimestamp = now()->getTimestamp();
         $privilegeExpiredTs = $currentTimestamp + $expireTimeInSeconds;
         $data = [
-            "rtcToken" => RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $user, $role, $privilegeExpiredTs),
+              "rtcToken" => RtcTokenBuilder::buildTokenWithUserAccount($appID, $appCertificate, $channelName, $user, $role, $privilegeExpiredTs),
               "channelName" => $channelName,
               "uid" => $user,
               "expireTime" => 3600
