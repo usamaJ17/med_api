@@ -70,6 +70,8 @@ Route::middleware(['cros'])->group(function () {
   Route::get('articles_categories_home', [ArticleController::class, "getArticleCategories"]);
   Route::get('get-article/{category}/{name}', [ArticleController::class, "show_web"]);
   Route::post('articles/share-web/{article_id}', [ArticleController::class, 'addShare']);
+
+  Route::get('page_description/{page_uid}' , [\App\Http\Controllers\MetaDescriptionController::class , 'getApiData']);
 });
 
 

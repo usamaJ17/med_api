@@ -172,6 +172,12 @@
                             <span>Tweeks</span>
                         </a>
                     </li>
+                    <li class="@yield('description')">
+                        <a href="{{ route('description.index') }}">
+                            <i data-feather="inbox"></i>
+                            <span>Meta Description</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="sidebar-widgets">
