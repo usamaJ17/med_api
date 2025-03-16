@@ -68,8 +68,8 @@ class MetaDescriptionController extends Controller
     }
 
     public function getApiData($page_uid){
-        $description = MetaDescription::where('uid', $page_uid)->get();
-        if($description->count() > 0){
+        $description = MetaDescription::where('uid', $page_uid)->first();
+        if($description){
             $data = [
                 'status' => 200,
                 'message' => 'Description fetched successfully',
