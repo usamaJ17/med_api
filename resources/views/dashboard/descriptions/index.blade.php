@@ -48,7 +48,7 @@
                                         <td>
                                             <div class="btn-group">
                                                 <a class="dropdown-item" href="#"
-                                                   onclick="editMetaDescription({{ $description->id }}, '{{ $description->type }}', '{{ $description->value }}')">Edit</a>
+                                                   onclick="editMetaDescription({{ $description->id }}, '{{ $description->title }}', '{{ $description->description }}')">Edit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -83,10 +83,6 @@
                         <div class="form-group">
                             <label for="value">Description</label>
                             <textarea name="description" class="form-control" id="edit_description" placeholder="Enter Description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="formFileMultiple" class="form-label">Media</label>
-                            <input class="form-control" type="file" name="media[]" id="formFileMultiple" multiple>
                         </div>
                 </div>
                 <div class="modal-footer">
