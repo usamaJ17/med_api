@@ -55,6 +55,7 @@ class MetaDescriptionController extends Controller
     public function update(Request $request, MetaDescription $description)
     {
         $description->description = $request->input('description');
+        $description->meta_title = $request->input('meta_title');
         $description->save();
         return redirect()->back()->with('success', 'Description updated successfully.');
     }
@@ -73,12 +74,18 @@ class MetaDescriptionController extends Controller
             $data = [
                 'status' => 200,
                 'message' => 'Description fetched successfully',
-                'data' => $description->description
+                'data' => [
+                    'title' => $description->meta_title ,
+                    'description' => $description->description
+                ]
             ];
         }else{
             $data = [
                 'status' => 404,
-                'data' => null,
+                'data' => [
+                    'title' => null,
+                    'description' => null
+                ],
                 'message' => 'Description not found',
             ];
         }

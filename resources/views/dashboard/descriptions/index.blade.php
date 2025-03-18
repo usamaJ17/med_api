@@ -35,8 +35,9 @@
                             <table class="table border-no" id="example1">
                                 <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
+                                    <th>Page</th>
+                                    <th>Meta Title</th>
+                                    <th>Meta Description</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -44,11 +45,12 @@
                                 @foreach ($descriptions as $description)
                                     <tr class="hover-primary">
                                         <td>{{ $description->title }}</td>
+                                        <td>{{ $description->meta_title }}</td>
                                         <td>{{ $description->description }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <a class="dropdown-item" href="#"
-                                                   onclick="editMetaDescription({{ $description->id }}, '{{ $description->title }}', '{{ $description->description }}')">Edit</a>
+                                                   onclick="editMetaDescription({{ $description->id }}, '{{ $description->title }}', '{{ $description->description }}' , '{{ $description->meta_title }}')">Edit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -77,8 +79,12 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="type">Title</label>
+                            <label for="type">Page</label>
                             <input type="text" name="type" class="form-control" id="edit-title" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Meta Title</label>
+                            <input type="text" name="meta_title" class="form-control" id="edit-meta_title">
                         </div>
                         <div class="form-group">
                             <label for="value">Description</label>
@@ -108,8 +114,9 @@
                     })
                 });
 
-                function editMetaDescription(id, title, description) {
+                function editMetaDescription(id, title, description , metaTitle) {
                     $('#edit-title').val(title); // Set the type as readonly
+                    $('#edit-meta_title').val(metaTitle);
                     $('#edit_description').val(description);
                     $('#editForm').attr('action', '/portal/description/' + id); // Set the action for update route
                     $('#edit_modal').modal('show'); // Open the modal

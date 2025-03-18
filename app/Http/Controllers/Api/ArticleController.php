@@ -121,7 +121,7 @@ class ArticleController extends Controller
 
     public function index(Request $request)
     {
-        $query = Article::with('category')->select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published')
+        $query = Article::with('category')->select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published', 'meta_description' , 'meta_title')
             ->where('published', 1)
             ->orderBy('created_at', 'DESC');
 
@@ -247,6 +247,8 @@ class ArticleController extends Controller
             'title' => $request->title,
             'body' => $request->body,
             'slug' => $request->slug,
+            'meta_description' => $request->meta_description,
+            'meta_title' => $request->meta_title,
             'published' => 1,
         ]);
         if ($request->hasFile('thumbnail')) {

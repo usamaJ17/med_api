@@ -165,6 +165,17 @@
                             <label for="slug">Slug</label>
                             <input type="text" name="slug" class="form-control" id="edit_slug" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="slug">Meta Title</label>
+                            <input type="text" name="meta_title" class="form-control" id="edit_meta_title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit_meta_description">Meta Description</label>
+                            <textarea name="meta_description" class="form-control" id="edit_meta_description" placeholder="Enter Description"></textarea>
+                        </div>
+
                         <!-- Thumbnail Upload -->
                         <div class="form-group">
                             <label for="edit_thumbnail" class="form-label">Thumbnail</label>
@@ -224,6 +235,17 @@
                             <label for="slug">Slug</label>
                             <input type="text" name="slug" class="form-control" id="slug" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="slug">Meta Title</label>
+                            <input type="text" name="meta_title" class="form-control" id="meta_title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meta_description">Meta Description</label>
+                            <textarea name="meta_description" class="form-control" id="meta_description" placeholder="Enter Description"></textarea>
+                        </div>
+
                         <!-- Thumbnail Upload -->
                         <div class="form-group">
                             <label for="thumbnail" class="form-label">Thumbnail</label>
@@ -341,6 +363,8 @@
                         // Populate the form fields with response data
                         $('#edit_title').val(response.title);
                         $('#edit_slug').val(response.slug);
+                        $('#edit_meta_title').val(response.meta_title);
+                        $('#edit_meta_description').val(response.meta_description);
                         $('#editor2').val(response.body);
                         $('#edit_category_id').val(response.category_id);
                         quill2.deleteText(0, quill2.getLength());

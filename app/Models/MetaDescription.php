@@ -10,6 +10,7 @@ class MetaDescription extends Model
     protected $fillable = [
         'uid',
         'title',
+        'meta_title',
         'description',
     ];
 }

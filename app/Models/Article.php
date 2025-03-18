@@ -11,7 +11,7 @@ class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['category_id','slug' , 'user_id', 'title', 'body', 'thumbnail','share_count','published'];
+    protected $fillable = ['category_id','slug' , 'user_id', 'title', 'body', 'thumbnail','share_count','published' , 'meta_description' , 'meta_title'];
     protected $hidden = ['user'];
 
     public function user()
