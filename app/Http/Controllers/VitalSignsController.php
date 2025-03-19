@@ -80,10 +80,14 @@ class VitalSignsController extends Controller
             'note' => json_encode($summaryJson)
         ]);
         $clinicalNote = ClinicalNotes::create($request->all());
+        $data = [
+            'clinical_note' => $clinicalNote,
+        ];
         GenerateAppointmentSummaryPDF::dispatch($clinicalNote->id , $summaryJson , $request->user_id , auth()->user()->id);
         return response()->json([
             'status' => 200,
             'message'=> 'Notes Created Successfully, PDF will be available in a while',
+            'data'   => $data,
         ], 200);
     }
     public function saveComment(Request $request){
