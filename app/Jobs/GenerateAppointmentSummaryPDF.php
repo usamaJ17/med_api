@@ -6,7 +6,7 @@ use App\Models\ClinicalNotes;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
