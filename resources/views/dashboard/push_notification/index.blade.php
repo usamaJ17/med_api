@@ -115,7 +115,7 @@
                 }]
             })
             @if(Session::has('toast_success'))
-                console.log("BEFORE POPUP : " +  "{{ Session::get('toast_success') }}")
+                console.log("BEFORE POPUP ")
                 $.toast({
                     heading: 'Push Notification Scheduled',
                     text: 'Push notification is scheduled and will be sent out soon.',
