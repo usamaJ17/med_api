@@ -92,7 +92,7 @@
                 </form>
             </div>
         </div>
-        @endsection
+@endsection
 
 @section('script')
     <script>
@@ -114,17 +114,5 @@
                     }
                 }]
             })
-            @if(Session::has('toast_success'))
-            $.toast({
-                heading: 'Push Notification Scheduled',
-                text: 'Push notification is scheduled and will be sent out soon.',
-                position: 'top-right',
-                loaderBg: '#ff6849',
-                icon: 'success',
-                hideAfter: 3000,
-                stack: 6
-            });
-            @endif
-        });
     </script>
 @endsection
