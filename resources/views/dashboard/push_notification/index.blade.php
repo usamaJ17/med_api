@@ -71,8 +71,8 @@
                     <form action="{{ route('notification.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="name">To Role</label>
-                            <select name="to_role" class="form-control" id="">
+                            <label for="type">To Role</label>
+                            <select name="type" class="form-control" id="type">
                                 <option value="patient">Patients</option>
                                 <option value="professional">Professionals</option>
                             </select>
