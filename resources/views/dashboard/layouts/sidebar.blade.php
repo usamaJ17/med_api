@@ -178,6 +178,12 @@
                             <span>Meta Description</span>
                         </a>
                     </li>
+                    <li class="@yield('push_notification')">
+                        <a href="{{ route('notification.index') }}">
+                            <i data-feather="bell"></i>
+                            <span>Push Notifications</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="sidebar-widgets">
