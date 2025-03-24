@@ -58,7 +58,7 @@
         </div>
     </section>
 
-    <div class="modal fade" id="send_new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add_new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,7 +92,7 @@
                 </form>
             </div>
         </div>
-@endsection
+        @endsection
 
 @section('script')
     <script>
@@ -110,10 +110,21 @@
                     text: 'Send New Notification',
                     className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
                     action: function(e, dt, node, config) {
-                        $('#send_new').modal('show'); // Show the modal
+                        $('#add_new').modal('show'); // Show the modal
                     }
                 }]
             })
+            @if(Session::has('toast_success'))
+            $.toast({
+                heading: 'Push Notification Scheduled',
+                text: 'Push notification is scheduled and will be sent out soon.',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'success',
+                hideAfter: 3000,
+                stack: 6
+            });
+            @endif
         });
     </script>
 @endsection
