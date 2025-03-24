@@ -72,7 +72,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="name">To Role</label>
-                            <select name="type" class="form-control" id="">
+                            <select name="to_role" class="form-control" id="">
                                 <option value="patient">Patients</option>
                                 <option value="professional">Professionals</option>
                             </select>
@@ -115,6 +115,7 @@
                 }]
             })
             @if(Session::has('toast_success'))
+                console.log("BEFORE POPUP : " +  "{{ Session::get('toast_success') }}")
                 $.toast({
                     heading: 'Push Notification Scheduled',
                     text: 'Push notification is scheduled and will be sent out soon.',
