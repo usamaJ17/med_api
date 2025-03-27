@@ -10,11 +10,15 @@ class ChatBox extends Model
     use HasFactory;
 
     /**
+     * @var \Illuminate\Support\HigherOrderCollectionProxy|mixed
+     */
+
+    /**
      * @var \Illuminate\Support\HigherOrderCollectionProxy|int|mixed
      */
     protected $table = 'chat_box';
-    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to' , 'expired_at' ,'unread_count'];
-    protected $appends = ['notification','name','last_message'];
+    protected $fillable = ['sender_id', 'receiver_id', 'status','appointment_id','notification_to' , 'expired_at' ,'unread_count_sender' , 'unread_count_receiver'];
+    protected $appends = ['notification','name','last_message' , 'unread_count'];
     protected $hidden = ['notification_to'];
 
 
@@ -45,5 +49,13 @@ class ChatBox extends Model
 
     public function appointment(){
         return $this->belongsTo(Appointment::class, 'appointment_id');
+    }
+
+    public function getUnreadCountAttribute(){
+        if(auth()->user()->id == $this->sender_id){
+            return $this->unread_count_sender;
+        }else{
+            return $this->unread_count_receiver;
+        }
     }
 }

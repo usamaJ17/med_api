@@ -94,8 +94,8 @@ class ChatController extends Controller
                 $message->save();
                 $msg = ChatBoxMessage::find($message->id);
                 $chatbox->notification_to = $request->to_user_id;
-                $chatbox->unread_count = ($chatbox->unread_count ?? 0) + 1;
                 $chatbox->save();
+                $this->incrementUnreadValue($chatbox->id);
                 $data = [
                     'status' => 201,
                     'message' => 'Message Sent Successfully',
@@ -116,6 +116,25 @@ class ChatController extends Controller
         }
         return response()->json($data);
     }
+
+    private function incrementUnreadValue($chat_id ){
+        $chatBox = ChatBox::find($chat_id);
+        if(auth()->user()->id == $chatBox->sender_id){
+            $chatBox->unread_count_receiver = $chatBox->unread_count_receiver + 1;
+        }else{
+            $chatBox->unread_count_sender = $chatBox->unread_count_sender + 1;
+        }
+        $chatBox->save();
+    }
+    private function resetUnreadValue($chat_id ){
+        $chatBox = ChatBox::find($chat_id);
+        if(auth()->user()->id == $chatBox->sender_id){
+            $chatBox->unread_count_sender = 0;
+        }else{
+            $chatBox->unread_count_receiver = 0;
+        }
+        $chatBox->save();
+    }
     public function getMessage(Request $request){
         $chatbox = ChatBox::find($request->chat_box_id);
         if($chatbox){
@@ -130,6 +149,7 @@ class ChatController extends Controller
                 'message' => 'Messages Fetched Successfully',
                 'data' => $msg
             ];
+            $this->resetUnreadValue($chatbox->id);
             return response()->json($data);
         }else{
             $data = [

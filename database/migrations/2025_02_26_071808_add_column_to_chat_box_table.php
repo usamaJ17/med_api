@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('chat_box', function (Blueprint $table) {
-            $table->integer('unread_count')->default(0)->nullable();
+            $table->integer('unread_count_sender')->default(0)->nullable();
+            $table->integer('unread_count_receiver')->default(0)->nullable();
         });
     }
 
