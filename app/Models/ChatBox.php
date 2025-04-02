@@ -46,6 +46,10 @@ class ChatBox extends Model
     {
         return $this->messages->last();
     }
+    public function getCreatedAtAttribute()
+    {
+        return $this->messages->last()->updated_at;
+    }
 
     public function appointment(){
         return $this->belongsTo(Appointment::class, 'appointment_id');
