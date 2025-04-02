@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateAppointmentSummaryPDF implements ShouldQueue
 {
@@ -76,13 +77,18 @@ class GenerateAppointmentSummaryPDF implements ShouldQueue
                 $prefix = 'none_prescription_';
                 $pdf = Pdf::loadView('pdf.consultation_summary', $data)->setPaper('legal', 'portrait');
             }
-            $file_name = 'prescriptions/'. $prefix . time() . '.pdf';
-            if (!is_dir(storage_path('prescriptions'))) {
-                mkdir(storage_path('prescriptions'), 0777, true);
-            }
-            $filePath = storage_path($file_name);
-            $pdf->save($filePath);
-            $pdfs_list[$value] =  $file_name;
+//            $file_name = 'prescriptions/'. $prefix . time() . '.pdf';
+//            if (!is_dir(storage_path('prescriptions'))) {
+//                mkdir(storage_path('prescriptions'), 0777, true);
+//            }
+//            $filePath = storage_path($file_name);
+//            $pdf->save($filePath);
+//            $pdfs_list[$value] =  $file_name;
+
+            $relative_path = 'prescriptions/' . $prefix . time() . '_' . uniqid() . '.pdf';
+            Storage::disk('public')->put($relative_path, $pdf->output());
+            $public_url = Storage::disk('public')->url($relative_path);
+            $pdfs_list[$key] = $public_url;
         }
         $clinicalNote = ClinicalNotes::find($this->clinicalNoteId);
         $clinicalNote->update([
