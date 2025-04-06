@@ -30,7 +30,7 @@
             border-collapse: collapse;
         }
         .form-section-top {
-            margin-top: 1.6in;
+            margin-top: 1.3in;
             font-size: 16px;
             padding: 18px;
             width: 100%;
@@ -67,9 +67,9 @@
             <tr>
                 <td>
                     <div class="input-line">
-                        <span style="margin-left:-4px">{{ date('d', strtotime($date)) }}</span>
-                        <span style="margin-left:5px">{{ date('m', strtotime($date)) }}</span>
-                        <span style="margin-left:8px">{{ date('Y', strtotime($date)) }}</span>
+                        <span style="margin-left:-4px; margin-top:2px; font-size: 14px !important">{{ date('d', strtotime($date)) }}</span>
+                        <span style="margin-left:5px; margin-top:2px; font-size: 14px !important">{{ date('m', strtotime($date)) }}</span>
+                        <span style="margin-left:7px; margin-top:2px; font-size: 14px !important">{{ date('Y', strtotime($date)) }}</span>
                     </div>
                 </td>
             </tr>
@@ -88,11 +88,11 @@
                         <tr>
                             <td>
                                 <div class="input-line">
-                                    <span style="margin-left:-2px">{{ date('d', strtotime($date)) }}</span>
-                                    <span style="margin-left:6px">{{ date('m', strtotime($date)) }}</span>
-                                    <span style="margin-left:8px">{{ date('Y', strtotime($date)) }}</span>
+                                    <span style="margin-left:-2px; font-size: 14px !important">{{ date('d', strtotime($date)) }}</span>
+                                    <span style="margin-left:6px; font-size: 14px !important">{{ date('m', strtotime($date)) }}</span>
+                                    <span style="margin-left:8px; font-size: 14px !important">{{ date('Y', strtotime($date)) }}</span>
                                 </div>
-                                <div class="input-line" style="margin-left: 100px;">{{ $patient_id }}</div>
+                                <div class="input-line" style="margin-left: 90px;">{{ $patient_id }}</div>
                             </td>
                         </tr>
                         <tr>
@@ -143,9 +143,9 @@
             </tr>
         </table>
 
-        <table class="form-section-mid" style="height:4.4in;margin-top: 0.8in;">
+        <table class="form-section-mid" style="height:4.6in;margin-top: 0.6in;">
             <tr>
-				<td style="width:60%"><div style="margin-left: -30px;">{!! $note_value !!}</div></td>
+				<td style="width:100%"><div style="margin-left: -30px;">{!! $note_value !!}</div></td>
 				<td></td>
             </tr>
         </table>
@@ -157,12 +157,12 @@
                     <table>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: -30px; margin-top: 8px;">{{ $doctor_name }}</div>
+                                <div class="input-line" style="margin-left: -30px; margin-top: 6px;">{{ $doctor_name }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="input-line" style="margin-left: 130px;margin-top: 8px;">                                      
+                                <div class="input-line" style="margin-left: 140px;margin-top: 0px;">
                                     @if($doctor_signature != 'N/A')
                                         <img src="{{ $doctor_signature }}" alt="" style="width: 80px; height: 30px;background: transparent;">
                                     @endif
@@ -171,7 +171,7 @@
                         </tr>
                         <tr>
                             <td>                           
-                                <div class="input-line" style="margin-left: 25px; margin-top: 4px;">  
+                                <div class="input-line" style="margin-left: 25px; margin-top: 0px;">
                                     {{ $doctor_license }}
                                 </div> 
                             </td>

@@ -38,7 +38,6 @@
                                     <th>Title</th>
                                     <th>To Role</th>
                                     <th>Body</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -92,28 +91,28 @@
                 </form>
             </div>
         </div>
-@endsection
+        @endsection
 
-@section('script')
-    <script>
-        $(function() {
-            'use strict';
-            $('#example1').DataTable({
-                'paging': true,
-                'lengthChange': false,
-                'searching': true,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false,
-                'dom': 'Bfrtip',
-                'buttons': [{
-                    text: 'Send New Notification',
-                    className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
-                    action: function(e, dt, node, config) {
-                        $('#add_new').modal('show'); // Show the modal
-                    }
-                }]
-            })
-        })
-    </script>
+        @section('script')
+            <script>
+                $(function() {
+                    'use strict';
+                    $('#example1').DataTable({
+                        'paging': true,
+                        'lengthChange': false,
+                        'searching': true,
+                        'ordering': true,
+                        'info': true,
+                        'autoWidth': false,
+                        'dom': 'Bfrtip',
+                        'buttons': [{
+                            text: 'Send New Notification',
+                            className: 'waves-effect waves-light btn btn-sm btn-success mb-5', // Add your custom classes here
+                            action: function(e, dt, node, config) {
+                                $('#add_new').modal('show'); // Show the modal
+                            }
+                        }]
+                    })
+                })
+            </script>
 @endsection
