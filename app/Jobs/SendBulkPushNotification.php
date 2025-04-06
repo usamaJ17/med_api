@@ -35,7 +35,7 @@ class SendBulkPushNotification  implements ShouldQueue
     {
         $pushNotification = PushNotification::find($this->notificationId);
 
-        $role = $pushNotification->to_role;
+        $role = $pushNotification->to_role == 'professional' ? 'medical' : 'patient';
 
         Log::info('ROLE: ' . $role);
 
