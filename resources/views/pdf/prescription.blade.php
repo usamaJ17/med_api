@@ -16,7 +16,7 @@
             background-size: contain;
             height: 14in;
             width: 8.5in;
-            font-size: 14px;
+            font-size: 16px;
             -webkit-print-color-adjust: exact; 
             font-family: "Gill Sans", sans-serif;
         }
@@ -31,19 +31,19 @@
         }
         .form-section-top {
             margin-top: 1.6in;
-            font-size: 14px;
+            font-size: 16px;
             padding: 18px;
             width: 100%;
         }
         .form-section {
             margin-top: 0.19in;
-            font-size: 14px;
+            font-size: 16px;
             padding: 18px;
             width: 50%;
         }
         .form-section-mid {
             margin-top: 15px;
-            font-size: 14px;
+            font-size: 16px;
             padding: 18px;
         }
         .input-line {
@@ -58,7 +58,7 @@
             <tr>
                 <td width="60%"></td>
                 <td>
-                    <h2 style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; text-align: center;">{{$note_key}}</h2>
+                    <h1 style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; text-align: center;">{{$note_key}}</h1>
                 </td>
 
             </tr>
