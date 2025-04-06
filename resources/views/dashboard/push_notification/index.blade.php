@@ -38,6 +38,7 @@
                                     <th>Title</th>
                                     <th>To Role</th>
                                     <th>Body</th>
+                                    <th>Created At</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -46,6 +47,7 @@
                                         <td>{{ $pushNotification->title }}</td>
                                         <td>{{ ucfirst($pushNotification->to_role) }}</td>
                                         <td>{{ $pushNotification->body }}</td>
+                                        <td>{{ $pushNotification->created_at->format('h:ia, j M Y') }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
