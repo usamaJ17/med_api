@@ -60,7 +60,9 @@ class SendBulkPushNotification  implements ShouldQueue
             $report = null;
             $invalidTokens = [];
             foreach ($tokenBatches as $batch) {
+                Log::info('before sending');
                 $batchReport = $messaging->sendMulticast($message, $batch);
+                Log::info('after sending');
                 if ($batchReport->hasFailures()) {
                      Log::warning('Some notifications failed to send in batch.');
                     foreach ($batchReport->failures()->getItems() as $failure) {
