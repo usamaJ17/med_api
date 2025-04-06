@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendBulkPushNotification;
 use App\Models\MetaDescription;
 use App\Models\PushNotification;
 use Illuminate\Http\Request;
@@ -20,11 +21,13 @@ class PushNotificationController extends Controller
             'body' => 'required|string',
         ]);
 
-        PushNotification::create([
+        $notification = PushNotification::create([
             'title' => $request->title,
             'body' => $request->body,
             'to_role' => $request->to_role
         ]);
+
+        SendBulkPushNotification::dispatch($notification->id);
 
         return redirect()->back()->with('success', 'Notification queued for sending');
     }
