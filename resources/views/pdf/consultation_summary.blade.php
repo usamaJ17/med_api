@@ -30,7 +30,7 @@
             border-collapse: collapse;
         }
         .form-section-top {
-            margin-top: 1.6in;
+            margin-top: 1.1in;
             font-size: 16px;
             padding: 18px;
             width: 100%;
