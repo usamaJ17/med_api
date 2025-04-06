@@ -44,7 +44,7 @@
                                 @foreach ($pushNotifications as $pushNotification)
                                     <tr class="hover-primary">
                                         <td>{{ $pushNotification->title }}</td>
-                                        <td>{{ $pushNotification->to_role }}</td>
+                                        <td>{{ ucfirst($pushNotification->to_role) }}</td>
                                         <td>{{ $pushNotification->body }}</td>
                                     </tr>
                                 @endforeach
@@ -71,7 +71,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="type">To Role</label>
-                            <select name="type" class="form-control" id="type">
+                            <select name="to_role" class="form-control" id="type">
                                 <option value="patient">Patients</option>
                                 <option value="professional">Professionals</option>
                             </select>
