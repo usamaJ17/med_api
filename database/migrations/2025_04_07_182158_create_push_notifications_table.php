@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('to_role')->nullable();
             $table->text('body');
             $table->boolean('is_sent')->default(false);
+            $table->dateTime('scheduled_at')->nullable();
             $table->timestamps();
         });
     }

@@ -22,10 +22,8 @@ class SendBulkPushNotification  implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    private $notificationId;
-    public function __construct($notificationId)
+    public function __construct()
     {
-        $this->notificationId = $notificationId;
     }
 
     /**
@@ -33,7 +31,7 @@ class SendBulkPushNotification  implements ShouldQueue
      */
     public function handle(): void
     {
-        $pushNotification = PushNotification::find($this->notificationId);
+        $pushNotification = PushNotification::where('is_sent' , 0)->where('scheduled_at' , '<=' , now())->orderBy('created_at')->first();
 
         $role = $pushNotification->to_role == 'professional' ? 'medical' : 'patient';
 
@@ -41,7 +39,7 @@ class SendBulkPushNotification  implements ShouldQueue
 
         try {
             $role = Role::findByName($role);
-            $tokens = User::role($role->name) // Use Spatie's scope
+            $tokens = User::role($role->name)
             ->whereNotNull('device_token')
                 ->where('device_token', '!=', '')
                 ->pluck('device_token')
@@ -77,6 +75,8 @@ class SendBulkPushNotification  implements ShouldQueue
                 User::whereIn('device_token', $invalidTokens)->update(['device_token' => null]);
                 Log::info('Cleaned up invalid tokens.', ['count' => count($invalidTokens)]);
             };
+            $pushNotification->is_sent = 1;
+            $pushNotification->save();
 
         } catch (\Spatie\Permission\Exceptions\RoleDoesNotExist $e) {
             Log::error('Firebase Messaging Exception: Role not found' . $e->getMessage());
