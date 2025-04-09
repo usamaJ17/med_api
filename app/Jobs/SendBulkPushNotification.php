@@ -32,6 +32,13 @@ class SendBulkPushNotification  implements ShouldQueue
     public function handle(): void
     {
         $pushNotification = PushNotification::where('is_sent' , 0)->where('scheduled_at' , '<=' , now())->orderBy('created_at')->first();
+        if (!$pushNotification) {
+            Log::info('No push notification to send');
+            return;
+        }
+        Log::info('Push Notification ID: ' . $pushNotification->id);
+        Log::info('Scheduled at: ' . $pushNotification->scheduled_at);
+        Log::info('Current time: ' . now());
 
         $role = $pushNotification->to_role == 'professional' ? 'medical' : 'patient';
 
