@@ -39,6 +39,7 @@ class PushNotificationController extends Controller
         if ($request->hasFile('image')) {
             $notification->addMediaFromRequest('image')->toMediaCollection('notification_image');
         }
+        dd($notification->image_url);
 
         return redirect()->back()->with('success', 'Notification queued for sending');
     }
