@@ -57,12 +57,6 @@ class SendBulkPushNotification  implements ShouldQueue
                     ->pluck('device_token')
                     ->toArray();
             }
-            $role = Role::findByName($role);
-            $tokens = User::role($role->name)
-            ->whereNotNull('device_token')
-                ->where('device_token', '!=', '')
-                ->pluck('device_token')
-                ->toArray();
             if (empty($tokens)) {
                 Log::error('Firebase Messaging Exception: no token found');
             }
