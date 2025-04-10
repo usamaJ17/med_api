@@ -56,7 +56,7 @@ class SendBulkPushNotification  implements ShouldQueue
             }
 
             $messaging = Firebase::messaging();
-            $notification = Notification::create($pushNotification->title, $pushNotification->body);
+            $notification = Notification::create($pushNotification->title, $pushNotification->body ,$pushNotification->image_url);
             $message = CloudMessage::new()
                 ->withNotification($notification); // Standard notification payload
 

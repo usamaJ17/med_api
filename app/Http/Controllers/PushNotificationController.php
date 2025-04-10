@@ -36,6 +36,9 @@ class PushNotificationController extends Controller
             'to_role' => $request->to_role,
             'scheduled_at' => Carbon::createFromFormat('Y-m-d H:i', $request->scheduled_at),
         ]);
+        if ($request->hasFile('image')) {
+            $notification->addMediaFromRequest('image')->toMediaCollection('notification_image');
+        }
 
         return redirect()->back()->with('success', 'Notification queued for sending');
     }
@@ -61,6 +64,10 @@ class PushNotificationController extends Controller
             'to_role' => $request->to_role,
             'scheduled_at' => Carbon::createFromFormat('Y-m-d H:i', $request->scheduled_at),
         ]);
+        if ($request->hasFile('image')) {
+            $pushNotification->clearMediaCollection('notification_image');
+            $pushNotification->addMediaFromRequest('image')->toMediaCollection('notification_image');
+        }
 
         return redirect()->back()->with('success', 'Notification updated successfully');
     }

@@ -137,6 +137,7 @@
                                     <th>Title</th>
                                     <th>To Role</th>
                                     <th>Body</th>
+                                    <th>Image</th>
                                     <th>Created At</th>
                                     <th>Scheduled At</th>
                                     <th>Actions</th>
@@ -148,6 +149,13 @@
                                         <td>{{ $pushNotification->title }}</td>
                                         <td>{{ ucfirst($pushNotification->to_role) }}</td>
                                         <td>{{ $pushNotification->body }}</td>
+                                        <td>
+                                            @if($pushNotification->image_url)
+                                                <a href="{{ $pushNotification->image_url }}" target="_blank">Open Image</a>
+                                            @else
+                                                No Image Uploaded
+                                            @endif
+                                        </td>
                                         <td>{{ $pushNotification->created_at->format('h:ia, j M Y') }}</td>
                                         <td>{{ $pushNotification->scheduled_at->format('h:ia, j M Y') }}</td>
                                         <td>
@@ -184,7 +192,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('notification.store') }}" method="POST">
+                    <form action="{{ route('notification.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="type">To Role</label>
@@ -205,6 +213,10 @@
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Notification Image (Optional)</label>
+                            <input type="file" name="image" class="form-control" id="image" accept="image/jpeg,image/png,image/gif">
                         </div>
                         <div class="form-group">
                             <label for="body">Body</label>
@@ -253,6 +265,10 @@
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_image">Notification Image (Upload to overwrite)</label>
+                            <input type="file" name="image" class="form-control" id="edit_image" accept="image/jpeg,image/png,image/gif">
                         </div>
                         <div class="form-group">
                             <label for="edit_body">Body</label>
