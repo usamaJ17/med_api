@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProfessionalType;
 use App\Models\PushNotification;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -11,7 +12,8 @@ class PushNotificationController extends Controller
     public function index()
     {
         $pushNotifications = PushNotification::all();
-        return view('dashboard.push_notification.index', compact('pushNotifications'));
+        $professsionalTypes = ProfessionalType::all();
+        return view('dashboard.push_notification.index', compact('pushNotifications' , 'professsionalTypes'));
     }
 
 

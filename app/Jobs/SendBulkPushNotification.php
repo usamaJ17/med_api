@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\ProfessionalDetails;
+use App\Models\ProfessionalType;
 use App\Models\PushNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -36,15 +38,25 @@ class SendBulkPushNotification  implements ShouldQueue
             Log::info('No push notification to send');
             return;
         }
-        Log::info('Push Notification ID: ' . $pushNotification->id);
-        Log::info('Scheduled at: ' . $pushNotification->scheduled_at);
-        Log::info('Current time: ' . now());
-
-        $role = $pushNotification->to_role == 'professional' ? 'medical' : 'patient';
-
-        Log::info('ROLE: ' . $role);
-
         try {
+            $tokens = [];
+            if($pushNotification->to_role == 'professional' || $pushNotification->to_role == 'patient'){
+                $role = $pushNotification->to_role == 'professional' ? 'medical' : 'patient';
+                $role = Role::findByName($role);
+                $tokens = User::role($role->name)
+                ->whereNotNull('device_token')
+                    ->where('device_token', '!=', '')
+                    ->pluck('device_token')
+                    ->toArray();
+            } else {
+                $professsionalTypeId = ProfessionalType::where('name', $pushNotification->to_role)->first()->id;
+                $details = ProfessionalDetails::where('profession', $professsionalTypeId)->pluck('user_id')->toArray();
+                $tokens = User::whereIn('id', $details)
+                ->whereNotNull('device_token')
+                    ->where('device_token', '!=', '')
+                    ->pluck('device_token')
+                    ->toArray();
+            }
             $role = Role::findByName($role);
             $tokens = User::role($role->name)
             ->whereNotNull('device_token')

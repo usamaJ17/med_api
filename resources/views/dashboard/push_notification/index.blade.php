@@ -199,6 +199,9 @@
                             <select name="to_role" class="form-control" id="type">
                                 <option value="patient">Patients</option>
                                 <option value="professional">Professionals</option>
+                                @foreach ($professsionalTypes as $type)
+                                    <option value="{{ $type->name }}">{{ ucfirst($type->name) }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -251,6 +254,9 @@
                             <select name="to_role" class="form-control" id="edit_type">
                                 <option value="patient">Patients</option>
                                 <option value="professional">Professionals</option>
+                                @foreach ($professsionalTypes as $type)
+                                    <option value="{{ $type->name }}">{{ ucfirst($type->name) }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
