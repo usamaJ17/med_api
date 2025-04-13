@@ -57,7 +57,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::resource('medical', MedicalController::class);
     Route::resource('tweek', TweekController::class);
     Route::resource('description', MetaDescriptionController::class);
-    Route::resource('portal/notification', PushNotificationController::class);
+    Route::resource('notification', PushNotificationController::class);
     Route::resource('reminder', ReminderController::class);
     Route::resource('user', UserController::class);
     Route::get('articles', [ArticleController::class,'index_web'])->name('articles.admin.index');

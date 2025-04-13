@@ -20,7 +20,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // $startDate = Carbon::now()->startOfMonth();
         $startDate = Carbon::parse('2024-08-21T19:41:16.000000Z');
         $endDate = Carbon::now()->addDay();
 
@@ -43,7 +42,7 @@ class DashboardController extends Controller
         $professionalCounts = User::whereHas("roles", function ($q) {
             $q->where("name", "medical");
         })
-            ->whereBetween('created_at', [$startDate, $endDate]) // Filter users created within current month
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->select('professional_type_id', DB::raw('count(*) as count'))
             ->groupBy('professional_type_id')
             ->get();
@@ -59,15 +58,20 @@ class DashboardController extends Controller
             $q->where("name", "medical");
         })->get();
         $appointments = Appointment::all();
-        $threeDaysAgo = Carbon::now()->subDays(30);
+        $thirtyDaysAgo = Carbon::now()->subDays(30);
         $result = Appointment::where('status', '!=', 'cancelled')
-            ->where('appointment_date', '>=', $threeDaysAgo)
+            ->where('appointment_date', '>=', $thirtyDaysAgo)
             ->select('med_id', DB::raw('count(*) as appointment_count'))
             ->groupBy('med_id')
             ->orderByDesc('appointment_count')
             ->first();
-
-        // Extract the med_id and count
+        if (!$result) {
+            $result = Appointment::where('status', '!=', 'cancelled')
+            ->select('med_id', DB::raw('count(*) as appointment_count'))
+            ->groupBy('med_id')
+            ->orderByDesc('appointment_count')
+            ->first();
+        }
         $medIdWithMaxAppointments = $result->med_id ?? null;
         $maxDoc = User::find($medIdWithMaxAppointments);
         if (!$maxDoc) {
