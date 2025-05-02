@@ -127,7 +127,6 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('emergencyhelp/index', [EmergencyController::class,'simple'])->name('emergencyhelp.simple');
     Route::get('emergencyhelp/midnight', [EmergencyController::class,'midnight'])->name('emergencyhelp.midnight');
     Route::post('payments/payouts/action', [PaymentController::class,'payoutsAction'])->name('payments.payouts.action');
-
     Route::get('appointments', [AppointmentController::class,'listAll'])->name('appointments.index');
     Route::get('feedback', [DashboardController::class,'userFeedback'])->name('dashboard.user-feedback');
     

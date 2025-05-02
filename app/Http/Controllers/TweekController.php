@@ -74,6 +74,16 @@ class TweekController extends Controller
     {
         //
     }
+
+    public function withdrawwal_message(){
+        $tweek = Tweek::where('type', 'Withdrawal Message')->first();
+        $data = [
+            'status' => 200,
+            'message' => 'Withdrawal Message fetched successfully',
+            'data' => $tweek->value
+        ];
+        return response()->json($data);
+    }
     public function getApiData(Request $request){
         $tweaks = Tweek::where('type', ucwords(str_replace('_', ' ', $request->type)))->get();
         if($tweaks->count() > 0){
