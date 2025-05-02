@@ -48,7 +48,10 @@ class ChatBox extends Model
     }
     public function getCreatedAtAttribute()
     {
-        return $this->messages->last()->updated_at;
+        if($this->getLastMessageAttribute()){
+            return $this->getLastMessageAttribute()->updated_at;
+        }
+        return null;
     }
 
     public function appointment(){
