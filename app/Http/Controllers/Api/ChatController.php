@@ -28,13 +28,14 @@ class ChatController extends Controller
         return response()->json($data);
     }
 
-    private function calculateExpiryTimeStamp($appId){
+    private static function calculateExpiryTimeStamp($appId){
         $appointment = Appointment::find($appId);
         $endingDate = $appointment->appointment_date;
         $endingTime = $appointment->appointment_time;
         $appointmentDateTime = Carbon::parse("$endingDate $endingTime");
         return $appointmentDateTime->copy()->addDays(7);
     }
+    
     public static function createChatBox($from_id, $to_id , $appId)
     {
         $expiredTime = self::calculateExpiryTimeStamp($appId);
