@@ -6,6 +6,9 @@
 @section('push_notification')
     active
 @endsection
+@section('alerts.push_notification')
+    active
+@endsection
 @section('css')
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"/>

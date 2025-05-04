@@ -14,6 +14,7 @@ class TweekController extends Controller
     public function index()
     {
         $tweeks = Tweek::all();
+        dd($tweeks);
         return view('dashboard.tweek.index', compact('tweeks'));
     }
 

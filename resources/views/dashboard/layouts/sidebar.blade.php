@@ -23,18 +23,12 @@
                         </a>
                         <ul class="treeview-menu">
                             <li class="@yield('dashboard.home')"><a href="{{ route('dashboard') }}"><i
-                                            class="icon-Commit"><span class="path1"></span><span
+                                        class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Dashboard</a></li>
                             <li class="@yield('dashboard.feedback')"><a href="{{ route('dashboard.user-feedback') }}"><i
-                                            class="icon-Commit"><span class="path1"></span><span
-                                                class="path2"></span></i>User Feedback</a></li>
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>User Feedback</a></li>
                         </ul>
-                    </li>
-                    <li class="@yield('support_groups')">
-                        <a href="{{ route('support_groups.index') }}">
-                            <i data-feather="help-circle"></i>
-                            <span>Support Groups</span>
-                        </a>
                     </li>
                     <li class="treeview @yield('patient')">
                         <a href="#">
@@ -74,6 +68,60 @@
                             <span>Appointments</span>
                         </a>
                     </li>
+                    <li class="treeview @yield('emergencyhelp')">
+                        <a href="#">
+                            <i data-feather="phone-call"></i>
+                            <span>Emergency Help</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('emergencyhelp.simple')"><a href="{{ route('emergencyhelp.simple') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Emergency Help</a></li>
+                            <li class="@yield('emergencyhelp.midnight')"><a href="{{ route('emergencyhelp.midnight') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Mid Night Emergency Help</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview @yield('payments')">
+                        <a href="#">
+                            <i data-feather="credit-card"></i>
+                            <span>Payments</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('payments.trans')"><a href="{{ route('payments.transactions') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Transactions</a></li>
+                            <li class="@yield('payments.payouts')"><a href="{{ route('payments.payouts') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Payouts</a></li>
+                            <li class="@yield('refund_history')"><a href="{{ route('refund_history') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Refund History</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview @yield('alerts')">
+                        <a href="#">
+                            <i data-feather="bell"></i>
+                            <span>Alerts</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('alerts.reminder')"><a href="{{ route('reminder.index') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Reminders</a></li>
+                            <li class="@yield('alerts.push_notification')"><a href="{{ route('notification.index') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Push Notifications</a></li>
+                        </ul>
+                    </li>
                     <li class="treeview @yield('dynamic')">
                         <a href="#">
                             <i data-feather="align-justify"></i>
@@ -106,45 +154,11 @@
                                             class="path2"></span></i>Consultation Summary</a></li>
                         </ul>
                     </li>
-                    <li class="treeview @yield('payments')">
-                        <a href="#">
-                            <i data-feather="credit-card"></i>
-                            <span>Payments</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </span>
+                    <li class="@yield('support_groups')">
+                        <a href="{{ route('support_groups.index') }}">
+                            <i data-feather="help-circle"></i>
+                            <span>Support Groups</span>
                         </a>
-                        <ul class="treeview-menu">
-                            <li class="@yield('payments.trans')"><a href="{{ route('payments.transactions') }}"><i
-                                        class="icon-Commit"><span class="path1"></span><span
-                                            class="path2"></span></i>Transactions</a></li>
-                            <li class="@yield('payments.payouts')"><a href="{{ route('payments.payouts') }}"><i
-                                        class="icon-Commit"><span class="path1"></span><span
-                                            class="path2"></span></i>Payouts</a></li>
-                        </ul>
-                    </li>
-                    <li class="@yield('refund_history')">
-                        <a href="{{ route('refund_history') }}">
-                            <i data-feather="credit-card"></i>
-                            <span>Refund History</span>
-                        </a>
-                    </li>
-                    <li class="treeview @yield('emergencyhelp')">
-                        <a href="#">
-                            <i data-feather="phone-call"></i>
-                            <span>Emergency Help</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="@yield('emergencyhelp.simple')"><a href="{{ route('emergencyhelp.simple') }}"><i
-                                        class="icon-Commit"><span class="path1"></span><span
-                                            class="path2"></span></i>Emergency Help</a></li>
-                            <li class="@yield('emergencyhelp.midnight')"><a href="{{ route('emergencyhelp.midnight') }}"><i
-                                        class="icon-Commit"><span class="path1"></span><span
-                                            class="path2"></span></i>Mid Night Emergency Help</a></li>
-                        </ul>
                     </li>
                     <li class="@yield('article')">
                         <a href="{{ route('articles.admin.index') }}">
@@ -152,20 +166,14 @@
                             <span>Articles</span>
                         </a>
                     </li>
-                    @if(auth()->user()->hasRole('admin'))
-                    <li class="@yield('user')">
-                        <a href="{{route('user.index')}}">
-                            <i data-feather="user"></i>
-                            <span>Users</span>
-                        </a>
-                    </li>
+                    @if (auth()->user()->hasRole('admin'))
+                        <li class="@yield('user')">
+                            <a href="{{ route('user.index') }}">
+                                <i data-feather="user"></i>
+                                <span>Users</span>
+                            </a>
+                        </li>
                     @endif
-                    <li class="@yield('reminder')">
-                        <a href="{{ route('reminder.index') }}">
-                            <i data-feather="bell"></i>
-                            <span>Reminders</span>
-                        </a>
-                    </li>
                     <li class="@yield('tweek')">
                         <a href="{{ route('tweek.index') }}">
                             <i data-feather="sliders"></i>
@@ -176,12 +184,6 @@
                         <a href="{{ route('description.index') }}">
                             <i data-feather="inbox"></i>
                             <span>Meta Description</span>
-                        </a>
-                    </li>
-                    <li class="@yield('push_notification')">
-                        <a href="{{ route('notification.index') }}">
-                            <i data-feather="bell"></i>
-                            <span>Push Notifications</span>
                         </a>
                     </li>
                 </ul>

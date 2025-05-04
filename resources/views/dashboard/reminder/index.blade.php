@@ -6,6 +6,9 @@
 @section('reminder')
     active
 @endsection
+@section('alerts.reminder')
+    active
+@endsection
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
