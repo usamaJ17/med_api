@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\GlobalHelper;
 use App\Models\Appointment;
 use App\Models\Payouts;
 use App\Models\TransactionHistory;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\Finder\Glob;
 use Unicodeveloper\Paystack\Facades\Paystack;
 
 class PaymentController extends Controller
@@ -195,7 +197,6 @@ class PaymentController extends Controller
     {
         $escrowAmount = 0;
         $availableAmount = 0;
-        $total = 0;
         $payoutsWithdrawn = Payouts::where('user_id', auth()->user()->id)->where('status', 'completed')->where('completed_at', '!=', null)->sum('amount');
 
         $appointments = Appointment::where('med_id', auth()->user()->id)
@@ -212,10 +213,10 @@ class PaymentController extends Controller
 
                     if ($daysDifference > 7) {
                         $appointment->status = 'Completed';
-                        $availableAmount += $appointment->fee_int; // Sum for available amount
+                        $availableAmount += GlobalHelper::getAmountAfterCommission($appointment->fee_int); // Sum for available amount
                     } else {
                         $appointment->status = 'In Progress';
-                        $escrowAmount += $appointment->fee_int; // Sum for escrow amount
+                        $escrowAmount += GlobalHelper::getAmountAfterCommission($appointment->fee_int); // Sum for escrow amount
                     }
                 }
 
@@ -224,7 +225,8 @@ class PaymentController extends Controller
                     'user_name' => $appointment->patient_name,
                     'appointment_booked_on' => $appointment->created_at,
                     'appointment_date' => $appointment->appointment_date,
-                    'amount' => $appointment->fee_int,
+                    'amount' => GlobalHelper::getAmountAfterCommission($appointment->fee_int),
+                    'total_fee' => $appointment->fee_int,
                     'status' => $appointment->status,
                     'appointment_type' => $appointment->appointment_type,
                     'transaction_id' => $appointment->transaction_id
@@ -259,7 +261,7 @@ class PaymentController extends Controller
                     $daysDifference = $appointmentDate->diffInDays($currentDate);
 
                     if ($daysDifference > 7) {
-                        $availableAmount += $appointment->fee_int; // Sum for available amount
+                        $availableAmount += GlobalHelper::getAmountAfterCommission($appointment->fee_int); // Sum for available amount
                     }
                 }
             });
