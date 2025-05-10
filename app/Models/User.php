@@ -104,6 +104,7 @@ class User extends Authenticatable implements HasMedia
     public function prepareUserData()
     {
         $data = $this->attributesToArray();
+        $data['balance'] = $patient->wallet->balance ?? 0.00 ;
         return $data;
     }
     public function prepareArticleAuthorData()
