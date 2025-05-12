@@ -34,7 +34,6 @@ class GenerateAppointmentSummaryPDF implements ShouldQueue
      */
     public function handle(): void
     {
-        \Log::info("IN PDF STATUS");
         $pdfs_list = array();
         $professionDetail = User::whereHas("roles", function($q){ $q->where("name", "medical"); })->with('professionalDetails')->where('id', $this->professionalId)->first();
         $patientDetail = User::with('medicalDetails')->where('id', $this->patientId)->first();
@@ -77,13 +76,6 @@ class GenerateAppointmentSummaryPDF implements ShouldQueue
                 $prefix = 'none_prescription_';
                 $pdf = Pdf::loadView('pdf.consultation_summary', $data)->setPaper('legal', 'portrait');
             }
-//            $file_name = 'prescriptions/'. $prefix . time() . '.pdf';
-//            if (!is_dir(storage_path('prescriptions'))) {
-//                mkdir(storage_path('prescriptions'), 0777, true);
-//            }
-//            $filePath = storage_path($file_name);
-//            $pdf->save($filePath);
-//            $pdfs_list[$value] =  $file_name;
 
             $relative_path = 'prescriptions/' . $prefix . time() . '_' . uniqid() . '.pdf';
             Storage::disk('public')->put($relative_path, $pdf->output());

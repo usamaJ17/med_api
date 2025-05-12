@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deluxe Hospital Prescription</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Montserrat&display=swap" rel="stylesheet">
+
     <style>
         @page {
             size: Legal;
@@ -20,6 +24,12 @@
             -webkit-print-color-adjust: exact; 
             font-family: "Gill Sans", sans-serif;
         }
+        .covered-by-your-grace-regular {
+            font-family: "Covered By Your Grace", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
         .content {
             padding: 0.7in;
             padding-bottom: 0px;
@@ -145,7 +155,7 @@
 
         <table class="form-section-mid" style="height:4.6in;margin-top: 0.6in;">
             <tr>
-				<td style="width:100%"><div style="margin-left: -30px;">{!! $note_value !!}</div></td>
+				<td style="width:100%"><div class="covered-by-your-grace-regular" style="margin-left: -30px;">{!! $note_value !!}</div></td>
 				<td></td>
             </tr>
         </table>
