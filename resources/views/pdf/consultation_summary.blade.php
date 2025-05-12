@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Covered By Your Grace';
-            src: url('{{ public_path("fonts/CoveredByYourGrace-Regular.ttf") }}') format('truetype');
+            src: url('{{ storage_path("fonts/CoveredByYourGrace-Regular.ttf") }}') format('truetype');
 
         }
         @page {
