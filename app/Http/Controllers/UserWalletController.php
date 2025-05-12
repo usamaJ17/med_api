@@ -69,6 +69,21 @@ class UserWalletController extends Controller
 
         return redirect()->back()->with('success', 'Balance added successfully');
     }
+    public function subBalance(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|exists:users,id',
+            'balance' => 'required|numeric|min:0',
+        ]);
+        $wallet = UserWallet::firstOrCreate(
+            ['user_id' => $request->patient_id],
+            ['balance' => 0]
+        );
+        $wallet->balance -= $request->balance;
+        $wallet->save();
+
+        return redirect()->back()->with('success', 'Balance subtracted successfully');
+    }
 
 
 }

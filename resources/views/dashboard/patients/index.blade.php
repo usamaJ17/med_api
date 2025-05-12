@@ -38,56 +38,61 @@
                         <div class="table-responsive rounded card-table">
                             <table class="table border-no" id="example1">
                                 <thead>
-                                <tr>
-                                    <th>Patient ID</th>
-                                    <th>Patient Name</th>
-                                    <th>Patient Email</th>
-                                    <th>Patient Contact</th>
-                                    <th>State</th>
-                                    <th>Last Appointment Date</th>
-                                    <th>Last Appointment Doctor</th>
-                                    <th>Status</th>
-                                    <th>Balance</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>Patient ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Patient Email</th>
+                                        <th>Patient Contact</th>
+                                        <th>State</th>
+                                        <th>Last Appointment Date</th>
+                                        <th>Last Appointment Doctor</th>
+                                        <th>Status</th>
+                                        <th>Balance</th>
+                                        <th></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($patients as $patient)
-                                    <tr class="hover-primary">
-                                        <td>
-                                            <a href="{{ route('patient.show', $patient->id ) }}">#p-DH-{{ $patient->id ?? 'N/A' }} </a>
-                                        </td>
-                                        <td><a href="{{ route('patient.show', $patient->id ) }}">
-                                                {{ $patient->first_name ?? 'N/A' }} {{ $patient->last_name ?? 'N/A' }}
-                                            </a></td>
-                                        <td>{{ $patient->email ?? 'N/A' }}</td>
-                                        <td>{{ $patient->contact ?? 'N/A' }}</td>
-                                        <td>{{ $patient->state ?? 'N/A' }}</td>
-                                        <td>{{ Carbon::parse($patient->created_at)->format('d/m/Y') ?? 'N/A' }}</td>
-                                        <td>{{ $patient->first_name ?? 'N/A' }} {{ $patient->last_name ?? 'N/A' }}</td>
-                                        <td><span class="badge badge-danger-light">New Patient</span></td>
-                                        <td>{{ $patient->wallet->balance ?? '0.00' }}</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a class="hover-primary dropdown-toggle no-caret"
-                                                   data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" data-bs-toggle="modal"
-                                                       data-bs-target="#addBalanceModal"
-                                                       onclick="document.getElementById('patient_id').value = {{ $patient->id ?? '' }}">Add
-                                                        Balance</a>
-                                                    <a class="dropdown-item"
-                                                       href="{{ route('patient.show', $patient->id ) }}">View
-                                                        Details</a>
-                                                    @if(auth()->user()->hasRole('admin'))
+                                    @foreach ($patients as $patient)
+                                        <tr class="hover-primary">
+                                            <td>
+                                                <a href="{{ route('patient.show', $patient->id) }}">#p-DH-{{ $patient->id ?? 'N/A' }}
+                                                </a>
+                                            </td>
+                                            <td><a href="{{ route('patient.show', $patient->id) }}">
+                                                    {{ $patient->first_name ?? 'N/A' }} {{ $patient->last_name ?? 'N/A' }}
+                                                </a></td>
+                                            <td>{{ $patient->email ?? 'N/A' }}</td>
+                                            <td>{{ $patient->contact ?? 'N/A' }}</td>
+                                            <td>{{ $patient->state ?? 'N/A' }}</td>
+                                            <td>{{ Carbon::parse($patient->created_at)->format('d/m/Y') ?? 'N/A' }}</td>
+                                            <td>{{ $patient->first_name ?? 'N/A' }} {{ $patient->last_name ?? 'N/A' }}</td>
+                                            <td><span class="badge badge-danger-light">New Patient</span></td>
+                                            <td>{{ $patient->wallet->balance ?? '0.00' }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="hover-primary dropdown-toggle no-caret"
+                                                        data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#addBalanceModal"
+                                                            onclick="document.getElementById('patient_id').value = {{ $patient->id ?? '' }}">Add
+                                                            Balance</a>
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#subBalanceModal"
+                                                            onclick="document.getElementById('sub_patient_id').value = {{ $patient->id ?? '' }}">Subtract
+                                                            Balance</a>
                                                         <a class="dropdown-item"
-                                                           onclick="DeleteRecord({{ $patient->id ?? '' }})">Delete</a>
-                                                    @endif
+                                                            href="{{ route('patient.show', $patient->id) }}">View
+                                                            Details</a>
+                                                        @if (auth()->user()->hasRole('admin'))
+                                                            <a class="dropdown-item"
+                                                                onclick="DeleteRecord({{ $patient->id ?? '' }})">Delete</a>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -97,8 +102,7 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="addBalanceModal" tabindex="-1" aria-labelledby="addBalanceModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="addBalanceModal" tabindex="-1" aria-labelledby="addBalanceModalLabel" aria-hidden="true">
         <div class="modal-dialog">
 
             <form method="POST" action="{{ route('patient.addBalance') }}">
@@ -123,13 +127,38 @@
             </form>
         </div>
     </div>
+    <div class="modal fade" id="subBalanceModal" tabindex="-1" aria-labelledby="subBalanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+
+            <form method="POST" action="{{ route('patient.subBalance') }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="subBalanceModalLabel">Subtract Balance</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Standard Form Submission -->
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" id="sub_patient_id" name="patient_id">
+                        <div class="mb-3">
+                            <label for="balance" class="form-label">Balance Amount</label>
+                            <input type="number" class="form-control" id="balance" name="balance" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Subtract Balance</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     <!-- /.content -->
 @endsection
 @section('script')
     <script>
-        $(function () {
+        $(function() {
             'use strict';
             $('#example1').DataTable({
                 'paging': true,
@@ -149,7 +178,7 @@
                 data: {
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (response) {
+                success: function(response) {
                     // reload page
                     location.reload();
                 }

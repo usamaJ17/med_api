@@ -43,8 +43,9 @@
         }
         .form-section-top {
             margin-top: 1.3in;
-            font-size: 16px;
-            padding: 18px;
+            letter-spacing: 1px;
+            font-size: 21px;
+            padding: 16px;
             width: 100%;
         }
         .form-section {
@@ -70,7 +71,7 @@
             <tr>
                 <td width="60%"></td>
                 <td>
-                    <h1 style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; text-align: center;">{{$note_key}}</h1>
+                    <h1 style="padding: 8px; text-align: center;">{{$note_key}}</h1>
                 </td>
 
             </tr>
