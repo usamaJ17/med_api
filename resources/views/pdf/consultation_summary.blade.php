@@ -29,7 +29,7 @@
         .covered-by-your-grace-regular {
             font-family: "Covered By Your Grace", cursive;
             font-weight: 400;
-            font-size: 21px !important;
+            font-size: 21px;
             font-style: normal;
         }
 
@@ -72,7 +72,7 @@
             <tr>
                 <td width="60%"></td>
                 <td>
-                    <h1 style="padding: 8px; text-align: center;">{{$note_key}}</h1>
+                    <h1 style="padding: 8px; text-align: center; color: #fff;">{{$note_key}}</h1>
                 </td>
 
             </tr>
