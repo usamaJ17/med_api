@@ -29,7 +29,7 @@
         .covered-by-your-grace-regular {
             font-family: "Covered By Your Grace", cursive;
             font-weight: 400;
-            font-size: 26px !important;
+            font-size: 21px !important;
             font-style: normal;
         }
 
