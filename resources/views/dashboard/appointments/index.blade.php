@@ -46,14 +46,15 @@
                                         <th>Payment Method</th>
                                         <th>Pay For Me</th>
                                         <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($appointments as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->med->fullName() ." - ". $item->med_id }}</td>
-                                            <td>{{ $item->user->fullName() ." - ". $item->user_id }}</td>
+                                            <td>{{ $item->med->fullName() . ' - ' . $item->med_id }}</td>
+                                            <td>{{ $item->user->fullName() . ' - ' . $item->user_id }}</td>
                                             <td>{{ $item->appointment_type }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->appointment_date)->format('d F Y') }}
                                                 @
@@ -65,6 +66,16 @@
                                             <td>{{ $item->gateway }}</td>
                                             <td>{{ $item->pay_for_me ? 'Yes' : 'No' }}</td>
                                             <td>{{ $item->status }}</td>
+                                            <td>
+                                                @php
+                                                    $currentDateTime = \Carbon\Carbon::now();
+                                                    $appointmentDateTime = \Carbon\Carbon::parse($item->appointment_date . ' ' . $item->appointment_time);
+                                                    $isEscrowAppointment = $appointmentDateTime->diffInDays($currentDateTime) < 7;
+                                                @endphp
+                                                @if ($item->status == 'completed' && $isEscrowAppointment)
+                                                    <button onclick="ConfirmDelete({{ $item->id }})" type="button" class="btn btn-danger btn-sm">Cancel</a>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -87,6 +98,7 @@
                 'ordering': true,
                 'info': true,
                 'autoWidth': false,
+                'scrollX': true,
                 'dom': 'Bfrtip',
                 'buttons': [{
                         extend: 'csv',
@@ -107,8 +119,57 @@
                         }
                     }
                 ]
-            })
+            });
 
+            window.ConfirmDelete = function(id) {
+                Swal.fire({
+                    title: 'Are you sure you want to cancel this appointment?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, cancel it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ url('portal/appointments/admin_cancel') }}" + "/" + id,
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Cancelled!",
+                                    text: "Your appointment has been cancelled.",
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    showCloseButton: false,
+                                    theme: 'dark'
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "There was an error cancelling the appointment.",
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    icon: "error",
+                                    showConfirmButton: false,
+                                    showCloseButton: false,
+                                    theme: 'dark'
+                                });
+                            }
+                        });
+                    }
+                })
+            }
         });
     </script>
 @endsection

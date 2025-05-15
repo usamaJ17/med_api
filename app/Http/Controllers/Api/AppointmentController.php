@@ -33,7 +33,8 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function saveConsultationFee(Request $request){
+    public function saveConsultationFee(Request $request)
+    {
         try {
             $validatedData = $request->validate([
                 'consultation_type' => 'required|string',
@@ -55,7 +56,6 @@ class AppointmentController extends Controller
                 'message' => 'Consultation fee updated successfully',
                 'data' => $consultationFee
             ], 200);
-
         } catch (\Exception $ex) {
             return response()->json([
                 'status' => 500,
@@ -72,7 +72,7 @@ class AppointmentController extends Controller
     //             'fee' => 'required|string',
     //             'duration' => 'required|string',
     //         ]);
-        
+
     //         if ($validator->fails()) {
     //             return response()->json([
     //                 'status' => 422,
@@ -110,7 +110,8 @@ class AppointmentController extends Controller
     //         return response()->json(["error" => $ex->getMessage()], 500);
     //     }
     // }
-    public function getConsultationFee(Request $request){
+    public function getConsultationFee(Request $request)
+    {
         $consultationFee = ConsultationFee::where('user_id', $request->user_id)->get();
         if ($consultationFee) {
             $data = [
@@ -148,13 +149,13 @@ class AppointmentController extends Controller
             'user_id' => auth()->id(),
             'appointment_code' => $code
         ]);
-        $appointment = Appointment::create($request->all());   
+        $appointment = Appointment::create($request->all());
         $user = auth()->user();
-        $professional = User::find($request->med_id);    
+        $professional = User::find($request->med_id);
         Mail::to([$user->email])
-            ->send(new AfterBookingAppointment($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name." ".$user->last_name));
+            ->send(new AfterBookingAppointment($professional->name_title . " " . $professional->first_name . " " . $professional->last_name, $request->appointment_date,  $request->appointment_time, $request->appointment_type, $user->first_name . " " . $user->last_name));
         Mail::to([$professional->email])
-        ->send(new AppointmentBooking($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name." ".$user->last_name));
+            ->send(new AppointmentBooking($professional->name_title . " " . $professional->first_name . " " . $professional->last_name, $request->appointment_date,  $request->appointment_time, $request->age, $user->first_name . " " . $user->last_name));
         $notificationData = [
             'title' => 'Appointment Created',
             'description' => "Exciting news, $professional->name_title $professional->first_name $professional->last_name! A new patient, $user->first_name $user->last_name, has booked an appointment with you on $request->appointment_date at $request->appointment_time. Your money is safe in our escrow account 🤗",
@@ -162,7 +163,7 @@ class AppointmentController extends Controller
             'from_user_id' => auth()->id(),
             'to_user_id' => $professional->id,
             'is_read' => 0,
-        ];        
+        ];
         Notifications::create($notificationData);
         $data = [
             'status' => 201,
@@ -189,15 +190,17 @@ class AppointmentController extends Controller
         // only update those fields which are present in the request
         $appointment->fill($request->all());
         $appointment->save();
-        if ($request->has('appointment_date') && $originalDate !== $appointment->appointment_date ||
-            $request->has('appointment_time') && $originalTime !== $appointment->appointment_time) {
+        if (
+            $request->has('appointment_date') && $originalDate !== $appointment->appointment_date ||
+            $request->has('appointment_time') && $originalTime !== $appointment->appointment_time
+        ) {
             // Send reschedule email
             $user = User::find($appointment->user_id);
-            $professional = User::find($appointment->med_id);    
+            $professional = User::find($appointment->med_id);
             if ($user && $professional) {
                 $u_name = $user->first_name . " " . $user->last_name;
                 $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
-    
+
                 Mail::to($professional->email)->send(new AppointmentRescheduled(
                     $p_name,
                     $u_name,
@@ -205,7 +208,7 @@ class AppointmentController extends Controller
                     $appointment->appointment_time
                 ));
             }
-            
+
             $notificationData = [
                 'title' => 'Appointment Rescheduled',
                 'description' => "📅 Appointment Rescheduled: $u_name has rescheduled their appointment to $appointment->appointment_date at $appointment->appointment_time. Please check your updated schedule. Thank you for your flexibility!",
@@ -213,7 +216,7 @@ class AppointmentController extends Controller
                 'from_user_id' => auth()->id(),
                 'to_user_id' => $appointment->med_id,
                 'is_read' => 0,
-            ];        
+            ];
             Notifications::create($notificationData);
         }
         $data = [
@@ -305,12 +308,12 @@ class AppointmentController extends Controller
         $appointment->status = 'completed';
         $appointment->patient_status = $request->status;
         if ($request->patient_status == 'cancelled') {
-            
+
             $user = auth()->user();
-            $professional = User::find($appointment->med_id);    
+            $professional = User::find($appointment->med_id);
             Mail::to([$user->email])
-            ->send(new AfterBookingCancel($professional->name_title . " " .$professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
-            
+                ->send(new AfterBookingCancel($professional->name_title . " " . $professional->first_name . " " . $professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name . " " . $user->last_name));
+
             $notificationData = [
                 'title' => 'Appointment Canceled',
                 'description' => "Your appointment with $professional->name_title $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
@@ -318,12 +321,12 @@ class AppointmentController extends Controller
                 'from_user_id' => auth()->id(),
                 'to_user_id' => auth()->id(),
                 'is_read' => 0,
-            ];        
+            ];
             Notifications::create($notificationData);
 
             Mail::to([$professional->email])
-            ->send(new AppointmentCancelPatient($professional->name_title . " " .$professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
-            
+                ->send(new AppointmentCancelPatient($professional->name_title . " " . $professional->first_name . " " . $professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $user->first_name . " " . $user->last_name));
+
             $notificationData = [
                 'title' => 'Appointment Canceled',
                 'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
@@ -331,7 +334,7 @@ class AppointmentController extends Controller
                 'from_user_id' => auth()->id(),
                 'to_user_id' => $professional->id,
                 'is_read' => 0,
-            ];        
+            ];
             Notifications::create($notificationData);
             UserRefund::create(
                 [
@@ -343,7 +346,7 @@ class AppointmentController extends Controller
             );
         }
         $appointment->save();
-        
+
         $data = [
             'status' => 200,
             'message' => 'Appointment status changed successfully',
@@ -351,7 +354,7 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
-    
+
     public function changeStatus(Request $request)
     {
         $appointment = Appointment::query()->where('id', $request->appointment_id)->first();
@@ -367,10 +370,10 @@ class AppointmentController extends Controller
 
         if ($appointment->status == 'completed') {
             $professional = auth()->user();
-            $user = User::find($appointment->user_id);    
+            $user = User::find($appointment->user_id);
             Mail::to([$professional->email])
-            ->send(new AppointmentCompleted($professional->name_title . " " .$professional->first_name." ".$professional->last_name,$user->first_name." ".$user->last_name));
-            
+                ->send(new AppointmentCompleted($professional->name_title . " " . $professional->first_name . " " . $professional->last_name, $user->first_name . " " . $user->last_name));
+
             $notificationData = [
                 'title' => 'Appointment Completed',
                 'description' => "Great Job! Your consultation with $user->first_name $user->last_name is complete. Keep up the amazing care with follow-ups over the next 7 days. Your payment will be ready for withdrawal after that. Thank you for your dedication! 🚀",
@@ -378,8 +381,8 @@ class AppointmentController extends Controller
                 'from_user_id' => auth()->id(),
                 'to_user_id' => $appointment->med_id,
                 'is_read' => 0,
-            ];        
-            Notifications::create($notificationData); 
+            ];
+            Notifications::create($notificationData);
         }
 
         if ($appointment->status == 'cancelled') {
@@ -391,12 +394,12 @@ class AppointmentController extends Controller
                     'gateway' => $request->refund_option ? $request->refund_option : null,
                 ]
             );
-            
+
             // $user = auth()->user();
             // $professional = User::find($appointment->med_id);    
             // Mail::to([$user->email])
             // ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
-            
+
             // $notificationData = [
             //     'title' => 'Appointment Canceled',
             //     'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
@@ -409,7 +412,7 @@ class AppointmentController extends Controller
 
             // Mail::to([$professional->email])
             // ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
-            
+
             // $notificationData = [
             //     'title' => 'Appointment Canceled',
             //     'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
@@ -426,6 +429,30 @@ class AppointmentController extends Controller
             'data' => $appointment,
         ];
         return response()->json($data, 200);
+    }
+    public function adminCancel($id)
+    {
+        $appointment = Appointment::query()->where('id', $id)->first();
+        if (!$appointment) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Appointment not found',
+            ], 404);
+        }
+        $appointment->status = 'cancelled';
+        $appointment->save();
+        UserRefund::create(
+            [
+                'user_id' => $appointment->user_id,
+                'appointment_id' => $appointment->id,
+                'amount' => $appointment->consultation_fees,
+                'gateway' => "canceled by admin"
+            ]
+        );
+        return response()->json([
+            'status' => 200,
+            'message' => 'Appointment cancelled successfully'
+        ], 200);
     }
     public function getMyPatientsAppointments(Request $request)
     {
@@ -571,78 +598,78 @@ class AppointmentController extends Controller
             'user_id' => $app->user_id,
             'id' => auth()->user()->id,
         ];
-//        if ($app->user_id != auth()->user()->id) {
-//            $app->pay_for_me = auth()->user()->id;
-//        }
-//        $app->save();
-//
-//        $user = auth()->user();
-//        $patient = User::find($app->user_id);
-//        $professional = User::find($app->med_id);
-//        if ($app->user_id != auth()->user()->id) {
-//
-//            Mail::to([$user->email])
-//                ->send(new PayForMeReceiptForPayee($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-//                $app->appointment_date,
-//                $app->appointment_time,
-//                $app->appointment_type,
-//                $patient->first_name." ".$patient->last_name,
-//                $user->first_name.' '.$user->last_name,
-//                $app->consultation_fees)
-//            );
-//            Mail::to([$patient->email])
-//                ->send(new PayForMeReceiptForPayeeBeneficiary($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-//                $app->appointment_date,
-//                $app->appointment_time,
-//                $app->appointment_type,
-//                $patient->first_name." ".$patient->last_name,
-//                $app->consultation_fees,
-//                $app->transaction_id,
-//                date('Y-m-d'))
-//            );
-//            $notificationData = [
-//                'title' => 'Payment Receipt',
-//                'description' => "<strong>Notification:</strong> Fantastic! You've successfully paid for $user->first_name $user->last_name\'s appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details and confirmation!",
-//                'type' => 'Appointment',
-//                'from_user_id' => auth()->id(),
-//                'to_user_id' => auth()->id(),
-//                'is_read' => 0,
-//            ];
-//            Notifications::create($notificationData);
-//            $notificationData = [
-//                'title' => 'Payment Receipt',
-//                'description' => "<strong>Notification:</strong> Awesome news! ". auth()->user()->first_name." ".auth()->user()->last_name." has paid for your appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details. See you soon!",
-//                'type' => 'Appointment',
-//                'from_user_id' => auth()->id(),
-//                'to_user_id' => auth()->id(),
-//                'is_read' => 0,
-//            ];
-//            Notifications::create($notificationData);
-//
-//        }
-//        else{
-//            Mail::to([$user->email])
-//                ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-//                $app->appointment_date,
-//                $app->appointment_time,
-//                $app->appointment_type,
-//                $user->first_name." ".$user->last_name,
-//                $app->consultation_fees,
-//                $app->transaction_id,
-//                date('Y-m-d')));
-//
-//            $notificationData = [
-//                'title' => 'Payment Receipt',
-//                'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
-//                'type' => 'Appointment',
-//                'from_user_id' => auth()->id(),
-//                'to_user_id' => auth()->id(),
-//                'is_read' => 0,
-//            ];
-//            Notifications::create($notificationData);
-//        }
+        //        if ($app->user_id != auth()->user()->id) {
+        //            $app->pay_for_me = auth()->user()->id;
+        //        }
+        //        $app->save();
+        //
+        //        $user = auth()->user();
+        //        $patient = User::find($app->user_id);
+        //        $professional = User::find($app->med_id);
+        //        if ($app->user_id != auth()->user()->id) {
+        //
+        //            Mail::to([$user->email])
+        //                ->send(new PayForMeReceiptForPayee($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
+        //                $app->appointment_date,
+        //                $app->appointment_time,
+        //                $app->appointment_type,
+        //                $patient->first_name." ".$patient->last_name,
+        //                $user->first_name.' '.$user->last_name,
+        //                $app->consultation_fees)
+        //            );
+        //            Mail::to([$patient->email])
+        //                ->send(new PayForMeReceiptForPayeeBeneficiary($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
+        //                $app->appointment_date,
+        //                $app->appointment_time,
+        //                $app->appointment_type,
+        //                $patient->first_name." ".$patient->last_name,
+        //                $app->consultation_fees,
+        //                $app->transaction_id,
+        //                date('Y-m-d'))
+        //            );
+        //            $notificationData = [
+        //                'title' => 'Payment Receipt',
+        //                'description' => "<strong>Notification:</strong> Fantastic! You've successfully paid for $user->first_name $user->last_name\'s appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details and confirmation!",
+        //                'type' => 'Appointment',
+        //                'from_user_id' => auth()->id(),
+        //                'to_user_id' => auth()->id(),
+        //                'is_read' => 0,
+        //            ];
+        //            Notifications::create($notificationData);
+        //            $notificationData = [
+        //                'title' => 'Payment Receipt',
+        //                'description' => "<strong>Notification:</strong> Awesome news! ". auth()->user()->first_name." ".auth()->user()->last_name." has paid for your appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details. See you soon!",
+        //                'type' => 'Appointment',
+        //                'from_user_id' => auth()->id(),
+        //                'to_user_id' => auth()->id(),
+        //                'is_read' => 0,
+        //            ];
+        //            Notifications::create($notificationData);
+        //
+        //        }
+        //        else{
+        //            Mail::to([$user->email])
+        //                ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
+        //                $app->appointment_date,
+        //                $app->appointment_time,
+        //                $app->appointment_type,
+        //                $user->first_name." ".$user->last_name,
+        //                $app->consultation_fees,
+        //                $app->transaction_id,
+        //                date('Y-m-d')));
+        //
+        //            $notificationData = [
+        //                'title' => 'Payment Receipt',
+        //                'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
+        //                'type' => 'Appointment',
+        //                'from_user_id' => auth()->id(),
+        //                'to_user_id' => auth()->id(),
+        //                'is_read' => 0,
+        //            ];
+        //            Notifications::create($notificationData);
+        //        }
         // create a chatbox between patient and professional
-        $box = ChatController::createChatBox($app->user_id, $app->med_id , $app->id);
+        $box = ChatController::createChatBox($app->user_id, $app->med_id, $app->id);
         $app->chat_id = $box->id;
         $app->save();
         if (!$box) {
@@ -687,18 +714,18 @@ class AppointmentController extends Controller
 
         foreach ($appointments as $appointment) {
             $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
-  
-            $professional = User::find($appointment->med_id);    
-            $user = User::find($appointment->user_id);    
+
+            $professional = User::find($appointment->med_id);
+            $user = User::find($appointment->user_id);
             // Notification intervals and corresponding columns
-            $p_name = $professional->name_title . " " .$professional->first_name." ".$professional->last_name;
-            $u_name = $user->first_name." ".$user->last_name;
+            $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
+            $u_name = $user->first_name . " " . $user->last_name;
             $intervals = [
-                '24_hours_before' => ['time' => $appointmentTime->copy()->subDay(), 'column' => '24_hours_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 24 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
-                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 12 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
-                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 1 hour. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name],
-                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent', 'message' => 'Reminder: Your appointment with '.$p_name.' is in 15 minutes. When time is due, please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name.' is Starting Soon'],
-                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_is_due', 'message' => 'Reminder: Your appointment with '.$p_name.' is NOW. Please open the Deluxe Hospital app and navigate to Chat section; '.$p_name.' will be there. Thank you!', 'subject'=>'Appointment Reminder - Your Consultation with '.$p_name.' is NOW'],
+                '24_hours_before' => ['time' => $appointmentTime->copy()->subDay(), 'column' => '24_hours_email_sent', 'message' => 'Reminder: Your appointment with ' . $p_name . ' is in 24 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; ' . $p_name . ' will be there. Thank you!', 'subject' => 'Appointment Reminder - Your Consultation with ' . $p_name],
+                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent', 'message' => 'Reminder: Your appointment with ' . $p_name . ' is in 12 hours. When time is due, please open the Deluxe Hospital app and navigate to Chat section; ' . $p_name . ' will be there. Thank you!', 'subject' => 'Appointment Reminder - Your Consultation with ' . $p_name],
+                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent', 'message' => 'Reminder: Your appointment with ' . $p_name . ' is in 1 hour. When time is due, please open the Deluxe Hospital app and navigate to Chat section; ' . $p_name . ' will be there. Thank you!', 'subject' => 'Appointment Reminder - Your Consultation with ' . $p_name],
+                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent', 'message' => 'Reminder: Your appointment with ' . $p_name . ' is in 15 minutes. When time is due, please open the Deluxe Hospital app and navigate to Chat section; ' . $p_name . ' will be there. Thank you!', 'subject' => 'Appointment Reminder - Your Consultation with ' . $p_name . ' is Starting Soon'],
+                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_is_due', 'message' => 'Reminder: Your appointment with ' . $p_name . ' is NOW. Please open the Deluxe Hospital app and navigate to Chat section; ' . $p_name . ' will be there. Thank you!', 'subject' => 'Appointment Reminder - Your Consultation with ' . $p_name . ' is NOW'],
             ];
 
             foreach ($intervals as $key => $interval) {
@@ -716,12 +743,12 @@ class AppointmentController extends Controller
                         'from_user_id' => $appointment->user_id,
                         'to_user_id' => $appointment->user_id,
                         'is_read' => 0,
-                    ];        
+                    ];
                     Notifications::create($notificationData);
                     // Send email notification
                     Mail::to([$user->email])
                         ->send(new BeforeAppointment($p_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $u_name, $subject));
-       
+
 
                     // Mark the email as sent
                     if ($column) {
@@ -744,17 +771,17 @@ class AppointmentController extends Controller
 
         foreach ($appointments as $appointment) {
             $appointmentTime = Carbon::parse($appointment->appointment_date . ' ' . $appointment->appointment_time);
-  
-            $professional = User::find($appointment->med_id);    
-            $user = User::find($appointment->user_id);    
+
+            $professional = User::find($appointment->med_id);
+            $user = User::find($appointment->user_id);
             // Notification intervals and corresponding columns
-            $p_name = $professional->name_title . " " .$professional->first_name." ".$professional->last_name;
-            $u_name = $user->first_name." ".$user->last_name;
+            $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
+            $u_name = $user->first_name . " " . $user->last_name;
             $intervals = [
-                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 12hrs! 🌟', 'subject'=>' in 12hrs!'],
-                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 1hr! 🌟', 'subject'=>' 1hr!'],
-                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent_p', 'message' => 'Reminder: You have an appointment with '.$u_name.' on '.$appointment->appointment_date.' at '.$appointment->appointment_time.'. Get ready to make a difference in 15 minutes ! 🌟', 'subject'=>' in 15 minutes!'],
-                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_is_due_p', 'message' => '🚀 Reminder: Your appointment with '.$u_name.' on Deluxe Hospital is due NOW. We\'re excited you will be providing exceptional service!🌟', 'subject'=>' is due NOW!'],
+                '12_hours_before' => ['time' => $appointmentTime->copy()->subHours(12), 'column' => '12_hours_email_sent_p', 'message' => 'Reminder: You have an appointment with ' . $u_name . ' on ' . $appointment->appointment_date . ' at ' . $appointment->appointment_time . '. Get ready to make a difference in 12hrs! 🌟', 'subject' => ' in 12hrs!'],
+                '1_hour_before' => ['time' => $appointmentTime->copy()->subHour(), 'column' => '1_hour_email_sent_p', 'message' => 'Reminder: You have an appointment with ' . $u_name . ' on ' . $appointment->appointment_date . ' at ' . $appointment->appointment_time . '. Get ready to make a difference in 1hr! 🌟', 'subject' => ' 1hr!'],
+                '15_minutes_before' => ['time' => $appointmentTime->copy()->subMinutes(15), 'column' => '15_minutes_email_sent_p', 'message' => 'Reminder: You have an appointment with ' . $u_name . ' on ' . $appointment->appointment_date . ' at ' . $appointment->appointment_time . '. Get ready to make a difference in 15 minutes ! 🌟', 'subject' => ' in 15 minutes!'],
+                'appointment_due' => ['time' => $appointmentTime, 'column' => 'appointment_is_due_p', 'message' => '🚀 Reminder: Your appointment with ' . $u_name . ' on Deluxe Hospital is due NOW. We\'re excited you will be providing exceptional service!🌟', 'subject' => ' is due NOW!'],
             ];
 
             foreach ($intervals as $key => $interval) {
@@ -772,12 +799,12 @@ class AppointmentController extends Controller
                         'from_user_id' => $appointment->med_id,
                         'to_user_id' => $appointment->med_id,
                         'is_read' => 0,
-                    ];        
+                    ];
                     Notifications::create($notificationData);
                     // Send email notification
                     Mail::to([$professional->email])
                         ->send(new BeforeAppointmentDoctor($p_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->age, $u_name, $subject));
-                    
+
                     // Mark the email as sent
                     if ($column) {
                         $appointment->$column = true;
@@ -789,7 +816,8 @@ class AppointmentController extends Controller
 
         return response()->json(['message' => 'Notifications processed successfully.'], 200);
     }
-    public function sendPostConsultationNotifications(){
+    public function sendPostConsultationNotifications()
+    {
         $appointments = Appointment::whereDate('appointment_date', '=', Carbon::now()->subDays(7)->toDateString())
             ->where('status', 'completed')
             ->where('patient_status', 'completed')
@@ -801,12 +829,12 @@ class AppointmentController extends Controller
             $user = User::find($appointment->user_id); // The patient
 
             if (!$professional || !$user) {
-                continue; 
+                continue;
             }
 
             // Compose notification and email details
             $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
-            $u_name = $user->first_name . " " . $user->last_name;            
+            $u_name = $user->first_name . " " . $user->last_name;
 
             // Send email to the patient
             Mail::to($professional->email)
@@ -824,31 +852,31 @@ class AppointmentController extends Controller
             ->where('patient_status', '!=', 'cancelled')
             ->whereNull('post_consultation_email_sent_p')
             ->get();
-        
+
         foreach ($appointments as $appointment) {
-            $professional = User::find($appointment->med_id); 
+            $professional = User::find($appointment->med_id);
             $user = User::find($appointment->user_id);
-        
+
             if (!$professional || !$user) {
-                continue; 
+                continue;
             }
             $p_name = $professional->name_title . " " . $professional->first_name . " " . $professional->last_name;
-            $u_name = $user->first_name . " " . $user->last_name;        
+            $u_name = $user->first_name . " " . $user->last_name;
             Mail::to($user->email)
                 ->send(new AfterAppointment($p_name, $u_name));
             $notificationData = [
                 'title' => 'After Appointment',
-                'description' => "Hi ".$u_name."! Great news - you've got a 7-day free follow-up period with ".$p_name."! Plus, you can check out a summary of your consultation in the app's Summary section. Stay well! The Team that Cares.",
+                'description' => "Hi " . $u_name . "! Great news - you've got a 7-day free follow-up period with " . $p_name . "! Plus, you can check out a summary of your consultation in the app's Summary section. Stay well! The Team that Cares.",
                 'type' => 'Appointment',
                 'from_user_id' => $appointment->user_id,
                 'to_user_id' => $appointment->user_id,
                 'is_read' => 0,
-            ];        
+            ];
             Notifications::create($notificationData);
             $appointment->post_consultation_email_sent_p = true;
             $appointment->save();
         }
-    
+
         return response()->json(['message' => 'Post-consultation notifications processed successfully.'], 200);
     }
 }
