@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deluxe Hospital Prescription</title>
     <style>
+        @font-face {
+            font-family: 'Covered By Your Grace';
+            src: url('{{ storage_path("fonts/CoveredByYourGrace-Regular.ttf") }}') format('truetype');
+
+        }
         @page {
             size: Legal;
             margin: 0;
@@ -19,6 +24,12 @@
             font-size: 16px;
             -webkit-print-color-adjust: exact; 
             font-family: "Gill Sans", sans-serif;
+        }
+        .covered-by-your-grace-regular {
+            font-family: "Covered By Your Grace", cursive;
+            font-weight: 400;
+            font-size: 21px !important;
+            font-style: normal;
         }
         .content {
             padding: 0.7in;
@@ -58,7 +69,7 @@
             <tr>
                 <td width="60%"></td>
                 <td>
-                    <h1 style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; text-align: center;">{{$note_key}}</h1>
+                    <h1 style="padding: 8px; text-align: center;">{{$note_key}}</h1>
                 </td>
 
             </tr>
