@@ -11,9 +11,9 @@ class AppointmentHoursController extends Controller
     public function store(Request $request){
         $validator = \Validator::make($request->all(), [
             'appointment_type' => 'required|string',
-            'duration' => 'required|string',
-            'working_hours' => 'required|string',
-            'consultation_fees' => 'required|string',
+            'duration' => 'nullable|string',
+            'working_hours' => 'nullable|string',
+            'consultation_fees' => 'nullable|string',
         ]);
     
         if ($validator->fails()) {
@@ -32,6 +32,21 @@ class AppointmentHoursController extends Controller
             ->first();
 
         if ($appointment) {
+            if ($request->has('working_hours')) {
+                $validatedData['working_hours'] = json_decode($request->working_hours, true);
+            } else {
+                $validatedData['working_hours'] = $appointment->working_hours;
+            }
+            if ($request->has('consultation_fees')) {
+                $validatedData['consultation_fees'] = $request->consultation_fees;
+            } else {
+                $validatedData['consultation_fees'] = $appointment->consultation_fees;
+            }
+            if ($request->has('duration')) {
+                $validatedData['duration'] = $request->duration;
+            } else {
+                $validatedData['duration'] = $appointment->duration;
+            }
             $appointment->update($validatedData);
             return response()->json([
                 'status' => 200,
