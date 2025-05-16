@@ -29,7 +29,7 @@
         .covered-by-your-grace-regular {
             font-family: "Covered By Your Grace", cursive;
             font-weight: 400;
-            font-size: 21px !important;
+            font-size: 26px !important;
             font-style: normal;
         }
 
@@ -46,7 +46,7 @@
             margin-top: 1.3in;
             letter-spacing: 1px;
             font-size: 21px;
-            padding: 18px;
+            padding: 14px;
             width: 100%;
         }
         .form-section {
