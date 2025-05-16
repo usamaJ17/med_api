@@ -43,7 +43,7 @@
             border-collapse: collapse;
         }
         .form-section-top {
-            margin-top: 1.6in;
+            margin-top: 1.1in;
             letter-spacing: 1px;
             font-size: 21px;
             padding: 16px;
