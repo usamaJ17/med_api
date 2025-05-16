@@ -157,7 +157,7 @@
             </tr>
         </table>
 
-        <table class="form-section-mid" style="height:4.6in;margin-top: 0.6in;">
+        <table class="form-section-mid" style="height:4.1in;margin-top: 0.1in;">
             <tr>
 				<td style="width:100%"><div class="covered-by-your-grace-regular" style="margin-left: -30px;">{!! $note_value !!}</div></td>
 				<td></td>
