@@ -43,14 +43,14 @@
             border-collapse: collapse;
         }
         .form-section-top {
-            margin-top: 1.3in;
+            margin-top: 1.6in;
             letter-spacing: 1px;
             font-size: 21px;
-            padding: 14px;
+            padding: 16px;
             width: 100%;
         }
         .form-section {
-            margin-top: 0.19in;
+            margin-top: 0.10in;
             font-size: 16px;
             padding: 18px;
             width: 50%;
