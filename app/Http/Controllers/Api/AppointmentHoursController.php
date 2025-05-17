@@ -10,7 +10,7 @@ class AppointmentHoursController extends Controller
 {
     public function store(Request $request){
         $validator = \Validator::make($request->all(), [
-            'appointment_type' => 'required|string|in:video,audio,chat',
+            'appointment_type' => 'required|string|in:Video Call,Voice Call,Chat',
             'duration' => 'nullable|string',
             'working_hours' => 'nullable|string',
             'consultation_fees' => 'nullable|string',
