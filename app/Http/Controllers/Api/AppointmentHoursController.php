@@ -10,16 +10,16 @@ class AppointmentHoursController extends Controller
 {
     public function store(Request $request){
         $validator = \Validator::make($request->all(), [
-            'appointment_type' => 'required|string',
+            'appointment_type' => 'required|string|in:video,audio,chat',
             'duration' => 'nullable|string',
             'working_hours' => 'nullable|string',
             'consultation_fees' => 'nullable|string',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
-                'status' => 422,
-                'errors' => $validator->errors(),
+            'status' => 422,
+            'errors' => $validator->errors(),
             ], 422);
         }
     
