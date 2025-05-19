@@ -77,7 +77,7 @@ class DashboardController extends Controller
         if (!$maxDoc) {
             $maxDoc = User::whereHas("roles", function ($q) {
                 $q->where("name", "medical");
-            })->inRandomOrder()->get();
+            })->inRandomOrder()->first();
         }
         $maxAppointmentCount = $result->appointment_count ?? 0;
         return view('dashboard.index')->with(compact('appointment_state_overview', 'patientSignupsStates', 'medicalSignupsStates', 'patients', 'medicals', 'maxDoc', 'maxAppointmentCount', 'age', 'appointments', 'patientSignups', 'dailyPatientCountCat', 'total_revenue', 'total_monthly_revenue', 'medicalSignups', 'appointmentData', 'cancelAppointmentData', 'pro_cat_appointment'));
