@@ -270,10 +270,20 @@
                     </div>
                     <div class="box-body text-center">
                         <div class="mb-0">
-                            <img src="{{ $maxDoc->getFirstMediaUrl() }}" width="100"
-                                class="rounded-circle bg-info-light" alt="user">
-                            <h3 class="mt-20 mb-0">{{ $maxDoc->fullName() }}</h3>
-                            <p class="mb-0">{{ $maxDoc->professional_type_name }}</p>
+                            <img src="{{ $maxDoc ? $maxDoc->getFirstMediaUrl() : 'https://ui-avatars.com/api/?name=Medical&background=random&size=150' }}" 
+                            width="150"
+                            class="rounded-circle bg-info-light" 
+                            alt="user">
+
+                        <div class="mt-20">
+                            @if ($maxDoc)
+                                <h3 class="mb-0">{{ $maxDoc->fullName() }}</h3>
+                                <p class="mb-0">{{ $maxDoc->professional_type_name }}</p>
+                            @else
+                                <p class="mb-0">NA</p>
+                            @endif
+                        </div>
+
                         </div>
                     </div>
                     <div class="p-20">
