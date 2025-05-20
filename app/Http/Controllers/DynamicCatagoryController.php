@@ -184,6 +184,7 @@ class DynamicCatagoryController extends Controller
     {
         $titles = ProfessionalType::find($id);
         if($titles){
+            $titles->clearMediaCollection();
             $titles->delete();
         }
         return response()->json(true);
@@ -195,12 +196,10 @@ class DynamicCatagoryController extends Controller
             'audio_fee' => 'required|string|max:20',
             'video_fee' => 'required|string|max:20',
         ]);
-        // upload icon and save path in db
-        if(null !== $request->file('icon')){
-            $icon = $request->file('icon')->store('icons');
-            $request->merge(['icon' => $icon]);
-        }
         $pro = ProfessionalType::create($request->all());
+        if ($request->hasFile('icon')) {
+            $pro->addMedia($request->file('icon'))->toMediaCollection();
+        }
         return redirect()->back()->with('success', 'Title added successfully');
     }
     public function updateCategory(Request $request){
@@ -211,25 +210,16 @@ class DynamicCatagoryController extends Controller
             'video_fee' => 'required|string|max:20',
         ]);
         $category = ProfessionalType::findOrFail($request->id);
-        if ($request->hasFile('icon')) {
-            // Delete the existing icon file if it exists
-            if ($category->icon && \Storage::exists($category->icon)) {
-                \Storage::delete($category->icon);
-            }
-    
-            // Store the new icon and get its path
-            $iconPath = $request->file('icon')->store('icons');
-            $category->icon = $iconPath;
-        }
-       // Update the category details
         $category->name = $request->name;
         $category->chat_fee = $request->chat_fee;
         $category->audio_fee = $request->audio_fee;
         $category->video_fee = $request->video_fee;
-
-        // Save the changes
         $category->save();
-
+        // If an icon was uploaded, save it to the media collection
+        if ($request->hasFile('icon')) {
+            $category->clearMediaCollection();
+            $category->addMedia($request->file('icon'))->toMediaCollection();
+        }
         return redirect()->back()->with('success', 'Category updated successfully');
     }
 

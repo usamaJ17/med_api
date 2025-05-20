@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('professsional_types', function (Blueprint $table) {
+        Schema::create('professional_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('icon')->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('professsional_types');
+        Schema::dropIfExists('professional_types');
     }
 };

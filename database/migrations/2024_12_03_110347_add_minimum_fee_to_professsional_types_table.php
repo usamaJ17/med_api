@@ -10,7 +10,7 @@ class AddMinimumFeeToProfesssionalTypesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('professsional_types', function (Blueprint $table) {
+        Schema::table('professional_types', function (Blueprint $table) {
             $table->string('minimum_fee')->nullable()->after('icon'); // Add the column
         });
     }
@@ -20,7 +20,7 @@ class AddMinimumFeeToProfesssionalTypesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('professsional_types', function (Blueprint $table) {
+        Schema::table('professional_types', function (Blueprint $table) {
             $table->dropColumn('minimum_fee'); // Remove the column if rolled back
         });
     }

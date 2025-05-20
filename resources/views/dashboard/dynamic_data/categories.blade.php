@@ -38,6 +38,7 @@
                             <table class="table border-no" id="example1">
                                 <thead>
                                     <tr>
+                                        <th>Icon</th>
                                         <th>Name</th>
                                         <th>Chat Fee</th>
                                         <th>Audio Fee</th>
@@ -50,6 +51,7 @@
                                 <tbody>
                                     @foreach ($categories as $item)
                                         <tr class="hover-primary">
+                                            <td> <img src="{{ $item->icon }}" alt="" style="height: 45px ; width: auto"> </td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->chat_fee }}</td>
                                             <td>{{ $item->audio_fee }}</td>
