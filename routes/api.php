@@ -210,3 +210,13 @@ Route::group(['prefix' => 'payment'], function () {
 Route::post('send_sms', [HelperController::class, 'sendSms']);
 
 Route::get('get_sdk_key', [HelperController::class, 'getSdkKey']);
+
+Route::post('/dev-login/{id}', function ($id) {
+    $user = \App\Models\User::where('id', $id)->firstOrFail();
+    Auth::login($user);
+    $token = $user->createToken('Med')->plainTextToken;
+    return response()->json([
+        'token' => $token
+    ]);
+});
+
