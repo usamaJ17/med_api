@@ -26,7 +26,7 @@ class ProcessProfileImage implements ShouldQueue
 
     /**
      * Execute the job.
-     */
+     */ 
     public function handle(): void
     {
         $client = new Client();
@@ -37,12 +37,22 @@ class ProcessProfileImage implements ShouldQueue
             ]
         ]);
         $response = json_decode($response->getBody(), true);
-        if($response['status'] == 'complete'){
+    
+        if ($response['status'] == 'complete') {
             $imageUrl = $response['downloads'][0]['url'];
             $user = User::find($this->user_id);
-            $user->clearMediaCollection();
-            $user->addMediaFromUrl($imageUrl)->toMediaCollection();
-        }else{
+            $media = $user->getFirstMedia(); // Get existing media
+    
+            if ($media) {
+                $path = $media->getPath();
+                $imageContents = file_get_contents($imageUrl);
+                file_put_contents($path, $imageContents);
+                $media->touch(); // Update timestamp
+                $media->save();
+            } else {
+                $user->addMediaFromUrl($imageUrl)->toMediaCollection();
+            }
+        } else {
             ProcessProfileImage::dispatch($this->user_id, $this->image_id);
         }
     }
