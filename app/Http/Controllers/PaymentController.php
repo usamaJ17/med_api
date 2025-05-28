@@ -92,11 +92,18 @@ class PaymentController extends Controller
         $headers = [
             'x-api-key' => env('NOW_PAYMENT_API_KEY'),
         ];
-        $request = new Psr7Request('GET', env('NOW_PAYMENT_URL') . '/currencies', $headers);
+        $request = new Psr7Request('GET', env('NOW_PAYMENT_URL') . '/full-currencies', $headers);
         $res = $client->sendAsync($request)->wait();
+        $cryptoData = [];
+        foreach (json_decode($res->getBody()->getContents())->currencies as $key => $value) {
+            $cryptoData[] = [
+                'name' => $value->code .' ('.$value->network.')',
+                'logo_url' => "https://nowpayments.io" . $value->logo_url,
+            ];
+        }
         $data = [
             'status' => $res->getStatusCode(),
-            'data' => json_decode($res->getBody()->getContents())
+            'data' => $cryptoData
         ];
         return response()->json($data, 200);
     }
@@ -302,5 +309,37 @@ class PaymentController extends Controller
             'message' => 'Payment Recorded Successfully'
         ];
         return response()->json($data, 200);
+    }
+
+    public function paystack_refund($id)
+    {
+
+        $url = "https://api.paystack.co/refund";
+
+        $fields = [
+            'transaction' => $id
+        ];
+
+        $fields_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . env('PAYSTACK_SECRET_KEY'),
+            "Cache-Control: no-cache",
+        ));
+
+        //So that curl_exec returns the contents of the cURL; rather than echoing it
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //execute post
+        $result = curl_exec($ch);
+        dd($result);
+
     }
 }
