@@ -9,6 +9,7 @@ use App\Models\TransactionHistory;
 use App\Models\UserRefund;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,19 +108,43 @@ class PaymentController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+    /**
+     * @throws \Exception
+     */
     public function getAmount(Request $request)
     {
         $client = new Client();
         $headers = [
             'x-api-key' => env('NOW_PAYMENT_API_KEY'),
         ];
-        $request = new Psr7Request('GET', env('NOW_PAYMENT_URL') . '/estimate?amount=' . $request->amount . '&currency_from=usd&currency_to=' . $request->currency, $headers);
+        $request = new Psr7Request('GET', env('NOW_PAYMENT_URL') . '/estimate?amount=' . $this->getPriceInDollars($request->amount) . '&currency_from=usd&currency_to=' . $request->currency, $headers);
         $res = $client->sendAsync($request)->wait();
         $data = [
             'status' => $res->getStatusCode(),
             'data' => json_decode($res->getBody()->getContents())
         ];
         return response()->json($data, 200);
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function getPriceInDollars($amount)
+    {
+        $apiKey = env('EXCHANGE_RATE_API_KEY'); // store your key in .env
+        $url = "https://v6.exchangerate-api.com/v6/{$apiKey}/latest/GHS";
+        $client = new Client();
+        $response = $client->request('GET', $url);
+        $body = json_decode($response->getBody(), true);
+        if (isset($body['result']) && $body['result'] === 'success') {
+            $basePrice = $amount; // USD
+            $usdPrice = round($basePrice * $body['conversion_rates']['USD'], 2);
+            return $usdPrice;
+        } else {
+            Log::error('Exchange Rate API response not successful at time : ' . now()  , ['response' => $body]);
+            Throw new \Exception('Exchange Rate API response not successful');
+        }
     }
     public function generateRandomString($length = 7)
     {
