@@ -199,12 +199,15 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('tweeks', [TweekController::class, 'getApiData']);
 });
 Route::group(['prefix' => 'payment'], function () {
-  Route::group(['prefix' => 'crypto'], function () {
-    Route::get('currencies', [PaymentController::class, 'getCryptoCurrencies']);
-    Route::get('get_amount', [PaymentController::class, 'getAmount']);
-    Route::post('create_payment', [PaymentController::class, 'createPayment']);
-    Route::get('check_payment', [PaymentController::class, 'CheckStatus']);
-  });
+    Route::group(['prefix' => 'crypto'], function () {
+        Route::get('currencies', [PaymentController::class, 'getCryptoCurrencies']);
+        Route::get('get_amount', [PaymentController::class, 'getAmount']);
+        Route::post('create_payment', [PaymentController::class, 'createPayment']);
+        Route::get('check_payment', [PaymentController::class, 'CheckStatus']);
+    });
+    Route::group(['prefix' => 'paystack'], function () {
+        Route::get('transaction/initialize', [PaymentController::class, 'initializePaystackTransaction']);
+    });
 });
 
 Route::post('send_sms', [HelperController::class, 'sendSms']);

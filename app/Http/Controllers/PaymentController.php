@@ -367,4 +367,31 @@ class PaymentController extends Controller
         dd($result);
 
     }
+
+    public function initializePaystackTransaction(Request $request)
+    {
+        $url = "https://api.paystack.co/transaction/initialize";
+
+        $fields = [
+            'email' => $request->customer_email,
+            'amount' => $request->amount * 100, // Paystack expects amount in Pesewa
+        ];
+
+        $fields_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . env('PAYSTACK_SECRET_KEY'),
+            "Cache-Control: no-cache",
+        ));
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        return response()->json(json_decode($result), 200);
+
+    }
 }
