@@ -99,6 +99,7 @@ class PaymentController extends Controller
         foreach (json_decode($res->getBody()->getContents())->currencies as $key => $value) {
             $cryptoData[] = [
                 'name' => $value->code .' ('.$value->network.')',
+                'code' => $value->code,
                 'logo_url' => "https://nowpayments.io" . $value->logo_url,
             ];
         }
