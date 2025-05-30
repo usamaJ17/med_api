@@ -391,7 +391,11 @@ class PaymentController extends Controller
         ));
         curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
-        return response()->json(json_decode($result), 200);
-
+        $data = json_decode($result, true);
+        return response()->json([
+            'status' => $data['status'] ? 200 : 400,
+            'message' => $data['message'] ?? 'Transaction Initialized Successfully',
+            'data' => $data['data']
+        ] , 200);
     }
 }
