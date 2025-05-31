@@ -340,7 +340,7 @@ class AppointmentController extends Controller
                 [
                     'user_id' => auth()->id(),
                     'appointment_id' => $appointment->id,
-                    'amount' => $appointment->consultation_fees,
+                    'amount' => (int) filter_var($appointment->consultation_fees, FILTER_SANITIZE_NUMBER_INT),
                     'gateway' => $request->refund_option ? $request->refund_option : null,
                 ]
             );
@@ -390,7 +390,7 @@ class AppointmentController extends Controller
                 [
                     'user_id' => auth()->id(),
                     'appointment_id' => $appointment->id,
-                    'amount' => $appointment->consultation_fees,
+                    'amount' => (int) filter_var($appointment->consultation_fees, FILTER_SANITIZE_NUMBER_INT),
                     'gateway' => $request->refund_option ? $request->refund_option : null,
                 ]
             );
@@ -445,7 +445,7 @@ class AppointmentController extends Controller
             [
                 'user_id' => $appointment->user_id,
                 'appointment_id' => $appointment->id,
-                'amount' => $appointment->consultation_fees,
+                'amount' => (int) filter_var($appointment->consultation_fees, FILTER_SANITIZE_NUMBER_INT),
                 'gateway' => "canceled by admin"
             ]
         );
