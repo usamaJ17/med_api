@@ -137,7 +137,7 @@ class ProfileController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Profile Completed Successfully...',
-                'data'   => $user,
+                'data'   => $user->prepareUserData(),
             ], 200);
         }
     }
