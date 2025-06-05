@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::post('notifications/status', [NotificationController::class, 'changeStatus']);
   Route::get('notifications', [NotificationController::class, 'getAll']);
   Route::delete('notifications/{id}', [NotificationController::class, 'delete']);
+  Route::get('wallet_balance', [ProfileController::class, 'getWalletBalance']);
 
   Route::get('all_articles', [ArticleController::class, "index"]);
   Route::apiResource('articles', ArticleController::class);

@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Payouts;
 use App\Models\TransactionHistory;
 use App\Models\UserRefund;
+use App\Models\UserWallet;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -56,6 +57,23 @@ class PaymentController extends Controller
         $refund = UserRefund::find($request->id); 
         if($refund){
             $refund->status = $request->status;
+            if($refund->status == 'complete') {
+                if ($refund->gateway == 'wallet') {
+                    $wallet = UserWallet::firstOrCreate(
+                        ['user_id' => $refund->user_id],
+                        ['balance' => 0]
+                    );
+                    $wallet->balance += $refund->amount;
+                    $wallet->save();
+                }
+                if ($refund->gateway == 'gateway') {
+                    if (strtolower($refund->appointment->gateway) == 'paystack') {
+                        if (!$this->processPaystackRefund($refund->appointment->transaction_id)) {
+                            $refund->status = 'failed, unable to process paystack refund';
+                        }
+                    }
+                }
+            }
             $refund->save();
             return redirect()->back()->with('success', 'Refund Updated Successfully');
         }else{
@@ -398,5 +416,34 @@ class PaymentController extends Controller
             'message' => $data['message'] ?? 'Transaction Initialized Successfully',
             'data' => $data['data']
         ] , 200);
+    }
+    private function processPaystackRefund($transaction_id)
+    {
+        $url = "https://api.paystack.co/refund";
+        $fields = [
+            'transaction' => $transaction_id
+        ];
+        $fields_string = http_build_query($fields);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . env('PAYSTACK_SECRET_KEY'),
+            "Cache-Control: no-cache",
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch); // Always close the cURL handle
+
+        if ($result === false) {
+            return false;
+        }
+        $response = json_decode($result, true);
+
+        if (isset($response['status']) && $response['status'] === true) {
+            return true;
+        }
+        return false;
     }
 }

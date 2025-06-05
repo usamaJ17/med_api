@@ -293,4 +293,21 @@ class ProfileController extends Controller
             'message' => 'Professional Type Deleted Successfully...',
         ], 200);
     }
+
+    public function getWalletBalance()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User Not Found...',
+            ], 404);
+        }
+        $wallet = $user->wallet;
+        return response()->json([
+            'status' => 200,
+            'message' => 'Wallet Balance Fetched Successfully...',
+            'data'   => $wallet ? $wallet->balance : 0,
+        ], 200);
+    }
 }

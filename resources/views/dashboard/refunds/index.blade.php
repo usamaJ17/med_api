@@ -55,7 +55,7 @@ Refund History
                                             <td>{{ $refund->appointment->appointment_date }}</td>
                                             <td>{{ $refund->appointment->appointment_time }}</td>
                                             <td>{{ $refund->amount }}</td>
-                                            <td>{{ $refund->gateway }}</td>
+                                            <td>{{ $refund->gateway_name }}</td>
                                             <td>
                                                 @if ($refund->status == 'complete')
                                                     <span style="color: green;">Completed</span>
@@ -70,12 +70,18 @@ Refund History
                                                     <a class="hover-primary dropdown-toggle no-caret"
                                                         data-bs-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item"
-                                                            onclick="ChangeStatus({{ $refund->id }},'complete')">Complete</a>
-                                                        <a class="dropdown-item"
-                                                            onclick="ChangeStatus({{ $refund->id }},'reject')">Reject</a>
-                                                        <a class="dropdown-item"
+                                                        @if ($refund->status != 'complete')
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $refund->id }},'complete')">Complete</a>
+                                                        @endif
+                                                        @if ($refund->status != 'reject')
+                                                            <a class="dropdown-item"
+                                                               onclick="ChangeStatus({{ $refund->id }},'reject')">Reject</a>
+                                                        @endif
+                                                        @if ($refund->status != 'pending')
+                                                            <a class="dropdown-item"
                                                             onclick="ChangeStatus({{ $refund->id }},'pending')">Pending</a>
+                                                        @endif
                                                     </div>
                                                 </div>                                                
                                             </td>
@@ -107,7 +113,7 @@ Refund History
             function ChangeStatus(id, status) {
                 $.ajax({
                     url: "{{ url('portal/refund/status') }}",
-                    type: 'POSt',
+                    type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
                         status: status,

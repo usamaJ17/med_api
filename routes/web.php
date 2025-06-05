@@ -140,6 +140,4 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::delete('wallets/{wallet}', [UserWalletController::class, 'destroy'])->name('wallets.destroy');
     Route::post('wallets/add-balance', [UserWalletController::class, 'addBalance'])->name('patient.addBalance');
     Route::post('wallets/sub-balance', [UserWalletController::class, 'subBalance'])->name('patient.subBalance');
-
-
 });
