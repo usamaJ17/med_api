@@ -89,13 +89,17 @@ class Appointment extends Model
         return $this->hasOne(Review::class);
     }
 
-    public function getChatIdAttribute()
-    {
-        $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
-        if ($chatBox) {
-            return $chatBox->status;
-        } else {
-            return null;
-        }
-    }
+    // public function getChatIdAttribute()
+    // {
+    //     if($this->chat_id){
+    //         return $this->chat_id;
+    //     }else{
+    //              $chatBox = ChatBox::where(["sender_id" => $this->user_id])->where(["receiver_id" => $this->med_id])->first();
+    //     if ($chatBox) {
+    //         return $chatBox->status;
+    //     } else {
+    //         return null;
+    //     }   
+    //     }
+    // }
 }
