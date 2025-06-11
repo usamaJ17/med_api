@@ -157,7 +157,7 @@ class AuthController extends Controller
                 ];
             }
             $data = [
-                'otp_sent' => false,
+                'type' => 'login',
                 'user' => $user_details,
                 'token' => $user->createToken('Med')->plainTextToken,
             ];
