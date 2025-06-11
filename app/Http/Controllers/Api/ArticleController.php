@@ -58,7 +58,7 @@ class ArticleController extends Controller
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
-        $query->orderBy('created_at', $orderBy);
+        $query->inRandomOrder();
         $articles = $query->paginate($perPage);
         // use for each $articles and update the profile url
         $data = [
@@ -122,8 +122,16 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $query = Article::with('category')->select('id', 'category_id', 'slug', 'user_id', 'title', 'thumbnail', 'share_count', 'published', 'meta_description' , 'meta_title')
-            ->where('published', 1)
-            ->orderBy('created_at', 'DESC');
+            ->where('published', 1);
+        if ($request->has('order_by')) {
+            if ($request->order_by === 'newest') {
+                $query->orderBy('created_at', 'DESC');
+            } elseif ($request->order_by === 'oldest') {
+                $query->orderBy('created_at', 'ASC');
+            }
+        } else {
+            $query->inRandomOrder();
+        }
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
@@ -152,6 +160,8 @@ class ArticleController extends Controller
             } elseif ($request->order_by === 'oldest') {
                 $query->orderBy('created_at', 'ASC');
             }
+        } else {
+            $query->inRandomOrder();
         }
         $articles = $query->get();
         $data = [

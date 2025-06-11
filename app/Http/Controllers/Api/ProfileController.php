@@ -208,7 +208,7 @@ class ProfileController extends Controller
         }
     
         // Get the filtered results
-        $professionals = $query->get();
+        $professionals = $query->inRandomOrder()->get();
     
         return response()->json([
             'status' => 200,
