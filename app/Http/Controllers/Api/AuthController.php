@@ -107,7 +107,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'first_name' => 'required|string',
             'role' => 'required|string',
-            'avatar' => 'nullable|url',
+            'avatar' => 'nullable',
         ]);
 
         if ($validator->fails()) {
