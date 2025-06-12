@@ -40,7 +40,7 @@ class ChatBox extends Model
     }
     public function getNameAttribute()
     {
-        return $this->sender_id == auth()->id() ? $this->receiver->first_name : $this->sender->first_name;
+        return $this->sender_id == auth()->id() ? $this->receiver()->first_name : $this->sender()->first_name;
     }
     public function getLastMessageAttribute()
     {
