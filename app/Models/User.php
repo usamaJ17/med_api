@@ -293,4 +293,18 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasOne(UserWallet::class);
     }
+    public static function getNameWithTrashed($id)
+    {
+        $user = self::find($id);
+        $deleted = false;
+        if (!$user) {
+            $user = self::withTrashed()->find($id);
+            $deleted = $user && $user->trashed();
+        }
+        if ($user) {
+            $name = trim($user->first_name . ' ' . $user->last_name);
+            return $deleted ? $name . ' (deleted)' : $name;
+        }
+        return null;
+    }
 }

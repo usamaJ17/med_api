@@ -63,53 +63,6 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
-
-    // public function saveConsultationFee(Request $request)
-    // {
-    //     try {
-    //         $validator = \Validator::make($request->all(), [
-    //             'consultation_type' => 'required|string',
-    //             'fee' => 'required|string',
-    //             'duration' => 'required|string',
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             return response()->json([
-    //                 'status' => 422,
-    //                 'errors' => $validator->errors(),
-    //             ], 422);
-    //         }
-    //         $validatedData = $validator->validated();
-    //         $user = auth()->user();
-    //         $appointment = AppointmentHours::query()
-    //             ->where('user_id', auth()->id())
-    //             ->where('appointment_type', $validatedData['consultation_type'])
-    //             ->first();
-    //         if (!$appointment) {
-    //             return response()->json(["status" => 404, "messge" => "No appointment found against this user", "data" => []]);
-    //         }
-
-    //         $consultationFee = ConsultationFee::where(["appointment_id" => $appointment->id, "consultation_type" => $request->consultation_type])->first();
-    //         if (!$consultationFee) {
-    //             $consultationFee = new ConsultationFee([
-    //                 "consultation_type" => $request->consultation_type,
-    //                 "appointment_id" => $appointment->id,
-    //                 "user_id" => $user->id
-    //             ]);
-    //         }
-
-    //         $consultationFee->fee = $request->fee;
-    //         $consultationFee->duration = $request->duration;
-    //         $consultationFee->save();
-    //         return response()->json([
-    //             "status" => 200,
-    //             "message" => "Consultation updated successfully",
-    //             "data" => $consultationFee
-    //         ], 200);
-    //     } catch (\Exception $ex) {
-    //         return response()->json(["error" => $ex->getMessage()], 500);
-    //     }
-    // }
     public function getConsultationFee(Request $request)
     {
         $consultationFee = ConsultationFee::where('user_id', $request->user_id)->get();
@@ -395,33 +348,6 @@ class AppointmentController extends Controller
                 ]
             );
 
-            // $user = auth()->user();
-            // $professional = User::find($appointment->med_id);    
-            // Mail::to([$user->email])
-            // ->send(new AfterBookingCancel($professional->first_name." ".$professional->last_name, $appointment->appointment_date,  $appointment->appointment_time, $appointment->appointment_type, $user->first_name." ".$user->last_name));
-
-            // $notificationData = [
-            //     'title' => 'Appointment Canceled',
-            //     'description' => "Your appointment with $professional->first_name $professional->last_name has been successfully canceled and 100% refund issued. If you have any questions or need further assistance, please feel free to reach out to us via the app. Thanks",
-            //     'type' => 'Appointment',
-            //     'from_user_id' => auth()->id(),
-            //     'to_user_id' => auth()->id(),
-            //     'is_read' => 0,
-            // ];        
-            // Notifications::create($notificationData);
-
-            // Mail::to([$professional->email])
-            // ->send(new AppointmentCancelPatient($professional->first_name." ".$professional->last_name,$appointment->appointment_date,  $appointment->appointment_time, $user->first_name." ".$user->last_name));
-
-            // $notificationData = [
-            //     'title' => 'Appointment Canceled',
-            //     'description' => "Appointment Update: $user->first_name $user->last_name has canceled their appointment on $appointment->appointment_date at $appointment->appointment_time. We apologize for any inconvenience and appreciate your understanding.",
-            //     'type' => 'Appointment',
-            //     'from_user_id' => auth()->id(),
-            //     'to_user_id' => $professional->id,
-            //     'is_read' => 0,
-            // ];        
-            // Notifications::create($notificationData);
         }
         $data = [
             'status' => 200,
@@ -598,77 +524,7 @@ class AppointmentController extends Controller
             'user_id' => $app->user_id,
             'id' => auth()->user()->id,
         ];
-        //        if ($app->user_id != auth()->user()->id) {
-        //            $app->pay_for_me = auth()->user()->id;
-        //        }
-        //        $app->save();
-        //
-        //        $user = auth()->user();
-        //        $patient = User::find($app->user_id);
-        //        $professional = User::find($app->med_id);
-        //        if ($app->user_id != auth()->user()->id) {
-        //
-        //            Mail::to([$user->email])
-        //                ->send(new PayForMeReceiptForPayee($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-        //                $app->appointment_date,
-        //                $app->appointment_time,
-        //                $app->appointment_type,
-        //                $patient->first_name." ".$patient->last_name,
-        //                $user->first_name.' '.$user->last_name,
-        //                $app->consultation_fees)
-        //            );
-        //            Mail::to([$patient->email])
-        //                ->send(new PayForMeReceiptForPayeeBeneficiary($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-        //                $app->appointment_date,
-        //                $app->appointment_time,
-        //                $app->appointment_type,
-        //                $patient->first_name." ".$patient->last_name,
-        //                $app->consultation_fees,
-        //                $app->transaction_id,
-        //                date('Y-m-d'))
-        //            );
-        //            $notificationData = [
-        //                'title' => 'Payment Receipt',
-        //                'description' => "<strong>Notification:</strong> Fantastic! You've successfully paid for $user->first_name $user->last_name\'s appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details and confirmation!",
-        //                'type' => 'Appointment',
-        //                'from_user_id' => auth()->id(),
-        //                'to_user_id' => auth()->id(),
-        //                'is_read' => 0,
-        //            ];
-        //            Notifications::create($notificationData);
-        //            $notificationData = [
-        //                'title' => 'Payment Receipt',
-        //                'description' => "<strong>Notification:</strong> Awesome news! ". auth()->user()->first_name." ".auth()->user()->last_name." has paid for your appointment with $professional->name_title $professional->first_name $professional->last_name. Check your email for all the exciting details. See you soon!",
-        //                'type' => 'Appointment',
-        //                'from_user_id' => auth()->id(),
-        //                'to_user_id' => auth()->id(),
-        //                'is_read' => 0,
-        //            ];
-        //            Notifications::create($notificationData);
-        //
-        //        }
-        //        else{
-        //            Mail::to([$user->email])
-        //                ->send(new PaymentReceipt($professional->name_title . " " .$professional->first_name." ".$professional->last_name,
-        //                $app->appointment_date,
-        //                $app->appointment_time,
-        //                $app->appointment_type,
-        //                $user->first_name." ".$user->last_name,
-        //                $app->consultation_fees,
-        //                $app->transaction_id,
-        //                date('Y-m-d')));
-        //
-        //            $notificationData = [
-        //                'title' => 'Payment Receipt',
-        //                'description' => "<strong>Notification:</strong> Fantastic! Your appointment with $professional->name_title $professional->first_name $professional->last_name is confirmed and payment received! Check your email for all the exciting details. See you soon!",
-        //                'type' => 'Appointment',
-        //                'from_user_id' => auth()->id(),
-        //                'to_user_id' => auth()->id(),
-        //                'is_read' => 0,
-        //            ];
-        //            Notifications::create($notificationData);
-        //        }
-        // create a chatbox between patient and professional
+
         $box = ChatController::createChatBox($app->user_id, $app->med_id, $app->id);
         $app->chat_id = $box->id;
         $app->save();

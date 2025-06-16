@@ -24,11 +24,12 @@ class ChatBox extends Model
 
     public function sender()
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class, 'sender_id')->withTrashed();
     }
+
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(User::class, 'receiver_id')->withTrashed();
     }
     public function messages()
     {
@@ -40,7 +41,21 @@ class ChatBox extends Model
     }
     public function getNameAttribute()
     {
-        return $this->sender_id == auth()->id() ? $this->receiver->first_name : $this->sender->first_name;
+        $isSender = $this->sender_id == auth()->id();
+
+        $user = $isSender ? $this->receiver : $this->sender;
+
+        if (!$user) {
+            return 'Unknown User';
+        }
+
+        $name = $user->first_name;
+
+        if ($user->trashed()) {
+            $name .= ' (deleted)';
+        }
+
+        return $name;
     }
     public function getLastMessageAttribute()
     {

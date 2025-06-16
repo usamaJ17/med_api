@@ -32,17 +32,16 @@ class Appointment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
     public function med()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
     protected $appends = ['patient_name', 'fee_int', 'patient_profile_url', 'med_name', 'med_profile_url', 'med_lang', 'patient_lang', 'chat_status'];
     public function getPatientNameAttribute()
     {
-        $user = User::find($this->user_id);
-        return $user->first_name . ' ' . $user->last_name;
+        return \App\Models\User::getNameWithTrashed($this->user_id);
     }
 
     public function getChatStatusAttribute()
@@ -69,8 +68,7 @@ class Appointment extends Model
     }
     public function getMedNameAttribute()
     {
-        $user = User::find($this->med_id);
-        return $user->first_name . ' ' . $user->last_name;
+        return \App\Models\User::getNameWithTrashed($this->med_id);
     }
     public function getMedProfileUrlAttribute()
     {

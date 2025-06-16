@@ -19,11 +19,11 @@ class ChatBoxMessage extends Model implements HasMedia
 
     public function fromUser()
     {
-        return $this->belongsTo(User::class, 'from_user_id');
+        return $this->belongsTo(User::class, 'from_user_id')->withTrashed();
     }
     public function toUser()
     {
-        return $this->belongsTo(User::class, 'to_user_id');
+        return $this->belongsTo(User::class, 'to_user_id')->withTrashed();
     }
     public function chatBox()
     {
