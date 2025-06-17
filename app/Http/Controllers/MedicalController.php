@@ -106,6 +106,8 @@ class MedicalController extends Controller
                     }
                 });
             $docs = $medical->GetAllMedia() ?? [];
+            $professional_docs = $medical->professionalDetails->GetAllMedia() ?? [];
+            $docs = $docs->merge($professional_docs);
             $startDate = Carbon::now()->subDays(14);
             $endDate = Carbon::now()->addDay();
             $total_revenue = TransactionHistory::where('user_id', $id)->sum('transaction_amount');
