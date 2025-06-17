@@ -256,12 +256,10 @@ class User extends Authenticatable implements HasMedia
         }
 
         if ($pro_details) {
-            $pro_media_urls = [
-                'ID Card' => $pro_details->id_card,
-                'Signature' => $pro_details->signature,
-                'Degree File' => $pro_details->degree_file,
-            ];
-            $array = array_merge($array, $pro_media_urls);
+            foreach ($pro_details->media as $media) {
+                $key = ucfirst(str_replace("file_type_", "", $media->collection_name));
+                $array[$key] = $media->getUrl();
+            }
         }
 
         return $array;
