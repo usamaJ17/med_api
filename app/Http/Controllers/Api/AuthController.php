@@ -85,12 +85,14 @@ class AuthController extends Controller
             if ($user->email_verified_at == false) {
                 $otp = random_int(111111, 999999);
                 $user->otp = $otp;
+                $verification_url = bin2hex(random_bytes(20));
+                $user->verification_url = $verification_url;
                 $user->save();
                 if ($request->role == 'medical') {
                     Mail::mailer('alternative')->to([$user->email])
-                        ->send(new ProfessionalOtpMail($otp, $user->name, true));
+                        ->send(new ProfessionalOtpMail($otp, $verification_url, $user->name, true));
                 } else {
-                    Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $user->name, true));
+                    Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $user->name, true));
                 }
                 return response()->json([
                     'status' => 401,

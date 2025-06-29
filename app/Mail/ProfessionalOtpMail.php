@@ -15,14 +15,16 @@ class ProfessionalOtpMail extends Mailable
     use Queueable, SerializesModels;
 
     public $otp;
+    public $verification_url;
     public $name;
     public $register;
     /**
      * Create a new message instance.
      */
-    public function __construct($otp,$name,$register=false)
+    public function __construct($otp,$verification_url,$name,$register=false)
     {
         $this->otp = $otp;
+        $this->verification_url = $verification_url;
         $this->name = $name;
         $this->register = $register;
     }

@@ -121,8 +121,6 @@
                 /* letter-spacing: 0.56px; */
                 text-align: justify;
               ">
-                        This OTP is valid for the next 10 minutes. If you did not sign up for Deluxe Hospital, please
-                        disregard this email.<br>
                         At Deluxe Hospital, we prioritize your comfort and care, providing exceptional telemedicine
                         services right at your fingertips. Should you need any assistance, our dedicated support team is
                         available around the clock via our mobile app.<br>
