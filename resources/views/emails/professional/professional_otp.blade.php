@@ -57,15 +57,6 @@
           ">
                 <div style="width: 100%; max-width: 530px; margin: 0 auto;">
                     <img src="{{ asset('dashboard/images/patient-email.png') }}" style="width: 100%;" />
-                    <h1
-                        style="
-                margin: 0;
-                font-size: 24px;
-                font-weight: 500;
-                color: #1f1f1f;
-              ">
-                        Your OTP
-                    </h1>
                     <p
                         style="
                 margin: 0;

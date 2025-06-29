@@ -67,9 +67,9 @@ class AuthController extends Controller
 
             if ($request->role == 'medical') {
                 Mail::mailer('alternative')->to([$user->email])
-                    ->send(new ProfessionalOtpMail($otp, $verification_url, $user->name, true));
+                    ->send(new ProfessionalOtpMail($otp, $verification_url, $name, true));
             } else {
-                Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $user->name, true));
+                Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $name, true));
             }
 
             $data = [
@@ -88,11 +88,12 @@ class AuthController extends Controller
                 $verification_url = bin2hex(random_bytes(20));
                 $user->verification_url = $verification_url;
                 $user->save();
+                $name = $user->first_name . ' ' . $user->last_name;
                 if ($request->role == 'medical') {
                     Mail::mailer('alternative')->to([$user->email])
-                        ->send(new ProfessionalOtpMail($otp, $verification_url, $user->name, true));
+                        ->send(new ProfessionalOtpMail($otp, $verification_url, $name, true));
                 } else {
-                    Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $user->name, true));
+                    Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $name, true));
                 }
                 return response()->json([
                     'status' => 401,
