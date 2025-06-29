@@ -29,6 +29,7 @@ class DeleteUnverifiedUsers implements ShouldQueue
         $now = now();
 
         User::whereNull('email_verified_at')
+            ->where('temp_role' , '!=', 'admin')
             ->where('created_at', '<', $cutoff)
             ->chunk(50, function ($users) use ($scheduleOffsets, $now) {
                 foreach ($users as $user) {
