@@ -7,6 +7,7 @@ use App\Jobs\ProcessProfileImage;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
 use App\Mail\ProfessionalOtpMail;
+use App\Models\DeletedNotifications;
 use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -46,6 +47,8 @@ class AuthController extends Controller
             } else {
                 $otp = random_int(111111, 999999);
                 $user->otp = $otp;
+                $verification_url = bin2hex(random_bytes(20));
+                $user->verification_url = $verification_url;
             }
             $user->temp_role = $request->role;
             if ($request->role == 'medical') {
@@ -64,9 +67,9 @@ class AuthController extends Controller
 
             if ($request->role == 'medical') {
                 Mail::mailer('alternative')->to([$user->email])
-                    ->send(new ProfessionalOtpMail($otp, $user->name, true));
+                    ->send(new ProfessionalOtpMail($otp, $verification_url, $user->name, true));
             } else {
-                Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $user->name, true));
+                Mail::mailer('alternative')->to([$user->email])->send(new OtpMail($otp, $verification_url, $user->name, true));
             }
 
             $data = [
@@ -371,6 +374,34 @@ class AuthController extends Controller
             'status' => 200,
             'message' => 'Logout Successfully...',
         ], 200);
+    }
+
+    public function verifyEmail($token)
+    {
+        $user = User::where('verification_url', $token)->first();
+
+        if (!$user) {
+            return view('auth.verification-failed');
+        }
+        $user->email_verified_at = now();
+        $user->verification_url = null;
+        $user->assignRole($user->temp_role);
+
+        $user->save();
+
+        return view('auth.verified'); 
+    }
+
+    public function unsubscribe(Request $request)
+    {
+        $email = $request->query('email');
+
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response("Invalid email provided.", 400);
+        }
+        DeletedNotifications::where('email', $email)->delete();
+
+        return view('auth.unsubscribe', ['email' => $email]);
     }
 
     public function savePersonalDetails(Request $request)

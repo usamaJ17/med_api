@@ -30,11 +30,6 @@ use App\Http\Controllers\UserWalletController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('cert_test',function(){
-    return view('cert_test');
-});
-
 Route::get('/sym', function () {
     Artisan::call('storage:link');
     return 'success';
@@ -47,6 +42,8 @@ Route::get('/graph', [HelperController::class, 'graphs'])->name('graph.form');
 Route::get('/login', [DashboardController::class, 'login'])->name('login.form');
 Route::post('/login', [AuthController::class, 'adminLogin'])->name('login');
 Route::post('/logout', [AuthController::class, 'AdminLogout'])->name('logout');
+Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->name('verify.email');
+Route::get('/unsubscribe', [AuthController::class, 'unsubscribe'])->name('unsubscribe');
 
 Route::get('/send-patient-appointment-notifications', [AppointmentController::class, 'sendPatientNotifications']);
 Route::get('/send-professional-appointment-notifications', [AppointmentController::class, 'sendProfessionalNotifications']);

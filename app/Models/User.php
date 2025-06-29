@@ -40,6 +40,7 @@ class User extends Authenticatable implements HasMedia
         'state',
         'city',
         'language',
+        'verification_url',
         'is_live',
         'can_emergency',
         'can_night_emergency',
@@ -51,7 +52,7 @@ class User extends Authenticatable implements HasMedia
         'deleted_by'
     ];
 
-    protected $excludeFields = ['id', 'password', 'professional_type_id', 'user_id', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
+    protected $excludeFields = ['id', 'password', 'professional_type_id', 'user_id', 'verification_url', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
 
     /**
      * The attributes that should be hidden for serialization.

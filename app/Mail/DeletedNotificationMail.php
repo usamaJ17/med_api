@@ -8,25 +8,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
 
-class OtpMail extends Mailable
+class DeletedNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $otp;
-    public $verification_url;
+    public $email;
     public $name;
-    public $register;
     /**
      * Create a new message instance.
      */
-    public function __construct($otp,$verification_url,$name,$register=false)
+    public function __construct($email, $name)
     {
-        $this->otp = $otp;
-        $this->verification_url = $verification_url;
+        $this->email = $email;
         $this->name = $name;
-        $this->register = $register;
     }
 
     /**
@@ -35,8 +30,7 @@ class OtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('otp@deluxehospital.com', 'Deluxe Hospital'),
-            subject: 'Confirm Your Email - Welcome to Deluxe Hospital!',
+            subject: 'Account Deletion Notification',
         );
     }
 
@@ -46,7 +40,7 @@ class OtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.otp',
+            view: 'emails.deleted_notification',
         );
     }
 
