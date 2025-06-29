@@ -21,8 +21,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:work --sleep=3 --tries=3 --stop-when-empty')
             ->everyMinute()
             ->withoutOverlapping();
-        $schedule->job(new DeleteUnverifiedUsers)->everyMinute();
-        $schedule->job(new SendDeletedEmail)->everyMinute();
+        $schedule->job(new DeleteUnverifiedUsers)->everyHour();
+        $schedule->job(new SendDeletedEmail)->everyHour();
     }
 
     /**
