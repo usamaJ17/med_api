@@ -56,7 +56,7 @@
             text-align: center;
           ">
                 <div style="width: 100%; max-width: 530px; margin: 0 auto;">
-                    <img src="{{ asset('dashboard/images/patient-email.png') }}" style="width: 100%;" />
+                    <img src="{{ asset('dashboard/images/doctor-email.png') }}" style="width: 100%;" />
                     <p
                         style="
                 margin: 0;
