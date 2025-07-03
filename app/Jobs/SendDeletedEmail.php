@@ -28,7 +28,7 @@ class SendDeletedEmail implements ShouldQueue
         $emailToSend = DeletedNotifications::where('scheduled_at', '<', now())->get();
 
         foreach ($emailToSend as $email) {
-            Mail::to($email->email)->send(new DeletedNotificationMail($email->email, $email->name));
+            Mail::to($email->email)->send(new DeletedNotificationMail($email->email, $email->name , $email->type ?? 'patient'));
             $email->delete();
         }
     }

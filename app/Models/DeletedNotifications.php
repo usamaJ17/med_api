@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeletedNotifications extends Model
 {
-    protected $table = 'deleted_notification';
-    protected $fillable = ['email', 'name', 'scheduled_at'];
+    protected $table = '';
+    protected $fillable = ['email', 'name', 'type', 'scheduled_at'];
 }

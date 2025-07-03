@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\DeleteUnverifiedUsers;
+use App\Jobs\FindIncompleteUsers;
 use App\Jobs\SendBulkPushNotification;
 use App\Jobs\SendDeletedEmail;
 use App\Jobs\UpdateChatBoxStatus;
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping();
         $schedule->job(new DeleteUnverifiedUsers)->everyHour();
         $schedule->job(new SendDeletedEmail)->everyHour();
+        $schedule->job(new FindIncompleteUsers)->everyThreeHours();
     }
 
     /**

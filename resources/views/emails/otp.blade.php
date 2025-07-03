@@ -10,15 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
 
-<body
-    style="
+<body style="
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background: #ffffff;
       font-size: 14px;
     ">
-    <div
-        style="
+    <div style="
         max-width: 680px;
         margin: 0 auto;
         padding: 45px 30px 60px;
@@ -46,8 +44,7 @@
         </header>
 
         <main>
-            <div
-                style="
+            <div style="
             margin: 0;
             margin-top: 70px;
             padding: 92px 30px 115px;
@@ -57,8 +54,7 @@
           ">
                 <div style="width: 100%; max-width: 530px; margin: 0 auto;">
                     <img src="{{ asset('dashboard/images/patient-email.png') }}" style="width: 100%;" />
-                    <p
-                        style="
+                    <p style="
                 margin: 0;
                 margin-top: 17px;
                 font-size: 16px;
@@ -67,8 +63,7 @@
               ">
                         Dear {{ $name }},
                     </p>
-                    <p
-                        style="
+                    <p style="
                 margin: 0;
                 margin-top: 17px;
                 font-weight: 500;
@@ -101,11 +96,11 @@
                     </ol>
 
                     <p style="margin-top: 30px; font-weight: 500; text-align: justify;">
-                        This OTP and email verification link is valid for the next 24 hours. If you did not sign up for Deluxe Hospital, please
+                        This OTP and email verification link is valid for the next 24 hours. If you did not sign up for
+                        Deluxe Hospital, please
                         disregard this email.
                     </p>
-                    <p
-                        style="
+                    <p style="
                 margin: 0;
                 margin-top: 17px;
                 font-weight: 500;
@@ -126,8 +121,7 @@
                 </div>
             </div>
         </main>
-        <footer
-            style="
+        <footer style="
           margin-top: 20px;
           text-align: center;
           padding-top: 20px;
@@ -152,14 +146,20 @@
                         src="{{ asset('dashboard/images/social-icons/youtube.png') }}" alt="YouTube"
                         style="width: 24px; margin: 0 5px;" /></a>
             </div>
-            <p
-                style="
+            <p style="
             font-size: 12px;
             color: #666666;
             margin: 0;
             margin-top: 10px;
           ">
                 Visit us at <a href="https://deluxehospital.com" target="_blank">deluxehospital.com</a>
+            </p>
+            <p style="font-size: 11px; color: #888888; margin: 10px auto 0; max-width: 480px;">
+                <strong>ENHANCED GLOBAL HEALTH SERVICES</strong> is registered under:<br>
+                &mdash; the <strong>Data Protection Act, 2012 (Act 843)</strong> with Registration Number
+                <strong>0006039</strong><br>
+                &mdash; the <strong>Companies Act, 2019 (Act 992)</strong> with Registration Number
+                <strong>CS029400224</strong>
             </p>
         </footer>
     </div>

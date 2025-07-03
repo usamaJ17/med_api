@@ -49,10 +49,11 @@ class User extends Authenticatable implements HasMedia
         'speak',
         'time_zone',
         'device_token',
+        'is_send_for_incomplete',
         'deleted_by'
     ];
 
-    protected $excludeFields = ['id', 'password', 'professional_type_id', 'user_id', 'verification_url', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
+    protected $excludeFields = ['id', 'password', 'professional_type_id', 'is_send_for_incomplete' , 'user_id', 'verification_url', 'language', 'parent_id', 'remember_token', 'otp', 'is_verified', 'temp_role', 'created_at', 'updated_at', 'verification_requested_at', 'forgot_password', 'email_verified_at', 'otp_verified_at', 'device_token'];
 
     /**
      * The attributes that should be hidden for serialization.

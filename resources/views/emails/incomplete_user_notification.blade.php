@@ -44,7 +44,8 @@
         </header>
 
         <main>
-            <div style="margin: 0; margin-top: 70px; padding: 92px 30px 115px; background: #ffffff; border-radius: 30px; text-align: center;">
+            <div
+                style="margin: 0; margin-top: 70px; padding: 92px 30px 115px; background: #ffffff; border-radius: 30px; text-align: center;">
                 <div style="width: 100%; max-width: 530px; margin: 0 auto;">
                     <img src="{{ asset('dashboard/images/doctor-email.png') }}" style="width: 100%;" />
                     <h1 style="margin: 0; font-size: 24px; font-weight: 500; color: #1f1f1f;">We’d love to have you back!</h1>
@@ -54,36 +55,45 @@
                     </p>
 
                     <p style="margin-top: 15px; text-align: justify; font-weight: 500;">
-                        We noticed you started signing up with <strong>Deluxe Hospital</strong> but didn’t get a chance to verify your email within the 24-hour window.
-                        No worries—life gets busy! We’d love to have you back and help you start offering care on your terms.
+                        We noticed you started setting up your <strong>Deluxe Hospital</strong> profile but didn’t quite
+                        finish. We’d love to help you complete your registration in just a few minutes so you can:
                     </p>
+
+                    <ul style="text-align: left; font-weight: 500; padding-left: 20px; margin-top: 10px;">
+                        <li>✅ Reach patients through our secure telemedicine platform on your terms</li>
+                        <li>✅ Consult flexibly. You set your fees; you set your availability.</li>
+                        <li>✅ Withdraw your money seamlessly via Mobile Money or Bank Transfer</li>
+                    </ul>
 
                     <p style="margin-top: 20px; font-weight: 500; text-align: left;">
                         Why join Deluxe Hospital?
                     </p>
 
                     <ul style="text-align: left; font-weight: 500; padding-left: 20px; margin-top: 10px;">
-                        <li>💼 Work when you want, from where you want</li>
-                        <li>💬 Connect with patients through secure telemedicine</li>
-                        <li>💰 Get paid for every consultation on your terms</li>
+                        <li>— We are registered under the Data Protection Act, 2012 (Act 843) with Registration Number:
+                            0006039</li>
+                        <li>— Free 24/7 technical support for you and your patients</li>
                     </ul>
 
                     <p style="margin-top: 20px; text-align: justify; font-weight: 500;">
-                        Kindly open the <strong>Deluxe Hospital app</strong> to restart your registration—it only takes a few minutes.
+                        <strong>COMPLETE YOUR REGISTRATION NOW</strong><br>
+                        Your progress was saved! Log into the app to complete the registration process.
                     </p>
 
                     <p style="margin-top: 20px; text-align: justify; font-weight: 500;">
-                        If you have any questions or need support, our team is here to help. Chat with one of our Customer Service Nurses via the Deluxe Hospital app.
+                        Need help? Our care team is ready to assist. Chat with us via our in-app live chat.
                     </p>
 
                     <p style="margin-top: 30px; font-weight: 500; text-align: justify;">
-                        Looking forward to having you on board!
+                        We’re excited to empower you with your own Virtual Practice through the Deluxe Hospital
+                        Telemedicine Platform.
                         <br><br>
                         With caring thoughts,<br>
                         <strong>The Team that Cares</strong><br>
                         ❤️‍🩹<br>
                         <strong>Deluxe Hospital</strong>
                     </p>
+
                 </div>
             </div>
         </main>

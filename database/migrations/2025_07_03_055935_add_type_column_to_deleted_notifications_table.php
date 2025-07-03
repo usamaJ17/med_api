@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->float('balance')->default(0);
-            $table->boolean('is_send_for_incomplete')->default(0);
+        Schema::table('deleted_notification', function (Blueprint $table) {
+            $table->string('type')->nullable()->after('name');
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('deleted_notification', function (Blueprint $table) {
             //
         });
     }

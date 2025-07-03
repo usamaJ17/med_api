@@ -15,13 +15,15 @@ class DeletedNotificationMail extends Mailable
 
     public $email;
     public $name;
+    public $type;
     /**
      * Create a new message instance.
      */
-    public function __construct($email, $name)
+    public function __construct($email, $name, $type)
     {
         $this->email = $email;
         $this->name = $name;
+        $this->type = $type;
     }
 
     /**
@@ -29,9 +31,19 @@ class DeletedNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'Account Deletion Notification',
-        );
+        if ($this->type == 'patient') {
+            return new Envelope(
+                subject: 'Finish Signing Up with Deluxe Hospital  🩺',
+            );
+        }else if ($this->type == 'incomplete_user') {
+            return new Envelope(
+                subject: 'Complete Your Deluxe Hospital Registration & Start Seeing Patients Online!',
+            );
+        } else { // Default case for other types, e.g., 'medical'
+            return new Envelope(
+                subject: 'Complete Your Registration with Deluxe Hospital 🌟',
+            );
+        }
     }
 
     /**
@@ -39,9 +51,19 @@ class DeletedNotificationMail extends Mailable
      */
     public function content(): Content
     {
-        return new Content(
-            view: 'emails.deleted_notification',
-        );
+         if ($this->type == 'patient') {
+                return new Content(
+                view: 'emails.deleted_notification_patient',
+            );
+        }else if ($this->type == 'incomplete_user') {
+            return new Content(
+                view: 'emails.incomplete_user_notification',
+            );
+        } else { // Default case for other types, e.g., 'medical'
+            return new Content(
+                view: 'emails.deleted_notification',
+            );
+        }
     }
 
     /**

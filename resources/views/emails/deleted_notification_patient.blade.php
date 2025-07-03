@@ -46,26 +46,26 @@
         <main>
             <div style="margin: 0; margin-top: 70px; padding: 92px 30px 115px; background: #ffffff; border-radius: 30px; text-align: center;">
                 <div style="width: 100%; max-width: 530px; margin: 0 auto;">
-                    <img src="{{ asset('dashboard/images/doctor-email.png') }}" style="width: 100%;" />
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 500; color: #1f1f1f;">We’d love to have you back!</h1>
+                    <img src="{{ asset('dashboard/images/patient-email.png') }}" style="width: 100%;" />
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 500; color: #1f1f1f;">Come back anytime</h1>
 
                     <p style="margin-top: 20px; font-size: 16px; font-weight: 500; text-align: left;">
                         Hi {{ $name }},
                     </p>
 
                     <p style="margin-top: 15px; text-align: justify; font-weight: 500;">
-                        We noticed you started signing up with <strong>Deluxe Hospital</strong> but didn’t get a chance to verify your email within the 24-hour window.
-                        No worries—life gets busy! We’d love to have you back and help you start offering care on your terms.
+                        We saw you started creating your account with <strong>Deluxe Hospital</strong>, but didn’t get a chance to verify your email in time.
+                        We’re here when you’re ready—your health journey can start in just a few clicks.
                     </p>
 
                     <p style="margin-top: 20px; font-weight: 500; text-align: left;">
-                        Why join Deluxe Hospital?
+                        With Deluxe Hospital, you can:
                     </p>
 
                     <ul style="text-align: left; font-weight: 500; padding-left: 20px; margin-top: 10px;">
-                        <li>💼 Work when you want, from where you want</li>
-                        <li>💬 Connect with patients through secure telemedicine</li>
-                        <li>💰 Get paid for every consultation on your terms</li>
+                        <li>👩‍⚕️ Talk to licensed doctors anytime, anywhere</li>
+                        <li>⏱ Skip waiting rooms—get care when you need it</li>
+                        <li>🔒 Enjoy private, secure telemedicine visits</li>
                     </ul>
 
                     <p style="margin-top: 20px; text-align: justify; font-weight: 500;">
@@ -73,11 +73,11 @@
                     </p>
 
                     <p style="margin-top: 20px; text-align: justify; font-weight: 500;">
-                        If you have any questions or need support, our team is here to help. Chat with one of our Customer Service Nurses via the Deluxe Hospital app.
+                        Need help or have questions? Our support team is just a message away. Chat with one of our Customer Service Nurses via the app.
                     </p>
 
                     <p style="margin-top: 30px; font-weight: 500; text-align: justify;">
-                        Looking forward to having you on board!
+                        Your health, your schedule—Deluxe Hospital makes it easy.
                         <br><br>
                         With caring thoughts,<br>
                         <strong>The Team that Cares</strong><br>

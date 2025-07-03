@@ -37,6 +37,7 @@ class DeleteUnverifiedUsers implements ShouldQueue
                         DeletedNotifications::create([
                             'email' => $user->email,
                             'name' => $user->name,
+                            'type' => $user->temp_role,
                             'scheduled_at' => $now->copy()->addDays($days),
                         ]);
                     }
