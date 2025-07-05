@@ -133,6 +133,7 @@ class AuthController extends Controller
             $user->email = $request->email;
             $user->email_verified_at = now(); 
             $user->password = Hash::make(random_int(111111, 999999)); // Set a random password
+            $user->temp_role = $request->role;
             $user->save();
             $user->assignRole($request->role);
             $user->addMediaFromUrl($request->avatar)->toMediaCollection();
@@ -201,6 +202,7 @@ class AuthController extends Controller
             $user->email = $request->email;
             $user->email_verified_at = now(); 
             $user->password = Hash::make(random_int(111111, 999999)); // Set a random password
+            $user->temp_role = $request->role;
             $user->save();
             $user->assignRole($request->role);
             $imageUrl = $request->avatar;
@@ -601,7 +603,6 @@ class AuthController extends Controller
 
     private function SendProfileImageForBackgroundRemoval($user): void
     {
-        // Get the latest image URL from Spatie Media Library
         $mediaItem = $user->getFirstMediaUrl();
 
         if (!$mediaItem) {
