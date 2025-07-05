@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -201,7 +202,23 @@ class AuthController extends Controller
             $user->password = Hash::make(random_int(111111, 999999)); // Set a random password
             $user->save();
             $user->assignRole($request->role);
-            $user->addMediaFromUrl($request->avatar)->toMediaCollection();
+            $imageUrl = $request->avatar;
+
+            $response = Http::withHeaders([
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0 Safari/537.36'
+            ])->get($imageUrl);
+
+            if ($response->successful()) {
+                $tempFile = tempnam(sys_get_temp_dir(), 'media');
+                file_put_contents($tempFile, $response->body());
+
+                $user->addMedia($tempFile)
+                    ->usingFileName('avatar.jpg')
+                    ->toMediaCollection();
+            } else {
+                dd($response);
+            }
+
             if($user->hasRole('medical')){
                 $this->SendProfileImageForBackgroundRemoval($user);
             }
