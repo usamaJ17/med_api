@@ -180,7 +180,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'nullable|email',
             'first_name' => 'nullable|string',
-            'role' => 'required|string',
+            'role' => 'nullable|string',
             'avatar' => 'nullable',
             'apple_id' => 'required|string',
         ]);
