@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('name_title')->default(null)->nullable();
             $table->boolean('is_unsubscribed')->default(0);
+            $table->string('apple_id')->nullable()->default(null);
         });
     }
 

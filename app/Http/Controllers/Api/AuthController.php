@@ -173,6 +173,73 @@ class AuthController extends Controller
             'data' => $data,
         ], 200);
     }
+     
+    public function appleAuth(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'nullable|email',
+            'first_name' => 'nullable|string',
+            'role' => 'required|string',
+            'avatar' => 'nullable',
+            'apple_id' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 401,
+                'message' => $validator->errors()->first(),
+            ], 401);
+        }
+        $data = [];
+        if(isset($request->email) || $request->email == null){
+            $user = new User();
+            $user->first_name = $request->first_name;
+            $user->last_name = '';
+            $user->apple_id = $request->apple_id;
+            $user->email = $request->email;
+            $user->email_verified_at = now(); 
+            $user->password = Hash::make(random_int(111111, 999999)); // Set a random password
+            $user->save();
+            $user->assignRole($request->role);
+            $user->addMediaFromUrl($request->avatar)->toMediaCollection();
+            if($user->hasRole('medical')){
+                $this->SendProfileImageForBackgroundRemoval($user);
+            }
+            $data = [
+                'type' => 'signup',
+                'token' => $user->createToken('Med')->plainTextToken,
+            ];
+        }else{
+            $user = User::where('apple_id', $request->apple_id)->first();  
+            if (!$user->email_verified_at) {
+                $user->email_verified_at = now();
+                $user->save();
+            }
+
+            $user = User::with('professionalDetails', 'medicalDetails')->find($user->id);
+            $user_details = [];
+            if ($user->role == 'patient') {
+                $user_details = [
+                    'personal_details' => $user->prepareUserData(),
+                    'medical_details' => $user->medicalDetails,
+                ];
+            } else if ($user->role == 'medical') {
+                $user_details = [
+                    'personal_details' => $user->prepareUserData(),
+                    'professional_details' => $user->professionalDetails,
+                ];
+            }
+            $data = [
+                'type' => 'login',
+                'user' => $user_details,
+                'token' => $user->createToken('Med')->plainTextToken,
+            ];
+        }
+        return response()->json([
+            'status' => 200,
+            'data' => $data,
+        ], 200);
+    }
 
     public function fingerprintLogin(Request $request): JsonResponse
     {

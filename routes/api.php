@@ -43,6 +43,7 @@ Broadcast::routes(['middleware' => ['auth:sanctum']]);
 Route::middleware(['cros'])->group(function () {
   Route::post('register', [AuthController::class, 'register']);
   Route::post('auth/google', [AuthController::class, 'googleAuth']);
+  Route::post('auth/apple', [AuthController::class, 'appleAuth']);
   // Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login', [AuthController::class, 'login']);
   Route::post('fingerprint_login', [AuthController::class, 'fingerprintLogin']);
