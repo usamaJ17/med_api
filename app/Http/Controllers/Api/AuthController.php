@@ -191,8 +191,9 @@ class AuthController extends Controller
                 'message' => $validator->errors()->first(),
             ], 401);
         }
+        $user = User::where('apple_id', $request->apple_id)->first();  
         $data = [];
-        if(isset($request->email) || $request->email == null){
+        if(!$user){
             $user = new User();
             $user->first_name = $request->first_name;
             $user->last_name = '';
@@ -215,8 +216,6 @@ class AuthController extends Controller
                 $user->addMedia($tempFile)
                     ->usingFileName('avatar.jpg')
                     ->toMediaCollection();
-            } else {
-                dd($response);
             }
 
             if($user->hasRole('medical')){
@@ -227,7 +226,6 @@ class AuthController extends Controller
                 'token' => $user->createToken('Med')->plainTextToken,
             ];
         }else{
-            $user = User::where('apple_id', $request->apple_id)->first();  
             if (!$user->email_verified_at) {
                 $user->email_verified_at = now();
                 $user->save();
