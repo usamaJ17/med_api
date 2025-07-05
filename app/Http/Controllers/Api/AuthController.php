@@ -7,7 +7,7 @@ use App\Jobs\ProcessProfileImage;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
 use App\Mail\ProfessionalOtpMail;
-use App\Models\DeletedNotifications;
+use App\Models\EmailNotifications;
 use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -402,7 +402,7 @@ class AuthController extends Controller
         if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return response("Invalid email provided.", 400);
         }
-        DeletedNotifications::where('email', $email)->delete();
+        EmailNotifications::where('email', $email)->delete();
 
         return view('auth.unsubscribe', ['email' => $email]);
     }

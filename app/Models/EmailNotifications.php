@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DeletedNotifications extends Model
+class EmailNotifications extends Model
 {
-    protected $table = '';
+    protected $table = 'email_notifications';
     protected $fillable = ['email', 'name', 'type', 'scheduled_at'];
 }

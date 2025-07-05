@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deleted_notification', function (Blueprint $table) {
+        Schema::create('email_notifications', function (Blueprint $table) {
             $table->id();
             $table->string('email');
             $table->string('name')->nullable();
+            $table->string('type')->nullable()->after('name');
             $table->timestamp('scheduled_at')->nullable();
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deleted_notification');
+        Schema::dropIfExists('email_notifications');
     }
 };

@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\DeletedNotificationMail;
-use App\Models\DeletedNotifications;
+use App\Models\EmailNotifications;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
@@ -25,7 +25,7 @@ class SendDeletedEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $emailToSend = DeletedNotifications::where('scheduled_at', '<', now())->get();
+        $emailToSend = EmailNotifications::where('scheduled_at', '<', now())->get();
 
         foreach ($emailToSend as $email) {
             Mail::to($email->email)->send(new DeletedNotificationMail($email->email, $email->name , $email->type ?? 'patient'));

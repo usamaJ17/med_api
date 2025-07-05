@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\DeletedNotifications;
+use App\Models\EmailNotifications;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -43,7 +43,7 @@ class FindIncompleteUsers implements ShouldQueue
 
         foreach ($users as $user) {
             foreach ($scheduleOffsets as $days) {
-                DeletedNotifications::create([
+                EmailNotifications::create([
                     'email' => $user->email,
                     'name' => $user->name,
                     'type' => 'incomplete_user',
