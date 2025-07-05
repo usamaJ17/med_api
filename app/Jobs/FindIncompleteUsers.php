@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\EmailNotifications;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
@@ -16,41 +17,55 @@ class FindIncompleteUsers implements ShouldQueue
      */
     public function __construct()
     {
-        //
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        $scheduleOffsets = [1, 3];
         $now = now();
 
-        $users = User::whereHas('roles', function ($q) {
-            $q->where('name', 'medical');
-        })
-        ->where('is_verified', 0)
-        ->where('is_send_for_incomplete', 0)
-        ->whereNotNull('email_verified_at')
-        ->where(function ($query) {
-            $query->doesntHave('professionalDetails')
-                ->orWhereHas('professionalDetails', function ($q) {
-                    $q->doesntHave('media');
-                });
-        })
-        ->get();
+        $users = User::whereHas('roles', fn ($q) => $q->where('name', 'medical'))
+            ->where('is_verified', 0)
+            ->where('is_unsubscribed', 0)
+            ->whereNotNull('email_verified_at')
+            ->where(function ($query) {
+                $query->doesntHave('professionalDetails')
+                    ->orWhereHas('professionalDetails', fn ($q) => $q->doesntHave('media'));
+            })
+            ->get();
 
         foreach ($users as $user) {
-            foreach ($scheduleOffsets as $days) {
+            $email = $user->email;
+            $lastScheduled = EmailNotifications::where('email', $email)
+                ->where('type', 'incomplete_user')
+                ->orderByDesc('scheduled_at')
+                ->first();
+
+            $nextTime = null;
+
+            if (!$lastScheduled) {
+                $verifiedAt = Carbon::parse($user->email_verified_at);
+                $diff = $now->diffInHours($verifiedAt);
+
+                if ($diff >= 24) {
+                    $nextTime = $now->copy();
+                }
+            } else {
+                $last = Carbon::parse($lastScheduled->scheduled_at);
+                $diff = $now->diffInHours($last);
+
+                if ($diff >= 72) {
+                    $nextTime = $now->copy();
+                }
+            }
+
+            if ($nextTime) {
                 EmailNotifications::create([
-                    'email' => $user->email,
+                    'email' => $email,
                     'name' => $user->name,
                     'type' => 'incomplete_user',
-                    'scheduled_at' => $now->copy()->addDays($days),
+                    'scheduled_at' => $nextTime,
                 ]);
             }
-            $user->update(['is_send_for_incomplete' => 1]);
         }
     }
 }

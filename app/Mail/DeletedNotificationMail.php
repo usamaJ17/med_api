@@ -39,7 +39,7 @@ class DeletedNotificationMail extends Mailable
             return new Envelope(
                 subject: 'Complete Your Deluxe Hospital Registration & Start Seeing Patients Online!',
             );
-        } else { // Default case for other types, e.g., 'medical'
+        } else {
             return new Envelope(
                 subject: 'Complete Your Registration with Deluxe Hospital 🌟',
             );
