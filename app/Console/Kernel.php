@@ -5,7 +5,7 @@ namespace App\Console;
 use App\Jobs\DeleteUnverifiedUsers;
 use App\Jobs\FindIncompleteUsers;
 use App\Jobs\SendBulkPushNotification;
-use App\Jobs\SendDeletedEmail;
+use App\Jobs\SendEmailNotifications;
 use App\Jobs\UpdateChatBoxStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -22,9 +22,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:work --sleep=3 --tries=3 --stop-when-empty')
             ->everyMinute()
             ->withoutOverlapping();
-        $schedule->job(new DeleteUnverifiedUsers)->everyMinute();
-        $schedule->job(new SendDeletedEmail)->everyMinute();
-        $schedule->job(new FindIncompleteUsers)->everyMinute();
+        $schedule->job(new DeleteUnverifiedUsers)->everyTwoHours();
+        $schedule->job(new SendEmailNotifications)->everyHour();
+        $schedule->job(new FindIncompleteUsers)->everyTwoHours();
     }
 
     /**

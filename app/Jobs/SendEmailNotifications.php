@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
 
-class SendDeletedEmail implements ShouldQueue
+class SendEmailNotifications implements ShouldQueue
 {
     use Queueable;
 
@@ -25,11 +25,13 @@ class SendDeletedEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $emailToSend = EmailNotifications::where('scheduled_at', '<', now())->get();
+        $emailToSend = EmailNotifications::where('status', 'pending')->where('scheduled_at', '<', now())->get();
 
         foreach ($emailToSend as $email) {
             Mail::to($email->email)->send(new DeletedNotificationMail($email->email, $email->name , $email->type ?? 'patient'));
-            $email->delete();
+            $email->status = 'sent';
+            $email->sent_at = now();
+            $email->save();
         }
     }
 }

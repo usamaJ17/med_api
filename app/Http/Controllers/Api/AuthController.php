@@ -486,7 +486,8 @@ class AuthController extends Controller
         if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return response("Invalid email provided.", 400);
         }
-        EmailNotifications::where('email', $email)->delete();
+        EmailNotifications::where('email', $email)->where('status', 'pending')->delete();
+        User::where('email', $email)->update(['is_unsubscribed' => 1]);
 
         return view('auth.unsubscribe', ['email' => $email]);
     }
