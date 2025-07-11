@@ -11,8 +11,10 @@ use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\Tweek;
 use App\Models\DynamicDoc;
+use App\Models\MedicalDetail;
 use App\Models\User;
 use App\Models\Notifications;
+use App\Models\ProfessionalDetails;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
@@ -63,6 +65,22 @@ class HelperController extends Controller
         } else {
             $user = User::find($id);
         }
+        if ($user) {
+            $user->clearMediaCollection();
+            $userMed = MedicalDetail::where('user_id', $id)->first();
+            if ($userMed) {
+                $userMed->clearMediaCollection();
+                $userMed->delete();
+            }
+            $userProf = ProfessionalDetails::where('user_id', $id)->first();
+            if ($userProf) {
+                $userProf->clearMediaCollection();
+                $userProf->delete();
+            }
+        }
+        $user->roles()->detach();
+        $user->deleted_by = auth()->user()->id;
+        $user->save();
         $user->delete();
         $data = [
             'status' => 200,

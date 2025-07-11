@@ -53,8 +53,7 @@
                                 <tbody>
                                     @foreach ($payouts as $item)
                                         <tr class="hover-primary">
-                                            <td> <a href="{{ route('medical.show', $item->user->id) }}">{{ $item->user->first_name }}
-                                                    {{ $item->user->last_name }} </a></td>
+                                            <td> <a href="{{ $item->user_id ?? route('medical.show', $item->user->id) }}">{{ \App\Models\User::getNameWithTrashed($item->user_id) }}</a></td>
                                             <td>{{ $item->amount }}</td>
                                             <td>
                                                 {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y, h:i A') }}

@@ -58,12 +58,12 @@
                                             <td>
                                                 {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y, h:i A') }}
                                             </td>
-                                            <td>{{ $item->med->fullName() ." - " . $item->med_id}}</td>
-                                            <td>{{ $item->user->fullName() ." - " . $item->user_id}}</td>
+                                            <td>{{ \App\Models\User::getNameWithTrashed($item->med_id) ." - " . $item->med_id}}</td>
+                                            <td>{{ \App\Models\User::getNameWithTrashed($item->user_id) ." - " . $item->user_id}}</td>
                                             <td>{{ $item->duration }}</td>
                                             <td>{{ $item->status }}</td>
-                                            <td>{{ $item->user->contact }}</td>
-                                            <td>{{ $item->user->email }}</td>
+                                            <td>{{ \App\Models\User::getAttributeWithTrashed($item->user_id, 'contact') }}</td>
+                                            <td>{{ \App\Models\User::getAttributeWithTrashed($item->user_id, 'email') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

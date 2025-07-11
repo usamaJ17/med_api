@@ -55,7 +55,7 @@
                                             <td>{{ $item->transaction_type }}</td>
                                             <td>{{ $item->transaction_amount }}</td>
                                             <td>{{ $item->transaction_date }} {{ $item->transaction_time }}</td>
-                                            <td>{{ $item->user->first_name }} {{ $item->user->last_name }}</td>
+                                            <td>{{ \App\Models\User::getNameWithTrashed($item->user_id) }}</td>
                                             <td>{{ $item->transaction_gateway }}</td>
                                             <td>{{ $item->appointment_id }}</td>
                                             {{-- <td>{{ $item->asd }}</td>

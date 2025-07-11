@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Custom\GraphFactory;
 use App\Models\Appointment;
+use App\Models\MedicalDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -83,6 +84,17 @@ class PatientController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
+        if ($user) {
+            $user->clearMediaCollection();
+            $userMed = MedicalDetail::where('user_id', $id)->first();
+            if ($userMed) {
+                $userMed->clearMediaCollection();
+                $userMed->delete();
+            }
+        }
+        $user->roles()->detach();
+        $user->deleted_by = auth()->user()->id;
+        $user->save();
         $user->delete();
         return response()->json(true);
     }

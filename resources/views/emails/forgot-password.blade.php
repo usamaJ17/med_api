@@ -81,7 +81,7 @@
                 font-weight: 500;
               "
             >
-              Hey {{ $name }},
+              Hello {{ $name }},
             </p>
             <p
               style="

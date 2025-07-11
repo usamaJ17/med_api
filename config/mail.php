@@ -53,6 +53,16 @@ return [
             'username' => env('ALT_MAIL_USERNAME'),
             'password' => env('ALT_MAIL_PASSWORD'),
         ],
+        'notification' => [
+            'transport' => 'smtp',
+            'host' => env('NOTIFICATION_MAIL_HOST'),
+            'port' => env('NOTIFICATION_MAIL_PORT'),
+            'encryption' => env('NOTIFICATION_MAIL_ENCRYPTION'),
+            'username' => env('NOTIFICATION_MAIL_USERNAME'),
+            'password' => env('NOTIFICATION_MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
         'ses' => [
             'transport' => 'ses',
         ],

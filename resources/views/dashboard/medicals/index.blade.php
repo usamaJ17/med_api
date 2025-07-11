@@ -156,7 +156,7 @@
                 function DeleteRecord(id) {
                     console.log(id);
                     $.ajax({
-                        url: "{{ url('portal/patient') }}" + "/" + id,
+                        url: "{{ url('portal/medical') }}" + "/" + id,
                         type: 'DELETE',
                         data: {
                             _token: "{{ csrf_token() }}"

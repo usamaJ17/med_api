@@ -7,8 +7,10 @@ use App\Exports\ProfessionalsExport;
 use App\Mail\VerificationApproved;
 use App\Models\Appointment;
 use App\Models\Article;
+use App\Models\MedicalDetail;
 use App\Models\Notifications;
 use App\Models\Payouts;
+use App\Models\ProfessionalDetails;
 use App\Models\Review;
 use App\Models\TransactionHistory;
 use App\Models\User;
@@ -143,7 +145,20 @@ class MedicalController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+        if ($user) {
+            $user->clearMediaCollection();
+            $userMed = MedicalDetail::where('user_id', $id)->first();
+            if ($userMed) {
+                $userMed->clearMediaCollection();
+                $userMed->delete();
+            }
+        }
+        $user->roles()->detach();
+        $user->deleted_by = auth()->user()->id;
+        $user->save();
+        $user->delete();
+        return response()->json(true);
     }
 
     /**

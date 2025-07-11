@@ -28,7 +28,7 @@ class SendEmailNotifications implements ShouldQueue
         $emailToSend = EmailNotifications::where('status', 'pending')->where('scheduled_at', '<', now())->get();
 
         foreach ($emailToSend as $email) {
-            Mail::to($email->email)->send(new DeletedNotificationMail($email->email, $email->name , $email->type ?? 'patient'));
+            Mail::mailer('notification')->to($email->email)->send(new DeletedNotificationMail($email->email, $email->name , $email->type ?? 'patient'));
             $email->status = 'sent';
             $email->sent_at = now();
             $email->save();

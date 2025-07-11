@@ -145,7 +145,7 @@ class ProfileController extends Controller
     {
         $query = User::with(['professionalDetails', 'MedReviews'])->role('medical');
         
-        $query->where('is_verified', true);
+        $query->where('is_verified', 1);
     
         // Filter by professional ID
         if ($request->has('professional_id') && $request->professional_id != "") {
