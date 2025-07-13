@@ -130,7 +130,12 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::post('appointments/status', [AppointmentController::class, 'changeStatus']);
   Route::get('patient/appointments', [AppointmentController::class, 'get']);
   Route::get('subaccount/appointments', [AppointmentController::class, 'getSubAccount']);
+  Route::post('appointments/initiate-payment', [AppointmentController::class, 'initiatePayment']);
+  Route::post('appointments/finalize-gateway-payment', [AppointmentController::class, 'finalizeGatewayPayment']);
+ 
+  // OLD 
   Route::post('appointments/paid', [AppointmentController::class, 'markAsPaid']);
+  // OLD END
   Route::get('appointments/pay_for_some', [AppointmentController::class, 'payForSome']);
   Route::post("add_consultation_fee", [AppointmentController::class, "saveConsultationFee"]);
   Route::get("get_consultation_fee", [AppointmentController::class, "getConsultationFee"]);

@@ -29,7 +29,12 @@ use App\Mail\AppointmentRescheduled;
 use App\Mail\AfterConsultation;
 use App\Mail\AfterAppointment;
 use App\Models\Notifications;
+use App\Models\TransactionHistory;
+use App\Services\PaymentService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
 {
@@ -542,6 +547,105 @@ class AppointmentController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+
+    public function initiatePayment(Request $request, PaymentService $paymentService)
+    {
+        $validator = Validator::make($request->all(), [
+            'appointment_id' => 'required|exists:appointments,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'message' => $validator->errors()->first()], 422);
+        }
+
+        $user = Auth::user();
+        $appointment = Appointment::find($request->appointment_id);
+
+        // Authorization: Ensure the user owns the appointment.
+        if ($appointment->user_id !== $user->id) {
+            return response()->json(['status' => 403, 'message' => 'You are not authorized for this appointment.'], 403);
+        }
+
+        // Prevent re-payment for an already paid appointment.
+        if ($appointment->is_paid) {
+            return response()->json(['status' => 409, 'message' => 'This appointment has already been paid for.'], 409);
+        }
+
+        try {
+            // Call the service to handle the complex logic
+            $result = $paymentService->processAppointmentPayment($user, $appointment);
+
+            // The service returns a structured response. We format it for the API.
+            return response()->json([
+                'status' => 200,
+                'message' => $result['message'],
+                'data' => [
+                    'payment_flow_status'       => $result['flow_status'],
+                    'total_fee'                 => (int) $appointment->fee_int,
+                    'wallet_applied'            => (int) $result['wallet_applied'],
+                    'amount_to_pay_via_gateway' => (int) $result['amount_to_pay'],
+                    'appointment_id'            => $appointment->id,
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Payment Initiation Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json(['status' => 500, 'message' => 'An internal server error occurred during payment processing.'], 500);
+        }
+    }
+
+    //================================================================================
+    // NEW METHOD 2: VERIFY AND FINALIZE GATEWAY PAYMENT
+    // Your app calls this endpoint after getting a success signal from Paystack.
+    // This replaces the old `markAsPaid` method for new transactions.
+    //================================================================================
+    public function finalizeGatewayPayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'transaction_id' => 'required|string',
+            'appointment_id' => 'required|exists:appointments,id',
+            'gateway'        => 'required|string', // e.g., 'paystack', 'crypto'
+            'amount_paid'    => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 422, 'message' => $validator->errors()->first()], 422);
+        }
+        
+        $appointment = Appointment::find($request->appointment_id);
+        $user = Auth::user();
+
+        if ($appointment->is_paid) {
+            return response()->json(['status' => 409, 'message' => 'This appointment has already been confirmed.'], 409);
+        }
+
+        // Record the gateway transaction in your database
+        TransactionHistory::create([
+            'user_id'                 => $user->id,
+            'appointment_id'          => $appointment->id,
+            'transaction_amount'      => $request->amount_paid,
+            'transaction_gateway'     => $request->gateway,
+            'transaction_id'          => $request->transaction_id,
+            'transaction_type'        => 'debit',
+            'transaction_description' => 'Gateway payment for Appointment #' . $appointment->id,
+        ]);
+
+        // Finalize the appointment
+        $appointment->update([
+            'is_paid'        => 1,
+            'status'         => 'Scheduled',
+            'gateway'        => $request->gateway,
+            'transaction_id' => $request->transaction_id, // Store the main transaction ID
+        ]);
+
+        // You can create the chat box here as you did in `markAsPaid`
+        ChatController::createChatBox($appointment->user_id, $appointment->med_id, $appointment->id);
+
+        return response()->json(['status' => 200, 'message' => 'Payment successful and booking confirmed!'], 200);
+    }
+
+
     public function payForSome(Request $request)
     {
         $app = Appointment::where('appointment_code', $request->appointment_code)->first();
