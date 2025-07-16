@@ -13,6 +13,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\SupportGroupController;
 use App\Http\Controllers\TweekController;
 use App\Http\Controllers\UserController;
@@ -137,4 +138,11 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::delete('wallets/{wallet}', [UserWalletController::class, 'destroy'])->name('wallets.destroy');
     Route::post('wallets/add-balance', [UserWalletController::class, 'addBalance'])->name('patient.addBalance');
     Route::post('wallets/sub-balance', [UserWalletController::class, 'subBalance'])->name('patient.subBalance');
+
+    Route::get('status/create', [StatusController::class, 'create'])->name('status.create');
+    Route::post('status/upload', [StatusController::class, 'store'])->name('status.upload');
+    Route::get('status/{id}/edit', [StatusController::class, 'edit'])->name('status.edit');
+    Route::post('status/{id}/update', [StatusController::class, 'update'])->name('status.update');
+    Route::post('status/{id}/delete', [StatusController::class, 'destroy'])->name('status.destroy');
+    Route::get('statuses', [StatusController::class, 'index'])->name('status.index');
 });

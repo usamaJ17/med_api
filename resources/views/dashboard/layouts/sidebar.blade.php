@@ -62,6 +62,12 @@
                                             class="path2"></span></i>Verification Requests</a></li>
                         </ul>
                     </li>
+                    <li class="@yield('statuses')">
+                        <a href="{{ route('status.index') }}">
+                            <i data-feather="calendar"></i>
+                            <span>Status</span>
+                        </a>
+                    </li>
                     <li class="@yield('appointments')">
                         <a href="{{ route('appointments.index') }}">
                             <i data-feather="calendar"></i>

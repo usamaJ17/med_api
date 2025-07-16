@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SupportGroupController;
@@ -205,7 +206,16 @@ Route::middleware(['auth:sanctum', 'cros'])->group(function () {
   Route::get('refund', [PaymentController::class, 'refund']);
 
   Route::get('tweeks', [TweekController::class, 'getApiData']);
+  
 });
+Route::get('get_statuses', [StatusController::class, 'index']);
+Route::post('store_status', [StatusController::class, 'store']);
+Route::post('/status/{id}/view', [StatusController::class, 'trackStatusView']);
+Route::post('/status/mute/{healthProfessionalId}', [StatusController::class, 'muteStatus']);
+Route::post('/status/unmute/{healthProfessionalId}', [StatusController::class, 'unmuteStatus']);
+Route::get('/status/muted', [StatusController::class, 'getMutedList']);
+Route::post('/statuses/{id}/react', [StatusController::class, 'react']);
+
 Route::group(['prefix' => 'payment'], function () {
     Route::group(['prefix' => 'crypto'], function () {
         Route::get('currencies', [PaymentController::class, 'getCryptoCurrencies']);
