@@ -284,6 +284,17 @@ class User extends Authenticatable implements HasMedia
         }
         return $array;
     }
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
+    public function mutedStatusNotifications()
+    {
+        return $this->hasMany(MutedStatusNotification::class);
+    }
+
+
     public function reminders(): BelongsToMany
     {
         return $this->belongsToMany(Reminder::class, 'reminder_user')
