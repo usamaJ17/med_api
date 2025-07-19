@@ -13,6 +13,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\SupportGroupController;
 use App\Http\Controllers\TweekController;
 use App\Http\Controllers\UserController;
@@ -100,8 +101,6 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::delete('dynamic/article_category/delete/{id}', [DynamicCatagoryController::class,'deleteArticleCategory'])->name('dynamic.article_category.delete');
     Route::post('dynamic/article_category/store', [DynamicCatagoryController::class,'storeArticleCategory'])->name('dynamic.article_category.store');
     Route::post('dynamic/article_category/update', [DynamicCatagoryController::class, 'updateArticleCategory'])->name('dynamic.article_category.update');
-    
-
 
     Route::get('dynamic/clinical_notes', [DynamicCatagoryController::class,'clinical_notes'])->name('dynamic.clinical_notes');
     Route::delete('dynamic/clinical_notes/delete/{id}', [DynamicCatagoryController::class,'deleteClinicalNotes'])->name('dynamic.clinical_notes.delete');
@@ -112,12 +111,10 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::delete('dynamic/consultation_summary/delete/{id}', [DynamicCatagoryController::class,'deleteCusultationSummary'])->name('dynamic.consultation_summary.delete');
     Route::post('dynamic/consultation_summary/store', [DynamicCatagoryController::class,'storeCusultationSummary'])->name('dynamic.consultation_summary.store');
     Route::post('dynamic/consultation_summary/update', [DynamicCatagoryController::class, 'updateCusultationSummary'])->name('dynamic.consultation_summary.update');
-    
 
     Route::get('refund_history', [PaymentController::class,'refund_history'])->name('refund_history');
     Route::post('refund/status', [PaymentController::class,'refund_status'])->name('refund.status');
 
-    
     Route::get('payments/transactions', [PaymentController::class,'transactions'])->name('payments.transactions');
     Route::get('payments/payouts', [PaymentController::class,'payouts'])->name('payments.payouts');
 
@@ -137,4 +134,8 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::delete('wallets/{wallet}', [UserWalletController::class, 'destroy'])->name('wallets.destroy');
     Route::post('wallets/add-balance', [UserWalletController::class, 'addBalance'])->name('patient.addBalance');
     Route::post('wallets/sub-balance', [UserWalletController::class, 'subBalance'])->name('patient.subBalance');
+    // Status 
+    Route::get('status', [StatusController::class, 'adminIndex'])->name('status.admin.index');
+    Route::get('status/inappropriate', [StatusController::class, 'adminInappropriate'])->name('status.admin.inappropriate');
+    Route::delete('status/{id}', [StatusController::class, 'adminDestroy'])->name('status.admin.destroy');
 });

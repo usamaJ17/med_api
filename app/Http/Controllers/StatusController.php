@@ -188,4 +188,33 @@ class StatusController extends Controller
             'message' => 'User unmuted successfully'
         ], 200);
     }
+
+    // admin routes
+    public function adminIndex()
+    {
+        $statuses = Status::with('user')
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->get();
+
+        return view('dashboard.status.index', compact('statuses'));
+    }
+
+    public function adminInappropriate()
+    {
+        $statuses = Status::with(['user', 'flags'])
+            ->whereHas('flags')
+            ->get()
+            ->sortByDesc(fn($status) => $status->flags->count());
+
+        return view('dashboard.status.inappropriate', compact('statuses'));
+    }
+
+    public function adminDestroy($id)
+    {
+        $status = Status::findOrFail($id);
+        $status->delete();
+
+        return redirect()->back()->with('success', 'Status deleted successfully.');
+    }
 }

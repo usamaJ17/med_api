@@ -62,6 +62,23 @@
                                             class="path2"></span></i>Verification Requests</a></li>
                         </ul>
                     </li>
+                    <li class="treeview @yield('status')">
+                        <a href="#">
+                            <i data-feather="disc"></i>
+                            <span>Status Updates</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@yield('status.index')"><a href="{{ route('status.admin.index') }}"><i
+                                            class="icon-Commit"><span class="path1"></span><span
+                                                class="path2"></span></i>List Active</a></li>
+                            <li class="@yield('status.inappropriate')"><a href="{{ route('status.admin.inappropriate') }}"><i
+                                            class="icon-Commit"><span class="path1"></span><span
+                                                class="path2"></span></i>List Inappropriate</a></li>
+                        </ul>
+                    </li>
                     <li class="@yield('appointments')">
                         <a href="{{ route('appointments.index') }}">
                             <i data-feather="calendar"></i>
