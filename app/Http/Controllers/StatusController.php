@@ -61,13 +61,36 @@ class StatusController extends Controller
     {
         $request->validate([
             'caption' => 'nullable|string|max:255',
-            'media' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:10240', // 10MB max
+            'media' => 'nullable|file|mimes:jpeg,png,jpg,mp4|max:10240',
+            'scheduled_at' => 'nullable|date|after_or_equal:now'
         ]);
 
+        $userId = Auth::id();
+
+        $start = $request->scheduled_at ? Carbon::parse($request->scheduled_at) : now();
+        $end = $start->copy()->addHours(24);
+
+        $conflict = Status::where('user_id', $userId)
+            ->where(function ($query) use ($start, $end) {
+                $query->where(function ($q) use ($start, $end) {
+                    $q->where('scheduled_at', '<', $end)
+                        ->whereRaw('DATE_ADD(IFNULL(scheduled_at, created_at), INTERVAL 24 HOUR) > ?', [$start]);
+                });
+            })
+            ->exists();
+
+        if ($conflict) {
+            return response()->json([
+                'status' => 409,
+                'message' => 'You already have an active or scheduled status that overlaps this time range.'
+            ], 409);
+        }
+
         $status = Status::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'caption' => $request->caption,
-            'expires_at' => now()->addHours(24),
+            'scheduled_at' => $request->scheduled_at,
+            'expires_at' => $end,
         ]);
 
         if ($request->hasFile('media')) {
@@ -76,9 +99,10 @@ class StatusController extends Controller
 
         return response()->json([
             'status' => 201,
-            'message' => 'Status created successfully',
+            'message' => 'Status created successfully'
         ], 201);
     }
+
 
     /**
      * GET /api/status/{id}
