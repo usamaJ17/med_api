@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmailNotifications;
 use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,14 @@ class NotificationController extends Controller
             'notifications' => $notifications
         ];
         return response()->json(['status' => 200,'data' => $data , 'message' => 'Notification fetched successfully'], 200);
+    }
+    public function listEmailNotifications(){
+        $emailNotifications = EmailNotifications::all();
+        return view('dashboard.email_notifications.index', compact('emailNotifications'));
+    }
+    public function deleteEmailNotifications(Request $request){
+        EmailNotifications::whereIn('id', $request->ids)->delete();
+        return response()->json(['status' => 200,'message' => 'Email notifications deleted successfully'], 200);
     }
     public function changeStatus(Request $request){
         $notification = Notifications::find($request->id);

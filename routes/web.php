@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HelperController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DynamicCatagoryController;
 use App\Http\Controllers\EmergencyController;
@@ -138,4 +139,7 @@ Route::middleware(['adminCheck'])->prefix('portal')->group(function () {
     Route::get('status', [StatusController::class, 'adminIndex'])->name('status.admin.index');
     Route::get('status/inappropriate', [StatusController::class, 'adminInappropriate'])->name('status.admin.inappropriate');
     Route::delete('status/{id}', [StatusController::class, 'adminDestroy'])->name('status.admin.destroy');
+
+    Route::get('email_notifications', [NotificationController::class, 'listEmailNotifications'])->name('email_notifications.index');
+    Route::delete('email_notifications', [NotificationController::class, 'deleteEmailNotifications'])->name('email_notifications.delete');
 });
