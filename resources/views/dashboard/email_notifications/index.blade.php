@@ -73,8 +73,13 @@ active
                                         <span class="badge bg-warning">Pending</span>
                                         @endif
                                     </td>
-                                    <td>{{ $emailNotification ? $emailNotification->sent_at->format('j F, h:i A') : 'N/A' }}</td>
-
+                                    <td>
+                                        @if($emailNotification->sent_at &&  $emailNotification->sent_at !=  null)
+                                        {{ $emailNotification->sent_at->format('j F, h:i A') }}
+                                        @else
+                                        N/A
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group">
                                             <a class="hover-primary dropdown-toggle no-caret"
