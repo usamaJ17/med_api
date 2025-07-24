@@ -3,10 +3,10 @@
 @section('title')
 Email notifications
 @endsection
-@section('email_notification')
+@section('alerts')
 active
 @endsection
-@section('email_notification.index')
+@section('alerts.push_notification')
 active
 @endsection
 @section('content')

@@ -137,6 +137,10 @@
                             <li class="@yield('alerts.push_notification')"><a href="{{ route('notification.index') }}"><i
                                         class="icon-Commit"><span class="path1"></span><span
                                             class="path2"></span></i>Push Notifications</a></li>
+
+                            <li class="@yield('alerts.push_notification')"><a href="{{ route('email_notifications.index') }}"><i
+                                        class="icon-Commit"><span class="path1"></span><span
+                                            class="path2"></span></i>Email Notifications List</a></li>
                         </ul>
                     </li>
                     <li class="treeview @yield('dynamic')">
