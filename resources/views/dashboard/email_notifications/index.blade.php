@@ -121,7 +121,7 @@ active
             type: 'DELETE',
             data: {
                 _token: "{{ csrf_token() }}",
-                id : id
+                ids : [id]
             },
             success: function(response) {
                 location.reload();
