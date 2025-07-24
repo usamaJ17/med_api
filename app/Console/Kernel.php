@@ -20,9 +20,9 @@ class Kernel extends ConsoleKernel
         $schedule->job(new UpdateChatBoxStatus)->everyTenMinutes();
         $schedule->job(new SendBulkPushNotification)->everyMinute();
         $schedule->command('queue:work --sleep=3 --tries=3 --stop-when-empty')->everyMinute()->withoutOverlapping();
-        $schedule->job(new DeleteUnverifiedUsers)->everyTwoMinutes();
-        $schedule->job(new SendEmailNotifications)->everyTwoMinutes();
-        $schedule->job(new FindIncompleteUsers)->everyTwoMinutes();
+        $schedule->job(new DeleteUnverifiedUsers)->everyFifteenMinutes();
+        $schedule->job(new SendEmailNotifications)->everyFifteenMinutes();
+        $schedule->job(new FindIncompleteUsers)->everyFifteenMinutes();
     }
 
     /**
