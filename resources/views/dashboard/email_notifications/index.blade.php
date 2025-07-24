@@ -73,7 +73,7 @@ active
                                         <span class="badge bg-warning">Pending</span>
                                         @endif
                                     </td>
-                                    <td>{{ $emailNotification->sent_at->format('j F, h:i A') }}</td>
+                                    <td>{{ $emailNotification ? $emailNotification->sent_at->format('j F, h:i A') : 'N/A' }}</td>
 
                                     <td>
                                         <div class="btn-group">
