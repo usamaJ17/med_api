@@ -6,7 +6,7 @@ Email notifications
 @section('alerts')
 active
 @endsection
-@section('alerts.push_notification')
+@section('alerts.email_notification')
 active
 @endsection
 @section('content')
