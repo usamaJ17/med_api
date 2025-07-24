@@ -65,7 +65,7 @@ active
                                         @endif
                                     </td>
                                     <td>{{ $emailNotification->email }}</td>
-                                    <td>{{ $emailNotification->scheduled_at->format('h:ia, j M Y') }}</td>
+                                    <td>{{ $emailNotification->scheduled_at->format('j F, h:i A')  }}</td>
                                     <td>
                                         @if ($emailNotification->status == 'sent')
                                         <span class="badge bg-success">Sent</span>
@@ -73,7 +73,7 @@ active
                                         <span class="badge bg-warning">Pending</span>
                                         @endif
                                     </td>
-                                    <td>{{ $emailNotification->sent_at->format('h:ia, j M Y') }}</td>
+                                    <td>{{ $emailNotification->sent_at->format('j F, h:i A') }}</td>
 
                                     <td>
                                         <div class="btn-group">
