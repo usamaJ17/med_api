@@ -62,6 +62,10 @@ return [
             'password' => env('NOTIFICATION_MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'from' => [
+                'address' => env('NOTIFICATION_MAIL_FROM_ADDRESS'),
+                'name' => env('NOTIFICATION_MAIL_FROM_NAME'),
+            ],
         ],
         'ses' => [
             'transport' => 'ses',
