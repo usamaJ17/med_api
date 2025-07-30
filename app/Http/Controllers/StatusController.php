@@ -37,7 +37,8 @@ class StatusController extends Controller
                 return [
                     'id' => $status->id,
                     'user_id' => $status->user_id,
-                    'user_name' => $status->user->name,
+                    'user_name' => $status->user->fullName(),
+                    'user_profile_picture_url' => $status->user->getProfileImageAttribute(),
                     'caption' => $status->caption,
                     'media_url' => $status->getFirstMediaUrl('status_media'),
                     'expires_at' => $status->expires_at,
