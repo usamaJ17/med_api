@@ -15,7 +15,7 @@ class GlobalHelper
 
     public static function getCommissionPercentage()
     {
-        $commission = Tweek::where('key', 'commission_percentage')->first();
+        $commission = Tweek::where('type', 'Withdrawal Commission Rate')->first();
         if ($commission) {
             return $commission->value;
         } else {
@@ -31,7 +31,7 @@ class GlobalHelper
      */
     public static function getCommissionedAmount($amount)
     {
-        $commission = Tweek::where('key', 'commission_percentage')->first();
+        $commission = Tweek::where('type', 'Withdrawal Commission Rate')->first();
         if ($commission) {
             return $amount * ($commission->value / 100);
         } else {
@@ -46,7 +46,7 @@ class GlobalHelper
      */
     public static function getAmountAfterCommission($amount)
     {
-        $commission = Tweek::where('key', 'commission_percentage')->first();
+        $commission = Tweek::where('type', 'Withdrawal Commission Rate')->first();
         if ($commission) {
             return $amount - ($amount * ($commission->value / 100));
         } else {
