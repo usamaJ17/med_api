@@ -630,6 +630,6 @@ class AuthController extends Controller
             ]
         ]);
         $processingImageId = json_decode($response->getBody(), true)['id'];
-        ProcessProfileImage::dispatch($user->id, $processingImageId);
+        ProcessProfileImage::dispatch($user->id, $processingImageId)->delay(now()->addMinutes(3));
     }
 }

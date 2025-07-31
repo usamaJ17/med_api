@@ -14,12 +14,14 @@ class ProcessProfileImage implements ShouldQueue
     use Queueable ,InteractsWithQueue, SerializesModels;
     private $user_id;
     private $image_id;
+    private $attempt;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($user_id, $image_id)
+    public function __construct($user_id, $image_id , $attempt = 0)
     {
+        $this->attempt = $attempt;
         $this->user_id = $user_id;
         $this->image_id = $image_id;
     }
@@ -53,7 +55,9 @@ class ProcessProfileImage implements ShouldQueue
                 $user->addMediaFromUrl($imageUrl)->toMediaCollection();
             }
         } else {
-            ProcessProfileImage::dispatch($this->user_id, $this->image_id);
+            if( $this->attempt < 3) {
+                ProcessProfileImage::dispatch($this->user_id, $this->image_id , $this->attempt + 1)->delay(now()->addMinutes(3));
+            }
         }
     }
 }
