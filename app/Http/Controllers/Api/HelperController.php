@@ -352,13 +352,13 @@ class HelperController extends Controller
     public function test()
     {
         EscrowTransaction::create([
-            'user_id' => 216,
+            'user_id' => 215,
             'amount' => 100.00,
             'added_by_admin' => true,
             'release_at' => now()->addDays(7),
         ]);
         EscrowTransaction::create([
-            'user_id' => 216,
+            'user_id' => 215,
             'appointment_id' => 5,
             'amount' => 50.00,
             'total_fee' => 80.00,
