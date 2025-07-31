@@ -16,11 +16,13 @@ class Status extends Model implements HasMedia
         'caption',
         'scheduled_at',
         'expires_at',
+        'duration',
     ];
 
     protected $casts = [
         'scheduled_at' => 'datetime',
         'expires_at' => 'datetime',
+        'duration' => 'string',
     ];
 
     // ============================
