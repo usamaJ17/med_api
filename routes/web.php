@@ -21,6 +21,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserWalletController;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +33,19 @@ use App\Http\Controllers\UserWalletController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/sym', function () {
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize');
+    Artisan::call('config:clear');
     Artisan::call('storage:link');
-    return 'success';
-});
+    return 'Cache cleared successfully';
+})->name('clear.cache');
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 })->name('home');
+
+Route::get('/test', [HelperController::class, 'test'])->name('about');
+
 Route::get('/graph', [HelperController::class, 'graphs'])->name('graph.form');
 
 Route::get('/login', [DashboardController::class, 'login'])->name('login.form');

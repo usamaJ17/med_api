@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helper\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\AppointmentHours;
@@ -29,7 +30,9 @@ use App\Mail\AppointmentRescheduled;
 use App\Mail\AfterConsultation;
 use App\Mail\AfterAppointment;
 use App\Models\Notifications;
+use App\Models\EscrowTransaction;
 use App\Models\TransactionHistory;
+use App\Models\Tweek;
 use App\Services\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -341,6 +344,14 @@ class AppointmentController extends Controller
                 'is_read' => 0,
             ];
             Notifications::create($notificationData);
+            EscrowTransaction::create([
+                'user_id'        => $appointment->med_id,
+                'appointment_id' => $appointment->id,
+                'amount'         => GlobalHelper::getAmountAfterCommission($appointment->fee_int),
+                'total_fee'      => $appointment->fee_int,
+                'status'         => 'pending',
+                'release_at'     => Carbon::now()->addDays(7)
+            ]);
         }
 
         if ($appointment->status == 'cancelled') {

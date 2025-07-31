@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\GlobalHelper;
 use App\Models\Appointment;
+use App\Models\EscrowTransaction;
 use App\Models\Payouts;
 use App\Models\TransactionHistory;
 use App\Models\UserRefund;
@@ -246,49 +247,38 @@ class PaymentController extends Controller
     }
     public function getProfessionalPayments(Request $request)
     {
-        $escrowAmount = 0;
-        $availableAmount = 0;
+        $escrowAmount = EscrowTransaction::where('user_id', auth()->user()->id)
+            ->where('status', '!=', 'released')
+            ->sum('amount');
+        $availableAmount = EscrowTransaction::where('user_id', auth()->user()->id)
+            ->where('status', 'released')
+            ->sum('amount');
         $payoutsWithdrawn = Payouts::where('user_id', auth()->user()->id)->where('status', 'completed')->where('completed_at', '!=', null)->sum('amount');
 
-        $appointments = Appointment::where('med_id', auth()->user()->id)
-            ->where('is_paid', 1)
-            ->get()
-            ->map(function ($appointment) use (&$escrowAmount, &$availableAmount) {
-                $currentDate = Carbon::now();
-                $appointmentDate = Carbon::parse($appointment->appointment_date);
-
-                if ($appointmentDate->isFuture()) {
-                    $appointment->status = 'Uncompleted';
-                } elseif ($appointmentDate->isToday() || $appointmentDate->isPast()) {
-                    $daysDifference = $appointmentDate->diffInDays($currentDate);
-
-                    if ($daysDifference > 7) {
-                        $appointment->status = 'Completed';
-                        $availableAmount += GlobalHelper::getAmountAfterCommission($appointment->fee_int); // Sum for available amount
-                    } else {
-                        $appointment->status = 'In Progress';
-                        $escrowAmount += GlobalHelper::getAmountAfterCommission($appointment->fee_int); // Sum for escrow amount
-                    }
-                }
-
+        $escrowPayments = EscrowTransaction::with('appointment')->where('user_id', auth()->user()->id)->get()
+            ->map(function ($escrow)  use ($escrowAmount, $availableAmount) {
                 return [
-                    'appointment_id' => $appointment->id,
-                    'user_name' => $appointment->patient_name,
-                    'appointment_booked_on' => $appointment->created_at,
-                    'appointment_date' => $appointment->appointment_date,
-                    'amount' => GlobalHelper::getAmountAfterCommission($appointment->fee_int),
-                    'total_fee' => $appointment->fee_int,
-                    'status' => $appointment->status,
-                    'appointment_type' => $appointment->appointment_type,
-                    'transaction_id' => $appointment->transaction_id
+                    'added_by_admin' => $escrow->added_by_admin,
+                    'appointment_id' => $escrow->appointment_id,
+                    'user_name' => $escrow->appointment?->patient_name,
+                    'appointment_booked_on' => $escrow->appointment?->created_at,
+                    'appointment_date' => $escrow->appointment?->appointment_date,
+                    'amount' => $escrow->amount,
+                    'total_fee' => $escrow->total_fee,
+                    'status' => $escrow->status,
+                    'appointment_type' => $escrow->appointment?->appointment_type,
+                    'transaction_id' => $escrow->appointment?->transaction_id,
+                    'release_at' => $escrow->release_at
+
                 ];
             });
+
         $pay_data = [
             'escrow_amount' => $escrowAmount,
             'available_amount' => $availableAmount - $payoutsWithdrawn,
             'total_payout' => $payoutsWithdrawn,
             'total_revenue' => $availableAmount + $escrowAmount,
-            'appointments' => $appointments,
+            'appointments' => $escrowPayments,
         ];
         $data = [
             'status' => 200,

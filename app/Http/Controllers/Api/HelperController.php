@@ -11,6 +11,7 @@ use App\Models\Professions;
 use App\Models\Ranks;
 use App\Models\Tweek;
 use App\Models\DynamicDoc;
+use App\Models\EscrowTransaction;
 use App\Models\MedicalDetail;
 use App\Models\User;
 use App\Models\Notifications;
@@ -346,5 +347,28 @@ class HelperController extends Controller
             $countries = $action->data;
             return response()->json([$countries]);
         }
+    }
+
+    public function test()
+    {
+        EscrowTransaction::create([
+            'user_id' => 216,
+            'amount' => 100.00,
+            'added_by_admin' => true,
+            'release_at' => now()->addDays(7),
+        ]);
+        EscrowTransaction::create([
+            'user_id' => 216,
+            'appointment_id' => 5,
+            'amount' => 50.00,
+            'total_fee' => 80.00,
+            'status'    => 'pending',
+            'release_at' => now()->addDays(7),
+        ]);
+        $data = [
+            'status' => 200,
+            'message' => 'Test successful',
+        ];
+        return response()->json($data, 200);
     }
 }

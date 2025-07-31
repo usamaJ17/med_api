@@ -4,9 +4,11 @@ namespace App\Console;
 
 use App\Jobs\DeleteUnverifiedUsers;
 use App\Jobs\FindIncompleteUsers;
+use App\Jobs\MarkAppointmentAsPaid;
 use App\Jobs\SendBulkPushNotification;
 use App\Jobs\SendEmailNotifications;
 use App\Jobs\UpdateChatBoxStatus;
+use App\Jobs\UpdateEscrowStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -23,6 +25,8 @@ class Kernel extends ConsoleKernel
         $schedule->job(new DeleteUnverifiedUsers)->everyFifteenMinutes();
         $schedule->job(new SendEmailNotifications)->everyFifteenMinutes();
         $schedule->job(new FindIncompleteUsers)->everyFifteenMinutes();
+        $schedule->job(new MarkAppointmentAsPaid)->everyFifteenMinutes();
+        $schedule->job(new UpdateEscrowStatus)->everyFiveMinutes();
     }
 
     /**
