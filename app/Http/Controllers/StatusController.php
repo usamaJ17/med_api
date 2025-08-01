@@ -46,6 +46,8 @@ class StatusController extends Controller
                     'duration' => $status->duration,
                     'viewed' => $status->wasViewedBy(Auth::id()),
                     'reaction' => optional($status->reactionBy(Auth::id()))->emoji,
+                    'total_reactions' => $status->reactions->count(),
+                    'view_count' => $status->views->count(),
                 ];
             });
 
