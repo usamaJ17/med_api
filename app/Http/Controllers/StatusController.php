@@ -46,6 +46,8 @@ class StatusController extends Controller
                     'duration' => $status->duration,
                     'viewed' => $status->wasViewedBy(Auth::id()),
                     'reaction' => optional($status->reactionBy(Auth::id()))->emoji,
+                    'total_reactions' => $status->reactions->count(),
+                    'view_count' => $status->views->count(),
                 ];
             });
 
@@ -92,30 +94,20 @@ class StatusController extends Controller
         $status = Status::create([
             'user_id' => $userId,
             'caption' => $request->caption,
+            'duration' => $request->duration ?? '00:00:05',
             'scheduled_at' => $request->scheduled_at ? Carbon::parse($request->scheduled_at) : Carbon::now(),
             'expires_at' => $end,
         ]);
 
         if ($request->hasFile('media')) {
             $media = $status->addMediaFromRequest('media')->toMediaCollection('status_media');
-            $mediaType = $request->file('media')->getClientMimeType();
-            if (in_array($mediaType, ['video/mp4' , 'video/quicktime' , 'video/avi'])) {
-                $path = $media->getPath();
-                $getID3 = new \getID3;
-                $file = $getID3->analyze($path);
-                $duration = date('H:i:s', $file['playtime_seconds']);
-                $status->duration = $duration;
-                $status->save();
-            }
         }
 
         return response()->json([
             'status' => 201,
-            'message' => 'Status created successfully'
+            'message' => 'Status created successfully',
+            'data' => $status
         ], 201);
-    }
-
-    public function convertDuration($durationInSeconds){
     }
 
 
