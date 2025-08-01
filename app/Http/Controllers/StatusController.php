@@ -24,7 +24,7 @@ class StatusController extends Controller
 
         $query = Status::with(['user', 'reactions.user', 'views'])
             ->where('expires_at', '>', now())
-            ->where('schedule_at', '<=', now());
+            ->where('scheduled_at', '<=', now());
 
         if ($filter === 'muted') {
             $query->whereIn('user_id', $mutedIds);
