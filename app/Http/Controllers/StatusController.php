@@ -32,6 +32,10 @@ class StatusController extends Controller
             $query->whereNotIn('user_id', $mutedIds);
         }
 
+        if(isset($request->user_id)){
+            $query->where('user_id' , $request->user_id);
+        }
+
         $statuses = $query
             ->latest()
             ->get()
