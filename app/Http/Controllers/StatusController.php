@@ -22,8 +22,9 @@ class StatusController extends Controller
 
         $mutedIds = $user->mutedStatusNotifications()->pluck('muted_user_id');
 
-        $query = Status::with('user')
-            ->where('expires_at', '>', now());
+        $query = Status::with(['user', 'reactions.user', 'views'])
+            ->where('expires_at', '>', now())
+            ->where('schedule_at', '<=', now());
 
         if ($filter === 'muted') {
             $query->whereIn('user_id', $mutedIds);
